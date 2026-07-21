@@ -10,7 +10,7 @@ Figures live in `public/images/{subject}/{type}/{stem}{ext}` and are indexed by 
 { "stem": "CNX_Chem_01_01_FuelCell", "subject": "chemistry", "type": "2d", "ext": ".jpg" }
 ```
 
-- **`subject`**: `physics` | `chemistry` | `computer science`
+- **`subject`**: `physics` | `chemistry` | `cs` | `math`
 - **`type`**: `2d` (flat diagrams, schematics, graphs) | `3d` (spatial/volumetric illustrations)
 
 Current counts:
@@ -20,7 +20,8 @@ Current counts:
 | Physics          |  6 | 16 |    22 |
 | Chemistry        | 19 | 22 |    41 |
 | Computer Science | 13 | 12 |    25 |
-| **Total**        | **38** | **50** | **88** |
+| Math             | 14 | 14 |    28 |
+| **Total**        | **52** | **64** | **116** |
 
 ## Viewer
 
@@ -35,9 +36,16 @@ Then open [http://localhost:5173](http://localhost:5173).
 
 ## Credits
 
+### Math figures
+
+Figures are from:
+
+> Anton, Bivens, and Davis. *Calculus, 10th Edition*
+> © John Wiley & Sons
+
 ### Chemistry figures
 
-Figures with stems matching `CNX_Chem_*` are from:
+Figures are from:
 
 > OpenStax *Chemistry 2e*
 > © Rice University
@@ -46,7 +54,7 @@ Figures with stems matching `CNX_Chem_*` are from:
 
 ### Computer Science figures
 
-Figures with stems matching the computer science content are from:
+Figures are from:
 
 > Prince, Simon J.D. *Understanding Deep Learning*
 > Licensed under [CC BY-NC-ND 4.0](https://creativecommons.org/licenses/by-nc-nd/4.0/)
@@ -54,7 +62,7 @@ Figures with stems matching the computer science content are from:
 
 ### Physics figures
 
-Figures with stems matching the physics content are from:
+Figures are from:
 
 > Torralba, Isola, and Freeman. *Foundations of Computer Vision*
 > © Antonio Torralba, Phillip Isola, and William Freeman
