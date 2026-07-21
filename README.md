@@ -1,19 +1,63 @@
 # Benchmark Figures
 
-A browsable dashboard of the benchmark figure set — figures organized by subject (math, CS, physics, chemistry) and type (2D, 3D).
+A static benchmark dataset of hand-labeled scientific figures, categorized by subject and dimensionality (2d vs. 3d). Comes with a small browser-based viewer for browsing and filtering the set.
 
-## Setup
+## Dataset
 
-**1. Install dependencies** (first time only):
+Figures live in `public/images/{subject}/{type}/{stem}{ext}` and are indexed by `public/figures.json`. Each manifest entry has the shape:
+
+```json
+{ "stem": "CNX_Chem_01_01_FuelCell", "subject": "chemistry", "type": "2d", "ext": ".jpg" }
+```
+
+- **`subject`**: `physics` | `chemistry` | `computer science`
+- **`type`**: `2d` (flat diagrams, schematics, graphs) | `3d` (spatial/volumetric illustrations)
+
+Current counts:
+
+| Subject          | 2d | 3d | Total |
+|------------------|----|----|-------|
+| Physics          |  6 | 16 |    22 |
+| Chemistry        | 19 | 22 |    41 |
+| Computer Science | 13 | 12 |    25 |
+| **Total**        | **38** | **50** | **88** |
+
+## Viewer
+
+A React + Vite app for browsing the dataset. Figures can be filtered by subject and type.
 
 ```bash
 npm install
-```
-
-**2. Start the dashboard:**
-
-```bash
 npm run dev
 ```
 
 Then open [http://localhost:5173](http://localhost:5173).
+
+## Credits
+
+### Chemistry figures
+
+Figures with stems matching `CNX_Chem_*` are from:
+
+> OpenStax *Chemistry 2e*
+> © Rice University
+> Licensed under [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/)
+> https://openstax.org/details/books/chemistry-2e
+
+### Computer Science figures
+
+Figures with stems matching the computer science content are from:
+
+> Prince, Simon J.D. *Understanding Deep Learning*
+> Licensed under [CC BY-NC-ND 4.0](https://creativecommons.org/licenses/by-nc-nd/4.0/)
+> https://udlbook.github.io/udlbook/
+
+### Physics figures
+
+Figures with stems matching the physics content are from:
+
+> Torralba, Isola, and Freeman. *Foundations of Computer Vision*
+> © Antonio Torralba, Phillip Isola, and William Freeman
+> Published by The MIT Press, 2024
+> Licensed under [CC BY-NC-ND 4.0](https://creativecommons.org/licenses/by-nc-nd/4.0/)
+> https://visionbook.mit.edu/
