@@ -19,9 +19,9 @@ Current counts:
 |------------------|----|----|-------|
 | Physics          | 11 | 16 |    27 |
 | Chemistry        | 16 | 22 |    38 |
-| Computer Science | 13 | 12 |    25 |
+| Computer Science | 18 | 12 |    30 |
 | Math             | 13 | 14 |    27 |
-| **Total**        | **53** | **64** | **117** |
+| **Total**        | **58** | **64** | **122** |
 
 ## Viewer
 
@@ -59,6 +59,9 @@ Figures are from:
 > Prince, Simon J.D. *Understanding Deep Learning*
 > Licensed under [CC BY-NC-ND 4.0](https://creativecommons.org/licenses/by-nc-nd/4.0/)
 > https://udlbook.github.io/udlbook/
+
+> Cormen, Leiserson, Rivest, and Stein. *Introduction to Algorithms, Third Edition*
+> © The MIT Press
 
 ### Physics figures
 
