@@ -17,6 +17,7 @@ function syncFiguresManifest() {
       for (const file of fs.readdirSync(typeDir)) {
         const ext = path.extname(file)
         if (!ext) continue
+        if (subject === 'cs' && ext === '.svg') continue
         figures.push({ stem: path.basename(file, ext), subject, type, ext })
       }
     }
