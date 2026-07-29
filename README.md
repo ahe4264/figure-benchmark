@@ -18,10 +18,10 @@ Current counts:
 | Subject          | 2d | 3d | Total |
 |------------------|----|----|-------|
 | Physics          | 10 | 16 |    26 |
-| Chemistry        | 16 | 21 |    37 |
+| Chemistry        | 12 | 14 |    26 |
 | Computer Science | 18 | 12 |    30 |
 | Math             | 13 | 14 |    27 |
-| **Total**        | **57** | **63** | **120** |
+| **Total**        | **53** | **56** | **109** |
 
 ## Viewer
 
