@@ -2,6 +2,7 @@ import { useState, useEffect, useMemo, useCallback } from 'react';
 import { Badge, FilterGroup } from './common.jsx';
 import { imageUrl, outputUrl, screenshotUrl } from '../urls.js';
 import { fetchSetups } from '../api.js';
+import { useUrlState } from '../lib/urlState.js';
 
 const SUBJECTS = ['math', 'cs', 'physics', 'chemistry'];
 const TYPES = ['2d', '3d'];
@@ -60,20 +61,35 @@ function OutputCard({ fig, onOpen }) {
  */
 export default function ExperimentViewer() {
   const [setups, setSetups] = useState([]);
-  const [setup, setSetup] = useState('');
-  const [subject, setSubject] = useState('all');
-  const [type, setType] = useState('all');
-  const [sort, setSort] = useState('name');
   const [loading, setLoading] = useState(true);
+
+  // Which experiment and how it is filtered both live in the URL:
+  // #outputs?experiment=baseline-gemini_FINAL&subject=math&type=3d&sort=subject
+  const { params, setParams } = useUrlState();
+  const setup = params.get('experiment') || '';
+  const subject = params.get('subject') || 'all';
+  const type = params.get('type') || 'all';
+  const sort = params.get('sort') || 'name';
 
   useEffect(() => {
     fetchSetups().then(list => {
       setSetups(list);
-      // Default to the first setup that actually has figures.
-      setSetup(prev => prev || (list.find(s => s.figures.length > 0)?.id ?? ''));
       setLoading(false);
     });
   }, []);
+
+  // Land on the first experiment that has figures when the URL names none, and
+  // write it back so the address bar always describes what is on screen.
+  useEffect(() => {
+    if (setup || setups.length === 0) return;
+    const first = setups.find(s => s.figures.length > 0)?.id;
+    if (first) setParams({ experiment: first }, { replace: true });
+  }, [setup, setups, setParams]);
+
+  const setSetup = useCallback(v => setParams({ experiment: v }, { replace: true }), [setParams]);
+  const setSubject = useCallback(v => setParams({ subject: v === 'all' ? null : v }, { replace: true }), [setParams]);
+  const setType = useCallback(v => setParams({ type: v === 'all' ? null : v }, { replace: true }), [setParams]);
+  const setSort = useCallback(v => setParams({ sort: v === 'name' ? null : v }, { replace: true }), [setParams]);
 
   const figures = useMemo(() => {
     const s = setups.find(x => x.id === setup);

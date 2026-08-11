@@ -54,7 +54,7 @@ export default function OutputPage({ setup, stem, subject, type }) {
       </div>
 
       <div className="out-modal-body">
-        <figure className="out-modal-pane">
+        <figure className="out-modal-pane out-pane-ref">
           <figcaption className="out-pane-label">Original</figcaption>
           <div className="out-modal-pane-body">
             {fig.imagePath

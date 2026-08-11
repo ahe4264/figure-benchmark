@@ -9,6 +9,7 @@ import {
   READ_ONLY, fetchModels, fetchSetups, fetchMatchingFigures, fetchResults, fetchHtml,
   fetchRankings, startBatchEvaluate, clearHumanEval, deleteMachineEval as apiDeleteMachineEval,
 } from '../../api.js'
+import { useUrlState } from '../../lib/urlState.js'
 
 const PAIRWISE_DEFAULT_EVAL_MODEL = 'gemini-3.1-pro'
 
@@ -20,28 +21,54 @@ const PAIRWISE_DEFAULT_EVAL_MODEL = 'gemini-3.1-pro'
 export default function PairwiseTab() {
   const [availableModels, setAvailableModels] = useState([])
   const [setups, setSetups] = useState([])
-  const [setupA, setSetupA] = useState('')
-  const [setupB, setSetupB] = useState('')
   const [matchingFigures, setMatchingFigures] = useState(null)
   const [evalModel, setEvalModel] = useState(PAIRWISE_DEFAULT_EVAL_MODEL)
   const [running, setRunning] = useState(false)
   const [progress, setProgress] = useState({ done: 0, total: 0, log: [] })
   const [results, setResults] = useState([])
-  const [machineTableOpen, setMachineTableOpen] = useState(false)
-  const [humanTableOpen, setHumanTableOpen] = useState(false)
-  const [rankingsOpen, setRankingsOpen] = useState(false)
   const [rankings, setRankings] = useState(null)
-  const [rankingsDim, setRankingsDim] = useState('overall')
-  const [rankingsSrc, setRankingsSrc] = useState('machine')
   const [rankingsLoading, setRankingsLoading] = useState(false)
   const [rankingsAvailableSetups, setRankingsAvailableSetups] = useState([])
-  const [rankingsSelectedSetups, setRankingsSelectedSetups] = useState(() => {
-    try { const s = localStorage.getItem('rankingsSelectedSetups'); return s ? JSON.parse(s) : null } catch { return null }
-  })
-  const [compViewerFigIndex, setCompViewerFigIndex] = useState(null)
   const [compViewerHtmlA, setCompViewerHtmlA] = useState(null)
   const [compViewerHtmlB, setCompViewerHtmlB] = useState(null)
   const [compViewerLoading, setCompViewerLoading] = useState(false)
+
+  // Everything a link should restore lives in the hash:
+  //   #benchmark?a=<setup>&b=<setup>&figure=11.3&panels=rankings,machine
+  //             &rankSrc=human&rankBy=geometry&rankSetups=<a>,<b>
+  // The eval model is deliberately absent — it parameterises an action, not a view.
+  const { params, setParams } = useUrlState()
+  const setupA = params.get('a') || ''
+  const setupB = params.get('b') || ''
+  const openFigure = params.get('figure')
+  const pairReady = !!setupA && !!setupB && setupA !== setupB
+  const rankingsDim = params.get('rankBy') || 'overall'
+  const rankingsSrc = params.get('rankSrc') || 'machine'
+
+  const openPanels = useMemo(
+    () => new Set((params.get('panels') || '').split(',').filter(Boolean)),
+    [params],
+  )
+  const rankingsOpen = openPanels.has('rankings')
+  const machineTableOpen = openPanels.has('machine')
+  const humanTableOpen = openPanels.has('human')
+
+  const togglePanel = useCallback(name => {
+    const next = new Set(openPanels)
+    if (next.has(name)) next.delete(name)
+    else next.add(name)
+    setParams({ panels: [...next].join(',') }, { replace: true })
+  }, [openPanels, setParams])
+
+  // null means every setup, so the ordinary case stays out of the URL entirely.
+  // "none" is the literal for having deselected them all: an empty value would
+  // just be dropped, and would come back as "every setup" instead.
+  const rankSetupsParam = params.get('rankSetups')
+  const rankingsSelectedSetups = useMemo(() => {
+    if (rankSetupsParam === null) return null
+    return rankSetupsParam === 'none' ? [] : rankSetupsParam.split(',').filter(Boolean)
+  }, [rankSetupsParam])
+  const rankingsSelection = rankingsSelectedSetups ?? rankingsAvailableSetups
 
   const sortedMatchingFigures = useMemo(() => {
     if (!matchingFigures) return []
@@ -90,9 +117,14 @@ export default function PairwiseTab() {
     }
   }, [reloadResults])
 
-  useEffect(() => {
-    setCompViewerFigIndex(null)
-  }, [setupA, setupB])
+  // The URL names the open figure rather than its position, so a link survives a
+  // re-sort, and switching setups closes a viewer whose figure is no longer in
+  // the join instead of silently showing a different one.
+  const compViewerFigIndex = useMemo(() => {
+    if (!openFigure) return null
+    const i = sortedMatchingFigures.findIndex(f => f.name === openFigure)
+    return i >= 0 ? i : null
+  }, [openFigure, sortedMatchingFigures])
 
   useEffect(() => {
     if (compViewerFigIndex === null) return
@@ -204,10 +236,7 @@ export default function PairwiseTab() {
     setRankingsLoading(true)
     try {
       const data = await fetchRankings(selection)
-      if (data.availableSetups) {
-        setRankingsAvailableSetups(data.availableSetups)
-        setRankingsSelectedSetups(prev => prev === null ? data.availableSetups : prev)
-      }
+      if (data.availableSetups) setRankingsAvailableSetups(data.availableSetups)
       setRankings(data)
     } catch (err) {
       alert('Failed to load rankings: ' + err.message)
@@ -216,11 +245,12 @@ export default function PairwiseTab() {
     }
   }, [])
 
-  useEffect(() => {
-    if (rankingsSelectedSetups !== null) {
-      try { localStorage.setItem('rankingsSelectedSetups', JSON.stringify(rankingsSelectedSetups)) } catch { /* quota */ }
-    }
-  }, [rankingsSelectedSetups])
+  /** Point the ranking at a set of setups and refetch it. */
+  const applyRankingSetups = useCallback(next => {
+    const isAll = next.length === rankingsAvailableSetups.length
+    setParams({ rankSetups: isAll ? null : (next.length === 0 ? 'none' : next.join(',')) }, { replace: true })
+    loadRankings(isAll ? null : next)
+  }, [rankingsAvailableSetups, setParams, loadRankings])
 
   const progressPct = progress.total > 0 ? Math.round((progress.done / progress.total) * 100) : 0
 
@@ -235,12 +265,46 @@ export default function PairwiseTab() {
     })
   }, [matchingFigures, sortedMatchingFigures, results])
 
+  // Tallies for the strip at the top of each results card. Computed here rather
+  // than inside the tables because they stay on screen when a card is collapsed.
+  const machineSummary = useMemo(() => {
+    const scored = mergedRows.filter(r => r.machineEval?.aggregator)
+    const avgConf = scored.length > 0
+      ? scored.reduce((s, r) => s + r.machineEval.aggregator.confidence, 0) / scored.length
+      : null
+    return [
+      { label: 'Evaluated', text: `${scored.length} / ${mergedRows.length}` },
+      ...DIMENSIONS.map(d => ({
+        label: DIM_LABELS_SHORT[d],
+        ...tally(mergedRows, r => r.machineEval?.dimensions?.[d]?.winner, setupA, setupB),
+      })),
+      { label: 'Overall', ...tally(mergedRows, r => r.machineEval?.aggregator?.winner, setupA, setupB) },
+      { label: 'Avg conf', text: avgConf === null ? null : `${(avgConf * 100).toFixed(0)}%` },
+    ]
+  }, [mergedRows, setupA, setupB])
+
+  const humanSummary = useMemo(() => {
+    const judged = mergedRows.filter(r => (r.humanEvals || []).length > 0)
+    return [
+      { label: 'Judged', text: `${judged.length} / ${mergedRows.length}` },
+      { label: 'Winner', ...tally(mergedRows, r => (r.humanEvals || [])[0]?.winner, setupA, setupB) },
+    ]
+  }, [mergedRows, setupA, setupB])
+
   const compViewerResult = useMemo(() => {
     if (compViewerFigIndex === null) return null
     const fig = sortedMatchingFigures[compViewerFigIndex]
     if (!fig) return null
     return results.find(r => r.figure === fig.name && r.subject === fig.subject) ?? null
   }, [compViewerFigIndex, sortedMatchingFigures, results])
+
+  // A shared link names its figure before the join has loaded. Hold here rather
+  // than flashing the tables for the moment before the viewer can resolve it —
+  // but only while a pair is actually selected, since matchingFigures stays null
+  // forever otherwise and a link carrying just a figure would hang on this.
+  if (openFigure && pairReady && matchingFigures === null) {
+    return <div style={styles.pwEmptyMsg}>Loading comparison…</div>
+  }
 
   return (
     compViewerFigIndex !== null ? (
@@ -254,29 +318,18 @@ export default function PairwiseTab() {
         loading={compViewerLoading}
         figureIndex={compViewerFigIndex}
         totalFigures={sortedMatchingFigures.length}
-        onBack={() => setCompViewerFigIndex(null)}
-        onPrev={() => setCompViewerFigIndex(i => Math.max(0, i - 1))}
-        onNext={() => setCompViewerFigIndex(i => Math.min(sortedMatchingFigures.length - 1, i + 1))}
+        onBack={() => setParams({ figure: null }, { replace: true })}
+        onPrev={() => setParams({ figure: sortedMatchingFigures[compViewerFigIndex - 1]?.name }, { replace: true })}
+        onNext={() => setParams({ figure: sortedMatchingFigures[compViewerFigIndex + 1]?.name }, { replace: true })}
       />
     ) : (
       <div style={styles.pwRoot}>
-        {!READ_ONLY && setupA && setupB && setupA !== setupB && (
-          <div style={{ display: 'flex', justifyContent: 'flex-end', marginBottom: -12 }}>
-            <button style={styles.pwOpenBtn}
-              onClick={openHumanEval}
-              title="Judge every figure in this pair, in a new tab">
-              Open Human Evaluation ↗
-            </button>
-          </div>
-        )}
-
         {/* Panel 1 — Rankings (Bradley-Terry) */}
         <div style={styles.pwCard}>
           <div style={{ ...styles.pwCardTitle, cursor: 'pointer', userSelect: 'none', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}
             onClick={() => {
-              const next = !rankingsOpen
-              setRankingsOpen(next)
-              if (next && !rankings) loadRankings(rankingsSelectedSetups)
+              togglePanel('rankings')
+              if (!rankingsOpen && !rankings) loadRankings(rankingsSelectedSetups)
             }}>
             <span>{rankingsOpen ? '▾' : '▸'} Rankings (Bradley-Terry)</span>
             {rankingsOpen && (
@@ -292,25 +345,21 @@ export default function PairwiseTab() {
                     <span style={{ fontSize: 11, fontWeight: 600, color: 'var(--text)' }}>Setups</span>
                     <button style={{ fontSize: 10, color: 'var(--accent)', background: 'none', border: 'none', cursor: 'pointer', padding: 0 }}
                       onClick={() => {
-                        const allSelected = rankingsSelectedSetups?.length === rankingsAvailableSetups.length
-                        const next = allSelected ? [] : [...rankingsAvailableSetups]
-                        setRankingsSelectedSetups(next)
-                        loadRankings(next)
+                        const allSelected = rankingsSelection.length === rankingsAvailableSetups.length
+                        applyRankingSetups(allSelected ? [] : [...rankingsAvailableSetups])
                       }}>
-                      {rankingsSelectedSetups?.length === rankingsAvailableSetups.length ? 'Deselect all' : 'Select all'}
+                      {rankingsSelection.length === rankingsAvailableSetups.length ? 'Deselect all' : 'Select all'}
                     </button>
                   </div>
                   <div style={{ display: 'flex', flexWrap: 'wrap', gap: '4px 16px' }}>
                     {rankingsAvailableSetups.map(s => {
-                      const checked = rankingsSelectedSetups?.includes(s) ?? true
+                      const checked = rankingsSelection.includes(s)
                       return (
                         <label key={s} style={{ display: 'flex', alignItems: 'center', gap: 4, fontSize: 11, color: 'var(--text)', cursor: 'pointer' }}>
                           <input type="checkbox" checked={checked} onChange={() => {
-                            const next = checked
-                              ? (rankingsSelectedSetups ?? rankingsAvailableSetups).filter(x => x !== s)
-                              : [...(rankingsSelectedSetups ?? rankingsAvailableSetups), s]
-                            setRankingsSelectedSetups(next)
-                            loadRankings(next)
+                            applyRankingSetups(checked
+                              ? rankingsSelection.filter(x => x !== s)
+                              : [...rankingsSelection, s])
                           }} />
                           {s}
                         </label>
@@ -324,7 +373,10 @@ export default function PairwiseTab() {
                   {['machine', 'human'].map(src => (
                     <button key={src}
                       style={{ ...styles.pwToggleBtn, ...(rankingsSrc === src ? styles.pwToggleBtnActive : {}) }}
-                      onClick={() => { setRankingsSrc(src); if (src === 'human') setRankingsDim('overall') }}>
+                      onClick={() => setParams(
+                        { rankSrc: src === 'machine' ? null : src, ...(src === 'human' ? { rankBy: null } : {}) },
+                        { replace: true },
+                      )}>
                       {src.charAt(0).toUpperCase() + src.slice(1)}
                     </button>
                   ))}
@@ -337,7 +389,7 @@ export default function PairwiseTab() {
                       <button key={d}
                         style={{ ...styles.pwToggleBtn, fontSize: 10, padding: '3px 9px', ...(rankingsDim === d ? styles.pwToggleBtnActive : {}), ...(disabled ? { opacity: 0.4, cursor: 'not-allowed' } : {}) }}
                         disabled={disabled}
-                        onClick={() => !disabled && setRankingsDim(d)}
+                        onClick={() => !disabled && setParams({ rankBy: d === 'overall' ? null : d }, { replace: true })}
                         title={disabled ? 'Human evals only have an overall ranking' : ''}>
                         {label}
                       </button>
@@ -445,14 +497,14 @@ export default function PairwiseTab() {
           <div style={styles.pwRow}>
             <div style={styles.pwStack}>
               <div style={styles.pwLabel}>Setup A</div>
-              <select style={styles.pwSelect} value={setupA} onChange={e => setSetupA(e.target.value)}>
+              <select style={styles.pwSelect} value={setupA} onChange={e => setParams({ a: e.target.value, figure: null }, { replace: true })}>
                 <option value=''>— select —</option>
                 {setups.map(s => <option key={s.id} value={s.id}>{s.id} ({s.figures.length})</option>)}
               </select>
             </div>
             <div style={styles.pwStack}>
               <div style={styles.pwLabel}>Setup B</div>
-              <select style={styles.pwSelect} value={setupB} onChange={e => setSetupB(e.target.value)}>
+              <select style={styles.pwSelect} value={setupB} onChange={e => setParams({ b: e.target.value, figure: null }, { replace: true })}>
                 <option value=''>— select —</option>
                 {setups.filter(s => s.id !== setupA).map(s => <option key={s.id} value={s.id}>{s.id} ({s.figures.length})</option>)}
               </select>
@@ -465,26 +517,29 @@ export default function PairwiseTab() {
                 </select>
               </div>
             )}
-            {matchingFigures && (
-              <div style={styles.pwMatchCount}>{matchingFigures.length} figure{matchingFigures.length !== 1 ? 's' : ''} in common</div>
-            )}
             {!READ_ONLY && (
-              <button
-                style={{ ...styles.pwRunBtn, ...(!matchingFigures || matchingFigures.length === 0 || running ? styles.pwRunBtnDisabled : {}) }}
-                disabled={!matchingFigures || matchingFigures.length === 0 || running}
-                onClick={runMachineEval}
-              >
-                {running ? 'Running…' : 'Run Machine Evaluation'}
-              </button>
+              // Full-width so the pair always wraps onto its own line together,
+              // rather than one button trailing the selects and the other alone.
+              <div style={styles.pwActionRow}>
+                <button
+                  style={{ ...styles.pwRunBtn, ...(!matchingFigures || matchingFigures.length === 0 || running ? styles.pwRunBtnDisabled : {}) }}
+                  disabled={!matchingFigures || matchingFigures.length === 0 || running}
+                  onClick={runMachineEval}
+                >
+                  {running ? 'Running…' : 'Run Machine Evaluation'}
+                </button>
+                <button
+                  style={{ ...styles.pwOpenBtn, ...(pairReady ? {} : styles.pwOpenBtnDisabled) }}
+                  disabled={!pairReady}
+                  onClick={openHumanEval}
+                  title={pairReady
+                    ? 'Judge every figure in this pair, in a new tab'
+                    : 'Pick two different experiments first'}>
+                  Open Human Evaluation ↗
+                </button>
+              </div>
             )}
           </div>
-          {READ_ONLY && (
-            <div style={{ ...styles.pwEvalNotice, marginTop: 12, marginBottom: 0 }}>
-              Read-only deployment — results below are the ones committed to the repo.
-              Evaluations call an LLM and write to <code>benchmark_results/</code>, which needs
-              the local dev server: clone the repo and run <code>npm run dev</code>.
-            </div>
-          )}
           {(running || progress.done > 0) && progress.total > 0 && (
             <div style={styles.pwProgress}>
               <div style={styles.pwProgressBar}>
@@ -498,15 +553,16 @@ export default function PairwiseTab() {
         </div>
 
         {/* Panel 3 — Machine Results Table */}
-        {setupA && setupB && setupA !== setupB && (
+        {pairReady && (
           <div style={styles.pwCard}>
-            <div style={{ ...styles.pwCardTitle, cursor: 'pointer', userSelect: 'none', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }} onClick={() => setMachineTableOpen(o => !o)}>
+            <div style={{ ...styles.pwCardTitle, cursor: 'pointer', userSelect: 'none', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }} onClick={() => togglePanel('machine')}>
               <span>{machineTableOpen ? '▾' : '▸'} Machine Results — {shortSetup(setupA)} vs {shortSetup(setupB)}</span>
               {!READ_ONLY && (
                 <button style={styles.pwDangerLinkBtn}
                   onClick={e => { e.stopPropagation(); deleteAllMachineEvals() }}>Delete All</button>
               )}
             </div>
+            {mergedRows.length > 0 && <SummaryStrip items={machineSummary} />}
             {machineTableOpen && (mergedRows.length === 0 ? (
               <div style={styles.pwEmptyMsg}>Select two setups with overlapping figures to begin.</div>
             ) : (
@@ -550,10 +606,7 @@ export default function PairwiseTab() {
                           <div style={{ display: 'flex', gap: 4, alignItems: 'center' }}>
                             <button
                               style={styles.pwAddBtn}
-                              onClick={() => {
-                                const idx = sortedMatchingFigures.findIndex(f => f.name === r.figure && f.subject === r.subject)
-                                setCompViewerFigIndex(idx >= 0 ? idx : 0)
-                              }}
+                              onClick={() => setParams({ figure: r.figure })}
                             >View</button>
                             {me && !READ_ONLY && (
                               <button
@@ -568,56 +621,19 @@ export default function PairwiseTab() {
                     )
                   })}
                 </tbody>
-                <tfoot>
-                  <tr style={styles.pwSummaryRow}>
-                    <td style={{ ...styles.pwTd, fontWeight: 700, color: 'var(--text)', fontSize: 11 }}>Summary</td>
-                    {DIMENSIONS.map(d => {
-                      const evald = mergedRows.filter(r => r.machineEval?.dimensions?.[d])
-                      const aW = evald.filter(r => r.machineEval.dimensions[d].winner === setupA).length
-                      const bW = evald.filter(r => r.machineEval.dimensions[d].winner === setupB).length
-                      const tW = evald.filter(r => r.machineEval.dimensions[d].winner === 'tie').length
-                      return (
-                        <td key={d} style={{ ...styles.pwTd, fontSize: 10 }}>
-                          {evald.length === 0
-                            ? <span style={styles.pwMuted}>—</span>
-                            : <><span style={{ color: 'var(--badge-a-text)' }}>A:{aW}</span>{' · '}<span style={{ color: 'var(--badge-b-text)' }}>B:{bW}</span>{tW > 0 && <>{' · '}<span style={{ color: 'var(--badge-tie-text)' }}>T:{tW}</span></>}</>}
-                        </td>
-                      )
-                    })}
-                    {(() => {
-                      const evald = mergedRows.filter(r => r.machineEval?.aggregator)
-                      const aW = evald.filter(r => r.machineEval.aggregator.winner === setupA).length
-                      const bW = evald.filter(r => r.machineEval.aggregator.winner === setupB).length
-                      const tW = evald.filter(r => r.machineEval.aggregator.winner === 'tie').length
-                      const avgConf = evald.length > 0 ? evald.reduce((s, r) => s + r.machineEval.aggregator.confidence, 0) / evald.length : null
-                      return (
-                        <>
-                          <td style={{ ...styles.pwTd, fontSize: 10 }}>
-                            {evald.length === 0
-                              ? <span style={styles.pwMuted}>—</span>
-                              : <><span style={{ color: 'var(--badge-a-text)' }}>A:{aW}</span>{' · '}<span style={{ color: 'var(--badge-b-text)' }}>B:{bW}</span>{tW > 0 && <>{' · '}<span style={{ color: 'var(--badge-tie-text)' }}>T:{tW}</span></>}</>}
-                          </td>
-                          <td style={{ ...styles.pwTd, fontSize: 11, color: 'var(--text-muted)' }}>
-                            {avgConf !== null ? (avgConf * 100).toFixed(0) + '%' : '—'}
-                          </td>
-                          <td style={styles.pwTd} />
-                        </>
-                      )
-                    })()}
-                  </tr>
-                </tfoot>
               </table>
             ))}
           </div>
         )}
 
         {/* Panel 4 — Human Results Table */}
-        {setupA && setupB && setupA !== setupB && (
+        {pairReady && (
           <div style={styles.pwCard}>
             <div style={{ ...styles.pwCardTitle, cursor: 'pointer', userSelect: 'none', display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: 12 }}
-              onClick={() => setHumanTableOpen(o => !o)}>
+              onClick={() => togglePanel('human')}>
               <span>{humanTableOpen ? '▾' : '▸'} Human Results — {shortSetup(setupA)} vs {shortSetup(setupB)}</span>
             </div>
+            {mergedRows.length > 0 && <SummaryStrip items={humanSummary} />}
             {humanTableOpen && (mergedRows.length === 0 ? (
               <div style={styles.pwEmptyMsg}>Select two setups with overlapping figures to begin.</div>
             ) : (
@@ -660,31 +676,56 @@ export default function PairwiseTab() {
                     )
                   })}
                 </tbody>
-                <tfoot>
-                  {(() => {
-                    const evald = mergedRows.filter(r => (r.humanEvals || []).length > 0)
-                    const aW = evald.filter(r => r.humanEvals[0].winner === setupA).length
-                    const bW = evald.filter(r => r.humanEvals[0].winner === setupB).length
-                    const tW = evald.filter(r => r.humanEvals[0].winner === 'tie').length
-                    return (
-                      <tr style={styles.pwSummaryRow}>
-                        <td style={{ ...styles.pwTd, fontWeight: 700, color: 'var(--text)', fontSize: 11 }}>Summary</td>
-                        <td style={{ ...styles.pwTd, fontSize: 10 }}>
-                          {evald.length === 0
-                            ? <span style={styles.pwMuted}>—</span>
-                            : <><span style={{ color: 'var(--badge-a-text)' }}>A:{aW}</span>{' · '}<span style={{ color: 'var(--badge-b-text)' }}>B:{bW}</span>{tW > 0 && <>{' · '}<span style={{ color: 'var(--badge-tie-text)' }}>T:{tW}</span></>}</>}
-                        </td>
-                        <td style={styles.pwTd} />
-                        <td style={styles.pwTd} />
-                      </tr>
-                    )
-                  })()}
-                </tfoot>
               </table>
             ))}
           </div>
         )}
       </div>
     )
+  )
+}
+
+/**
+ * Wins for each side under `winnerOf`, ignoring rows that have no verdict yet.
+ * `n` is how many rows counted, so an untouched dimension can read as "—"
+ * rather than as three zeroes.
+ */
+function tally(rows, winnerOf, setupA, setupB) {
+  let a = 0, b = 0, tie = 0
+  for (const r of rows) {
+    const w = winnerOf(r)
+    if (w === setupA) a++
+    else if (w === setupB) b++
+    else if (w === 'tie') tie++
+  }
+  return { a, b, tie, n: a + b + tie }
+}
+
+/**
+ * The A/B/tie counts that used to sit in each table's <tfoot>. Up here they are
+ * readable without scrolling past every figure, and they survive collapsing the
+ * card — which is why each item carries its own label rather than borrowing
+ * meaning from the column it sits under.
+ */
+function SummaryStrip({ items }) {
+  return (
+    <div style={styles.pwSummaryStrip}>
+      {items.map(it => (
+        <div key={it.label} style={styles.pwSummaryItem}>
+          <span style={styles.pwSummaryLabel}>{it.label}</span>
+          <span style={styles.pwSummaryCounts}>
+            {'text' in it
+              ? (it.text ?? <span style={styles.pwMuted}>—</span>)
+              : it.n === 0
+                ? <span style={styles.pwMuted}>—</span>
+                : <>
+                  <span style={{ color: 'var(--badge-a-text)' }}>A:{it.a}</span>{' · '}
+                  <span style={{ color: 'var(--badge-b-text)' }}>B:{it.b}</span>
+                  {it.tie > 0 && <>{' · '}<span style={{ color: 'var(--badge-tie-text)' }}>T:{it.tie}</span></>}
+                </>}
+          </span>
+        </div>
+      ))}
+    </div>
   )
 }

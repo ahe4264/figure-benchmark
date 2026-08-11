@@ -6,6 +6,16 @@
 // The one deliberate exception is --figure-canvas: generated figures and the
 // reference scans are authored for a white page, so their viewport stays light.
 
+// The two evaluation buttons sit side by side, so they share one box. Height is
+// pinned rather than left to padding: the outline button carries a border the
+// filled one does not, and its "↗" inflates the line box, so content-driven
+// heights come out 2px apart. Fixed height plus border-box makes both exact.
+const actionBtn = {
+  fontSize: 13, fontWeight: 600, borderRadius: 7, cursor: 'pointer',
+  height: 34, minWidth: 210, padding: '0 18px', boxSizing: 'border-box',
+  display: 'inline-flex', alignItems: 'center', justifyContent: 'center',
+}
+
 export const styles = {
   pwRoot: { maxWidth: 1100, margin: '0 auto', padding: '28px 20px', display: 'flex', flexDirection: 'column', gap: 24 },
   pwCard: { background: 'var(--surface)', border: '1px solid var(--border)', borderRadius: 10, padding: '18px 20px' },
@@ -14,8 +24,8 @@ export const styles = {
   pwLabel: { fontSize: 11, fontWeight: 700, color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: 4 },
   pwSelect: { fontSize: 13, border: '1px solid var(--border)', borderRadius: 6, padding: '8px 10px', background: 'var(--surface)', color: 'var(--text)', cursor: 'pointer', minWidth: 220 },
   pwStack: { display: 'flex', flexDirection: 'column' },
-  pwMatchCount: { fontSize: 12, color: 'var(--text-muted)', alignSelf: 'flex-end', paddingBottom: 8 },
-  pwRunBtn: { padding: '9px 18px', fontSize: 13, fontWeight: 600, borderRadius: 7, border: 'none', background: 'var(--accent)', color: 'var(--accent-on)', cursor: 'pointer' },
+  pwActionRow: { display: 'flex', gap: 10, alignItems: 'center', flexBasis: '100%' },
+  pwRunBtn: { ...actionBtn, border: 'none', background: 'var(--accent)', color: 'var(--accent-on)' },
   pwRunBtnDisabled: { background: 'var(--accent-disabled)', cursor: 'not-allowed' },
   pwProgress: { marginTop: 12 },
   pwProgressBar: { height: 6, borderRadius: 3, background: 'var(--accent-track)', overflow: 'hidden', marginBottom: 6 },
@@ -49,8 +59,18 @@ export const styles = {
   pwMuted: { color: 'var(--text-faint)' },
   pwSubtle: { fontSize: 10, color: 'var(--text-faint)' },
   pwSummaryRow: { background: 'var(--surface-alt)', borderTop: '2px solid var(--border)' },
+  // Sits between a results card's title and its table, so it is the first thing
+  // read and the only thing left when the card is collapsed.
+  pwSummaryStrip: {
+    display: 'flex', flexWrap: 'wrap', gap: '8px 20px', alignItems: 'baseline',
+    padding: '10px 14px', marginBottom: 14, borderRadius: 8,
+    background: 'var(--surface-alt)', border: '1px solid var(--border)',
+  },
+  pwSummaryItem: { display: 'flex', gap: 6, alignItems: 'baseline' },
+  pwSummaryLabel: { fontSize: 10, fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.06em', color: 'var(--text-muted)' },
+  pwSummaryCounts: { fontSize: 12, fontWeight: 600, color: 'var(--text)' },
   pwSectionLabel: { fontSize: 11, fontWeight: 700, color: 'var(--text)', marginBottom: 6, textTransform: 'uppercase', letterSpacing: '0.05em' },
-  pwRefImage: { maxHeight: 220, maxWidth: '100%', border: '1px solid var(--border)', borderRadius: 6, display: 'block', margin: '0 auto', background: 'var(--figure-canvas)' },
+  pwRefImage: { maxHeight: 260, maxWidth: '100%', border: '1px solid var(--border)', borderRadius: 6, display: 'block', margin: '0 auto', background: 'var(--figure-canvas)' },
   pwCompRoot: { maxWidth: 1400, margin: '0 auto', padding: '28px 24px', display: 'flex', flexDirection: 'column', gap: 24 },
   pwCompHeader: { display: 'flex', alignItems: 'center', gap: 12, paddingBottom: 16, borderBottom: '1px solid var(--border)' },
   pwCompBack: { padding: '6px 14px', fontSize: 12, fontWeight: 600, borderRadius: 6, border: '1px solid var(--border)', background: 'var(--surface)', color: 'var(--text)', cursor: 'pointer', flexShrink: 0 },
@@ -78,5 +98,6 @@ export const styles = {
   pwEvalCounter: { fontSize: 12, color: 'var(--text-muted)', fontVariantNumeric: 'tabular-nums', minWidth: 96, textAlign: 'center' },
   pwEvalJudged: { fontSize: 11, fontWeight: 700, color: 'var(--success)', border: '1px solid var(--success)', borderRadius: 4, padding: '2px 8px' },
   pwEvalNotice: { fontSize: 12, color: 'var(--text-muted)', background: 'var(--surface-alt)', border: '1px solid var(--border)', borderRadius: 6, padding: '10px 14px', marginBottom: 16 },
-  pwOpenBtn: { fontSize: 11, fontWeight: 600, padding: '4px 12px', borderRadius: 5, border: '1px solid var(--accent)', color: 'var(--accent)', background: 'transparent', cursor: 'pointer' },
+  pwOpenBtn: { ...actionBtn, border: '1px solid var(--accent)', color: 'var(--accent)', background: 'transparent' },
+  pwOpenBtnDisabled: { borderColor: 'var(--border)', color: 'var(--text-faint)', cursor: 'not-allowed' },
 }

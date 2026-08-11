@@ -1,5 +1,6 @@
 import { useState, useEffect, useMemo, useCallback } from 'react';
 import { Badge, FilterGroup } from './common.jsx';
+import { useUrlState } from '../lib/urlState.js';
 
 const SUBJECTS = ['math', 'cs', 'physics', 'chemistry'];
 const TYPES = ['2d', '3d'];
@@ -95,10 +96,14 @@ function FigureModal({ fig, ctx, onClose }) {
 export default function FigureViewer() {
   const [figures, setFigures] = useState([]);
   const [contexts, setContexts] = useState({});
-  const [subject, setSubject] = useState('all');
-  const [type, setType] = useState('all');
   const [loading, setLoading] = useState(true);
-  const [selected, setSelected] = useState(null);
+
+  // Both filters and the open figure live in the URL, so a view is linkable:
+  // #figures?subject=math&type=3d&figure=11.3
+  const { params, setParams } = useUrlState();
+  const subject = params.get('subject') || 'all';
+  const type = params.get('type') || 'all';
+  const openStem = params.get('figure');
 
   useEffect(() => {
     Promise.all([
@@ -118,8 +123,20 @@ export default function FigureViewer() {
     (type === 'all' || f.type === type)
   ), [figures, subject, type]);
 
-  const handleCardClick = useCallback(fig => setSelected(fig), []);
-  const handleClose = useCallback(() => setSelected(null), []);
+  // Stems are globally unique in figures.json, so one is enough to name a figure
+  // whatever the filters are set to.
+  const selected = useMemo(
+    () => (openStem ? figures.find(f => f.stem === openStem) ?? null : null),
+    [figures, openStem],
+  );
+
+  const setSubject = useCallback(v => setParams({ subject: v === 'all' ? null : v }, { replace: true }), [setParams]);
+  const setType = useCallback(v => setParams({ type: v === 'all' ? null : v }, { replace: true }), [setParams]);
+
+  // Opening pushes an entry so Back closes the modal; closing spends that entry
+  // rather than leaving one behind that Back would use to re-open it.
+  const handleCardClick = useCallback(fig => setParams({ figure: fig.stem }), [setParams]);
+  const handleClose = useCallback(() => setParams({ figure: null }, { replace: true }), [setParams]);
 
   return (
     <div className="layout">
