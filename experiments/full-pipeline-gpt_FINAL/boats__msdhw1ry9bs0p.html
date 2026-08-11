@@ -1,0 +1,1062 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <title>Figure</title>
+
+  <!-- Blocking CDN scripts — no async/defer; must be ready before body <script> runs -->
+  <script src="https://cdn.jsdelivr.net/npm/@svgdotjs/svg.js@3/dist/svg.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4/dist/chart.umd.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/expr-eval@2/dist/bundle.min.js"></script>
+
+  <style>
+    /* ── Reset ───────────────────────────────────────────────────────────── */
+    html,
+    body {
+      margin: 0;
+      padding: 0;
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      background: #fff;
+    }
+
+    /* ── Layout ──────────────────────────────────────────────────────────────
+       body is a grid so #ui always takes a right-side column instead of covering
+       the figure. The #container ResizeObserver then fires 'fig-resize', so
+       setPlotFrame re-lays the figure out at its new size automatically.        */
+    body {
+      display: grid;
+      grid-template-columns: 1fr;
+      grid-template-rows: 1fr;
+      grid-template-areas: "stage";
+    }
+
+    /* ── Figure mount point ──────────────────────────────────────────────── */
+    #container {
+      position: relative;
+      grid-area: stage;
+      min-width: 0;
+      min-height: 0;
+      overflow: hidden;
+      box-sizing: border-box;
+      padding: var(--figure-canvas-padding, 18px);
+    }
+
+    /* ── Control panel (mirrors base_scene_new.html #ui) ─────────────────── */
+    #ui {
+      position: absolute;
+      left: 6px;
+      bottom: 6px;
+      display: flex;
+      flex-direction: column;
+      gap: 3px;
+      font-family: sans-serif;
+      font-size: 11px;
+      max-width: 190px;
+      max-height: 34%;
+      overflow-y: auto;
+      overflow-x: hidden;
+      background: transparent;
+      border: 0;
+      box-shadow: none;
+      opacity: 0.88;
+      transform: none;
+      transition: opacity 0.16s ease;
+      z-index: 10;
+    }
+
+    #ui:hover,
+    #ui:focus-within {
+      opacity: 1;
+    }
+
+    #ui button {
+      padding: 4px 10px;
+      cursor: pointer;
+      border: 1px solid #aaa;
+      background: #f5f5f5;
+      border-radius: 4px;
+    }
+
+    #ui button:hover {
+      background: #e0e0e0;
+    }
+
+    #ui button.active {
+      background: #c8e6ff;
+      border-color: #5aabf0;
+    }
+
+    #ui label {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+      text-shadow: 0 1px 2px #fff;
+    }
+
+    #ui input[type=range] {
+      width: 86px;
+    }
+
+    /* ── Docked control panel ────────────────────────────────────────────────
+       #ui is a grid cell with its own scroll, an opaque background, and roomier
+       type. Generated code cannot switch it to an overlay or bottom strip.      */
+    body[data-ui-layout="right"] {
+      grid-template-columns: 1fr var(--ui-size, 320px);
+      grid-template-rows: 1fr;
+      grid-template-areas: "stage ui";
+    }
+
+    body[data-ui-layout="bottom"] {
+      grid-template-columns: 1fr;
+      grid-template-rows: 1fr var(--ui-size, 240px);
+      grid-template-areas: "stage" "ui";
+    }
+
+    body[data-ui-layout="right"] #ui,
+    body[data-ui-layout="bottom"] #ui {
+      position: relative;
+      grid-area: ui;
+      left: auto;
+      bottom: auto;
+      max-width: none;
+      max-height: none;
+      min-width: 0;
+      min-height: 0;
+      width: auto;
+      height: auto;
+      gap: 6px;
+      padding: 10px 12px;
+      font-size: 12px;
+      background: #fbfbfc;
+      opacity: 1;
+      overflow: auto;
+      z-index: 1;
+    }
+
+    body[data-ui-layout="right"] #ui {
+      border-left: 1px solid #dcdfe3;
+    }
+
+    body[data-ui-layout="bottom"] #ui {
+      border-top: 1px solid #dcdfe3;
+    }
+
+    body[data-ui-layout="right"] #ui label,
+    body[data-ui-layout="bottom"] #ui label {
+      text-shadow: none;
+    }
+
+    body[data-ui-layout="right"] #ui input[type=range],
+    body[data-ui-layout="bottom"] #ui input[type=range] {
+      width: 100%;
+    }
+
+    body[data-ui-layout="right"] #ui textarea,
+    body[data-ui-layout="bottom"] #ui textarea {
+      width: 100%;
+      box-sizing: border-box;
+      min-height: 180px;
+      resize: vertical;
+      font-family: ui-monospace, Consolas, monospace;
+      font-size: 11px;
+      line-height: 1.45;
+      tab-size: 2;
+      border: 1px solid #cfd4da;
+      border-radius: 4px;
+      padding: 6px 8px;
+    }
+
+    body[data-ui-layout="bottom"] #ui textarea {
+      min-height: 110px;
+    }
+
+    /* ── Inline equation parse errors ────────────────────────────────────── */
+    .eq-err {
+      color: #c00000;
+      font-size: 10px;
+      max-width: 180px;
+      white-space: normal;
+      text-shadow: 0 1px 2px #fff;
+    }
+
+    /* ── Hover tooltip ───────────────────────────────────────────────────── */
+    #figTooltip {
+      position: fixed;
+      left: 0;
+      top: 0;
+      display: none;
+      max-width: 210px;
+      padding: 4px 8px;
+      border-radius: 4px;
+      background: rgba(0, 0, 0, 0.58);
+      color: #fff;
+      font: 11px/1.35 sans-serif;
+      pointer-events: none;
+      white-space: normal;
+      z-index: 20;
+    }
+  </style>
+</head>
+
+<body data-ui-layout="right">
+  <div id="container"></div>
+  <div id="figTooltip"></div>
+  <div id="ui">
+    <!-- @FIGURE_UI_BEGIN -->
+<span id="demoNarration" style="display:block;margin:0 0 4px 0;font-size:10px;line-height:1.35;max-width:260px"></span>
+<span style="display:flex;align-items:center;gap:6px"><button onclick="prevStep()">◀</button><span id="stepLabel"></span><button onclick="nextStep()">▶</button></span>
+<label><input id="distanceMethodInput" type="checkbox" onchange="toggle_distanceMethod(this.checked)"> Distance-estimation method: <output id="distanceMethodVal">Single observer</output></label>
+<label>Observer height h: <output id="observerHeightVal">20</output><input id="observerHeightInput" type="range" min="2" max="60" step="1" value="20" oninput="document.getElementById('observerHeightVal').value=this.value;update_observerHeight(+this.value)"></label>
+<label>Observer separation t: <output id="observerSeparationVal">50</output><input id="observerSeparationInput" type="range" min="5" max="120" step="5" value="50" oninput="document.getElementById('observerSeparationVal').value=this.value;update_observerSeparation(+this.value)"></label>
+<!-- @FIGURE_UI_END -->
+  </div>
+
+  <!-- Error overlay: shown if CDN fails or JS throws before rendering -->
+  <div id="err-overlay" style="display:none;position:fixed;inset:0;background:#fff;z-index:999;
+       flex-direction:column;align-items:center;justify-content:center;
+       font-family:sans-serif;font-size:13px;color:#555;gap:10px;">
+    <span id="err-msg">⚠ Figure failed to load</span>
+    <button onclick="location.reload()" style="padding:5px 14px;border:1px solid #aaa;
+        border-radius:5px;background:#f5f5f5;cursor:pointer;font-size:12px;">↻ Reload</button>
+  </div>
+
+  <script>
+    /* ── Error overlay ───────────────────────────────────────────────────── */
+    var _rendered = false;
+    var _errOverlay = document.getElementById('err-overlay');
+    window.__markRendered = function () { _rendered = true; _errOverlay.style.display = 'none'; };
+    window.addEventListener('error', function (e) {
+      if (!_rendered) {
+        document.getElementById('err-msg').textContent = '⚠ ' + (e.message || 'Figure failed to load');
+        _errOverlay.style.display = 'flex';
+      }
+    });
+    setTimeout(function () { if (!_rendered) { _errOverlay.style.display = 'flex'; } }, 12000);
+
+    /* ── Tooltip + popup helpers ─────────────────────────────────────────── */
+    var _tooltip = document.getElementById('figTooltip');
+
+    function showPopup(title, body) {
+      window.parent.postMessage({ type: 'alex-popup', title: title, body: body }, '*');
+    }
+    function hidePopup() {
+      window.parent.postMessage({ type: 'alex-popup', title: null }, '*');
+    }
+    function showTooltip(text, event) {
+      if (!_tooltip || !text) return;
+      _tooltip.textContent = text;
+      _tooltip.style.display = 'block';
+      _moveTooltip(event);
+    }
+    function _moveTooltip(event) {
+      if (!_tooltip || _tooltip.style.display === 'none') return;
+      var pad = 12;
+      var x = Math.min(event.clientX + pad, window.innerWidth - (_tooltip.offsetWidth || 100) - pad);
+      var y = Math.max(pad, event.clientY - (_tooltip.offsetHeight || 40) - pad);
+      _tooltip.style.left = x + 'px';
+      _tooltip.style.top = y + 'px';
+    }
+    function hideTooltip() {
+      if (_tooltip) _tooltip.style.display = 'none';
+    }
+    document.addEventListener('mousemove', function (e) { _moveTooltip(e); });
+
+    /* ── Resize event ────────────────────────────────────────────────────── */
+    function _containerInnerSize() {
+      var container = document.getElementById('container');
+      var style = getComputedStyle(container);
+      var padX = (parseFloat(style.paddingLeft) || 0) + (parseFloat(style.paddingRight) || 0);
+      var padY = (parseFloat(style.paddingTop) || 0) + (parseFloat(style.paddingBottom) || 0);
+      return {
+        width: Math.max(0, container.clientWidth - padX),
+        height: Math.max(0, container.clientHeight - padY)
+      };
+    }
+
+    new ResizeObserver(function () {
+      var rect = _containerInnerSize();
+      document.dispatchEvent(new CustomEvent('fig-resize', {
+        detail: { width: rect.width, height: rect.height }
+      }));
+    }).observe(document.getElementById('container'));
+
+    /* ── UI layout: keep controls in a right-side column ─────────────────────
+     * setUiLayout(...) is retained only so older generated payloads do not
+     * crash. It deliberately cannot change the side, overlay state, or size.
+     * Docking resizes #container, which fires 'fig-resize', so setPlotFrame
+     * re-lays the figure out at its new size instead of it being covered.
+     */
+    var _uiEl = document.getElementById('ui');
+
+    function setUiLayout(mode, sizePx) {
+      _autoUiLayout();
+    }
+
+    function _applyUiLayout(mode, sizePx) {
+      var next = 'right';
+      document.body.setAttribute('data-ui-layout', next);
+      if (sizePx) document.body.style.setProperty('--ui-size', sizePx + 'px');
+    }
+
+    // Generated figures do not get to decide panel placement: a stable right
+    // column prevents controls from covering the figure and avoids layout jumps.
+    var _autoUiTimer = 0;
+    function _autoUiLayout() {
+      var hasEditor = Boolean(_uiEl.querySelector('textarea'));
+      var mode = 'right';
+      var start = hasEditor ? 400 : 300;
+      _applyUiLayout(mode, start);
+      _growDockToFit(mode, start);
+    }
+
+    // A fixed dock size still clips a long control stack in a small inline
+    // figure. Grow the dock until the panel stops scrolling, capped so the
+    // figure always keeps the larger share of the frame.
+    function _growDockToFit(mode, startPx) {
+      var cap = Math.round(window.innerWidth * 0.45);
+      // Clamp down too: on a small figure the default dock can itself exceed the
+      // cap, and the figure must always keep the larger share.
+      var size = Math.min(startPx, cap);
+      if (size !== startPx) document.body.style.setProperty('--ui-size', size + 'px');
+      var guard = 0;
+      function step() {
+        if (guard++ > 6) return;
+        if (_uiEl.scrollHeight <= _uiEl.clientHeight + 2 || size >= cap) return;
+        size = Math.min(cap, size + 60);
+        document.body.style.setProperty('--ui-size', size + 'px');
+        requestAnimationFrame(step);
+      }
+      requestAnimationFrame(step);
+    }
+    window.__autoUiLayout = _autoUiLayout;
+
+    // Re-evaluate when generated code adds controls after first paint.
+    new MutationObserver(function () {
+      clearTimeout(_autoUiTimer);
+      _autoUiTimer = setTimeout(_autoUiLayout, 0);
+    }).observe(_uiEl, { childList: true, subtree: true });
+    window.addEventListener('resize', function () { _autoUiLayout(); });
+
+    /* ── Keyboard dismiss ────────────────────────────────────────────────── */
+    window.addEventListener('keydown', function (e) {
+      if (e.key === 'Escape') { hidePopup(); hideTooltip(); }
+    });
+
+    /* ── Expression parsing ──────────────────────────────────────────────── */
+    /**
+     * compileExpr(src, vars) → function(...args)
+     *   src  : math source, e.g. 'sin(x) + 1', 'x^2', '2*x - 3'
+     *   vars : variable names in argument order, e.g. ['x'] or ['x', 'y']
+     * Throws an Error with a readable message on a syntax error or when the
+     * source references a variable outside `vars`. Never returns a fallback.
+     *
+     * DUPLICATED (deliberately): base_scene_new.html has an equivalent ES-module
+     * copy. Each scaffold is a standalone served HTML file and neither can
+     * import the other, so behaviour changes must be made TWICE.
+     * Keep this in sync with compileExpr in base_scene_new.html.
+     */
+    function compileExpr(src, vars) {
+      if (!window.exprEval || !window.exprEval.Parser) {
+        throw new Error('Expression parser unavailable (expr-eval CDN did not load)');
+      }
+      var names = (vars && vars.length) ? vars : ['x'];
+      var parsed;
+      try {
+        parsed = new window.exprEval.Parser().parse(String(src));
+      } catch (e) {
+        throw new Error('Cannot parse "' + src + '": ' + ((e && e.message) ? e.message : e));
+      }
+      var used = parsed.variables();
+      for (var i = 0; i < used.length; i++) {
+        if (names.indexOf(used[i]) === -1) {
+          throw new Error('Unknown variable "' + used[i] + '" (expected: ' + names.join(', ') + ')');
+        }
+      }
+      return function () {
+        var scope = {};
+        for (var j = 0; j < names.length; j++) scope[names[j]] = arguments[j];
+        var v;
+        try { v = parsed.evaluate(scope); } catch (e) { return NaN; }
+        return (typeof v === 'number') ? v : NaN;
+      };
+    }
+
+    /* ── Plot frame: world → screen mapping (owns resize) ────────────────── */
+    var _plotFrame = null;
+    var _plots = [];
+    var _plotResizeBound = false;
+
+    /**
+     * setPlotFrame({ xDomain, yDomain, margin, draw }) → frame
+     * Establishes the world→screen mapping used by plotX / plotY and by every
+     * plot helper. Call this once, before creating any plots. Registered plots
+     * are re-sampled automatically on resize.
+     */
+    function setPlotFrame(opts) {
+      opts = opts || {};
+      var innerSize = _containerInnerSize();
+      _plotFrame = {
+        xDomain: opts.xDomain || [-5, 5],
+        yDomain: opts.yDomain || [-5, 5],
+        margin: (opts.margin == null) ? 24 : opts.margin,
+        draw: opts.draw || SVG().addTo('#container').size('100%', '100%'),
+        width: innerSize.width || 900,
+        height: innerSize.height || 600
+      };
+      _recomputePlotScale();
+      if (!_plotResizeBound) {
+        _plotResizeBound = true;
+        document.addEventListener('fig-resize', function (e) {
+          if (!_plotFrame) return;
+          _plotFrame.width = e.detail.width || _plotFrame.width;
+          _plotFrame.height = e.detail.height || _plotFrame.height;
+          _recomputePlotScale();
+          for (var i = 0; i < _plots.length; i++) _plots[i].sample();
+        });
+      }
+      return _plotFrame;
+    }
+
+    function _recomputePlotScale() {
+      var f = _plotFrame, m = f.margin;
+      f.sx = (f.width - 2 * m) / (f.xDomain[1] - f.xDomain[0]);
+      f.sy = (f.height - 2 * m) / (f.yDomain[1] - f.yDomain[0]);
+    }
+
+    /** plotX(worldX) → screen px. Requires setPlotFrame() first. */
+    function plotX(wx) {
+      var f = _plotFrame;
+      return f.margin + (wx - f.xDomain[0]) * f.sx;
+    }
+
+    /** plotY(worldY) → screen px (y axis flipped). Requires setPlotFrame() first. */
+    function plotY(wy) {
+      var f = _plotFrame;
+      return f.height - f.margin - (wy - f.yDomain[0]) * f.sy;
+    }
+
+    function _registerPlot(handle) {
+      _plots.push(handle);
+      return handle;
+    }
+
+    function _unregisterPlot(handle) {
+      var i = _plots.indexOf(handle);
+      if (i >= 0) _plots.splice(i, 1);
+    }
+
+    function _resolveFn(value, vars) {
+      if (typeof value === 'function') return value;
+      return compileExpr(value, vars);
+    }
+
+    function _pointsAttr(points) {
+      return points.map(function (p) { return p[0] + ',' + p[1]; }).join(' ');
+    }
+
+    /**
+     * plotFunction(id, opts) → handle
+     *   opts: { expr | fn, variables=['x'], domain, samples=200,
+     *           stroke='#1f77b4', width=2, dashed=false }
+     * The drawn polyline is ALWAYS produced by sampling the compiled function
+     * across `domain`. Non-finite samples split the line into segments instead
+     * of drawing a spike.
+     */
+    function plotFunction(id, opts) {
+      opts = opts || {};
+      var vars = opts.variables || ['x'];
+      var group = _plotFrame.draw.group().attr('id', 'plot-' + id);
+      var handle = {
+        id: id,
+        node: group,
+        fn: opts.fn ? opts.fn : (opts.expr != null ? compileExpr(opts.expr, vars) : null),
+        domain: opts.domain || _plotFrame.xDomain.slice(),
+        samples: opts.samples || 200,
+        setExpr: function (src) { this.fn = _resolveFn(src, vars); return this.sample(); },
+        setFn: function (f) { this.fn = f; return this.sample(); },
+        setDomain: function (dm) { this.domain = dm; return this.sample(); },
+        remove: function () { group.remove(); _unregisterPlot(this); },
+        sample: function () {
+          group.clear();
+          if (!this.fn) return this;
+          var segs = _sampleSegments(this.fn, this.domain, this.samples);
+          for (var s = 0; s < segs.length; s++) {
+            if (segs[s].length < 2) continue;
+            var line = group.polyline(_pointsAttr(segs[s]))
+              .fill('none')
+              .stroke({
+                color: opts.stroke || '#1f77b4',
+                width: opts.width || 2,
+                linecap: 'round',
+                linejoin: 'round'
+              });
+            if (opts.dashed) line.attr('stroke-dasharray', '5,4');
+          }
+          return this;
+        }
+      };
+      return _registerPlot(handle).sample();
+    }
+
+    /** Sample fn across domain, splitting at non-finite values. → [[ [px,py], … ], …] */
+    function _sampleSegments(fn, domain, samples) {
+      var a = domain[0], b = domain[1], n = Math.max(2, samples | 0);
+      var segs = [], cur = [];
+      for (var i = 0; i < n; i++) {
+        var t = a + (b - a) * (i / (n - 1));
+        var v;
+        try { v = fn(t); } catch (e) { v = NaN; }
+        if (typeof v === 'number' && isFinite(v)) {
+          cur.push([plotX(t), plotY(v)]);
+        } else if (cur.length) {
+          segs.push(cur);
+          cur = [];
+        }
+      }
+      if (cur.length) segs.push(cur);
+      return segs;
+    }
+
+    /**
+     * fillBetween(id, opts) → handle
+     *   opts: { lower, upper, variables=['x'], domain, samples=200,
+     *           fill='#7fb3ff', opacity=0.45, stroke, strokeWidth=1 }
+     * `lower` / `upper` may be expression strings or functions. The polygon is
+     * built from EVERY sampled point on both boundaries, so a curved boundary
+     * produces a curved region with no caller involvement.
+     */
+    function fillBetween(id, opts) {
+      opts = opts || {};
+      var vars = opts.variables || ['x'];
+      var group = _plotFrame.draw.group().attr('id', 'fill-' + id);
+      var handle = {
+        id: id,
+        node: group,
+        lower: opts.lower != null ? _resolveFn(opts.lower, vars) : function () { return 0; },
+        upper: opts.upper != null ? _resolveFn(opts.upper, vars) : function () { return 0; },
+        domain: opts.domain || _plotFrame.xDomain.slice(),
+        samples: opts.samples || 200,
+        setLower: function (src) { this.lower = _resolveFn(src, vars); return this.sample(); },
+        setUpper: function (src) { this.upper = _resolveFn(src, vars); return this.sample(); },
+        setDomain: function (dm) { this.domain = dm; return this.sample(); },
+        remove: function () { group.remove(); _unregisterPlot(this); },
+        sample: function () {
+          group.clear();
+          var a = this.domain[0], b = this.domain[1], n = Math.max(2, this.samples | 0);
+          var top = [], bottom = [];
+          for (var i = 0; i < n; i++) {
+            var t = a + (b - a) * (i / (n - 1));
+            var lo, hi;
+            try { lo = this.lower(t); hi = this.upper(t); } catch (e) { lo = NaN; hi = NaN; }
+            if (isFinite(lo) && isFinite(hi)) {
+              top.push([plotX(t), plotY(hi)]);
+              bottom.push([plotX(t), plotY(lo)]);
+            }
+          }
+          if (top.length < 2) return this;
+          bottom.reverse();
+          var poly = group.polygon(_pointsAttr(top.concat(bottom)))
+            .fill({
+              color: opts.fill || '#7fb3ff',
+              opacity: (opts.opacity == null) ? 0.45 : opts.opacity
+            });
+          if (opts.stroke) {
+            poly.stroke({ color: opts.stroke, width: opts.strokeWidth || 1, linejoin: 'round' });
+          } else {
+            poly.stroke('none');
+          }
+          return this;
+        }
+      };
+      return _registerPlot(handle).sample();
+    }
+
+    /**
+     * plotParametric(id, opts) → handle
+     *   opts: { x, y, variables=['t'], tDomain=[0,1], samples=200, stroke, width }
+     */
+    function plotParametric(id, opts) {
+      opts = opts || {};
+      var vars = opts.variables || ['t'];
+      var group = _plotFrame.draw.group().attr('id', 'param-' + id);
+      var handle = {
+        id: id,
+        node: group,
+        fx: _resolveFn(opts.x, vars),
+        fy: _resolveFn(opts.y, vars),
+        tDomain: opts.tDomain || [0, 1],
+        samples: opts.samples || 200,
+        setX: function (src) { this.fx = _resolveFn(src, vars); return this.sample(); },
+        setY: function (src) { this.fy = _resolveFn(src, vars); return this.sample(); },
+        remove: function () { group.remove(); _unregisterPlot(this); },
+        sample: function () {
+          group.clear();
+          var a = this.tDomain[0], b = this.tDomain[1], n = Math.max(2, this.samples | 0);
+          var pts = [];
+          for (var i = 0; i < n; i++) {
+            var t = a + (b - a) * (i / (n - 1));
+            var vx, vy;
+            try { vx = this.fx(t); vy = this.fy(t); } catch (e) { vx = NaN; vy = NaN; }
+            if (isFinite(vx) && isFinite(vy)) pts.push([plotX(vx), plotY(vy)]);
+          }
+          if (pts.length >= 2) {
+            group.polyline(_pointsAttr(pts))
+              .fill('none')
+              .stroke({
+                color: opts.stroke || '#1f77b4', width: opts.width || 2,
+                linecap: 'round', linejoin: 'round'
+              });
+          }
+          return this;
+        }
+      };
+      return _registerPlot(handle).sample();
+    }
+
+    /** integrateSimpson(fn, a, b, n=200) → number. Composite Simpson's rule. */
+    function integrateSimpson(fn, a, b, n) {
+      n = Math.max(2, n || 200);
+      if (n % 2) n++;
+      var h = (b - a) / n, s = fn(a) + fn(b);
+      for (var i = 1; i < n; i++) s += fn(a + i * h) * ((i % 2) ? 4 : 2);
+      return (s * h) / 3;
+    }
+
+    /** findRoot(fn, a, b, tol=1e-9) → number | null. Bisection; null if no sign change. */
+    function findRoot(fn, a, b, tol) {
+      tol = tol || 1e-9;
+      var fa = fn(a), fb = fn(b);
+      if (!isFinite(fa) || !isFinite(fb) || fa * fb > 0) return null;
+      for (var i = 0; i < 200; i++) {
+        var m = (a + b) / 2, fm = fn(m);
+        if (!isFinite(fm)) return null;
+        if (Math.abs(fm) < tol || (b - a) / 2 < tol) return m;
+        if (fa * fm < 0) { b = m; } else { a = m; fa = fm; }
+      }
+      return (a + b) / 2;
+    }
+
+    /* ── Equation input binding ──────────────────────────────────────────── */
+    /**
+     * The error slot is keyed PER INPUT (id "eq-err-<inputId>"), never just
+     * "the first .eq-err under my parent": generated figures routinely put
+     * several equation inputs under one parent, and a shared slot means a valid
+     * edit of field B hides field A's still-current parse error, leaving A's
+     * curve stale with nothing on screen to explain why.
+     * The .eq-err class is kept so the scaffold CSS still applies.
+     *
+     * DUPLICATED: keep in sync with _equationErrorSlot in base_scene_new.html.
+     */
+    function _equationErrorSlot(input) {
+      var parent = input.parentNode || document.getElementById('ui');
+      if (input.id) {
+        var slotId = 'eq-err-' + input.id;
+        var byId = document.getElementById(slotId);
+        if (byId) return byId;
+        var namedSpan = document.createElement('span');
+        namedSpan.id = slotId;
+        namedSpan.className = 'eq-err';
+        namedSpan.style.display = 'none';
+        parent.appendChild(namedSpan);
+        return namedSpan;
+      }
+      var existing = parent.querySelector('.eq-err');
+      if (existing) return existing;
+      var span = document.createElement('span');
+      span.className = 'eq-err';
+      span.style.display = 'none';
+      parent.appendChild(span);
+      return span;
+    }
+
+    /**
+     * _resolveEqTarget(inputId, t) → function(fn, src)
+     * Turns one bindEquationInput target into a concrete applier, and THROWS on
+     * anything it cannot drive. Silently skipping an unrecognised target is the
+     * worst possible outcome: the figure renders, typing changes nothing, and
+     * nothing reports it. Throwing makes verify2dHtml catch the mistake at
+     * generation time instead of the student discovering it.
+     *
+     * DUPLICATED: keep in sync with _resolveEqTarget in base_scene_new.html.
+     */
+    function _resolveEqTarget(inputId, t) {
+      if (typeof t === 'function') {
+        return function (fn, src) { t(fn, src); };
+      }
+      if (t && t.handle) {
+        var method = t.method || 'setFn';
+        if (typeof t.handle[method] !== 'function') {
+          throw new Error(
+            'bindEquationInput("' + inputId + '"): target handle has no method "' + method +
+            '". Use { handle, method: \'...\' } with a method the handle really has ' +
+            '(plotFunction: setExpr, setFn; fillBetween: setLower, setUpper; ' +
+            'plotParametric: setX, setY).'
+          );
+        }
+        return function (fn) { t.handle[method](fn); };
+      }
+      if (t && typeof t.setFn === 'function') {
+        return function (fn) { t.setFn(fn); };
+      }
+      throw new Error(
+        'bindEquationInput("' + inputId + '"): this target cannot be driven — it is not a ' +
+        'function and has no .setFn. Handles without .setFn (fillBetween, plotParametric) ' +
+        'must be passed as { handle, method: \'setUpper\' } naming the setter to call.'
+      );
+    }
+
+    /**
+     * bindEquationInput(inputId, targets, opts) → { apply, input, errorSlot }
+     *   targets: a plot handle, a { handle, method } pair, a function(fn, src),
+     *            or an array of any of those.
+     *   opts   : { variables=['x'], onChange(fn, src) }
+     *
+     * On every valid edit, every target re-samples. On a parse error the last
+     * good curve is kept and the message is shown inline — this function NEVER
+     * substitutes a hardcoded default.
+     * Throws at bind time on a target it cannot drive (see _resolveEqTarget).
+     *
+     * DUPLICATED: keep in sync with bindEquationInput in base_scene_new.html.
+     */
+    function bindEquationInput(inputId, targets, opts) {
+      opts = opts || {};
+      var input = document.getElementById(inputId);
+      if (!input) throw new Error('bindEquationInput: no element with id "' + inputId + '"');
+      var vars = opts.variables || ['x'];
+      var list = Array.isArray(targets) ? targets : [targets];
+      var slot = _equationErrorSlot(input);
+      // Validated once, loudly, before anything is wired up.
+      var appliers = [];
+      for (var k = 0; k < list.length; k++) appliers.push(_resolveEqTarget(inputId, list[k]));
+
+      function apply(src) {
+        try {
+          // The dispatch is INSIDE the try as well: an error thrown while
+          // applying (a target callback that throws, a handle mutated later)
+          // would otherwise escape uncaught from the input event handler and
+          // leave the figure stale with no visible reason.
+          var fn = compileExpr(src, vars);
+          for (var i = 0; i < appliers.length; i++) appliers[i](fn, src);
+          if (typeof opts.onChange === 'function') opts.onChange(fn, src);
+        } catch (e) {
+          slot.textContent = e.message;
+          slot.style.display = '';
+          input.setAttribute('data-eq-valid', 'false');
+          return false;
+        }
+        slot.textContent = '';
+        slot.style.display = 'none';
+        input.setAttribute('data-eq-valid', 'true');
+        return true;
+      }
+
+      input.addEventListener('input', function () { apply(input.value); });
+      apply(input.value);
+      return { apply: apply, input: input, errorSlot: slot };
+    }
+
+    // @FIGURE_CODE_BEGIN
+var draw = SVG().addTo(document.getElementById('container')).size('100%', '100%');
+draw.viewbox(0, 0, 1800, 650);
+
+var W = 1800, H = 650;
+var PW = 870, PH = 650, GAP = 60;
+var waterY = 280;
+var black = '#111217';
+var water = '#73f2df';
+var shore = '#bd7800';
+var darkShore = '#9a4300';
+var state = { method: 'single', h: 20, t: 50, step: 0 };
+
+var scene = draw.group();
+
+function addLabel(parent, txt, x, y, size, anchor, italic) {
+  var t = parent.text(txt).font({
+    family: 'Times New Roman, serif',
+    size: size || 32,
+    anchor: anchor || 'middle',
+    style: italic ? 'italic' : 'normal'
+  }).fill('#000');
+  t.attr({
+    x: x,
+    y: y,
+    'paint-order': 'stroke',
+    stroke: '#fff',
+    'stroke-width': Math.max(2.5, (size || 32) * 0.10),
+    'stroke-linejoin': 'round'
+  });
+  return t;
+}
+
+function arcPath(cx, cy, r, a1, a2) {
+  var x1 = cx + r * Math.cos(a1), y1 = cy + r * Math.sin(a1);
+  var x2 = cx + r * Math.cos(a2), y2 = cy + r * Math.sin(a2);
+  var large = Math.abs(a2 - a1) > Math.PI ? 1 : 0;
+  var sweep = a2 > a1 ? 1 : 0;
+  return 'M' + x1 + ',' + y1 + ' A' + r + ',' + r + ' 0 ' + large + ' ' + sweep + ' ' + x2 + ',' + y2;
+}
+
+function makePanel(parent, x0, title, isActive) {
+  var g = parent.group().translate(x0, 0);
+  g.rect(PW, PH).fill('#fff');
+  g.rect(PW, PH - waterY).move(0, waterY).fill(water);
+  addLabel(g, title, PW - 165, 44, 20, 'middle', false).opacity(isActive ? 0.96 : 0.58);
+  return g;
+}
+
+function finishPanel(g) {
+  g.line(0, waterY, PW, waterY).stroke({ color: black, width: 6, linecap: 'square' });
+  g.rect(PW, PH).fill('none').stroke({ color: black, width: 5 });
+}
+
+function addEye(parent, x, y, label, popupText, scale) {
+  scale = scale || 1;
+  var g = parent.group();
+  g.ellipse(58 * scale, 46 * scale).center(x, y).fill('#fff').stroke({ color: black, width: 6 * scale });
+  g.circle(7 * scale).center(x + 10 * scale, y).fill(black);
+  g.on('mousemove', function (e) { showTooltip(label, e); })
+    .on('mouseleave', function () { hideTooltip(); })
+    .on('click', function () { showPopup(label, popupText); });
+  g.css('cursor', 'pointer');
+  return g;
+}
+
+function addBoat(parent, x, y, scale) {
+  var s = scale || 1;
+  var g = parent.group();
+  g.attr('transform', 'translate(' + x + ' ' + y + ') scale(' + s + ')');
+  g.path('M-72,24 C-45,50 41,50 72,24 C59,63 -59,63 -72,24 Z')
+    .fill('#fff').stroke({ color: black, width: 6, linejoin: 'round' });
+  g.line(0, 25, 0, -82).stroke({ color: black, width: 6, linecap: 'round' });
+  g.path('M7,-80 L7,22 L62,22 C49,-14 29,-52 7,-80 Z')
+    .fill('#fff').stroke({ color: black, width: 6, linejoin: 'round' });
+  g.path('M-7,-66 C-49,-32 -64,16 -7,16 Z')
+    .fill('#fff').stroke({ color: black, width: 6, linejoin: 'round' });
+  g.on('mousemove', function (e) { showTooltip('Boat: the unknown distance d is inferred from the construction.', e); })
+    .on('mouseleave', function () { hideTooltip(); })
+    .on('click', function () {
+      showPopup('Inferred boat distance', 'The picture does not directly measure how far away the boat is. The distance marker is inferred after adding a known scale: either height h or baseline t.');
+    });
+  g.css('cursor', 'pointer');
+  return g;
+}
+
+function dimensionLine(parent, x1, y, x2, label, labelYOffset) {
+  var g = parent.group();
+  g.line(x1, y, x2, y).stroke({ color: black, width: 4, linecap: 'round' });
+  g.line(x1, y - 11, x1, y + 11).stroke({ color: black, width: 4, linecap: 'round' });
+  g.line(x2, y - 11, x2, y + 11).stroke({ color: black, width: 4, linecap: 'round' });
+  addLabel(g, label, (x1 + x2) / 2, y + (labelYOffset || -20), 42, 'middle', false);
+  g.on('mousemove', function (e) { showTooltip('d? is the unknown horizontal distance to the boat.', e); })
+    .on('mouseleave', function () { hideTooltip(); })
+    .on('click', function () {
+      showPopup('Distance d?', 'The horizontal distance is not drawn as a separate measuring axis. It is the shore-to-boat distance implied by the sightline geometry.');
+    });
+  g.css('cursor', 'pointer');
+  return g;
+}
+
+function drawSingleShore(g) {
+  g.path('M0,280 L122,280 C140,250 146,219 154,201 C176,226 173,274 186,315 C210,384 276,397 323,461 C383,541 456,605 532,650 L0,650 Z')
+    .fill(shore).stroke('none');
+  g.path('M36,622 C62,548 80,497 77,430 C74,365 101,337 128,309 C154,282 135,233 154,204 C179,247 153,310 133,355 C105,418 119,486 99,548 C86,589 60,618 40,636')
+    .fill('none').stroke({ color: darkShore, width: 22, linecap: 'round', linejoin: 'round', opacity: 0.95 });
+  g.path('M154,205 C176,286 158,365 190,448 C220,527 238,579 252,632')
+    .fill('none').stroke({ color: darkShore, width: 20, linecap: 'round', linejoin: 'round', opacity: 0.82 });
+}
+
+function drawTwoShore(g) {
+  g.path('M0,280 L382,280 C414,332 425,394 482,444 C554,507 598,594 650,650 L0,650 Z')
+    .fill(shore).stroke('none');
+  g.path('M215,324 C275,385 346,457 408,524 C475,598 518,638 552,664')
+    .fill('none').stroke({ color: black, width: 7, linecap: 'round', linejoin: 'round' });
+  g.path('M0,280 L382,280 C414,332 425,394 482,444 C554,507 598,594 650,650')
+    .fill('none').stroke({ color: shore, width: 1 });
+}
+
+function renderSinglePanel(parent) {
+  drawSingleShore(parent);
+
+  var coastX = 150;
+  var hPx = 28 + state.h * 3.2;
+  hPx = Math.max(36, Math.min(220, hPx));
+  var eyeX = coastX, eyeY = waterY - hPx;
+  var alpha = 18 * Math.PI / 180;
+  var sightY = waterY + 45;
+  var boatX = eyeX + (sightY - eyeY) / Math.tan(alpha);
+  boatX = Math.max(470, Math.min(805, boatX));
+  var boatY = sightY + 55;
+
+  parent.line(coastX, eyeY, coastX, PH - 55).stroke({ color: black, width: 5, linecap: 'square' });
+  addEye(parent, eyeX, eyeY, 'Single observer eye', 'The eye supplies the viewing point. Its known height h above the water gives a scale for the sightline triangle.', 1.0);
+
+  parent.line(eyeX, eyeY, PW - 80, eyeY).stroke({ color: black, width: 5, linecap: 'square' });
+  parent.line(eyeX, eyeY, boatX, sightY).stroke({ color: black, width: 6, linecap: 'round' })
+    .on('mousemove', function (e) { showTooltip('Downward sightline from the eye to the boat.', e); })
+    .on('mouseleave', function () { hideTooltip(); })
+    .css('cursor', 'pointer');
+
+  parent.line(coastX - 36, eyeY, coastX - 36, waterY).stroke({ color: black, width: 4, linecap: 'round' });
+  parent.line(coastX - 48, eyeY, coastX - 20, eyeY).stroke({ color: black, width: 4, linecap: 'round' });
+  parent.line(coastX - 48, waterY, coastX - 20, waterY).stroke({ color: black, width: 4, linecap: 'round' });
+  addLabel(parent, 'h', coastX - 70, (eyeY + waterY) / 2 + 9, 34, 'middle', false);
+
+  parent.path(arcPath(eyeX, eyeY, 72, 0, alpha))
+    .fill('none').stroke({ color: black, width: 5, linecap: 'round' });
+  addLabel(parent, 'α', eyeX + 111, eyeY + 33, 40, 'middle', true);
+
+  addBoat(parent, boatX, boatY, 0.80);
+  dimensionLine(parent, coastX, waterY + 107, boatX, 'd?', -18);
+}
+
+function renderTwoPanel(parent) {
+  drawTwoShore(parent);
+
+  var sep = 75 + state.t * 1.45;
+  sep = Math.max(82, Math.min(255, sep));
+  var upperX = 236, upperY = 322;
+  var lowerX = upperX + sep * 1.12, lowerY = upperY + sep;
+  var boatX = 600 + state.t * 1.65;
+  boatX = Math.max(610, Math.min(810, boatX));
+  var targetY = 360;
+  var boatY = targetY + 55;
+
+  parent.line(upperX, upperY, lowerX, lowerY).stroke({ color: black, width: 6, linecap: 'round' });
+  addLabel(parent, 't', (upperX + lowerX) / 2 - 34, (upperY + lowerY) / 2 + 48, 42, 'middle', false);
+
+  addEye(parent, upperX, upperY, 'Upper observer', 'This observer measures the upper sight angle α toward the boat. A direction alone is not enough to fix distance.', 1.0);
+  addEye(parent, lowerX, lowerY, 'Lower observer', 'This separated observer gives a second ray. The known separation t is the scale that lets the rays locate the boat.', 1.0);
+
+  var r1 = parent.line(upperX, upperY, boatX, targetY).stroke({ color: black, width: 6, linecap: 'round' });
+  var r2 = parent.line(lowerX, lowerY, boatX, targetY).stroke({ color: black, width: 6, linecap: 'round' });
+  [r1, r2].forEach(function (r) {
+    r.on('mousemove', function (e) { showTooltip('A sight ray from an observer to the same boat.', e); })
+      .on('mouseleave', function () { hideTooltip(); })
+      .css('cursor', 'pointer');
+  });
+
+  var aUp = Math.atan2(targetY - upperY, boatX - upperX);
+  var aLow = Math.atan2(targetY - lowerY, boatX - lowerX);
+  parent.path(arcPath(upperX, upperY, 66, 0, aUp))
+    .fill('none').stroke({ color: black, width: 5, linecap: 'round' });
+  parent.path(arcPath(lowerX, lowerY, 66, aLow, 0))
+    .fill('none').stroke({ color: black, width: 5, linecap: 'round' });
+
+  addLabel(parent, 'α', upperX + 126, upperY + 43, 42, 'middle', true);
+  addLabel(parent, 'β', lowerX - 30, lowerY - 76, 42, 'middle', true);
+
+  dimensionLine(parent, 236, waterY + 132, boatX - 4, 'd?', -18);
+  addBoat(parent, boatX, boatY, 0.80);
+}
+
+function render() {
+  scene.clear();
+  scene.rect(W, H).fill('#fff');
+
+  var left = makePanel(scene, 0, 'Single observer: height + angle', state.method === 'single');
+  renderSinglePanel(left);
+  finishPanel(left);
+
+  var right = makePanel(scene, PW + GAP, 'Two observers: triangulation', state.method === 'two');
+  renderTwoPanel(right);
+  finishPanel(right);
+
+  var chk = document.getElementById('distanceMethodInput');
+  var val = document.getElementById('distanceMethodVal');
+  if (chk) chk.checked = state.method === 'two';
+  if (val) val.value = state.method === 'two' ? 'Two observers' : 'Single observer';
+}
+
+function setMethod(methodName) {
+  state.method = methodName === 'Two observers' || methodName === 'two' ? 'two' : 'single';
+  render();
+}
+
+function toggle_distanceMethod(on) {
+  setMethod(on ? 'Two observers' : 'Single observer');
+}
+
+function update_observerHeight(v) {
+  state.h = v;
+  var out = document.getElementById('observerHeightVal');
+  if (out) out.value = v;
+  render();
+}
+
+function update_observerSeparation(v) {
+  state.t = v;
+  var out = document.getElementById('observerSeparationVal');
+  if (out) out.value = v;
+  render();
+}
+
+var demoSteps = [
+  {
+    title: 'One eye, one known height',
+    narration: 'In the single-observer method, the observer knows their height h above the water and measures the downward angle alpha to the boat relative to the horizon line. The estimated distance d comes from the triangle formed by height, sightline, and water surface.',
+    state: { distanceMethod: 'Single observer', observerHeight: 20 }
+  },
+  {
+    title: 'Raise the observer',
+    narration: 'Drag the height slider upward: with the same sight angle alpha, the triangle grows, so the boat must be placed farther from shore. The distance estimate depends directly on the known scale h.',
+    state: { distanceMethod: 'Single observer', observerHeight: 45 }
+  },
+  {
+    title: 'Switch to two viewpoints',
+    narration: 'In the two-observer method, distance is recovered from where two measured sight rays intersect. The baseline t between viewpoints plays the role of stereo separation.',
+    state: { distanceMethod: 'Two observers', observerSeparation: 50 }
+  },
+  {
+    title: 'Widen the baseline',
+    narration: 'Increasing observer separation makes the two viewing rays meet at a more definite angle. This is the geometric idea behind binocular parallax: depth becomes easier to infer when viewpoints are farther apart.',
+    state: { distanceMethod: 'Two observers', observerSeparation: 100 }
+  }
+];
+
+function applyStep(i) {
+  state.step = Math.max(0, Math.min(demoSteps.length - 1, i));
+  var step = demoSteps[state.step];
+
+  if (step.state.distanceMethod) state.method = step.state.distanceMethod === 'Two observers' ? 'two' : 'single';
+
+  if (typeof step.state.observerHeight === 'number') {
+    state.h = step.state.observerHeight;
+    var hIn = document.getElementById('observerHeightInput');
+    var hOut = document.getElementById('observerHeightVal');
+    if (hIn) hIn.value = state.h;
+    if (hOut) hOut.value = state.h;
+  }
+  if (typeof step.state.observerSeparation === 'number') {
+    state.t = step.state.observerSeparation;
+    var tIn = document.getElementById('observerSeparationInput');
+    var tOut = document.getElementById('observerSeparationVal');
+    if (tIn) tIn.value = state.t;
+    if (tOut) tOut.value = state.t;
+  }
+
+  var narr = document.getElementById('demoNarration');
+  var lab = document.getElementById('stepLabel');
+  if (narr) narr.textContent = step.title + ': ' + step.narration;
+  if (lab) lab.textContent = (state.step + 1) + ' / ' + demoSteps.length;
+
+  render();
+}
+
+function prevStep() { applyStep(state.step - 1); }
+function nextStep() { applyStep(state.step + 1); }
+
+applyStep(0);
+window.__markRendered();
+// @FIGURE_CODE_END
+
+    // Decide the panel layout once the generated UI exists. Runs last so it sees
+    // the final #ui content; a setUiLayout() call in the block above wins.
+    _autoUiLayout();
+  </script>
+</body>
+
+</html>

@@ -1,0 +1,1107 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <title>Figure</title>
+
+  <!-- Blocking CDN scripts — no async/defer; must be ready before body <script> runs -->
+  <script src="https://cdn.jsdelivr.net/npm/@svgdotjs/svg.js@3/dist/svg.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4/dist/chart.umd.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/expr-eval@2/dist/bundle.min.js"></script>
+
+  <style>
+    /* ── Reset ───────────────────────────────────────────────────────────── */
+    html,
+    body {
+      margin: 0;
+      padding: 0;
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      background: #fff;
+    }
+
+    /* ── Layout ──────────────────────────────────────────────────────────────
+       body is a grid so #ui always takes a right-side column instead of covering
+       the figure. The #container ResizeObserver then fires 'fig-resize', so
+       setPlotFrame re-lays the figure out at its new size automatically.        */
+    body {
+      display: grid;
+      grid-template-columns: 1fr;
+      grid-template-rows: 1fr;
+      grid-template-areas: "stage";
+    }
+
+    /* ── Figure mount point ──────────────────────────────────────────────── */
+    #container {
+      position: relative;
+      grid-area: stage;
+      min-width: 0;
+      min-height: 0;
+      overflow: hidden;
+      box-sizing: border-box;
+      padding: var(--figure-canvas-padding, 18px);
+    }
+
+    /* ── Control panel (mirrors base_scene_new.html #ui) ─────────────────── */
+    #ui {
+      position: absolute;
+      left: 6px;
+      bottom: 6px;
+      display: flex;
+      flex-direction: column;
+      gap: 3px;
+      font-family: sans-serif;
+      font-size: 11px;
+      max-width: 190px;
+      max-height: 34%;
+      overflow-y: auto;
+      overflow-x: hidden;
+      background: transparent;
+      border: 0;
+      box-shadow: none;
+      opacity: 0.88;
+      transform: none;
+      transition: opacity 0.16s ease;
+      z-index: 10;
+    }
+
+    #ui:hover,
+    #ui:focus-within {
+      opacity: 1;
+    }
+
+    #ui button {
+      padding: 4px 10px;
+      cursor: pointer;
+      border: 1px solid #aaa;
+      background: #f5f5f5;
+      border-radius: 4px;
+    }
+
+    #ui button:hover {
+      background: #e0e0e0;
+    }
+
+    #ui button.active {
+      background: #c8e6ff;
+      border-color: #5aabf0;
+    }
+
+    #ui label {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+      text-shadow: 0 1px 2px #fff;
+    }
+
+    #ui input[type=range] {
+      width: 86px;
+    }
+
+    /* ── Docked control panel ────────────────────────────────────────────────
+       #ui is a grid cell with its own scroll, an opaque background, and roomier
+       type. Generated code cannot switch it to an overlay or bottom strip.      */
+    body[data-ui-layout="right"] {
+      grid-template-columns: 1fr var(--ui-size, 320px);
+      grid-template-rows: 1fr;
+      grid-template-areas: "stage ui";
+    }
+
+    body[data-ui-layout="bottom"] {
+      grid-template-columns: 1fr;
+      grid-template-rows: 1fr var(--ui-size, 240px);
+      grid-template-areas: "stage" "ui";
+    }
+
+    body[data-ui-layout="right"] #ui,
+    body[data-ui-layout="bottom"] #ui {
+      position: relative;
+      grid-area: ui;
+      left: auto;
+      bottom: auto;
+      max-width: none;
+      max-height: none;
+      min-width: 0;
+      min-height: 0;
+      width: auto;
+      height: auto;
+      gap: 6px;
+      padding: 10px 12px;
+      font-size: 12px;
+      background: #fbfbfc;
+      opacity: 1;
+      overflow: auto;
+      z-index: 1;
+    }
+
+    body[data-ui-layout="right"] #ui {
+      border-left: 1px solid #dcdfe3;
+    }
+
+    body[data-ui-layout="bottom"] #ui {
+      border-top: 1px solid #dcdfe3;
+    }
+
+    body[data-ui-layout="right"] #ui label,
+    body[data-ui-layout="bottom"] #ui label {
+      text-shadow: none;
+    }
+
+    body[data-ui-layout="right"] #ui input[type=range],
+    body[data-ui-layout="bottom"] #ui input[type=range] {
+      width: 100%;
+    }
+
+    body[data-ui-layout="right"] #ui textarea,
+    body[data-ui-layout="bottom"] #ui textarea {
+      width: 100%;
+      box-sizing: border-box;
+      min-height: 180px;
+      resize: vertical;
+      font-family: ui-monospace, Consolas, monospace;
+      font-size: 11px;
+      line-height: 1.45;
+      tab-size: 2;
+      border: 1px solid #cfd4da;
+      border-radius: 4px;
+      padding: 6px 8px;
+    }
+
+    body[data-ui-layout="bottom"] #ui textarea {
+      min-height: 110px;
+    }
+
+    /* ── Inline equation parse errors ────────────────────────────────────── */
+    .eq-err {
+      color: #c00000;
+      font-size: 10px;
+      max-width: 180px;
+      white-space: normal;
+      text-shadow: 0 1px 2px #fff;
+    }
+
+    /* ── Hover tooltip ───────────────────────────────────────────────────── */
+    #figTooltip {
+      position: fixed;
+      left: 0;
+      top: 0;
+      display: none;
+      max-width: 210px;
+      padding: 4px 8px;
+      border-radius: 4px;
+      background: rgba(0, 0, 0, 0.58);
+      color: #fff;
+      font: 11px/1.35 sans-serif;
+      pointer-events: none;
+      white-space: normal;
+      z-index: 20;
+    }
+  </style>
+</head>
+
+<body data-ui-layout="right">
+  <div id="container"></div>
+  <div id="figTooltip"></div>
+  <div id="ui">
+    <!-- @FIGURE_UI_BEGIN -->
+<p id="demoNarration" style="margin:0;font-size:10px;max-width:280px;line-height:1.4">With element-type coloring and the slider on group 1, the highlighted column shows every alkali metal as a +1 cation; group 2 is +2. The positive charge simply equals the group number because these metals lose their outer electrons.</p>
+<div style="display:flex;gap:4px;align-items:center">
+<button onclick="prevStep()">◀</button>
+<span id="stepLabel" style="font-size:10px">1/4</span>
+<button onclick="nextStep()">▶</button>
+</div>
+<label>Group number: <output id="groupSweepVal">1</output><input id="groupSweepInput" type="range" min="1" max="18" step="1" value="1" oninput="document.getElementById('groupSweepVal').value=this.value;update_groupSweep(+this.value)"></label>
+<label><input id="colorSchemeInput" type="checkbox" onchange="toggle_colorScheme(this.checked)"> Color by ion charge</label>
+<!-- @FIGURE_UI_END -->
+  </div>
+
+  <!-- Error overlay: shown if CDN fails or JS throws before rendering -->
+  <div id="err-overlay" style="display:none;position:fixed;inset:0;background:#fff;z-index:999;
+       flex-direction:column;align-items:center;justify-content:center;
+       font-family:sans-serif;font-size:13px;color:#555;gap:10px;">
+    <span id="err-msg">⚠ Figure failed to load</span>
+    <button onclick="location.reload()" style="padding:5px 14px;border:1px solid #aaa;
+        border-radius:5px;background:#f5f5f5;cursor:pointer;font-size:12px;">↻ Reload</button>
+  </div>
+
+  <script>
+    /* ── Error overlay ───────────────────────────────────────────────────── */
+    var _rendered = false;
+    var _errOverlay = document.getElementById('err-overlay');
+    window.__markRendered = function () { _rendered = true; _errOverlay.style.display = 'none'; };
+    window.addEventListener('error', function (e) {
+      if (!_rendered) {
+        document.getElementById('err-msg').textContent = '⚠ ' + (e.message || 'Figure failed to load');
+        _errOverlay.style.display = 'flex';
+      }
+    });
+    setTimeout(function () { if (!_rendered) { _errOverlay.style.display = 'flex'; } }, 12000);
+
+    /* ── Tooltip + popup helpers ─────────────────────────────────────────── */
+    var _tooltip = document.getElementById('figTooltip');
+
+    function showPopup(title, body) {
+      window.parent.postMessage({ type: 'alex-popup', title: title, body: body }, '*');
+    }
+    function hidePopup() {
+      window.parent.postMessage({ type: 'alex-popup', title: null }, '*');
+    }
+    function showTooltip(text, event) {
+      if (!_tooltip || !text) return;
+      _tooltip.textContent = text;
+      _tooltip.style.display = 'block';
+      _moveTooltip(event);
+    }
+    function _moveTooltip(event) {
+      if (!_tooltip || _tooltip.style.display === 'none') return;
+      var pad = 12;
+      var x = Math.min(event.clientX + pad, window.innerWidth - (_tooltip.offsetWidth || 100) - pad);
+      var y = Math.max(pad, event.clientY - (_tooltip.offsetHeight || 40) - pad);
+      _tooltip.style.left = x + 'px';
+      _tooltip.style.top = y + 'px';
+    }
+    function hideTooltip() {
+      if (_tooltip) _tooltip.style.display = 'none';
+    }
+    document.addEventListener('mousemove', function (e) { _moveTooltip(e); });
+
+    /* ── Resize event ────────────────────────────────────────────────────── */
+    function _containerInnerSize() {
+      var container = document.getElementById('container');
+      var style = getComputedStyle(container);
+      var padX = (parseFloat(style.paddingLeft) || 0) + (parseFloat(style.paddingRight) || 0);
+      var padY = (parseFloat(style.paddingTop) || 0) + (parseFloat(style.paddingBottom) || 0);
+      return {
+        width: Math.max(0, container.clientWidth - padX),
+        height: Math.max(0, container.clientHeight - padY)
+      };
+    }
+
+    new ResizeObserver(function () {
+      var rect = _containerInnerSize();
+      document.dispatchEvent(new CustomEvent('fig-resize', {
+        detail: { width: rect.width, height: rect.height }
+      }));
+    }).observe(document.getElementById('container'));
+
+    /* ── UI layout: keep controls in a right-side column ─────────────────────
+     * setUiLayout(...) is retained only so older generated payloads do not
+     * crash. It deliberately cannot change the side, overlay state, or size.
+     * Docking resizes #container, which fires 'fig-resize', so setPlotFrame
+     * re-lays the figure out at its new size instead of it being covered.
+     */
+    var _uiEl = document.getElementById('ui');
+
+    function setUiLayout(mode, sizePx) {
+      _autoUiLayout();
+    }
+
+    function _applyUiLayout(mode, sizePx) {
+      var next = 'right';
+      document.body.setAttribute('data-ui-layout', next);
+      if (sizePx) document.body.style.setProperty('--ui-size', sizePx + 'px');
+    }
+
+    // Generated figures do not get to decide panel placement: a stable right
+    // column prevents controls from covering the figure and avoids layout jumps.
+    var _autoUiTimer = 0;
+    function _autoUiLayout() {
+      var hasEditor = Boolean(_uiEl.querySelector('textarea'));
+      var mode = 'right';
+      var start = hasEditor ? 400 : 300;
+      _applyUiLayout(mode, start);
+      _growDockToFit(mode, start);
+    }
+
+    // A fixed dock size still clips a long control stack in a small inline
+    // figure. Grow the dock until the panel stops scrolling, capped so the
+    // figure always keeps the larger share of the frame.
+    function _growDockToFit(mode, startPx) {
+      var cap = Math.round(window.innerWidth * 0.45);
+      // Clamp down too: on a small figure the default dock can itself exceed the
+      // cap, and the figure must always keep the larger share.
+      var size = Math.min(startPx, cap);
+      if (size !== startPx) document.body.style.setProperty('--ui-size', size + 'px');
+      var guard = 0;
+      function step() {
+        if (guard++ > 6) return;
+        if (_uiEl.scrollHeight <= _uiEl.clientHeight + 2 || size >= cap) return;
+        size = Math.min(cap, size + 60);
+        document.body.style.setProperty('--ui-size', size + 'px');
+        requestAnimationFrame(step);
+      }
+      requestAnimationFrame(step);
+    }
+    window.__autoUiLayout = _autoUiLayout;
+
+    // Re-evaluate when generated code adds controls after first paint.
+    new MutationObserver(function () {
+      clearTimeout(_autoUiTimer);
+      _autoUiTimer = setTimeout(_autoUiLayout, 0);
+    }).observe(_uiEl, { childList: true, subtree: true });
+    window.addEventListener('resize', function () { _autoUiLayout(); });
+
+    /* ── Keyboard dismiss ────────────────────────────────────────────────── */
+    window.addEventListener('keydown', function (e) {
+      if (e.key === 'Escape') { hidePopup(); hideTooltip(); }
+    });
+
+    /* ── Expression parsing ──────────────────────────────────────────────── */
+    /**
+     * compileExpr(src, vars) → function(...args)
+     *   src  : math source, e.g. 'sin(x) + 1', 'x^2', '2*x - 3'
+     *   vars : variable names in argument order, e.g. ['x'] or ['x', 'y']
+     * Throws an Error with a readable message on a syntax error or when the
+     * source references a variable outside `vars`. Never returns a fallback.
+     *
+     * DUPLICATED (deliberately): base_scene_new.html has an equivalent ES-module
+     * copy. Each scaffold is a standalone served HTML file and neither can
+     * import the other, so behaviour changes must be made TWICE.
+     * Keep this in sync with compileExpr in base_scene_new.html.
+     */
+    function compileExpr(src, vars) {
+      if (!window.exprEval || !window.exprEval.Parser) {
+        throw new Error('Expression parser unavailable (expr-eval CDN did not load)');
+      }
+      var names = (vars && vars.length) ? vars : ['x'];
+      var parsed;
+      try {
+        parsed = new window.exprEval.Parser().parse(String(src));
+      } catch (e) {
+        throw new Error('Cannot parse "' + src + '": ' + ((e && e.message) ? e.message : e));
+      }
+      var used = parsed.variables();
+      for (var i = 0; i < used.length; i++) {
+        if (names.indexOf(used[i]) === -1) {
+          throw new Error('Unknown variable "' + used[i] + '" (expected: ' + names.join(', ') + ')');
+        }
+      }
+      return function () {
+        var scope = {};
+        for (var j = 0; j < names.length; j++) scope[names[j]] = arguments[j];
+        var v;
+        try { v = parsed.evaluate(scope); } catch (e) { return NaN; }
+        return (typeof v === 'number') ? v : NaN;
+      };
+    }
+
+    /* ── Plot frame: world → screen mapping (owns resize) ────────────────── */
+    var _plotFrame = null;
+    var _plots = [];
+    var _plotResizeBound = false;
+
+    /**
+     * setPlotFrame({ xDomain, yDomain, margin, draw }) → frame
+     * Establishes the world→screen mapping used by plotX / plotY and by every
+     * plot helper. Call this once, before creating any plots. Registered plots
+     * are re-sampled automatically on resize.
+     */
+    function setPlotFrame(opts) {
+      opts = opts || {};
+      var innerSize = _containerInnerSize();
+      _plotFrame = {
+        xDomain: opts.xDomain || [-5, 5],
+        yDomain: opts.yDomain || [-5, 5],
+        margin: (opts.margin == null) ? 24 : opts.margin,
+        draw: opts.draw || SVG().addTo('#container').size('100%', '100%'),
+        width: innerSize.width || 900,
+        height: innerSize.height || 600
+      };
+      _recomputePlotScale();
+      if (!_plotResizeBound) {
+        _plotResizeBound = true;
+        document.addEventListener('fig-resize', function (e) {
+          if (!_plotFrame) return;
+          _plotFrame.width = e.detail.width || _plotFrame.width;
+          _plotFrame.height = e.detail.height || _plotFrame.height;
+          _recomputePlotScale();
+          for (var i = 0; i < _plots.length; i++) _plots[i].sample();
+        });
+      }
+      return _plotFrame;
+    }
+
+    function _recomputePlotScale() {
+      var f = _plotFrame, m = f.margin;
+      f.sx = (f.width - 2 * m) / (f.xDomain[1] - f.xDomain[0]);
+      f.sy = (f.height - 2 * m) / (f.yDomain[1] - f.yDomain[0]);
+    }
+
+    /** plotX(worldX) → screen px. Requires setPlotFrame() first. */
+    function plotX(wx) {
+      var f = _plotFrame;
+      return f.margin + (wx - f.xDomain[0]) * f.sx;
+    }
+
+    /** plotY(worldY) → screen px (y axis flipped). Requires setPlotFrame() first. */
+    function plotY(wy) {
+      var f = _plotFrame;
+      return f.height - f.margin - (wy - f.yDomain[0]) * f.sy;
+    }
+
+    function _registerPlot(handle) {
+      _plots.push(handle);
+      return handle;
+    }
+
+    function _unregisterPlot(handle) {
+      var i = _plots.indexOf(handle);
+      if (i >= 0) _plots.splice(i, 1);
+    }
+
+    function _resolveFn(value, vars) {
+      if (typeof value === 'function') return value;
+      return compileExpr(value, vars);
+    }
+
+    function _pointsAttr(points) {
+      return points.map(function (p) { return p[0] + ',' + p[1]; }).join(' ');
+    }
+
+    /**
+     * plotFunction(id, opts) → handle
+     *   opts: { expr | fn, variables=['x'], domain, samples=200,
+     *           stroke='#1f77b4', width=2, dashed=false }
+     * The drawn polyline is ALWAYS produced by sampling the compiled function
+     * across `domain`. Non-finite samples split the line into segments instead
+     * of drawing a spike.
+     */
+    function plotFunction(id, opts) {
+      opts = opts || {};
+      var vars = opts.variables || ['x'];
+      var group = _plotFrame.draw.group().attr('id', 'plot-' + id);
+      var handle = {
+        id: id,
+        node: group,
+        fn: opts.fn ? opts.fn : (opts.expr != null ? compileExpr(opts.expr, vars) : null),
+        domain: opts.domain || _plotFrame.xDomain.slice(),
+        samples: opts.samples || 200,
+        setExpr: function (src) { this.fn = _resolveFn(src, vars); return this.sample(); },
+        setFn: function (f) { this.fn = f; return this.sample(); },
+        setDomain: function (dm) { this.domain = dm; return this.sample(); },
+        remove: function () { group.remove(); _unregisterPlot(this); },
+        sample: function () {
+          group.clear();
+          if (!this.fn) return this;
+          var segs = _sampleSegments(this.fn, this.domain, this.samples);
+          for (var s = 0; s < segs.length; s++) {
+            if (segs[s].length < 2) continue;
+            var line = group.polyline(_pointsAttr(segs[s]))
+              .fill('none')
+              .stroke({
+                color: opts.stroke || '#1f77b4',
+                width: opts.width || 2,
+                linecap: 'round',
+                linejoin: 'round'
+              });
+            if (opts.dashed) line.attr('stroke-dasharray', '5,4');
+          }
+          return this;
+        }
+      };
+      return _registerPlot(handle).sample();
+    }
+
+    /** Sample fn across domain, splitting at non-finite values. → [[ [px,py], … ], …] */
+    function _sampleSegments(fn, domain, samples) {
+      var a = domain[0], b = domain[1], n = Math.max(2, samples | 0);
+      var segs = [], cur = [];
+      for (var i = 0; i < n; i++) {
+        var t = a + (b - a) * (i / (n - 1));
+        var v;
+        try { v = fn(t); } catch (e) { v = NaN; }
+        if (typeof v === 'number' && isFinite(v)) {
+          cur.push([plotX(t), plotY(v)]);
+        } else if (cur.length) {
+          segs.push(cur);
+          cur = [];
+        }
+      }
+      if (cur.length) segs.push(cur);
+      return segs;
+    }
+
+    /**
+     * fillBetween(id, opts) → handle
+     *   opts: { lower, upper, variables=['x'], domain, samples=200,
+     *           fill='#7fb3ff', opacity=0.45, stroke, strokeWidth=1 }
+     * `lower` / `upper` may be expression strings or functions. The polygon is
+     * built from EVERY sampled point on both boundaries, so a curved boundary
+     * produces a curved region with no caller involvement.
+     */
+    function fillBetween(id, opts) {
+      opts = opts || {};
+      var vars = opts.variables || ['x'];
+      var group = _plotFrame.draw.group().attr('id', 'fill-' + id);
+      var handle = {
+        id: id,
+        node: group,
+        lower: opts.lower != null ? _resolveFn(opts.lower, vars) : function () { return 0; },
+        upper: opts.upper != null ? _resolveFn(opts.upper, vars) : function () { return 0; },
+        domain: opts.domain || _plotFrame.xDomain.slice(),
+        samples: opts.samples || 200,
+        setLower: function (src) { this.lower = _resolveFn(src, vars); return this.sample(); },
+        setUpper: function (src) { this.upper = _resolveFn(src, vars); return this.sample(); },
+        setDomain: function (dm) { this.domain = dm; return this.sample(); },
+        remove: function () { group.remove(); _unregisterPlot(this); },
+        sample: function () {
+          group.clear();
+          var a = this.domain[0], b = this.domain[1], n = Math.max(2, this.samples | 0);
+          var top = [], bottom = [];
+          for (var i = 0; i < n; i++) {
+            var t = a + (b - a) * (i / (n - 1));
+            var lo, hi;
+            try { lo = this.lower(t); hi = this.upper(t); } catch (e) { lo = NaN; hi = NaN; }
+            if (isFinite(lo) && isFinite(hi)) {
+              top.push([plotX(t), plotY(hi)]);
+              bottom.push([plotX(t), plotY(lo)]);
+            }
+          }
+          if (top.length < 2) return this;
+          bottom.reverse();
+          var poly = group.polygon(_pointsAttr(top.concat(bottom)))
+            .fill({
+              color: opts.fill || '#7fb3ff',
+              opacity: (opts.opacity == null) ? 0.45 : opts.opacity
+            });
+          if (opts.stroke) {
+            poly.stroke({ color: opts.stroke, width: opts.strokeWidth || 1, linejoin: 'round' });
+          } else {
+            poly.stroke('none');
+          }
+          return this;
+        }
+      };
+      return _registerPlot(handle).sample();
+    }
+
+    /**
+     * plotParametric(id, opts) → handle
+     *   opts: { x, y, variables=['t'], tDomain=[0,1], samples=200, stroke, width }
+     */
+    function plotParametric(id, opts) {
+      opts = opts || {};
+      var vars = opts.variables || ['t'];
+      var group = _plotFrame.draw.group().attr('id', 'param-' + id);
+      var handle = {
+        id: id,
+        node: group,
+        fx: _resolveFn(opts.x, vars),
+        fy: _resolveFn(opts.y, vars),
+        tDomain: opts.tDomain || [0, 1],
+        samples: opts.samples || 200,
+        setX: function (src) { this.fx = _resolveFn(src, vars); return this.sample(); },
+        setY: function (src) { this.fy = _resolveFn(src, vars); return this.sample(); },
+        remove: function () { group.remove(); _unregisterPlot(this); },
+        sample: function () {
+          group.clear();
+          var a = this.tDomain[0], b = this.tDomain[1], n = Math.max(2, this.samples | 0);
+          var pts = [];
+          for (var i = 0; i < n; i++) {
+            var t = a + (b - a) * (i / (n - 1));
+            var vx, vy;
+            try { vx = this.fx(t); vy = this.fy(t); } catch (e) { vx = NaN; vy = NaN; }
+            if (isFinite(vx) && isFinite(vy)) pts.push([plotX(vx), plotY(vy)]);
+          }
+          if (pts.length >= 2) {
+            group.polyline(_pointsAttr(pts))
+              .fill('none')
+              .stroke({
+                color: opts.stroke || '#1f77b4', width: opts.width || 2,
+                linecap: 'round', linejoin: 'round'
+              });
+          }
+          return this;
+        }
+      };
+      return _registerPlot(handle).sample();
+    }
+
+    /** integrateSimpson(fn, a, b, n=200) → number. Composite Simpson's rule. */
+    function integrateSimpson(fn, a, b, n) {
+      n = Math.max(2, n || 200);
+      if (n % 2) n++;
+      var h = (b - a) / n, s = fn(a) + fn(b);
+      for (var i = 1; i < n; i++) s += fn(a + i * h) * ((i % 2) ? 4 : 2);
+      return (s * h) / 3;
+    }
+
+    /** findRoot(fn, a, b, tol=1e-9) → number | null. Bisection; null if no sign change. */
+    function findRoot(fn, a, b, tol) {
+      tol = tol || 1e-9;
+      var fa = fn(a), fb = fn(b);
+      if (!isFinite(fa) || !isFinite(fb) || fa * fb > 0) return null;
+      for (var i = 0; i < 200; i++) {
+        var m = (a + b) / 2, fm = fn(m);
+        if (!isFinite(fm)) return null;
+        if (Math.abs(fm) < tol || (b - a) / 2 < tol) return m;
+        if (fa * fm < 0) { b = m; } else { a = m; fa = fm; }
+      }
+      return (a + b) / 2;
+    }
+
+    /* ── Equation input binding ──────────────────────────────────────────── */
+    /**
+     * The error slot is keyed PER INPUT (id "eq-err-<inputId>"), never just
+     * "the first .eq-err under my parent": generated figures routinely put
+     * several equation inputs under one parent, and a shared slot means a valid
+     * edit of field B hides field A's still-current parse error, leaving A's
+     * curve stale with nothing on screen to explain why.
+     * The .eq-err class is kept so the scaffold CSS still applies.
+     *
+     * DUPLICATED: keep in sync with _equationErrorSlot in base_scene_new.html.
+     */
+    function _equationErrorSlot(input) {
+      var parent = input.parentNode || document.getElementById('ui');
+      if (input.id) {
+        var slotId = 'eq-err-' + input.id;
+        var byId = document.getElementById(slotId);
+        if (byId) return byId;
+        var namedSpan = document.createElement('span');
+        namedSpan.id = slotId;
+        namedSpan.className = 'eq-err';
+        namedSpan.style.display = 'none';
+        parent.appendChild(namedSpan);
+        return namedSpan;
+      }
+      var existing = parent.querySelector('.eq-err');
+      if (existing) return existing;
+      var span = document.createElement('span');
+      span.className = 'eq-err';
+      span.style.display = 'none';
+      parent.appendChild(span);
+      return span;
+    }
+
+    /**
+     * _resolveEqTarget(inputId, t) → function(fn, src)
+     * Turns one bindEquationInput target into a concrete applier, and THROWS on
+     * anything it cannot drive. Silently skipping an unrecognised target is the
+     * worst possible outcome: the figure renders, typing changes nothing, and
+     * nothing reports it. Throwing makes verify2dHtml catch the mistake at
+     * generation time instead of the student discovering it.
+     *
+     * DUPLICATED: keep in sync with _resolveEqTarget in base_scene_new.html.
+     */
+    function _resolveEqTarget(inputId, t) {
+      if (typeof t === 'function') {
+        return function (fn, src) { t(fn, src); };
+      }
+      if (t && t.handle) {
+        var method = t.method || 'setFn';
+        if (typeof t.handle[method] !== 'function') {
+          throw new Error(
+            'bindEquationInput("' + inputId + '"): target handle has no method "' + method +
+            '". Use { handle, method: \'...\' } with a method the handle really has ' +
+            '(plotFunction: setExpr, setFn; fillBetween: setLower, setUpper; ' +
+            'plotParametric: setX, setY).'
+          );
+        }
+        return function (fn) { t.handle[method](fn); };
+      }
+      if (t && typeof t.setFn === 'function') {
+        return function (fn) { t.setFn(fn); };
+      }
+      throw new Error(
+        'bindEquationInput("' + inputId + '"): this target cannot be driven — it is not a ' +
+        'function and has no .setFn. Handles without .setFn (fillBetween, plotParametric) ' +
+        'must be passed as { handle, method: \'setUpper\' } naming the setter to call.'
+      );
+    }
+
+    /**
+     * bindEquationInput(inputId, targets, opts) → { apply, input, errorSlot }
+     *   targets: a plot handle, a { handle, method } pair, a function(fn, src),
+     *            or an array of any of those.
+     *   opts   : { variables=['x'], onChange(fn, src) }
+     *
+     * On every valid edit, every target re-samples. On a parse error the last
+     * good curve is kept and the message is shown inline — this function NEVER
+     * substitutes a hardcoded default.
+     * Throws at bind time on a target it cannot drive (see _resolveEqTarget).
+     *
+     * DUPLICATED: keep in sync with bindEquationInput in base_scene_new.html.
+     */
+    function bindEquationInput(inputId, targets, opts) {
+      opts = opts || {};
+      var input = document.getElementById(inputId);
+      if (!input) throw new Error('bindEquationInput: no element with id "' + inputId + '"');
+      var vars = opts.variables || ['x'];
+      var list = Array.isArray(targets) ? targets : [targets];
+      var slot = _equationErrorSlot(input);
+      // Validated once, loudly, before anything is wired up.
+      var appliers = [];
+      for (var k = 0; k < list.length; k++) appliers.push(_resolveEqTarget(inputId, list[k]));
+
+      function apply(src) {
+        try {
+          // The dispatch is INSIDE the try as well: an error thrown while
+          // applying (a target callback that throws, a handle mutated later)
+          // would otherwise escape uncaught from the input event handler and
+          // leave the figure stale with no visible reason.
+          var fn = compileExpr(src, vars);
+          for (var i = 0; i < appliers.length; i++) appliers[i](fn, src);
+          if (typeof opts.onChange === 'function') opts.onChange(fn, src);
+        } catch (e) {
+          slot.textContent = e.message;
+          slot.style.display = '';
+          input.setAttribute('data-eq-valid', 'false');
+          return false;
+        }
+        slot.textContent = '';
+        slot.style.display = 'none';
+        input.setAttribute('data-eq-valid', 'true');
+        return true;
+      }
+
+      input.addEventListener('input', function () { apply(input.value); });
+      apply(input.value);
+      return { apply: apply, input: input, errorSlot: slot };
+    }
+
+    // @FIGURE_CODE_BEGIN
+(function(){
+var W=980,H=560;
+var draw=SVG().addTo(document.getElementById('container')).size('100%','100%');
+draw.viewbox(0,0,W,H);
+
+var cellW=48,cellH=48,gap=2,step=cellW+gap;
+var leftM=32,topM=32;
+var fBlockGap=18;
+var mainBottom=topM+7*step;
+var fBlockTop=mainBottom+fBlockGap;
+
+// Colors
+var colPurple='#e8d5f5',colGreen='#d4f0d4',colTan='#f5f0dc',colPink='#f5d5d5',colLavender='#ddd5f0',colCyan='#c5f5f5',colWhite='#ffffff',colGray='#e8e8e8';
+
+// Element data: [symbol, group, period, charges[], colorKey, config, rule]
+var elements=[
+// Period 1
+{s:'H',g:1,p:1,ch:[],ck:'gray',cfg:'1s¹',rule:'Hydrogen is unique — it can lose or gain one electron.'},
+{s:'He',g:18,p:1,ch:[],ck:'cyan',cfg:'1s²',rule:'Noble gas: full shell, no tendency to form ions.'},
+// Period 2
+{s:'Li',g:1,p:2,ch:['Li⁺'],ck:'purple',cfg:'[He]2s¹',rule:'Group 1: loses 1 electron → +1 charge.'},
+{s:'Be',g:2,p:2,ch:['Be²⁺'],ck:'green',cfg:'[He]2s²',rule:'Group 2: loses 2 electrons → +2 charge.'},
+{s:'B',g:13,p:2,ch:[],ck:'white',cfg:'[He]2s²2p¹',rule:'Metalloid: rarely forms simple ions.'},
+{s:'C',g:14,p:2,ch:['C⁴⁻'],ck:'white',cfg:'[He]2s²2p²',rule:'Group 14: can gain 4 electrons → −4 (rare, mostly covalent).'},
+{s:'N',g:15,p:2,ch:['N³⁻'],ck:'pink',cfg:'[He]2s²2p³',rule:'Group 15: gains 3 electrons → −3 charge (18−15=3).'},
+{s:'O',g:16,p:2,ch:['O²⁻'],ck:'pink',cfg:'[He]2s²2p⁴',rule:'Group 16: gains 2 electrons → −2 charge (18−16=2).'},
+{s:'F',g:17,p:2,ch:['F⁻'],ck:'lavender',cfg:'[He]2s²2p⁵',rule:'Group 17: gains 1 electron → −1 charge (18−17=1).'},
+{s:'Ne',g:18,p:2,ch:[],ck:'cyan',cfg:'[He]2s²2p⁶',rule:'Noble gas: full shell, no tendency to form ions.'},
+// Period 3
+{s:'Na',g:1,p:3,ch:['Na⁺'],ck:'purple',cfg:'[Ne]3s¹',rule:'Group 1: loses 1 electron → +1 charge.'},
+{s:'Mg',g:2,p:3,ch:['Mg²⁺'],ck:'green',cfg:'[Ne]3s²',rule:'Group 2: loses 2 electrons → +2 charge.'},
+{s:'Al',g:13,p:3,ch:['Al³⁺'],ck:'white',cfg:'[Ne]3s²3p¹',rule:'Group 13: loses 3 electrons → +3 charge.'},
+{s:'Si',g:14,p:3,ch:[],ck:'white',cfg:'[Ne]3s²3p²',rule:'Metalloid: mostly covalent bonding.'},
+{s:'P',g:15,p:3,ch:['P³⁻'],ck:'pink',cfg:'[Ne]3s²3p³',rule:'Group 15: gains 3 electrons → −3 charge.'},
+{s:'S',g:16,p:3,ch:['S²⁻'],ck:'pink',cfg:'[Ne]3s²3p⁴',rule:'Group 16: gains 2 electrons → −2 charge.'},
+{s:'Cl',g:17,p:3,ch:['Cl⁻'],ck:'lavender',cfg:'[Ne]3s²3p⁵',rule:'Group 17: gains 1 electron → −1 charge.'},
+{s:'Ar',g:18,p:3,ch:[],ck:'cyan',cfg:'[Ne]3s²3p⁶',rule:'Noble gas: full shell, no tendency to form ions.'},
+// Period 4
+{s:'K',g:1,p:4,ch:['K⁺'],ck:'purple',cfg:'[Ar]4s¹',rule:'Group 1: loses 1 electron → +1 charge.'},
+{s:'Ca',g:2,p:4,ch:['Ca²⁺'],ck:'green',cfg:'[Ar]4s²',rule:'Group 2: loses 2 electrons → +2 charge.'},
+{s:'Sc',g:3,p:4,ch:[],ck:'tan',cfg:'[Ar]3d¹4s²',rule:'Transition metal: commonly +3.'},
+{s:'Ti',g:4,p:4,ch:[],ck:'tan',cfg:'[Ar]3d²4s²',rule:'Transition metal: commonly +4, also +3, +2.'},
+{s:'V',g:5,p:4,ch:[],ck:'tan',cfg:'[Ar]3d³4s²',rule:'Transition metal: variable +2 to +5.'},
+{s:'Cr',g:6,p:4,ch:['Cr³⁺','Cr⁶⁺'],ck:'tan',cfg:'[Ar]3d⁵4s¹',rule:'Transition metal: variable charges +3 and +6 — no single rule.'},
+{s:'Mn',g:7,p:4,ch:['Mn²⁺'],ck:'tan',cfg:'[Ar]3d⁵4s²',rule:'Transition metal: commonly +2, also +4, +7.'},
+{s:'Fe',g:8,p:4,ch:['Fe²⁺','Fe³⁺'],ck:'tan',cfg:'[Ar]3d⁶4s²',rule:'Transition metal: variable +2 and +3 — no single rule.'},
+{s:'Co',g:9,p:4,ch:['Co²⁺'],ck:'tan',cfg:'[Ar]3d⁷4s²',rule:'Transition metal: commonly +2, also +3.'},
+{s:'Ni',g:10,p:4,ch:['Ni²⁺'],ck:'tan',cfg:'[Ar]3d⁸4s²',rule:'Transition metal: commonly +2.'},
+{s:'Cu',g:11,p:4,ch:['Cu⁺','Cu²⁺'],ck:'tan',cfg:'[Ar]3d¹⁰4s¹',rule:'Transition metal: variable +1 and +2 — no single rule.'},
+{s:'Zn',g:12,p:4,ch:['Zn²⁺'],ck:'tan',cfg:'[Ar]3d¹⁰4s²',rule:'Group 12: full d-shell, always +2.'},
+{s:'Ga',g:13,p:4,ch:[],ck:'white',cfg:'[Ar]3d¹⁰4s²4p¹',rule:'Group 13: commonly +3.'},
+{s:'Ge',g:14,p:4,ch:[],ck:'white',cfg:'[Ar]3d¹⁰4s²4p²',rule:'Metalloid: mostly covalent.'},
+{s:'As',g:15,p:4,ch:['As³⁻'],ck:'pink',cfg:'[Ar]3d¹⁰4s²4p³',rule:'Group 15: gains 3 electrons → −3 charge.'},
+{s:'Se',g:16,p:4,ch:['Se²⁻'],ck:'pink',cfg:'[Ar]3d¹⁰4s²4p⁴',rule:'Group 16: gains 2 electrons → −2 charge.'},
+{s:'Br',g:17,p:4,ch:['Br⁻'],ck:'lavender',cfg:'[Ar]3d¹⁰4s²4p⁵',rule:'Group 17: gains 1 electron → −1 charge.'},
+{s:'Kr',g:18,p:4,ch:[],ck:'cyan',cfg:'[Ar]3d¹⁰4s²4p⁶',rule:'Noble gas: full shell.'},
+// Period 5
+{s:'Rb',g:1,p:5,ch:['Rb⁺'],ck:'purple',cfg:'[Kr]5s¹',rule:'Group 1: loses 1 electron → +1 charge.'},
+{s:'Sr',g:2,p:5,ch:['Sr²⁺'],ck:'green',cfg:'[Kr]5s²',rule:'Group 2: loses 2 electrons → +2 charge.'},
+{s:'Y',g:3,p:5,ch:[],ck:'tan',cfg:'[Kr]4d¹5s²',rule:'Transition metal: commonly +3.'},
+{s:'Zr',g:4,p:5,ch:[],ck:'tan',cfg:'[Kr]4d²5s²',rule:'Transition metal: commonly +4.'},
+{s:'Nb',g:5,p:5,ch:[],ck:'tan',cfg:'[Kr]4d⁴5s¹',rule:'Transition metal: variable +3 to +5.'},
+{s:'Mo',g:6,p:5,ch:[],ck:'tan',cfg:'[Kr]4d⁵5s¹',rule:'Transition metal: variable +4, +6.'},
+{s:'Tc',g:7,p:5,ch:[],ck:'tan',cfg:'[Kr]4d⁵5s²',rule:'Transition metal: variable +4, +7.'},
+{s:'Ru',g:8,p:5,ch:[],ck:'tan',cfg:'[Kr]4d⁷5s¹',rule:'Transition metal: variable +2 to +4.'},
+{s:'Rh',g:9,p:5,ch:[],ck:'tan',cfg:'[Kr]4d⁸5s¹',rule:'Transition metal: commonly +3.'},
+{s:'Pd',g:10,p:5,ch:[],ck:'tan',cfg:'[Kr]4d¹⁰',rule:'Transition metal: commonly +2, +4.'},
+{s:'Ag',g:11,p:5,ch:['Ag⁺'],ck:'tan',cfg:'[Kr]4d¹⁰5s¹',rule:'Transition metal: commonly +1.'},
+{s:'Cd',g:12,p:5,ch:['Cd²⁺'],ck:'tan',cfg:'[Kr]4d¹⁰5s²',rule:'Group 12: full d-shell, always +2.'},
+{s:'In',g:13,p:5,ch:[],ck:'white',cfg:'[Kr]4d¹⁰5s²5p¹',rule:'Group 13: commonly +3.'},
+{s:'Sn',g:14,p:5,ch:[],ck:'white',cfg:'[Kr]4d¹⁰5s²5p²',rule:'Group 14: commonly +2, +4.'},
+{s:'Sb',g:15,p:5,ch:[],ck:'pink',cfg:'[Kr]4d¹⁰5s²5p³',rule:'Group 15: commonly −3, +3, +5.'},
+{s:'Te',g:16,p:5,ch:['Te²⁻'],ck:'pink',cfg:'[Kr]4d¹⁰5s²5p⁴',rule:'Group 16: gains 2 electrons → −2 charge.'},
+{s:'I',g:17,p:5,ch:['I⁻'],ck:'lavender',cfg:'[Kr]4d¹⁰5s²5p⁵',rule:'Group 17: gains 1 electron → −1 charge.'},
+{s:'Xe',g:18,p:5,ch:[],ck:'cyan',cfg:'[Kr]4d¹⁰5s²5p⁶',rule:'Noble gas: full shell.'},
+// Period 6
+{s:'Cs',g:1,p:6,ch:['Cs⁺'],ck:'purple',cfg:'[Xe]6s¹',rule:'Group 1: loses 1 electron → +1 charge.'},
+{s:'Ba',g:2,p:6,ch:['Ba²⁺'],ck:'green',cfg:'[Xe]6s²',rule:'Group 2: loses 2 electrons → +2 charge.'},
+{s:'La',g:3,p:6,ch:[],ck:'green',cfg:'[Xe]5d¹6s²',rule:'Lanthanide: commonly +3.'},
+{s:'Hf',g:4,p:6,ch:[],ck:'tan',cfg:'[Xe]4f¹⁴5d²6s²',rule:'Transition metal: commonly +4.'},
+{s:'Ta',g:5,p:6,ch:[],ck:'tan',cfg:'[Xe]4f¹⁴5d³6s²',rule:'Transition metal: commonly +5.'},
+{s:'W',g:6,p:6,ch:[],ck:'tan',cfg:'[Xe]4f¹⁴5d⁴6s²',rule:'Transition metal: commonly +6.'},
+{s:'Re',g:7,p:6,ch:[],ck:'tan',cfg:'[Xe]4f¹⁴5d⁵6s²',rule:'Transition metal: variable +4, +7.'},
+{s:'Os',g:8,p:6,ch:[],ck:'tan',cfg:'[Xe]4f¹⁴5d⁶6s²',rule:'Transition metal: variable +3, +4.'},
+{s:'Ir',g:9,p:6,ch:[],ck:'tan',cfg:'[Xe]4f¹⁴5d⁷6s²',rule:'Transition metal: commonly +3, +4.'},
+{s:'Pt',g:10,p:6,ch:['Pt²⁺'],ck:'tan',cfg:'[Xe]4f¹⁴5d⁹6s¹',rule:'Transition metal: commonly +2, +4.'},
+{s:'Au',g:11,p:6,ch:['Au⁺','Au³⁺'],ck:'tan',cfg:'[Xe]4f¹⁴5d¹⁰6s¹',rule:'Transition metal: variable +1 and +3 — no single rule.'},
+{s:'Hg',g:12,p:6,ch:['Hg₂²⁺','Hg²⁺'],ck:'tan',cfg:'[Xe]4f¹⁴5d¹⁰6s²',rule:'Transition metal: variable +1 (dimer) and +2.'},
+{s:'Tl',g:13,p:6,ch:[],ck:'white',cfg:'[Xe]4f¹⁴5d¹⁰6s²6p¹',rule:'Group 13: commonly +1, +3.'},
+{s:'Pb',g:14,p:6,ch:[],ck:'white',cfg:'[Xe]4f¹⁴5d¹⁰6s²6p²',rule:'Group 14: commonly +2, +4.'},
+{s:'Bi',g:15,p:6,ch:[],ck:'pink',cfg:'[Xe]4f¹⁴5d¹⁰6s²6p³',rule:'Group 15: commonly +3, +5.'},
+{s:'Po',g:16,p:6,ch:[],ck:'pink',cfg:'[Xe]4f¹⁴5d¹⁰6s²6p⁴',rule:'Group 16: commonly −2, +4, +6.'},
+{s:'At',g:17,p:6,ch:['At⁻'],ck:'lavender',cfg:'[Xe]4f¹⁴5d¹⁰6s²6p⁵',rule:'Group 17: gains 1 electron → −1 charge.'},
+{s:'Rn',g:18,p:6,ch:[],ck:'cyan',cfg:'[Xe]4f¹⁴5d¹⁰6s²6p⁶',rule:'Noble gas: full shell.'},
+// Period 7
+{s:'Fr',g:1,p:7,ch:['Fr⁺'],ck:'purple',cfg:'[Rn]7s¹',rule:'Group 1: loses 1 electron → +1 charge.'},
+{s:'Ra',g:2,p:7,ch:['Ra²⁺'],ck:'green',cfg:'[Rn]7s²',rule:'Group 2: loses 2 electrons → +2 charge.'},
+{s:'Ac',g:3,p:7,ch:[],ck:'pink',cfg:'[Rn]6d¹7s²',rule:'Actinide: commonly +3.'},
+{s:'Rf',g:4,p:7,ch:[],ck:'tan',cfg:'[Rn]5f¹⁴6d²7s²',rule:'Transition metal: predicted +4.'},
+{s:'Db',g:5,p:7,ch:[],ck:'tan',cfg:'[Rn]5f¹⁴6d³7s²',rule:'Transition metal: predicted +5.'},
+{s:'Sg',g:6,p:7,ch:[],ck:'tan',cfg:'[Rn]5f¹⁴6d⁴7s²',rule:'Transition metal: predicted +6.'},
+{s:'Bh',g:7,p:7,ch:[],ck:'tan',cfg:'[Rn]5f¹⁴6d⁵7s²',rule:'Transition metal: predicted +7.'},
+{s:'Hs',g:8,p:7,ch:[],ck:'white',cfg:'[Rn]5f¹⁴6d7s²',rule:'Transition metal: predicted +8.'},
+{s:'Mt',g:9,p:7,ch:[],ck:'white',cfg:'[Rn]5f¹⁴6d⁷7s²',rule:'Transition metal: unknown.'},
+{s:'Ds',g:10,p:7,ch:[],ck:'white',cfg:'[Rn]5f¹⁴6d⁸7s²',rule:'Transition metal: unknown.'},
+{s:'Rg',g:11,p:7,ch:[],ck:'white',cfg:'[Rn]5f¹⁴6d⁹7s²',rule:'Transition metal: unknown.'},
+{s:'Cn',g:12,p:7,ch:[],ck:'tan',cfg:'[Rn]5f¹⁴6d¹⁰7s²',rule:'Group 12: predicted +2.'},
+{s:'Nh',g:13,p:7,ch:[],ck:'white',cfg:'[Rn]5f¹⁴6d¹⁰7s²7p¹',rule:'Group 13: predicted +1, +3.'},
+{s:'Fl',g:14,p:7,ch:[],ck:'white',cfg:'[Rn]5f¹⁴6d¹⁰7s²7p²',rule:'Group 14: predicted +2, +4.'},
+{s:'Mc',g:15,p:7,ch:[],ck:'white',cfg:'[Rn]5f¹⁴6d¹⁰7s²7p³',rule:'Group 15: predicted +1, +3.'},
+{s:'Lv',g:16,p:7,ch:[],ck:'white',cfg:'[Rn]5f¹⁴6d¹⁰7s²7p⁴',rule:'Group 16: predicted +2.'},
+{s:'Ts',g:17,p:7,ch:[],ck:'white',cfg:'[Rn]5f¹⁴6d¹⁰7s²7p⁵',rule:'Group 17: predicted −1.'},
+{s:'Og',g:18,p:7,ch:[],ck:'white',cfg:'[Rn]5f¹⁴6d¹⁰7s²7p⁶',rule:'Noble gas: predicted stable.'}
+];
+
+// F-block rows
+var lanthanides=['La','Ce','Pr','Nd','Pm','Sm','Eu','Gd','Tb','Dy','Ho','Er','Tm','Yb'];
+var actinides=['Ac','Th','Pa','U','Np','Pu','Am','Cm','Bk','Cf','Es','Fm','Md','No'];
+
+function cellX(g){return leftM+(g-1)*step;}
+function cellY(p){return topM+(p-1)*step;}
+function getColor(ck){
+  var map={purple:colPurple,green:colGreen,tan:colTan,pink:colPink,lavender:colLavender,cyan:colCyan,white:colWhite,gray:colGray};
+  return map[ck]||colWhite;
+}
+
+// Charge-based coloring
+function chargeColor(el){
+  if(el.ch.length===0) return '#d0d0d0';
+  var c=el.ch[0];
+  var val=0;
+  if(c.indexOf('⁺')>-1){
+    var m=c.match(/([²³⁴⁵⁶⁷⁸⁹]*)⁺/);
+    var sup=m?m[1]:'';
+    var numMap={'²':2,'³':3,'⁴':4,'⁵':5,'⁶':6,'⁷':7,'⁸':8,'⁹':9};
+    val=numMap[sup]||1;
+    if(c.indexOf('₂')>-1) val=1; // Hg2 2+ is +1 per atom
+  } else if(c.indexOf('⁻')>-1){
+    var m2=c.match(/([²³⁴])⁻/);
+    var sup2=m2?m2[1]:'';
+    var numMap2={'²':2,'³':3,'⁴':4};
+    val=-(numMap2[sup2]||1);
+  }
+  if(el.ch.length>1) return '#f0c060'; // variable = gold
+  if(val>=3) return '#e05030';
+  if(val===2) return '#f08040';
+  if(val===1) return '#f8c870';
+  if(val===-1) return '#70b8f0';
+  if(val===-2) return '#4080d0';
+  if(val===-3) return '#3050a0';
+  if(val===-4) return '#203080';
+  return '#d0d0d0';
+}
+
+var useChargeColor=false;
+var highlightGroup=1;
+var selectedEl=null;
+
+// Draw group labels
+for(var g=1;g<=18;g++){
+  draw.text(String(g)).font({size:11,weight:'bold',fill:'#0000cc'}).attr({x:cellX(g)+cellW/2,y:topM-14,'text-anchor':'middle'});
+}
+// Period labels
+for(var p=1;p<=7;p++){
+  draw.text(String(p)).font({size:11,weight:'bold',fill:'#8800aa'}).attr({x:leftM-14,y:cellY(p)+cellH/2+4,'text-anchor':'middle'});
+}
+// Axis labels
+draw.text('Group').font({size:11,weight:'bold',fill:'#0000cc'}).attr({x:leftM+4*step,y:topM-26,'text-anchor':'middle'});
+draw.text('Period').font({size:11,weight:'bold',fill:'#8800aa'}).attr({x:8,y:topM+3*step,'text-anchor':'middle',transform:'rotate(-90 8 '+(topM+3*step)+')'});
+
+// Title
+draw.text('Periodic Table of the Elements').font({size:14,weight:'bold',fill:'#000'}).attr({x:W/2,y:12,'text-anchor':'middle'});
+
+// Cell groups for redrawing
+var cellRects=[];
+var cellTexts=[];
+var highlightRect=null;
+var infoGroup=null;
+
+function drawCells(){
+  // Clear old
+  cellRects.forEach(function(r){r.remove();});
+  cellTexts.forEach(function(t){t.remove();});
+  cellRects=[];cellTexts=[];
+  if(highlightRect){highlightRect.remove();highlightRect=null;}
+  if(infoGroup){infoGroup.remove();infoGroup=null;}
+
+  elements.forEach(function(el,idx){
+    var x=cellX(el.g),y=cellY(el.p);
+    var fill=useChargeColor?chargeColor(el):getColor(el.ck);
+    var rect=draw.rect(cellW,cellH).attr({x:x,y:y,fill:fill,stroke:'#999','stroke-width':0.5}).css('cursor','pointer');
+    rect.on('click',function(){selectElement(el);});
+    rect.on('mousemove',function(e){showTooltip(el.s+(el.ch.length?' → '+el.ch.join(', '):' (no common ion)'),e);});
+    rect.on('mouseleave',function(){hideTooltip();});
+    cellRects.push(rect);
+
+    // Charge text
+    if(el.ch.length===1){
+      var t=draw.text(el.ch[0]).font({size:10,weight:'bold',fill:'#000'}).attr({x:x+cellW/2,y:y+cellH/2+3,'text-anchor':'middle'});
+      t.css('pointer-events','none');
+      cellTexts.push(t);
+    } else if(el.ch.length===2){
+      var t1=draw.text(el.ch[0]).font({size:9,weight:'bold',fill:'#000'}).attr({x:x+cellW/2,y:y+cellH/2-4,'text-anchor':'middle'});
+      var t2=draw.text(el.ch[1]).font({size:9,weight:'bold',fill:'#000'}).attr({x:x+cellW/2,y:y+cellH/2+8,'text-anchor':'middle'});
+      t1.css('pointer-events','none');t2.css('pointer-events','none');
+      cellTexts.push(t1,t2);
+    }
+  });
+
+  // F-block rows
+  var fStartX=leftM+2*step;
+  for(var i=0;i<14;i++){
+    var fx=fStartX+i*step;
+    var fy1=fBlockTop;
+    var fy2=fBlockTop+step;
+    var r1=draw.rect(cellW,cellH).attr({x:fx,y:fy1,fill:useChargeColor?'#d0d0d0':colGreen,stroke:'#999','stroke-width':0.5});
+    var r2=draw.rect(cellW,cellH).attr({x:fx,y:fy2,fill:useChargeColor?'#d0d0d0':colPink,stroke:'#999','stroke-width':0.5});
+    cellRects.push(r1,r2);
+  }
+  // Labels * and **
+  draw.text('*').font({size:10,fill:'#000'}).attr({x:fStartX-12,y:fBlockTop+cellH/2+3});
+  draw.text('**').font({size:10,fill:'#000'}).attr({x:fStartX-16,y:fBlockTop+step+cellH/2+3});
+
+  // Red outline around group 3, periods 6-7
+  var rx=cellX(3)-1,ry=cellY(6)-1;
+  var rw=cellW+2,rh=2*step+2;
+  draw.rect(rw,rh).attr({x:rx,y:ry,fill:'none',stroke:'#cc0000','stroke-width':2});
+
+  // Curved arrow from red box to f-block
+  var arrowStartX=cellX(3)+cellW/2;
+  var arrowStartY=cellY(7)+cellH;
+  var arrowEndX=fStartX-20;
+  var arrowEndY=fBlockTop+step/2;
+  var path=draw.path('M '+arrowStartX+' '+arrowStartY+' C '+arrowStartX+' '+(arrowStartY+30)+' '+arrowEndX+' '+(arrowEndY-20)+' '+arrowEndX+' '+arrowEndY);
+  path.fill('none').stroke({color:'#cc0000',width:2});
+  // Arrowhead
+  draw.polygon((arrowEndX-5)+','+(arrowEndY-8)+' '+(arrowEndX+5)+','+(arrowEndY-8)+' '+arrowEndX+','+(arrowEndY+2)).fill('#cc0000');
+
+  // Highlight column
+  if(highlightGroup>=1&&highlightGroup<=18){
+    var hx=cellX(highlightGroup)-1;
+    var hy=topM-1;
+    var hh=7*step+2;
+    highlightRect=draw.rect(cellW+2,hh).attr({x:hx,y:hy,fill:'none',stroke:'#ff6600','stroke-width':2.5,'stroke-dasharray':'6,3',rx:3});
+  }
+
+  // Info card for selected element
+  if(selectedEl){
+    drawInfoCard(selectedEl);
+  }
+}
+
+function drawInfoCard(el){
+  infoGroup=draw.group();
+  var cx=cellX(el.g)+cellW/2;
+  var cy=cellY(el.p)+cellH/2;
+  // Position card to the right or left
+  var cardW=180,cardH=70;
+  var cardX=cx+cellW/2+8;
+  var cardY=cy-cardH/2;
+  if(cardX+cardW>W-10) cardX=cx-cellW/2-cardW-8;
+  if(cardY<10) cardY=10;
+  if(cardY+cardH>H-10) cardY=H-cardH-10;
+
+  infoGroup.rect(cardW,cardH).attr({x:cardX,y:cardY,fill:'#fffef0',stroke:'#333','stroke-width':1.5,rx:4});
+  var line1=el.s+(el.ch.length?'  →  '+el.ch.join(' / '):'  (no common ion)');
+  infoGroup.text(line1).font({size:10,weight:'bold',fill:'#000'}).attr({x:cardX+8,y:cardY+14});
+  infoGroup.text('Config: '+el.cfg).font({size:9,fill:'#333'}).attr({x:cardX+8,y:cardY+30});
+  // Wrap rule text
+  var ruleText=el.rule;
+  var words=ruleText.split(' ');
+  var lines=[];var cur='';
+  words.forEach(function(w){
+    if((cur+' '+w).length>38){lines.push(cur);cur=w;}
+    else cur=cur?cur+' '+w:w;
+  });
+  if(cur)lines.push(cur);
+  lines.slice(0,3).forEach(function(l,i){
+    infoGroup.text(l).font({size:8,fill:'#555'}).attr({x:cardX+8,y:cardY+44+i*11});
+  });
+
+  // Bold ring on selected cell
+  var sx=cellX(el.g)-2,sy=cellY(el.p)-2;
+  infoGroup.rect(cellW+4,cellH+4).attr({x:sx,y:sy,fill:'none',stroke:'#ff0000','stroke-width':3,rx:2});
+}
+
+function selectElement(el){
+  selectedEl=el;
+  drawCells();
+}
+
+drawCells();
+
+// Interactions
+window.update_groupSweep=function(v){
+  highlightGroup=v;
+  drawCells();
+};
+
+window.toggle_colorScheme=function(on){
+  useChargeColor=on;
+  drawCells();
+};
+
+// Demo steps
+var steps=[
+  {title:'Cations on the left',narration:'With element-type coloring and the slider on group 1, the highlighted column shows every alkali metal as a +1 cation; group 2 is +2. The positive charge simply equals the group number because these metals lose their outer electrons.',state:{groupSweep:1,colorScheme:false}},
+  {title:'Anions on the right',narration:'Sweep the slider to group 17: the halogens are all −1, group 16 is −2, group 15 is −3. The negative charge equals 18 minus the group number — the electrons needed to complete the noble-gas shell.',state:{groupSweep:17,colorScheme:false}},
+  {title:'Transition metals break the rule',narration:'Move the slider into the d-block (e.g. group 8) and click iron: it shows Fe²⁺ AND Fe³⁺, with no single group-number rule. Click chromium or copper to see the same variability — position alone cannot predict transition-metal charge.',state:{groupSweep:8,colorScheme:false}},
+  {title:'Two ways to see the same pattern',narration:'Toggle to ion-charge coloring: the table recolors by charge magnitude, turning the metal-to-nonmetal transition into a smooth visual gradient and making the noble-gas column (charge 0) read as the neutral pivot of the whole trend.',state:{groupSweep:1,colorScheme:true}}
+];
+var curStep=0;
+
+function applyStep(i){
+  curStep=i;
+  var st=steps[i].state;
+  highlightGroup=st.groupSweep;
+  useChargeColor=st.colorScheme;
+  document.getElementById('groupSweepInput').value=st.groupSweep;
+  document.getElementById('groupSweepVal').value=st.groupSweep;
+  document.getElementById('colorSchemeInput').checked=st.colorScheme;
+  document.getElementById('demoNarration').textContent=steps[i].narration;
+  document.getElementById('stepLabel').textContent=(i+1)+'/'+steps.length;
+  selectedEl=null;
+  drawCells();
+}
+
+window.nextStep=function(){applyStep(Math.min(curStep+1,steps.length-1));};
+window.prevStep=function(){applyStep(Math.max(curStep-1,0));};
+
+applyStep(0);
+window.__markRendered();
+})();
+// @FIGURE_CODE_END
+
+    // Decide the panel layout once the generated UI exists. Runs last so it sees
+    // the final #ui content; a setUiLayout() call in the block above wins.
+    _autoUiLayout();
+  </script>
+</body>
+
+</html>

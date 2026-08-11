@@ -1,0 +1,1103 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <title>Figure</title>
+
+  <!-- Blocking CDN scripts — no async/defer; must be ready before body <script> runs -->
+  <script src="https://cdn.jsdelivr.net/npm/@svgdotjs/svg.js@3/dist/svg.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4/dist/chart.umd.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/expr-eval@2/dist/bundle.min.js"></script>
+
+  <style>
+    /* ── Reset ───────────────────────────────────────────────────────────── */
+    html,
+    body {
+      margin: 0;
+      padding: 0;
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      background: #fff;
+    }
+
+    /* ── Layout ──────────────────────────────────────────────────────────────
+       body is a grid so #ui always takes a right-side column instead of covering
+       the figure. The #container ResizeObserver then fires 'fig-resize', so
+       setPlotFrame re-lays the figure out at its new size automatically.        */
+    body {
+      display: grid;
+      grid-template-columns: 1fr;
+      grid-template-rows: 1fr;
+      grid-template-areas: "stage";
+    }
+
+    /* ── Figure mount point ──────────────────────────────────────────────── */
+    #container {
+      position: relative;
+      grid-area: stage;
+      min-width: 0;
+      min-height: 0;
+      overflow: hidden;
+      box-sizing: border-box;
+      padding: var(--figure-canvas-padding, 18px);
+    }
+
+    /* ── Control panel (mirrors base_scene_new.html #ui) ─────────────────── */
+    #ui {
+      position: absolute;
+      left: 6px;
+      bottom: 6px;
+      display: flex;
+      flex-direction: column;
+      gap: 3px;
+      font-family: sans-serif;
+      font-size: 11px;
+      max-width: 190px;
+      max-height: 34%;
+      overflow-y: auto;
+      overflow-x: hidden;
+      background: transparent;
+      border: 0;
+      box-shadow: none;
+      opacity: 0.88;
+      transform: none;
+      transition: opacity 0.16s ease;
+      z-index: 10;
+    }
+
+    #ui:hover,
+    #ui:focus-within {
+      opacity: 1;
+    }
+
+    #ui button {
+      padding: 4px 10px;
+      cursor: pointer;
+      border: 1px solid #aaa;
+      background: #f5f5f5;
+      border-radius: 4px;
+    }
+
+    #ui button:hover {
+      background: #e0e0e0;
+    }
+
+    #ui button.active {
+      background: #c8e6ff;
+      border-color: #5aabf0;
+    }
+
+    #ui label {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+      text-shadow: 0 1px 2px #fff;
+    }
+
+    #ui input[type=range] {
+      width: 86px;
+    }
+
+    /* ── Docked control panel ────────────────────────────────────────────────
+       #ui is a grid cell with its own scroll, an opaque background, and roomier
+       type. Generated code cannot switch it to an overlay or bottom strip.      */
+    body[data-ui-layout="right"] {
+      grid-template-columns: 1fr var(--ui-size, 320px);
+      grid-template-rows: 1fr;
+      grid-template-areas: "stage ui";
+    }
+
+    body[data-ui-layout="bottom"] {
+      grid-template-columns: 1fr;
+      grid-template-rows: 1fr var(--ui-size, 240px);
+      grid-template-areas: "stage" "ui";
+    }
+
+    body[data-ui-layout="right"] #ui,
+    body[data-ui-layout="bottom"] #ui {
+      position: relative;
+      grid-area: ui;
+      left: auto;
+      bottom: auto;
+      max-width: none;
+      max-height: none;
+      min-width: 0;
+      min-height: 0;
+      width: auto;
+      height: auto;
+      gap: 6px;
+      padding: 10px 12px;
+      font-size: 12px;
+      background: #fbfbfc;
+      opacity: 1;
+      overflow: auto;
+      z-index: 1;
+    }
+
+    body[data-ui-layout="right"] #ui {
+      border-left: 1px solid #dcdfe3;
+    }
+
+    body[data-ui-layout="bottom"] #ui {
+      border-top: 1px solid #dcdfe3;
+    }
+
+    body[data-ui-layout="right"] #ui label,
+    body[data-ui-layout="bottom"] #ui label {
+      text-shadow: none;
+    }
+
+    body[data-ui-layout="right"] #ui input[type=range],
+    body[data-ui-layout="bottom"] #ui input[type=range] {
+      width: 100%;
+    }
+
+    body[data-ui-layout="right"] #ui textarea,
+    body[data-ui-layout="bottom"] #ui textarea {
+      width: 100%;
+      box-sizing: border-box;
+      min-height: 180px;
+      resize: vertical;
+      font-family: ui-monospace, Consolas, monospace;
+      font-size: 11px;
+      line-height: 1.45;
+      tab-size: 2;
+      border: 1px solid #cfd4da;
+      border-radius: 4px;
+      padding: 6px 8px;
+    }
+
+    body[data-ui-layout="bottom"] #ui textarea {
+      min-height: 110px;
+    }
+
+    /* ── Inline equation parse errors ────────────────────────────────────── */
+    .eq-err {
+      color: #c00000;
+      font-size: 10px;
+      max-width: 180px;
+      white-space: normal;
+      text-shadow: 0 1px 2px #fff;
+    }
+
+    /* ── Hover tooltip ───────────────────────────────────────────────────── */
+    #figTooltip {
+      position: fixed;
+      left: 0;
+      top: 0;
+      display: none;
+      max-width: 210px;
+      padding: 4px 8px;
+      border-radius: 4px;
+      background: rgba(0, 0, 0, 0.58);
+      color: #fff;
+      font: 11px/1.35 sans-serif;
+      pointer-events: none;
+      white-space: normal;
+      z-index: 20;
+    }
+  </style>
+</head>
+
+<body data-ui-layout="right">
+  <div id="container"></div>
+  <div id="figTooltip"></div>
+  <div id="ui">
+    <!-- @FIGURE_UI_BEGIN -->
+<p id="demoNarration" style="margin:0;font-size:10px;max-width:280px;line-height:1.35">The array starts as [5, 2, 4, 6, 1, 3]. Insertion sort processes elements left to right: after processing position j, positions 1 through j are sorted.</p>
+<div style="display:flex;gap:4px;align-items:center">
+  <button onclick="prevStep()">◀</button>
+  <span id="stepLabel" style="font-size:10px">Step 1 / 4</span>
+  <button onclick="nextStep()">▶</button>
+</div>
+<hr style="width:100%;border:0;border-top:1px solid #ccc;margin:2px 0">
+<label style="font-size:10px">Initial array
+  <input id="arrayInput" value="5, 2, 4, 6, 1, 3" style="width:100%;box-sizing:border-box;font-family:monospace;font-size:11px">
+</label>
+<div style="display:flex;gap:3px">
+  <button id="tabSample" class="active" onclick="setTab('sample')" style="font-size:10px;padding:2px 6px">Sample</button>
+  <button id="tabBuggy" onclick="setTab('buggy')" style="font-size:10px;padding:2px 6px">Buggy</button>
+  <button id="tabStarter" onclick="setTab('starter')" style="font-size:10px;padding:2px 6px">Starter</button>
+</div>
+<textarea id="insertionSortEditorCode" style="min-height:150px"></textarea>
+<button id="runBtn" onclick="triggerRun()" style="background:#c8e6ff;border-color:#5aabf0">▶ Run insertionSort()</button>
+<div style="display:flex;gap:3px;align-items:center">
+  <button onclick="pbFirst()" style="font-size:10px;padding:2px 6px">⏮</button>
+  <button onclick="pbPrev()" style="font-size:10px;padding:2px 6px">◀</button>
+  <button id="playBtn" onclick="pbToggle()" style="font-size:10px;padding:2px 6px">▶</button>
+  <button onclick="pbNext()" style="font-size:10px;padding:2px 6px">▶|</button>
+  <span id="frameCounter" style="font-size:10px">0 of 0</span>
+</div>
+<label style="font-size:10px">Speed <output id="speedVal">2</output>
+  <input id="speedInput" type="range" min="1" max="8" step="1" value="2" oninput="document.getElementById('speedVal').value=this.value">
+</label>
+<p id="frameCaption" style="margin:0;font-size:10px;min-height:24px;line-height:1.3;color:#333">Run the code to trace execution.</p>
+<div id="runLog" style="font-family:monospace;font-size:9px;max-height:70px;overflow-y:auto;border:1px solid #ddd;background:#fafafa;padding:3px;white-space:pre-wrap"></div>
+<span id="statusReadout" style="font-size:10px;font-weight:bold;color:#777">status: not run</span>
+<hr style="width:100%;border:0;border-top:1px solid #ccc;margin:2px 0">
+<button id="showReferenceInput" onclick="trigger_showReference()">Reveal reference solution</button>
+<pre id="refCode" style="display:none;font-family:monospace;font-size:9px;background:#f4f4f4;padding:5px;white-space:pre-wrap;margin:0"></pre>
+<!-- @FIGURE_UI_END -->
+  </div>
+
+  <!-- Error overlay: shown if CDN fails or JS throws before rendering -->
+  <div id="err-overlay" style="display:none;position:fixed;inset:0;background:#fff;z-index:999;
+       flex-direction:column;align-items:center;justify-content:center;
+       font-family:sans-serif;font-size:13px;color:#555;gap:10px;">
+    <span id="err-msg">⚠ Figure failed to load</span>
+    <button onclick="location.reload()" style="padding:5px 14px;border:1px solid #aaa;
+        border-radius:5px;background:#f5f5f5;cursor:pointer;font-size:12px;">↻ Reload</button>
+  </div>
+
+  <script>
+    /* ── Error overlay ───────────────────────────────────────────────────── */
+    var _rendered = false;
+    var _errOverlay = document.getElementById('err-overlay');
+    window.__markRendered = function () { _rendered = true; _errOverlay.style.display = 'none'; };
+    window.addEventListener('error', function (e) {
+      if (!_rendered) {
+        document.getElementById('err-msg').textContent = '⚠ ' + (e.message || 'Figure failed to load');
+        _errOverlay.style.display = 'flex';
+      }
+    });
+    setTimeout(function () { if (!_rendered) { _errOverlay.style.display = 'flex'; } }, 12000);
+
+    /* ── Tooltip + popup helpers ─────────────────────────────────────────── */
+    var _tooltip = document.getElementById('figTooltip');
+
+    function showPopup(title, body) {
+      window.parent.postMessage({ type: 'alex-popup', title: title, body: body }, '*');
+    }
+    function hidePopup() {
+      window.parent.postMessage({ type: 'alex-popup', title: null }, '*');
+    }
+    function showTooltip(text, event) {
+      if (!_tooltip || !text) return;
+      _tooltip.textContent = text;
+      _tooltip.style.display = 'block';
+      _moveTooltip(event);
+    }
+    function _moveTooltip(event) {
+      if (!_tooltip || _tooltip.style.display === 'none') return;
+      var pad = 12;
+      var x = Math.min(event.clientX + pad, window.innerWidth - (_tooltip.offsetWidth || 100) - pad);
+      var y = Math.max(pad, event.clientY - (_tooltip.offsetHeight || 40) - pad);
+      _tooltip.style.left = x + 'px';
+      _tooltip.style.top = y + 'px';
+    }
+    function hideTooltip() {
+      if (_tooltip) _tooltip.style.display = 'none';
+    }
+    document.addEventListener('mousemove', function (e) { _moveTooltip(e); });
+
+    /* ── Resize event ────────────────────────────────────────────────────── */
+    function _containerInnerSize() {
+      var container = document.getElementById('container');
+      var style = getComputedStyle(container);
+      var padX = (parseFloat(style.paddingLeft) || 0) + (parseFloat(style.paddingRight) || 0);
+      var padY = (parseFloat(style.paddingTop) || 0) + (parseFloat(style.paddingBottom) || 0);
+      return {
+        width: Math.max(0, container.clientWidth - padX),
+        height: Math.max(0, container.clientHeight - padY)
+      };
+    }
+
+    new ResizeObserver(function () {
+      var rect = _containerInnerSize();
+      document.dispatchEvent(new CustomEvent('fig-resize', {
+        detail: { width: rect.width, height: rect.height }
+      }));
+    }).observe(document.getElementById('container'));
+
+    /* ── UI layout: keep controls in a right-side column ─────────────────────
+     * setUiLayout(...) is retained only so older generated payloads do not
+     * crash. It deliberately cannot change the side, overlay state, or size.
+     * Docking resizes #container, which fires 'fig-resize', so setPlotFrame
+     * re-lays the figure out at its new size instead of it being covered.
+     */
+    var _uiEl = document.getElementById('ui');
+
+    function setUiLayout(mode, sizePx) {
+      _autoUiLayout();
+    }
+
+    function _applyUiLayout(mode, sizePx) {
+      var next = 'right';
+      document.body.setAttribute('data-ui-layout', next);
+      if (sizePx) document.body.style.setProperty('--ui-size', sizePx + 'px');
+    }
+
+    // Generated figures do not get to decide panel placement: a stable right
+    // column prevents controls from covering the figure and avoids layout jumps.
+    var _autoUiTimer = 0;
+    function _autoUiLayout() {
+      var hasEditor = Boolean(_uiEl.querySelector('textarea'));
+      var mode = 'right';
+      var start = hasEditor ? 400 : 300;
+      _applyUiLayout(mode, start);
+      _growDockToFit(mode, start);
+    }
+
+    // A fixed dock size still clips a long control stack in a small inline
+    // figure. Grow the dock until the panel stops scrolling, capped so the
+    // figure always keeps the larger share of the frame.
+    function _growDockToFit(mode, startPx) {
+      var cap = Math.round(window.innerWidth * 0.45);
+      // Clamp down too: on a small figure the default dock can itself exceed the
+      // cap, and the figure must always keep the larger share.
+      var size = Math.min(startPx, cap);
+      if (size !== startPx) document.body.style.setProperty('--ui-size', size + 'px');
+      var guard = 0;
+      function step() {
+        if (guard++ > 6) return;
+        if (_uiEl.scrollHeight <= _uiEl.clientHeight + 2 || size >= cap) return;
+        size = Math.min(cap, size + 60);
+        document.body.style.setProperty('--ui-size', size + 'px');
+        requestAnimationFrame(step);
+      }
+      requestAnimationFrame(step);
+    }
+    window.__autoUiLayout = _autoUiLayout;
+
+    // Re-evaluate when generated code adds controls after first paint.
+    new MutationObserver(function () {
+      clearTimeout(_autoUiTimer);
+      _autoUiTimer = setTimeout(_autoUiLayout, 0);
+    }).observe(_uiEl, { childList: true, subtree: true });
+    window.addEventListener('resize', function () { _autoUiLayout(); });
+
+    /* ── Keyboard dismiss ────────────────────────────────────────────────── */
+    window.addEventListener('keydown', function (e) {
+      if (e.key === 'Escape') { hidePopup(); hideTooltip(); }
+    });
+
+    /* ── Expression parsing ──────────────────────────────────────────────── */
+    /**
+     * compileExpr(src, vars) → function(...args)
+     *   src  : math source, e.g. 'sin(x) + 1', 'x^2', '2*x - 3'
+     *   vars : variable names in argument order, e.g. ['x'] or ['x', 'y']
+     * Throws an Error with a readable message on a syntax error or when the
+     * source references a variable outside `vars`. Never returns a fallback.
+     *
+     * DUPLICATED (deliberately): base_scene_new.html has an equivalent ES-module
+     * copy. Each scaffold is a standalone served HTML file and neither can
+     * import the other, so behaviour changes must be made TWICE.
+     * Keep this in sync with compileExpr in base_scene_new.html.
+     */
+    function compileExpr(src, vars) {
+      if (!window.exprEval || !window.exprEval.Parser) {
+        throw new Error('Expression parser unavailable (expr-eval CDN did not load)');
+      }
+      var names = (vars && vars.length) ? vars : ['x'];
+      var parsed;
+      try {
+        parsed = new window.exprEval.Parser().parse(String(src));
+      } catch (e) {
+        throw new Error('Cannot parse "' + src + '": ' + ((e && e.message) ? e.message : e));
+      }
+      var used = parsed.variables();
+      for (var i = 0; i < used.length; i++) {
+        if (names.indexOf(used[i]) === -1) {
+          throw new Error('Unknown variable "' + used[i] + '" (expected: ' + names.join(', ') + ')');
+        }
+      }
+      return function () {
+        var scope = {};
+        for (var j = 0; j < names.length; j++) scope[names[j]] = arguments[j];
+        var v;
+        try { v = parsed.evaluate(scope); } catch (e) { return NaN; }
+        return (typeof v === 'number') ? v : NaN;
+      };
+    }
+
+    /* ── Plot frame: world → screen mapping (owns resize) ────────────────── */
+    var _plotFrame = null;
+    var _plots = [];
+    var _plotResizeBound = false;
+
+    /**
+     * setPlotFrame({ xDomain, yDomain, margin, draw }) → frame
+     * Establishes the world→screen mapping used by plotX / plotY and by every
+     * plot helper. Call this once, before creating any plots. Registered plots
+     * are re-sampled automatically on resize.
+     */
+    function setPlotFrame(opts) {
+      opts = opts || {};
+      var innerSize = _containerInnerSize();
+      _plotFrame = {
+        xDomain: opts.xDomain || [-5, 5],
+        yDomain: opts.yDomain || [-5, 5],
+        margin: (opts.margin == null) ? 24 : opts.margin,
+        draw: opts.draw || SVG().addTo('#container').size('100%', '100%'),
+        width: innerSize.width || 900,
+        height: innerSize.height || 600
+      };
+      _recomputePlotScale();
+      if (!_plotResizeBound) {
+        _plotResizeBound = true;
+        document.addEventListener('fig-resize', function (e) {
+          if (!_plotFrame) return;
+          _plotFrame.width = e.detail.width || _plotFrame.width;
+          _plotFrame.height = e.detail.height || _plotFrame.height;
+          _recomputePlotScale();
+          for (var i = 0; i < _plots.length; i++) _plots[i].sample();
+        });
+      }
+      return _plotFrame;
+    }
+
+    function _recomputePlotScale() {
+      var f = _plotFrame, m = f.margin;
+      f.sx = (f.width - 2 * m) / (f.xDomain[1] - f.xDomain[0]);
+      f.sy = (f.height - 2 * m) / (f.yDomain[1] - f.yDomain[0]);
+    }
+
+    /** plotX(worldX) → screen px. Requires setPlotFrame() first. */
+    function plotX(wx) {
+      var f = _plotFrame;
+      return f.margin + (wx - f.xDomain[0]) * f.sx;
+    }
+
+    /** plotY(worldY) → screen px (y axis flipped). Requires setPlotFrame() first. */
+    function plotY(wy) {
+      var f = _plotFrame;
+      return f.height - f.margin - (wy - f.yDomain[0]) * f.sy;
+    }
+
+    function _registerPlot(handle) {
+      _plots.push(handle);
+      return handle;
+    }
+
+    function _unregisterPlot(handle) {
+      var i = _plots.indexOf(handle);
+      if (i >= 0) _plots.splice(i, 1);
+    }
+
+    function _resolveFn(value, vars) {
+      if (typeof value === 'function') return value;
+      return compileExpr(value, vars);
+    }
+
+    function _pointsAttr(points) {
+      return points.map(function (p) { return p[0] + ',' + p[1]; }).join(' ');
+    }
+
+    /**
+     * plotFunction(id, opts) → handle
+     *   opts: { expr | fn, variables=['x'], domain, samples=200,
+     *           stroke='#1f77b4', width=2, dashed=false }
+     * The drawn polyline is ALWAYS produced by sampling the compiled function
+     * across `domain`. Non-finite samples split the line into segments instead
+     * of drawing a spike.
+     */
+    function plotFunction(id, opts) {
+      opts = opts || {};
+      var vars = opts.variables || ['x'];
+      var group = _plotFrame.draw.group().attr('id', 'plot-' + id);
+      var handle = {
+        id: id,
+        node: group,
+        fn: opts.fn ? opts.fn : (opts.expr != null ? compileExpr(opts.expr, vars) : null),
+        domain: opts.domain || _plotFrame.xDomain.slice(),
+        samples: opts.samples || 200,
+        setExpr: function (src) { this.fn = _resolveFn(src, vars); return this.sample(); },
+        setFn: function (f) { this.fn = f; return this.sample(); },
+        setDomain: function (dm) { this.domain = dm; return this.sample(); },
+        remove: function () { group.remove(); _unregisterPlot(this); },
+        sample: function () {
+          group.clear();
+          if (!this.fn) return this;
+          var segs = _sampleSegments(this.fn, this.domain, this.samples);
+          for (var s = 0; s < segs.length; s++) {
+            if (segs[s].length < 2) continue;
+            var line = group.polyline(_pointsAttr(segs[s]))
+              .fill('none')
+              .stroke({
+                color: opts.stroke || '#1f77b4',
+                width: opts.width || 2,
+                linecap: 'round',
+                linejoin: 'round'
+              });
+            if (opts.dashed) line.attr('stroke-dasharray', '5,4');
+          }
+          return this;
+        }
+      };
+      return _registerPlot(handle).sample();
+    }
+
+    /** Sample fn across domain, splitting at non-finite values. → [[ [px,py], … ], …] */
+    function _sampleSegments(fn, domain, samples) {
+      var a = domain[0], b = domain[1], n = Math.max(2, samples | 0);
+      var segs = [], cur = [];
+      for (var i = 0; i < n; i++) {
+        var t = a + (b - a) * (i / (n - 1));
+        var v;
+        try { v = fn(t); } catch (e) { v = NaN; }
+        if (typeof v === 'number' && isFinite(v)) {
+          cur.push([plotX(t), plotY(v)]);
+        } else if (cur.length) {
+          segs.push(cur);
+          cur = [];
+        }
+      }
+      if (cur.length) segs.push(cur);
+      return segs;
+    }
+
+    /**
+     * fillBetween(id, opts) → handle
+     *   opts: { lower, upper, variables=['x'], domain, samples=200,
+     *           fill='#7fb3ff', opacity=0.45, stroke, strokeWidth=1 }
+     * `lower` / `upper` may be expression strings or functions. The polygon is
+     * built from EVERY sampled point on both boundaries, so a curved boundary
+     * produces a curved region with no caller involvement.
+     */
+    function fillBetween(id, opts) {
+      opts = opts || {};
+      var vars = opts.variables || ['x'];
+      var group = _plotFrame.draw.group().attr('id', 'fill-' + id);
+      var handle = {
+        id: id,
+        node: group,
+        lower: opts.lower != null ? _resolveFn(opts.lower, vars) : function () { return 0; },
+        upper: opts.upper != null ? _resolveFn(opts.upper, vars) : function () { return 0; },
+        domain: opts.domain || _plotFrame.xDomain.slice(),
+        samples: opts.samples || 200,
+        setLower: function (src) { this.lower = _resolveFn(src, vars); return this.sample(); },
+        setUpper: function (src) { this.upper = _resolveFn(src, vars); return this.sample(); },
+        setDomain: function (dm) { this.domain = dm; return this.sample(); },
+        remove: function () { group.remove(); _unregisterPlot(this); },
+        sample: function () {
+          group.clear();
+          var a = this.domain[0], b = this.domain[1], n = Math.max(2, this.samples | 0);
+          var top = [], bottom = [];
+          for (var i = 0; i < n; i++) {
+            var t = a + (b - a) * (i / (n - 1));
+            var lo, hi;
+            try { lo = this.lower(t); hi = this.upper(t); } catch (e) { lo = NaN; hi = NaN; }
+            if (isFinite(lo) && isFinite(hi)) {
+              top.push([plotX(t), plotY(hi)]);
+              bottom.push([plotX(t), plotY(lo)]);
+            }
+          }
+          if (top.length < 2) return this;
+          bottom.reverse();
+          var poly = group.polygon(_pointsAttr(top.concat(bottom)))
+            .fill({
+              color: opts.fill || '#7fb3ff',
+              opacity: (opts.opacity == null) ? 0.45 : opts.opacity
+            });
+          if (opts.stroke) {
+            poly.stroke({ color: opts.stroke, width: opts.strokeWidth || 1, linejoin: 'round' });
+          } else {
+            poly.stroke('none');
+          }
+          return this;
+        }
+      };
+      return _registerPlot(handle).sample();
+    }
+
+    /**
+     * plotParametric(id, opts) → handle
+     *   opts: { x, y, variables=['t'], tDomain=[0,1], samples=200, stroke, width }
+     */
+    function plotParametric(id, opts) {
+      opts = opts || {};
+      var vars = opts.variables || ['t'];
+      var group = _plotFrame.draw.group().attr('id', 'param-' + id);
+      var handle = {
+        id: id,
+        node: group,
+        fx: _resolveFn(opts.x, vars),
+        fy: _resolveFn(opts.y, vars),
+        tDomain: opts.tDomain || [0, 1],
+        samples: opts.samples || 200,
+        setX: function (src) { this.fx = _resolveFn(src, vars); return this.sample(); },
+        setY: function (src) { this.fy = _resolveFn(src, vars); return this.sample(); },
+        remove: function () { group.remove(); _unregisterPlot(this); },
+        sample: function () {
+          group.clear();
+          var a = this.tDomain[0], b = this.tDomain[1], n = Math.max(2, this.samples | 0);
+          var pts = [];
+          for (var i = 0; i < n; i++) {
+            var t = a + (b - a) * (i / (n - 1));
+            var vx, vy;
+            try { vx = this.fx(t); vy = this.fy(t); } catch (e) { vx = NaN; vy = NaN; }
+            if (isFinite(vx) && isFinite(vy)) pts.push([plotX(vx), plotY(vy)]);
+          }
+          if (pts.length >= 2) {
+            group.polyline(_pointsAttr(pts))
+              .fill('none')
+              .stroke({
+                color: opts.stroke || '#1f77b4', width: opts.width || 2,
+                linecap: 'round', linejoin: 'round'
+              });
+          }
+          return this;
+        }
+      };
+      return _registerPlot(handle).sample();
+    }
+
+    /** integrateSimpson(fn, a, b, n=200) → number. Composite Simpson's rule. */
+    function integrateSimpson(fn, a, b, n) {
+      n = Math.max(2, n || 200);
+      if (n % 2) n++;
+      var h = (b - a) / n, s = fn(a) + fn(b);
+      for (var i = 1; i < n; i++) s += fn(a + i * h) * ((i % 2) ? 4 : 2);
+      return (s * h) / 3;
+    }
+
+    /** findRoot(fn, a, b, tol=1e-9) → number | null. Bisection; null if no sign change. */
+    function findRoot(fn, a, b, tol) {
+      tol = tol || 1e-9;
+      var fa = fn(a), fb = fn(b);
+      if (!isFinite(fa) || !isFinite(fb) || fa * fb > 0) return null;
+      for (var i = 0; i < 200; i++) {
+        var m = (a + b) / 2, fm = fn(m);
+        if (!isFinite(fm)) return null;
+        if (Math.abs(fm) < tol || (b - a) / 2 < tol) return m;
+        if (fa * fm < 0) { b = m; } else { a = m; fa = fm; }
+      }
+      return (a + b) / 2;
+    }
+
+    /* ── Equation input binding ──────────────────────────────────────────── */
+    /**
+     * The error slot is keyed PER INPUT (id "eq-err-<inputId>"), never just
+     * "the first .eq-err under my parent": generated figures routinely put
+     * several equation inputs under one parent, and a shared slot means a valid
+     * edit of field B hides field A's still-current parse error, leaving A's
+     * curve stale with nothing on screen to explain why.
+     * The .eq-err class is kept so the scaffold CSS still applies.
+     *
+     * DUPLICATED: keep in sync with _equationErrorSlot in base_scene_new.html.
+     */
+    function _equationErrorSlot(input) {
+      var parent = input.parentNode || document.getElementById('ui');
+      if (input.id) {
+        var slotId = 'eq-err-' + input.id;
+        var byId = document.getElementById(slotId);
+        if (byId) return byId;
+        var namedSpan = document.createElement('span');
+        namedSpan.id = slotId;
+        namedSpan.className = 'eq-err';
+        namedSpan.style.display = 'none';
+        parent.appendChild(namedSpan);
+        return namedSpan;
+      }
+      var existing = parent.querySelector('.eq-err');
+      if (existing) return existing;
+      var span = document.createElement('span');
+      span.className = 'eq-err';
+      span.style.display = 'none';
+      parent.appendChild(span);
+      return span;
+    }
+
+    /**
+     * _resolveEqTarget(inputId, t) → function(fn, src)
+     * Turns one bindEquationInput target into a concrete applier, and THROWS on
+     * anything it cannot drive. Silently skipping an unrecognised target is the
+     * worst possible outcome: the figure renders, typing changes nothing, and
+     * nothing reports it. Throwing makes verify2dHtml catch the mistake at
+     * generation time instead of the student discovering it.
+     *
+     * DUPLICATED: keep in sync with _resolveEqTarget in base_scene_new.html.
+     */
+    function _resolveEqTarget(inputId, t) {
+      if (typeof t === 'function') {
+        return function (fn, src) { t(fn, src); };
+      }
+      if (t && t.handle) {
+        var method = t.method || 'setFn';
+        if (typeof t.handle[method] !== 'function') {
+          throw new Error(
+            'bindEquationInput("' + inputId + '"): target handle has no method "' + method +
+            '". Use { handle, method: \'...\' } with a method the handle really has ' +
+            '(plotFunction: setExpr, setFn; fillBetween: setLower, setUpper; ' +
+            'plotParametric: setX, setY).'
+          );
+        }
+        return function (fn) { t.handle[method](fn); };
+      }
+      if (t && typeof t.setFn === 'function') {
+        return function (fn) { t.setFn(fn); };
+      }
+      throw new Error(
+        'bindEquationInput("' + inputId + '"): this target cannot be driven — it is not a ' +
+        'function and has no .setFn. Handles without .setFn (fillBetween, plotParametric) ' +
+        'must be passed as { handle, method: \'setUpper\' } naming the setter to call.'
+      );
+    }
+
+    /**
+     * bindEquationInput(inputId, targets, opts) → { apply, input, errorSlot }
+     *   targets: a plot handle, a { handle, method } pair, a function(fn, src),
+     *            or an array of any of those.
+     *   opts   : { variables=['x'], onChange(fn, src) }
+     *
+     * On every valid edit, every target re-samples. On a parse error the last
+     * good curve is kept and the message is shown inline — this function NEVER
+     * substitutes a hardcoded default.
+     * Throws at bind time on a target it cannot drive (see _resolveEqTarget).
+     *
+     * DUPLICATED: keep in sync with bindEquationInput in base_scene_new.html.
+     */
+    function bindEquationInput(inputId, targets, opts) {
+      opts = opts || {};
+      var input = document.getElementById(inputId);
+      if (!input) throw new Error('bindEquationInput: no element with id "' + inputId + '"');
+      var vars = opts.variables || ['x'];
+      var list = Array.isArray(targets) ? targets : [targets];
+      var slot = _equationErrorSlot(input);
+      // Validated once, loudly, before anything is wired up.
+      var appliers = [];
+      for (var k = 0; k < list.length; k++) appliers.push(_resolveEqTarget(inputId, list[k]));
+
+      function apply(src) {
+        try {
+          // The dispatch is INSIDE the try as well: an error thrown while
+          // applying (a target callback that throws, a handle mutated later)
+          // would otherwise escape uncaught from the input event handler and
+          // leave the figure stale with no visible reason.
+          var fn = compileExpr(src, vars);
+          for (var i = 0; i < appliers.length; i++) appliers[i](fn, src);
+          if (typeof opts.onChange === 'function') opts.onChange(fn, src);
+        } catch (e) {
+          slot.textContent = e.message;
+          slot.style.display = '';
+          input.setAttribute('data-eq-valid', 'false');
+          return false;
+        }
+        slot.textContent = '';
+        slot.style.display = 'none';
+        input.setAttribute('data-eq-valid', 'true');
+        return true;
+      }
+
+      input.addEventListener('input', function () { apply(input.value); });
+      apply(input.value);
+      return { apply: apply, input: input, errorSlot: slot };
+    }
+
+    // @FIGURE_CODE_BEGIN
+var draw = SVG().addTo(document.getElementById('container')).size('100%','100%');
+var VW = 1180, VH = 400;
+draw.viewbox(0, 0, VW, VH);
+
+var CW = 52, CH = 44;
+var COLS = [95, 480, 865], ROWS = [55, 250];
+
+// ---- reference panels (faithful reconstruction of the source image) ----
+var PANELS = [
+  { label:'(a)', ox:COLS[0], oy:ROWS[0], values:[5,2,4,6,1,3], gray:[1], black:2, blackVal:2,
+    arrows:[{from:2,to:1,color:'black'},{from:1,to:2,color:'gray'}] },
+  { label:'(b)', ox:COLS[1], oy:ROWS[0], values:[2,5,4,6,1,3], gray:[1,2], black:3, blackVal:4,
+    arrows:[{from:3,to:2,color:'black'},{from:2,to:3,color:'gray'}] },
+  { label:'(c)', ox:COLS[2], oy:ROWS[0], values:[2,4,5,6,1,3], gray:[3], black:4, blackVal:6,
+    arrows:[{from:4,to:4,color:'black'}] },
+  { label:'(d)', ox:COLS[0], oy:ROWS[1], values:[2,4,5,6,1,3], gray:[1,2,3,4], black:5, blackVal:1,
+    arrows:[{from:5,to:1,color:'black'},{from:1,to:2,color:'gray'},{from:2,to:3,color:'gray'},{from:3,to:4,color:'gray'},{from:4,to:5,color:'gray'}] },
+  { label:'(e)', ox:COLS[1], oy:ROWS[1], values:[1,2,4,5,6,3], gray:[2,3,4,5], black:6, blackVal:3,
+    arrows:[{from:6,to:3,color:'black'},{from:3,to:4,color:'gray'},{from:4,to:5,color:'gray'},{from:5,to:6,color:'gray'}] },
+  { label:'(f)', ox:COLS[2], oy:ROWS[1], values:[1,2,3,4,5,6], gray:[], black:0, blackVal:0, arrows:[] }
+];
+
+function arrowHead(g, x, y, color){
+  g.polygon((x)+','+(y-3)+' '+(x-5)+','+(y+8)+' '+(x+5)+','+(y+8))
+    .fill(color).stroke('none');
+}
+function drawArrows(g, ox, oy, arrows){
+  var ybase = oy + CH + 10;
+  for (var k=0;k<arrows.length;k++){
+    var a = arrows[k];
+    var x1 = ox + (a.from-1)*CW + CW/2;
+    var x2 = ox + (a.to-1)*CW + CW/2;
+    var col = (a.color==='black') ? '#000' : '#888';
+    var sw  = (a.color==='black') ? 2 : 1.5;
+    if (a.from === a.to){
+      g.path('M '+x1+' '+ybase+' C '+(x1-20)+' '+(ybase+34)+' '+(x1+20)+' '+(ybase+34)+' '+x1+' '+ybase)
+        .fill('none').stroke({color:col, width:sw, linecap:'round'});
+      arrowHead(g, x1, ybase, col);
+    } else {
+      var depth = 26 + 11*Math.abs(a.to-a.from);
+      var mx = (x1+x2)/2;
+      g.path('M '+x1+' '+ybase+' Q '+mx+' '+(ybase+depth)+' '+x2+' '+ybase)
+        .fill('none').stroke({color:col, width:sw, linecap:'round'});
+      arrowHead(g, x2, ybase, col);
+    }
+  }
+}
+function drawPanelInto(g, ox, oy, values, graySet, blackIdx, blackVal, arrows, label, noteText, wrongArr){
+  g.clear();
+  // panel label
+  if (label) g.text(label).font({family:'Georgia, serif', size:20, weight:'bold'}).move(ox-52, oy+12).fill('#000');
+  var grayMap = {}; for (var q=0;q<graySet.length;q++) grayMap[graySet[q]]=true;
+  var wrongMap = {}; if (wrongArr) for (var w=0;w<wrongArr.length;w++) wrongMap[wrongArr[w]]=true;
+  for (var i=1;i<=values.length;i++){
+    var cx = ox + (i-1)*CW;
+    var isBlack = (i===blackIdx);
+    var fill = isBlack ? '#000' : (grayMap[i] ? '#C0C0C0' : '#fff');
+    var rect = g.rect(CW, CH).move(cx, oy).fill(fill).stroke({color:'#000', width:1});
+    if (wrongMap[i]) rect.stroke({color:'#c00000', width:3});
+    var shown = isBlack ? blackVal : values[i-1];
+    g.text(String(shown)).font({family:'Georgia, serif', size:20, weight: isBlack?'bold':'normal'})
+      .move(cx, oy+11).fill(isBlack ? '#fff' : '#000').attr({'text-anchor':'middle'})
+      .dx(CW/2);
+    // index label above
+    g.text(String(i)).font({family:'Georgia, serif', size:16}).move(cx, oy-22).fill('#000')
+      .attr({'text-anchor':'middle'}).dx(CW/2);
+  }
+  if (arrows && arrows.length) drawArrows(g, ox, oy, arrows);
+  if (noteText){
+    g.text(noteText).font({family:'sans-serif', size:11, style:'italic'}).move(ox, oy+CH+ (arrows&&arrows.length?70:14)).fill('#444');
+  }
+}
+
+// static reference groups
+var staticGroups = [];
+for (var p=0;p<PANELS.length;p++){
+  var gg = draw.group();
+  drawPanelInto(gg, PANELS[p].ox, PANELS[p].oy, PANELS[p].values, PANELS[p].gray, PANELS[p].black, PANELS[p].blackVal, PANELS[p].arrows, PANELS[p].label, null, null);
+  staticGroups.push(gg);
+}
+// live group sits over panel (a); hidden until a run happens
+var liveGroup = draw.group();
+liveGroup.hide();
+var liveActive = false;
+
+function initialArray(){
+  return parseArrayStr(document.getElementById('arrayInput').value);
+}
+function parseArrayStr(s){
+  var out=[]; var parts=String(s).split(/[,\s]+/);
+  for (var i=0;i<parts.length;i++){ if(parts[i]!==''){ var n=Number(parts[i]); if(isFinite(n)) out.push(n); } }
+  return out;
+}
+function showLive(on){
+  liveActive = on;
+  if (on){ staticGroups[0].hide(); liveGroup.show(); }
+  else { staticGroups[0].show(); liveGroup.hide(); }
+}
+
+// ---- worker source (trace-and-playback API) ----
+var WORKER_SRC = [
+"self.onmessage = function(e){",
+"  var d = e.data;",
+"  var arr = [null].concat(d.array);",
+"  var n = arr.length-1;",
+"  var frames = [];",
+"  var keyVal=null, keyPos=null, sortedPrefix=1, arrows=[], noteText='';",
+"  var opCount=0, MAXOPS=600, MAXFRAMES=400;",
+"  function snap(kind, indices, message){",
+"    if (frames.length>=MAXFRAMES) throw new Error('Frame cap exceeded (possible infinite loop)');",
+"    var st = { array: arr.slice(), n:n, sortedPrefix:sortedPrefix, keyPos:keyPos, keyVal:keyVal,",
+"               arrows: arrows.map(function(a){return {from:a.from,to:a.to,color:a.color};}), note: noteText };",
+"    var fr = { kind:kind, state:st, indices:indices, message:message };",
+"    frames.push(fr);",
+"    self.postMessage({type:'frame', frame:fr});",
+"  }",
+"  function get_key(j){ opCount++; if(opCount>MAXOPS) throw new Error('Op cap exceeded');",
+"    if(j<1||j>n) throw new Error('get_key: index '+j+' out of range 1..'+n);",
+"    keyVal=arr[j]; keyPos=j; sortedPrefix=j-1; arrows=[];",
+"    snap('get_key',[j],'extract key = A['+j+'] = '+keyVal); return keyVal; }",
+"  function compare_with_key(i){ opCount++; if(opCount>MAXOPS) throw new Error('Op cap exceeded');",
+"    if(i<1||i>n) throw new Error('compare_with_key: index '+i+' out of range');",
+"    var r = arr[i] > keyVal;",
+"    snap('compare',[i,keyPos],'compare A['+i+']='+arr[i]+' with key='+keyVal+'  ->  '+r); return r; }",
+"  function shift(i){ opCount++; if(opCount>MAXOPS) throw new Error('Op cap exceeded');",
+"    if(i<1||i+1>n) throw new Error('shift: index '+i+' out of range');",
+"    arr[i+1]=arr[i]; arrows.push({from:i,to:i+1,color:'gray'});",
+"    snap('shift',[i,i+1],'shift A['+i+']='+arr[i]+' right to position '+(i+1)); }",
+"  function insert(i){ opCount++; if(opCount>MAXOPS) throw new Error('Op cap exceeded');",
+"    if(i<1||i>n) throw new Error('insert: index '+i+' out of range');",
+"    arr[i]=keyVal; sortedPrefix=keyPos; arrows.push({from:keyPos,to:i,color:'black'});",
+"    snap('insert',[i],'insert key='+keyVal+' at position '+i); keyVal=null; keyPos=null; }",
+"  function note(msg){ opCount++; noteText=String(msg); snap('note',[],String(msg)); }",
+"  try {",
+"    var fn = new Function('get_key','compare_with_key','shift','insert','note',",
+"        d.code + '\\n;return (typeof '+d.entry+'===\"function\") ? '+d.entry+'() : null;');",
+"    fn(get_key,compare_with_key,shift,insert,note);",
+"    self.postMessage({type:'done', final: arr.slice()});",
+"  } catch(err){",
+"    self.postMessage({type:'error', message: String((err && err.message) || err), final: arr.slice()});",
+"  }",
+"};"
+].join("\n");
+
+// ---- run / playback state ----
+var framesArr=[], worker=null, runTimer=null, currentFrame=-1, playing=false, playTimer=null, wrongFlag=false;
+var SAMPLE = "function insertionSort() {\n  for (let j = 2; j <= 6; j++) {\n    get_key(j);\n    let i = j - 1;\n    while (i >= 1 && compare_with_key(i)) {\n      shift(i);\n      i = i - 1;\n    }\n    insert(i + 1);\n  }\n}";
+var BUGGY  = "function insertionSort() {\n  for (let j = 2; j <= 6; j++) {\n    get_key(j);\n    let i = j - 1;\n    while (i > 1 && compare_with_key(i)) {  // BUG: i > 1 misses position 1\n      shift(i);\n      i = i - 1;\n    }\n    insert(i + 1);\n  }\n}";
+var STARTER= "function insertionSort() {\n  // outer loop: j = 2 .. 6\n  //   get_key(j)\n  //   walk i leftward while compare_with_key(i): shift(i)\n  //   insert(i + 1)\n}";
+var REF    = SAMPLE;
+
+function setStatus(s, color){
+  var el=document.getElementById('statusReadout');
+  el.textContent='status: '+s; el.style.color = color||'#777';
+}
+function setCaption(t){ document.getElementById('frameCaption').textContent=t; }
+function logLine(t){ var l=document.getElementById('runLog'); l.textContent += t+'\n'; l.scrollTop=l.scrollHeight; }
+function clearLog(){ document.getElementById('runLog').textContent=''; }
+
+function stopPlayback(){ playing=false; if(playTimer){clearInterval(playTimer);playTimer=null;} var b=document.getElementById('playBtn'); if(b)b.textContent='▶'; }
+
+function wrongIndices(arr){
+  var bad=[]; for(var i=2;i<=arr.length;i++){ if(arr[i-1] < arr[i-2]){ bad.push(i-1); bad.push(i); } }
+  var uniq=[]; for(var k=0;k<bad.length;k++){ if(uniq.indexOf(bad[k])<0) uniq.push(bad[k]); }
+  return uniq;
+}
+function isSorted(arr){ for(var i=2;i<=arr.length;i++){ if(arr[i-1]<arr[i-2]) return false; } return true; }
+
+function lastState(){
+  if (framesArr.length){ return framesArr[framesArr.length-1].state; }
+  var a=initialArray(); return { array:[null].concat(a), n:a.length, sortedPrefix:1, keyPos:null, keyVal:null, arrows:[], note:'' };
+}
+function appendErrorFrame(msg){
+  var st=lastState();
+  framesArr.push({kind:'error', state:st, indices:[], message:'ERROR: '+msg});
+}
+
+function drawFrame(i){
+  currentFrame=i;
+  var st, note, wrong=null;
+  if (i<0 || !framesArr.length){
+    var a=initialArray();
+    st={ array:[null].concat(a), n:a.length, sortedPrefix:0, keyPos:null, keyVal:null, arrows:[], note:'' };
+    note='';
+  } else {
+    var fr=framesArr[i]; st=fr.state; note=fr.state.note||'';
+    if (wrongFlag && fr.kind==='error') wrong=wrongIndices(st.array.slice(1));
+  }
+  var graySet=[]; for(var g=1; g<=st.sortedPrefix; g++) graySet.push(g);
+  var vals = st.array.slice(1);
+  drawPanelInto(liveGroup, PANELS[0].ox, PANELS[0].oy, vals, graySet, st.keyPos||0, st.keyVal||0, st.arrows, '▶ live', note, wrong);
+  // counter + caption
+  document.getElementById('frameCounter').textContent = (i<0?0:(i+1))+' of '+framesArr.length;
+  if (i>=0 && framesArr[i]) setCaption(framesArr[i].message);
+}
+
+function finalize(finalArr, ok){
+  stopPlayback();
+  showLive(true);
+  if (!framesArr.length){ setStatus('error','#c00000'); setCaption('No operations were recorded. Did you call the API inside '+ 'insertionSort()?'); drawFrame(-1); return; }
+  wrongFlag = !isSorted(finalArr.slice(1));
+  if (ok && !wrongFlag){ setStatus('correct','#1a7f1a'); }
+  else if (!ok){ setStatus('error','#c00000'); }
+  else { setStatus('wrong answer','#c00000'); }
+  currentFrame = framesArr.length-1;
+  drawFrame(currentFrame);
+  if (wrongFlag){ setCaption('Final array NOT sorted — out-of-order cells outlined in red. Check your while-loop lower bound.'); }
+}
+
+function triggerRun(){
+  var code=document.getElementById('insertionSortEditorCode').value;
+  runCode(code,'insertionSort');
+}
+function runCode(code, entry){
+  stopPlayback(); framesArr=[]; currentFrame=-1; wrongFlag=false; clearLog();
+  setStatus('running','#b07000'); setCaption('running…');
+  var arr=initialArray();
+  if (arr.length<2){ setStatus('error','#c00000'); setCaption('Enter at least two comma-separated numbers.'); return; }
+  var url=URL.createObjectURL(new Blob([WORKER_SRC],{type:'application/javascript'}));
+  worker=new Worker(url);
+  var done=false;
+  var rb=document.getElementById('runBtn'); if(rb){rb.disabled=true;}
+  runTimer=setTimeout(function(){ if(!done){ done=true; try{worker.terminate();}catch(e){} URL.revokeObjectURL(url); appendErrorFrame('Timeout: code ran too long (>2s).'); finalize(lastState().array.slice(1), false); if(rb)rb.disabled=false; } },2000);
+  worker.onmessage=function(e){
+    var d=e.data;
+    if (d.type==='frame'){ framesArr.push(d.frame); logLine(d.frame.message); }
+    else if (d.type==='done'){ done=true; clearTimeout(runTimer); try{worker.terminate();}catch(er){} URL.revokeObjectURL(url); finalize(d.final.slice(1), true); if(rb)rb.disabled=false; }
+    else if (d.type==='error'){ done=true; clearTimeout(runTimer); try{worker.terminate();}catch(er){} URL.revokeObjectURL(url); appendErrorFrame(d.message); finalize(d.final.slice(1), false); if(rb)rb.disabled=false; }
+  };
+  worker.onerror=function(ev){ done=true; clearTimeout(runTimer); try{worker.terminate();}catch(er){} URL.revokeObjectURL(url); appendErrorFrame((ev&&ev.message)||'Syntax error in your code'); finalize(lastState().array.slice(1), false); if(rb)rb.disabled=false; };
+  worker.postMessage({code:code, entry:entry, array:arr});
+}
+
+// playback controls
+function pbFirst(){ stopPlayback(); if(framesArr.length) drawFrame(0); }
+function pbPrev(){ stopPlayback(); if(currentFrame>0) drawFrame(currentFrame-1); }
+function pbNext(){ stopPlayback(); if(currentFrame<framesArr.length-1) drawFrame(currentFrame+1); }
+function pbToggle(){
+  if(!framesArr.length) return;
+  if(playing){ stopPlayback(); return; }
+  playing=true; document.getElementById('playBtn').textContent='⏸';
+  if(currentFrame>=framesArr.length-1) currentFrame=-1;
+  var sp=+document.getElementById('speedInput').value;
+  playTimer=setInterval(function(){
+    if(currentFrame<framesArr.length-1){ drawFrame(currentFrame+1); }
+    else { stopPlayback(); }
+  }, 1100/sp);
+}
+
+// tabs
+function setTab(which){
+  var ta=document.getElementById('insertionSortEditorCode');
+  document.getElementById('tabSample').className = which==='sample'?'active':'';
+  document.getElementById('tabBuggy').className  = which==='buggy'?'active':'';
+  document.getElementById('tabStarter').className= which==='starter'?'active':'';
+  ta.value = which==='sample'?SAMPLE : which==='buggy'?BUGGY : STARTER;
+}
+
+// reveal reference
+var refShown=false;
+function trigger_showReference(){
+  refShown=!refShown;
+  document.getElementById('refCode').style.display = refShown?'block':'none';
+  document.getElementById('refCode').textContent = REF;
+  var b=document.getElementById('showReferenceInput');
+  b.textContent = refShown?'Hide reference solution':'Reveal reference solution';
+  b.className = refShown?'active':'';
+}
+function setShowRef(on){
+  if (on!==refShown) trigger_showReference();
+}
+
+// ---- demo step player ----
+var STEPS=[
+ { t:'The goal: grow a sorted prefix',
+   n:'The array starts as [5, 2, 4, 6, 1, 3]. Insertion sort processes elements left to right: after processing position j, positions 1 through j are sorted. Watch how each key is extracted (black cell) and inserted into the gray sorted prefix.',
+   apply:function(){ setShowRef(false); resetLive(); } },
+ { t:'Trace one iteration: key = 2',
+   n:'For j=2, the key is 2. compare_with_key(1) asks: is A[1]=5 > 2? Yes — so shift(1) copies 5 rightward to position 2. Now i=0, the loop ends, and insert(1) places 2 at position 1. The sorted prefix is now [2, 5].',
+   apply:function(){ setShowRef(false); document.getElementById('insertionSortEditorCode').value=SAMPLE; setTabKeep('sample'); runCode(SAMPLE,'insertionSort'); setTimeout(function(){ var idx=firstInsert(); if(idx>=0) drawFrame(idx); }, 60); } },
+ { t:'Your turn: write the full algorithm',
+   n:'Now implement the complete insertion sort using the five operations. The outer loop visits j = 2, 3, 4, 5, 6. For each j, extract the key, shift larger elements right, then insert. If your final array is not sorted, check your while-loop condition — an off-by-one on the lower bound is the most common bug.',
+   apply:function(){ setShowRef(false); resetLive(); } },
+ { t:'Compare with the reference',
+   n:'Reveal the reference solution and compare it line-by-line with yours. Notice how get_key, the while-loop with compare_with_key, shift, and insert correspond exactly to the visual operations in panels (a) through (f).',
+   apply:function(){ setShowRef(true); } }
+];
+function setTabKeep(w){ document.getElementById('tabSample').className=w==='sample'?'active':''; document.getElementById('tabBuggy').className=w==='buggy'?'active':''; document.getElementById('tabStarter').className=w==='starter'?'active':''; }
+function firstInsert(){ for(var i=0;i<framesArr.length;i++){ if(framesArr[i].kind==='insert') return i; } return framesArr.length-1; }
+function resetLive(){ stopPlayback(); framesArr=[]; currentFrame=-1; wrongFlag=false; clearLog(); showLive(false); setStatus('not run','#777'); setCaption('Run the code to trace execution.'); document.getElementById('frameCounter').textContent='0 of 0'; }
+var curStep=0;
+function renderStep(){
+  document.getElementById('demoNarration').textContent=STEPS[curStep].n;
+  document.getElementById('stepLabel').textContent='Step '+(curStep+1)+' / '+STEPS.length;
+  STEPS[curStep].apply();
+}
+function nextStep(){ if(curStep<STEPS.length-1){ curStep++; renderStep(); } }
+function prevStep(){ if(curStep>0){ curStep--; renderStep(); } }
+
+// init
+setTab('sample');
+resetLive();
+renderStep();
+window.__markRendered();
+// @FIGURE_CODE_END
+
+    // Decide the panel layout once the generated UI exists. Runs last so it sees
+    // the final #ui content; a setUiLayout() call in the block above wins.
+    _autoUiLayout();
+  </script>
+</body>
+
+</html>
