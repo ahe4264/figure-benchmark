@@ -1,4 +1,4 @@
-import { useState, useEffect, useMemo, useCallback } from 'react'
+import { useState, useEffect, useMemo, useCallback, useRef } from 'react'
 import { styles } from './styles.js'
 import {
   DIMENSIONS, DIM_LABELS_SHORT,
@@ -245,6 +245,17 @@ export default function PairwiseTab() {
     }
   }, [])
 
+  // The panel opens from a link as well as from a click, so the first fetch hangs
+  // off it being open rather than off the click. One shot, tracked by a ref: on a
+  // failed fetch `rankings` stays null, and keying this on that would retry — and
+  // re-alert — forever. The Refresh button covers deliberate refetches.
+  const rankingsAutoLoaded = useRef(false)
+  useEffect(() => {
+    if (!rankingsOpen || rankingsAutoLoaded.current) return
+    rankingsAutoLoaded.current = true
+    loadRankings(rankingsSelectedSetups)
+  }, [rankingsOpen, rankingsSelectedSetups, loadRankings])
+
   /** Point the ranking at a set of setups and refetch it. */
   const applyRankingSetups = useCallback(next => {
     const isAll = next.length === rankingsAvailableSetups.length
@@ -269,9 +280,6 @@ export default function PairwiseTab() {
   // than inside the tables because they stay on screen when a card is collapsed.
   const machineSummary = useMemo(() => {
     const scored = mergedRows.filter(r => r.machineEval?.aggregator)
-    const avgConf = scored.length > 0
-      ? scored.reduce((s, r) => s + r.machineEval.aggregator.confidence, 0) / scored.length
-      : null
     return [
       { label: 'Evaluated', text: `${scored.length} / ${mergedRows.length}` },
       ...DIMENSIONS.map(d => ({
@@ -279,7 +287,6 @@ export default function PairwiseTab() {
         ...tally(mergedRows, r => r.machineEval?.dimensions?.[d]?.winner, setupA, setupB),
       })),
       { label: 'Overall', ...tally(mergedRows, r => r.machineEval?.aggregator?.winner, setupA, setupB) },
-      { label: 'Avg conf', text: avgConf === null ? null : `${(avgConf * 100).toFixed(0)}%` },
     ]
   }, [mergedRows, setupA, setupB])
 
@@ -327,10 +334,7 @@ export default function PairwiseTab() {
         {/* Panel 1 — Rankings (Bradley-Terry) */}
         <div style={styles.pwCard}>
           <div style={{ ...styles.pwCardTitle, cursor: 'pointer', userSelect: 'none', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}
-            onClick={() => {
-              togglePanel('rankings')
-              if (!rankingsOpen && !rankings) loadRankings(rankingsSelectedSetups)
-            }}>
+            onClick={() => togglePanel('rankings')}>
             <span>{rankingsOpen ? '▾' : '▸'} Rankings (Bradley-Terry)</span>
             {rankingsOpen && (
               <button style={styles.pwLinkBtn}
@@ -715,7 +719,7 @@ function SummaryStrip({ items }) {
           <span style={styles.pwSummaryLabel}>{it.label}</span>
           <span style={styles.pwSummaryCounts}>
             {'text' in it
-              ? (it.text ?? <span style={styles.pwMuted}>—</span>)
+              ? it.text
               : it.n === 0
                 ? <span style={styles.pwMuted}>—</span>
                 : <>
