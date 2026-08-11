@@ -1,192 +1,91 @@
-import { useState, useEffect, useMemo, useCallback } from 'react';
+import { useState, useEffect } from 'react';
 import './App.css';
+import FigureViewer from './components/FigureViewer.jsx';
+import ExperimentViewer from './components/ExperimentViewer.jsx';
+import PairwiseTab from './components/pairwise/PairwiseTab.jsx';
+import HumanEvalPage from './components/pairwise/HumanEvalPage.jsx';
+import OutputPage from './components/OutputPage.jsx';
 
-const SUBJECTS = ['math', 'cs', 'physics', 'chemistry'];
-const TYPES = ['2d', '3d'];
+const TABS = [
+  { id: 'figures', label: 'Figures' },
+  { id: 'outputs', label: 'Outputs' },
+  { id: 'benchmark', label: 'Benchmark' },
+];
 
-function Badge({ kind, value }) {
-  return <span className={`badge badge-${kind}-${value}`}>{value}</span>;
-}
+const TAB_STORAGE_KEY = 'activeTab';
 
-function FigureCard({ fig, onClick }) {
-  const src = `/images/${fig.subject}/${fig.type}/${fig.stem}${fig.ext || '.png'}`;
-  return (
-    <div className="card" onClick={() => onClick(fig)} role="button" tabIndex={0}
-      onKeyDown={e => (e.key === 'Enter' || e.key === ' ') && onClick(fig)}>
-      <div className="card-img-wrap">
-        <img src={src} alt={fig.stem} loading="lazy" />
-      </div>
-      <div className="card-meta">
-        <span className="card-stem">{fig.stem}</span>
-        <div className="card-badges">
-          <Badge kind="subject" value={fig.subject} />
-          <Badge kind="type" value={fig.type} />
-        </div>
-      </div>
-    </div>
-  );
-}
-
-function InteractionsList({ text }) {
-  if (!text) return null;
-  const items = text.split('\n').map(l => l.replace(/^[-•]\s*/, '').trim()).filter(Boolean);
-  return (
-    <ul className="modal-interactions-list">
-      {items.map((item, i) => <li key={i}>{item}</li>)}
-    </ul>
-  );
-}
-
-function FigureModal({ fig, ctx, onClose }) {
-  const src = `/images/${fig.subject}/${fig.type}/${fig.stem}${fig.ext || '.png'}`;
-
+/**
+ * Hash routing rather than history routing: the human evaluator and the
+ * single-output view each open in their own browser tab, and a hash URL needs no
+ * rewrite rule to survive a hard load on a static host.
+ */
+function useHashRoute() {
+  const [hash, setHash] = useState(() => window.location.hash);
   useEffect(() => {
-    const handler = e => { if (e.key === 'Escape') onClose(); };
-    window.addEventListener('keydown', handler);
-    return () => window.removeEventListener('keydown', handler);
-  }, [onClose]);
+    const onChange = () => setHash(window.location.hash);
+    window.addEventListener('hashchange', onChange);
+    return () => window.removeEventListener('hashchange', onChange);
+  }, []);
 
-  return (
-    <div className="modal-backdrop" onClick={onClose}>
-      <div className="modal-panel" onClick={e => e.stopPropagation()}>
-        <button className="modal-close" onClick={onClose} aria-label="Close">✕</button>
-
-        <div className="modal-body">
-          <div className="modal-img-pane">
-            <img src={src} alt={fig.stem} className="modal-img" />
-          </div>
-
-          <div className="modal-info-pane">
-            <div className="modal-fig-header">
-              <span className="modal-stem">{fig.stem}</span>
-              <div className="card-badges">
-                <Badge kind="subject" value={fig.subject} />
-                <Badge kind="type" value={fig.type} />
-              </div>
-            </div>
-
-            {ctx?.['input prompt'] && (
-              <section className="modal-section">
-                <h3 className="modal-section-label">Input Prompt</h3>
-                <p className="modal-section-text">{ctx['input prompt']}</p>
-              </section>
-            )}
-
-            {ctx?.interactions && (
-              <section className="modal-section">
-                <h3 className="modal-section-label">Interactions</h3>
-                <InteractionsList text={ctx.interactions} />
-              </section>
-            )}
-
-            {ctx?.context && (
-              <section className="modal-section">
-                <h3 className="modal-section-label">Context</h3>
-                <p className="modal-section-text modal-context">{ctx.context}</p>
-              </section>
-            )}
-
-            {ctx?.source && (
-              <div className="modal-source">Source: {ctx.source}</div>
-            )}
-          </div>
-        </div>
-      </div>
-    </div>
-  );
-}
-
-function FilterGroup({ label, options, value, onChange }) {
-  return (
-    <div className="filter-group">
-      <span className="filter-label">{label}</span>
-      <div className="filter-options">
-        <button
-          className={`filter-btn${value === 'all' ? ' active' : ''}`}
-          onClick={() => onChange('all')}
-        >All</button>
-        {options.map(opt => (
-          <button
-            key={opt}
-            className={`filter-btn${value === opt ? ' active' : ''}`}
-            onClick={() => onChange(opt)}
-          >{opt}</button>
-        ))}
-      </div>
-    </div>
-  );
+  const qIndex = hash.indexOf('?');
+  return {
+    route: (qIndex >= 0 ? hash.slice(1, qIndex) : hash.slice(1)),
+    params: new URLSearchParams(qIndex >= 0 ? hash.slice(qIndex + 1) : ''),
+  };
 }
 
 export default function App() {
-  const [figures, setFigures] = useState([]);
-  const [contexts, setContexts] = useState({});
-  const [subject, setSubject] = useState('all');
-  const [type, setType] = useState('all');
-  const [loading, setLoading] = useState(true);
-  const [selected, setSelected] = useState(null);
+  const { route, params } = useHashRoute();
+  const [tab, setTab] = useState(() => {
+    try {
+      const saved = localStorage.getItem(TAB_STORAGE_KEY);
+      return TABS.some(t => t.id === saved) ? saved : 'figures';
+    } catch { return 'figures'; }
+  });
 
-  useEffect(() => {
-    Promise.all([
-      fetch('/figures.json').then(r => r.json()),
-      fetch('/contexts_export.json').then(r => r.json()).catch(() => []),
-    ]).then(([figs, ctxs]) => {
-      setFigures(figs);
-      const map = {};
-      ctxs.forEach(c => { if (c.figure_id) map[c.figure_id] = c; });
-      setContexts(map);
-      setLoading(false);
-    }).catch(() => setLoading(false));
-  }, []);
+  const selectTab = id => {
+    setTab(id);
+    try { localStorage.setItem(TAB_STORAGE_KEY, id); } catch { /* private mode */ }
+  };
 
-  const filtered = useMemo(() => figures.filter(f =>
-    (subject === 'all' || f.subject === subject) &&
-    (type === 'all' || f.type === type)
-  ), [figures, subject, type]);
+  if (route === 'human-eval') {
+    return (
+      <HumanEvalPage
+        setupA={params.get('setupA') || ''}
+        setupB={params.get('setupB') || ''}
+      />
+    );
+  }
 
-  const handleCardClick = useCallback(fig => setSelected(fig), []);
-  const handleClose = useCallback(() => setSelected(null), []);
+  if (route === 'output') {
+    return (
+      <OutputPage
+        setup={params.get('setup') || ''}
+        stem={params.get('stem') || ''}
+        subject={params.get('subject') || ''}
+        type={params.get('type') || ''}
+      />
+    );
+  }
 
   return (
-    <div className="layout">
-      <aside className="sidebar">
-        <div className="sidebar-header">
-          <div className="sidebar-title">Benchmark Figures</div>
+    <div className="app-shell">
+      <nav className="tab-bar">
+        {TABS.map(t => (
+          <button
+            key={t.id}
+            className={`tab-btn${tab === t.id ? ' active' : ''}`}
+            onClick={() => selectTab(t.id)}
+          >{t.label}</button>
+        ))}
+      </nav>
+
+      {tab === 'figures' && <FigureViewer />}
+      {tab === 'outputs' && <ExperimentViewer />}
+      {tab === 'benchmark' && (
+        <div className="tab-panel-benchmark">
+          <PairwiseTab />
         </div>
-
-        <nav className="filters">
-          <FilterGroup label="Subject" options={SUBJECTS} value={subject} onChange={setSubject} />
-          <FilterGroup label="Type" options={TYPES} value={type} onChange={setType} />
-        </nav>
-
-        <div className="sidebar-count">
-          {loading ? '—' : `${filtered.length} of ${figures.length} figures`}
-        </div>
-      </aside>
-
-      <main className="main">
-        {loading ? (
-          <div className="state-msg">Loading figures…</div>
-        ) : filtered.length === 0 ? (
-          <div className="state-msg">No figures match these filters.</div>
-        ) : (
-          <div className="grid">
-            {filtered.map(fig => (
-              <FigureCard
-                key={`${fig.subject}-${fig.type}-${fig.stem}`}
-                fig={fig}
-                onClick={handleCardClick}
-              />
-            ))}
-          </div>
-        )}
-      </main>
-
-      {selected && (
-        <FigureModal
-          fig={selected}
-          ctx={contexts[selected.stem]}
-          onClose={handleClose}
-        />
       )}
     </div>
   );
