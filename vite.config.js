@@ -93,11 +93,18 @@ function staticExportPlugin() {
       // that never evaluates anything.
       const { scanSetups, EXPERIMENTS_DIR } = await import('./server/setups.js')
       const { trimRankingRecord } = await import('./src/lib/rankings.js')
+      const { JUDGES, staticPrefixFor, HUMAN_STATIC_PREFIX } = await import('./src/lib/judges.js')
+      const { resultsDirFor, HUMAN_RESULTS_DIR } = await import('./server/judges.js')
+      const { pairKey } = await import('./src/lib/pairs.js')
 
       if (!fs.existsSync(EXPERIMENTS_DIR)) {
         console.warn('[static-export] no experiments/ directory — the Outputs and Benchmark tabs will be empty in this build.')
         writeJson(path.join(apiDir, 'setups.json'), { setups: [] })
-        writeJson(path.join(apiDir, 'ranking-records.json'), [])
+        // One empty record set per ranking source, at the paths src/api.js asks for.
+        for (const judge of Object.keys(JUDGES)) {
+          writeJson(path.join(apiDir, staticPrefixFor(judge), 'ranking-records.json'), [])
+        }
+        writeJson(path.join(apiDir, HUMAN_STATIC_PREFIX, 'ranking-records.json'), [])
         return
       }
 
@@ -134,28 +141,66 @@ function staticExportPlugin() {
       }))
       writeJson(path.join(apiDir, 'setups.json'), { setups: exported })
 
-      // One file per pair, byte-identical to benchmark_results/<pair>.json.
-      const resultsDir = path.resolve(__dirname, 'benchmark_results')
-      const allRecords = []
-      let pairs = 0
-      if (fs.existsSync(resultsDir)) {
-        for (const file of fs.readdirSync(resultsDir)) {
+      // One file per pair per judge, byte-identical to the source .json. The
+      // published layout mirrors benchmark_results/ exactly: one directory per
+      // judge, plus the shared human set, and nothing loose at the root.
+      /** Copy a result directory into the export, returning its records. */
+      const exportResultDir = (srcDir, prefix) => {
+        const out = []
+        let pairs = 0
+        if (!fs.existsSync(srcDir)) return { records: out, pairs }
+        for (const file of fs.readdirSync(srcDir)) {
+          // Skips a nested judge directory as a side effect, which is the same
+          // rule the server reads by.
           if (!file.endsWith('.json')) continue
-          const src = path.join(resultsDir, file)
-          fs.mkdirSync(path.join(apiDir, 'results'), { recursive: true })
-          fs.copyFileSync(src, path.join(apiDir, 'results', file))
+          const src = path.join(srcDir, file)
+          const dest = path.join(apiDir, 'results', prefix, file)
+          fs.mkdirSync(path.dirname(dest), { recursive: true })
+          fs.copyFileSync(src, dest)
           pairs++
-          try { allRecords.push(...Object.values(JSON.parse(fs.readFileSync(src, 'utf8')))) }
-          catch { console.warn(`[static-export] ${file} is not valid JSON — skipped for rankings`) }
+          try { out.push(...Object.values(JSON.parse(fs.readFileSync(src, 'utf8')))) }
+          catch { console.warn(`[static-export] ${prefix}${file} is not valid JSON — skipped for rankings`) }
         }
+        return { records: out, pairs }
       }
 
-      // Rankings are computed in the browser from these, so the setup filter keeps
-      // working. Trimmed to winners — the rationales are megabytes and unused here.
-      const records = allRecords.map(trimRankingRecord)
-      writeJson(path.join(apiDir, 'ranking-records.json'), records)
+      // Human verdicts are judge-independent, so they are exported once and then
+      // merged into every judge's ranking records — the same shape the dev API
+      // serves, so the browser ranks a deployed build identically.
+      const human = exportResultDir(HUMAN_RESULTS_DIR, HUMAN_STATIC_PREFIX)
+      const humanByKey = new Map(
+        human.records.map(r => [`${pairKey(r.setupA, r.setupB)} ${r.subject}__${r.figure}`, r]),
+      )
+      // The humans rank as a judge in their own right, so they get a record set
+      // of their own rather than being read out of some machine judge's file.
+      writeJson(path.join(apiDir, HUMAN_STATIC_PREFIX, 'ranking-records.json'), human.records.map(trimRankingRecord))
 
-      console.log(`[static-export] ${exported.length} setups, ${copied} figures, ${shots} screenshots, ${pairs} pair files, ${records.length} ranking records`)
+      const perJudge = []
+      for (const judge of Object.keys(JUDGES)) {
+        const prefix = staticPrefixFor(judge)
+        const { records: machine, pairs } = exportResultDir(resultsDirFor(judge), prefix)
+
+        const seen = new Set()
+        const merged = machine.map(r => {
+          const key = `${pairKey(r.setupA, r.setupB)} ${r.subject}__${r.figure}`
+          seen.add(key)
+          return { ...r, humanEvals: humanByKey.get(key)?.humanEvals ?? [] }
+        })
+        // A figure judged by a human before this judge ever reached it still
+        // belongs in the human ranking.
+        for (const [key, r] of humanByKey) if (!seen.has(key)) merged.push({ ...r, machineEval: null })
+
+        // Rankings are computed in the browser from these, so the setup filter and
+        // the layer filter keep working with no server. Trimmed to winners — the
+        // rationales are megabytes and unused here.
+        const records = merged.map(trimRankingRecord)
+        writeJson(path.join(apiDir, prefix, 'ranking-records.json'), records)
+        perJudge.push(`${judge}: ${pairs} pair files, ${records.length} records`)
+      }
+
+      console.log(`[static-export] ${exported.length} setups, ${copied} figures, ${shots} screenshots`)
+      for (const line of perJudge) console.log(`[static-export]   ${line}`)
+      console.log(`[static-export]   human: ${human.pairs} pair files, ${human.records.length} verdicts`)
     },
   }
 }

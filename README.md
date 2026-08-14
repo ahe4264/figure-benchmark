@@ -107,10 +107,22 @@ and viewpoint, the other forbids judging them — selected from the figure's `ty
 `figures.json`. The other four dimensions share a single prompt with the medium's
 preamble swapped in, so they cannot drift apart.
 
-Results are written to `benchmark_results/<setupA>_vs_<setupB>.json` — one file per
-pair, keyed by `<subject>__<stem>` — and re-runs skip figures that already have a
-machine evaluation. The tab also has a side-by-side comparison viewer and
+Results are written to `benchmark_results/<judge>/<setupA>_vs_<setupB>.json` — one
+file per pair, keyed by `<subject>__<stem>` — and re-runs skip figures that already
+have a machine evaluation. The tab also has a side-by-side comparison viewer and
 Bradley-Terry rankings across every pair file, overall and per dimension.
+
+Each judge keeps a result set of its own — `benchmark_results/gemini/` and
+`benchmark_results/gpt5.5/` — because verdicts from two judges disagree, and a
+ranking over a mixture of them ranks nothing in particular. Pick the judge in the
+Benchmark tab or with `--model`; it decides both which results you are looking at
+and where a new run writes, and each is planned and resumed on its own progress.
+Human verdicts sit apart from all of them in `benchmark_results/human/`, since a
+human judgement is the ground truth every judge is measured against rather than one
+more opinion to file beside them — so it is recorded once and shown under every
+judge. The rankings table can also be restricted to one layer of the design:
+**Ablation** for the within-model pipeline pairs, **Rotation** for the cross-model
+round robin, which is the only place two models ever meet. See `server/judges.js`.
 
 ### Human evaluation
 

@@ -2,7 +2,7 @@ import { useState, useEffect, useMemo, useRef, useCallback } from 'react'
 import { styles } from './styles.js'
 import { htmlUrl, imageUrl } from './helpers.js'
 import {
-  READ_ONLY, fetchMatchingFigures, fetchResults, fetchHtml,
+  READ_ONLY, fetchMatchingFigures, fetchHumanResults, fetchHtml,
   submitHumanEval, clearHumanEval,
 } from '../../api.js'
 
@@ -38,7 +38,7 @@ export default function HumanEvalPage({ setupA, setupB }) {
 
   useEffect(() => {
     let cancelled = false
-    Promise.all([fetchMatchingFigures(setupA, setupB), fetchResults(setupA, setupB)])
+    Promise.all([fetchMatchingFigures(setupA, setupB), fetchHumanResults(setupA, setupB)])
       .then(([matching, results]) => {
         if (cancelled) return
         setFigures(shuffled(matching).map(fig => ({ fig, leftIsA: Math.random() < 0.5 })))
@@ -139,7 +139,7 @@ export default function HumanEvalPage({ setupA, setupB }) {
       <div style={styles.pwEvalRoot}>
         <div style={styles.pwEvalBody}>
           <div style={styles.pwEvalNotice}>
-            Human evaluation writes to <code>benchmark_results/</code>, which this deployed
+            Human evaluation writes to <code>benchmark_results/human/</code>, which this deployed
             build has no server to do. Run the site locally with <code>npm run dev</code> to judge figures.
           </div>
         </div>

@@ -12,6 +12,7 @@
 
 import { joinMatchingFigures, pairKey } from './lib/pairs.js'
 import { buildRankings } from './lib/rankings.js'
+import { availableJudges, rankingSources, rankingSourceFor, staticPrefixFor, HUMAN_STATIC_PREFIX } from './lib/judges.js'
 
 /** True when there is no API behind this build: viewing works, running doesn't. */
 export const READ_ONLY = !import.meta.env.DEV
@@ -44,6 +45,30 @@ export async function fetchModels() {
   return Array.isArray(models) ? models : []
 }
 
+/**
+ * The judges that have a result set of their own.
+ *
+ * Unlike fetchModels this is *not* empty in a read-only build: a deployed site
+ * cannot run an evaluation but can still browse either judge's finished results,
+ * and the list is static data rather than a server capability.
+ */
+export async function fetchJudges() {
+  if (READ_ONLY) return availableJudges()
+  const judges = await getJson('/api/judges', [])
+  return Array.isArray(judges) && judges.length ? judges : availableJudges()
+}
+
+/**
+ * The judges a ranking can be built from — every machine judge, plus the humans.
+ * A superset of fetchJudges: you can rank by human verdicts but cannot run an
+ * evaluation with them.
+ */
+export async function fetchRankingSources() {
+  if (READ_ONLY) return rankingSources()
+  const sources = await getJson('/api/ranking-sources', [])
+  return Array.isArray(sources) && sources.length ? sources : rankingSources()
+}
+
 /** @returns {Promise<Array<{id, figures}>>} every experiment and its figures. */
 export async function fetchSetups() {
   const data = READ_ONLY ? await staticSetups() : await getJson('/api/setups', { setups: [] })
@@ -62,29 +87,62 @@ export async function fetchMatchingFigures(setupA, setupB) {
   return data.matchingFigures || []
 }
 
-/** @returns {Promise<Array>} stored records for one pair. */
-export async function fetchResults(setupA, setupB) {
+/** @returns {Promise<Array>} stored records for one pair, from one judge. */
+export async function fetchResults(setupA, setupB, judge) {
   if (READ_ONLY) {
-    // The exported file is the raw pair dict, keyed <subject>__<figure>.
-    const dict = await getJson(`${STATIC_ROOT}/results/${pairKey(setupA, setupB)}.json`, {})
+    // The exported file is the raw pair dict, keyed <subject>__<figure>. The
+    // prefix is empty for the default judge, so its URLs are unchanged.
+    const dict = await getJson(`${STATIC_ROOT}/results/${staticPrefixFor(judge)}${pairKey(setupA, setupB)}.json`, {})
     return Object.values(dict)
   }
+  const qs = judge ? `?judge=${encodeURIComponent(judge)}` : ''
   const data = await getJson(
-    `/api/pairwise/results/${encodeURIComponent(setupA)}/${encodeURIComponent(setupB)}`, [])
+    `/api/pairwise/results/${encodeURIComponent(setupA)}/${encodeURIComponent(setupB)}${qs}`, [])
   return Array.isArray(data) ? data : []
 }
 
 /**
  * @param {string[]|null} selection restrict to comparisons between these setups
- * @returns {Promise<{machine, human, availableSetups}>}
+ * @param {object} [opts]
+ * @param {string} [opts.judge] whose verdicts to rank — a machine judge id, or
+ *   'human' for the shared human result set. Defaults to the default judge.
+ * @param {'all'|'ablation'|'rotation'} [opts.layer] which layer of the design
+ * @returns {Promise<{groups, availableSetups, layer, source}>}
  */
-export async function fetchRankings(selection) {
+export async function fetchRankings(selection, { judge, layer = 'all' } = {}) {
+  const empty = { groups: [], availableSetups: [], layer, source: 'machine' }
   if (READ_ONLY) {
-    const records = await getJson(`${STATIC_ROOT}/ranking-records.json`, [])
-    return buildRankings(records, selection)
+    // buildRankings is the same function the server calls, so a deployed build
+    // splits and filters itself rather than needing a table pre-computed per mode.
+    const { id, kind } = rankingSourceFor(judge)
+    const prefix = kind === 'human' ? HUMAN_STATIC_PREFIX : staticPrefixFor(id)
+    const records = await getJson(`${STATIC_ROOT}/${prefix}ranking-records.json`, [])
+    return buildRankings(records, selection, { layer, source: kind })
   }
-  const qs = selection !== null ? '?setups=' + selection.map(encodeURIComponent).join(',') : ''
-  return getJson('/api/pairwise/rankings' + qs, { machine: {}, human: {}, availableSetups: [] })
+  const params = new URLSearchParams()
+  if (selection !== null) params.set('setups', selection.join(','))
+  if (judge) params.set('judge', judge)
+  if (layer && layer !== 'all') params.set('layer', layer)
+  const qs = params.toString()
+  return getJson('/api/pairwise/rankings' + (qs ? `?${qs}` : ''), empty)
+}
+
+/**
+ * Human verdicts for one pair, without any judge's machine verdicts.
+ *
+ * The judging page only needs to know which figures are already done, and a
+ * judge's rationales run to megabytes, so this is a separate read rather than a
+ * filter over fetchResults.
+ */
+export async function fetchHumanResults(setupA, setupB) {
+  if (!setupA || !setupB || setupA === setupB) return []
+  if (READ_ONLY) {
+    const dict = await getJson(`${STATIC_ROOT}/results/${HUMAN_STATIC_PREFIX}${pairKey(setupA, setupB)}.json`, {})
+    return Object.values(dict)
+  }
+  const data = await getJson(
+    `/api/pairwise/human-results/${encodeURIComponent(setupA)}/${encodeURIComponent(setupB)}`, [])
+  return Array.isArray(data) ? data : []
 }
 
 /** Fetch a generated figure's markup, for the srcDoc-rendered comparison views. */
@@ -128,7 +186,8 @@ export function clearHumanEval(body) {
   return send('/api/pairwise/human-evaluate', 'DELETE', body)
 }
 
-export function deleteMachineEval(setupA, setupB, subject, figure) {
+export function deleteMachineEval(setupA, setupB, subject, figure, judge) {
   const seg = [setupA, setupB, subject, figure].filter(Boolean).map(encodeURIComponent).join('/')
-  return send(`/api/pairwise/machine-eval/${seg}`, 'DELETE')
+  const qs = judge ? `?judge=${encodeURIComponent(judge)}` : ''
+  return send(`/api/pairwise/machine-eval/${seg}${qs}`, 'DELETE')
 }
