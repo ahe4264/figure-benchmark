@@ -1,0 +1,407 @@
+{
+  "math__14.1.3": {
+    "setupA": "baseline-gemini_FINAL",
+    "setupB": "baseline-qwen_FINAL",
+    "subject": "math",
+    "figure": "14.1.3",
+    "machineEval": {
+      "figure1Setup": "baseline-gemini_FINAL",
+      "figure2Setup": "baseline-qwen_FINAL",
+      "mode": "3d",
+      "dimensions": {
+        "geometry": {
+          "winner": "baseline-gemini_FINAL",
+          "confidence": 0.98,
+          "rationale": "Figure 1 at least constructs the intended 3D Riemann-sum volume geometry with axes, base region, grid, surface, walls, and a sample column, whereas Figure 2 contains a Three.js API error in the axis arrow setup (`quaternion.setFromUnitVector` instead of `setFromUnitVectors`) that would stop the figure from rendering at all, making its geometric reconstruction effectively absent."
+        },
+        "interactivity": {
+          "winner": "baseline-gemini_FINAL",
+          "confidence": 0.97,
+          "rationale": "Figure 1’s equation input is wired to update the surface, walls, highlighted column, height label, point label, and volume estimate, and its drag handler moves the representative subrectangle/sample point within the base region. Figure 2 is effectively nonfunctional because initialization calls the nonexistent Three.js method quaternion.setFromUnitVector instead of setFromUnitVectors, causing a runtime error before the authored controls and interactions can work; even aside from that, its height/volume display clamps negative or near-zero function values rather than reporting the actual f(xk*,yk*) value."
+        },
+        "faithfulness": {
+          "winner": "baseline-gemini_FINAL",
+          "confidence": 0.99,
+          "rationale": "Figure 1 is clearly recognizable as the textbook Riemann-sum volume diagram, with a translucent blue surface, gridded base region, orange sample column, axes, and height/volume/area annotations in roughly the right composition. Figure 2 shows only a single diagonal line and a small control panel, missing the surface, base region, column, axes, labels, and overall structure, so it is not visually faithful to the reference."
+        },
+        "labels": {
+          "winner": "baseline-gemini_FINAL",
+          "confidence": 0.98,
+          "rationale": "Figure 1 includes most of the key diagram annotations such as z, x/y axes, z = f(x,y), height, volume, area, and the sample point, whereas Figure 2 essentially lacks the textbook figure's labels and shows only a minimal UI formula/instruction with no meaningful diagram annotations. Figure 1's labels are somewhat small and include invented numerical values rather than matching the original symbolic expressions exactly, but it is far closer to the required label content and placement than Figure 2."
+        },
+        "concept": {
+          "winner": "baseline-gemini_FINAL",
+          "confidence": 0.84,
+          "rationale": "Figure 1 more truthfully represents the key relationship that a highlighted parallelepiped has a gridded subrectangle base of area ΔA_k, height f(x*_k,y*_k), and volume f(x*_k,y*_k)ΔA_k (L00009, L00012): its orange column is snapped to a grid square, labels the sample point, computes the displayed height from the same surface function, and gives a matching numerical area and volume. Figure 2 also shows the intended surface, region, labels, and volume formula, but its sample column is moved continuously rather than being clearly tied to a grid subrectangle, its column dimensions do not match the displayed grid spacing, and it clamps displayed height to a positive value with Math.max, which can make the asserted height and volume differ from f(x*_k,y*_k) if the chosen function is nonpositive, contrary to the defining relationship in the brief (L00009, L00012)."
+        }
+      },
+      "aggregator": {
+        "winner": "baseline-gemini_FINAL",
+        "confidence": 0.99,
+        "explanation": "Figure 1 is substantially stronger because it renders the intended Riemann-sum volume scene with surface, gridded base region, highlighted column, axes, labels, and interactive updates tied to the equation and sample point. Figure 2 is much weaker: a Three.js API error prevents it from rendering or its controls from functioning, and even apart from that it lacks the visible diagram annotations and can misrepresent the height/volume relationship by clamping function values."
+      },
+      "evalModel": "gpt-5.5",
+      "evaluatedAt": "2026-08-14T18:41:01.385Z"
+    }
+  },
+  "math__14.3.3": {
+    "setupA": "baseline-gemini_FINAL",
+    "setupB": "baseline-qwen_FINAL",
+    "subject": "math",
+    "figure": "14.3.3",
+    "machineEval": {
+      "figure1Setup": "baseline-gemini_FINAL",
+      "figure2Setup": "baseline-qwen_FINAL",
+      "mode": "2d",
+      "dimensions": {
+        "geometry": {
+          "winner": "baseline-qwen_FINAL",
+          "confidence": 0.68,
+          "rationale": "Figure 2 better preserves the polar-rectangle structure with a uniform fixed viewBox, correctly shaped annular sector, dashed rays, overhanging solid arcs, and labels placed closer to the geometric features with textbook-like π fractions. Figure 1 also draws the essential topology, but its plotting domain leaves the region relatively small with more empty space, the angle labels are pushed far out near the ray tips, it adds an origin dot not evident in the source style, and its optional Cartesian overlay uses a questionable Δr × Δθ construction rather than a tangential length scaled by radius."
+        },
+        "interactivity": {
+          "winner": "baseline-gemini_FINAL",
+          "confidence": 0.88,
+          "rationale": "Figure 1's sliders and checkbox consistently recompute and redraw the polar region and the requested Δr × Δθ overlay, and it handles equal radii or equal angles by letting the region degenerate rather than fabricating a different shape. Figure 2's basic handlers do redraw, but it silently imposes minimum radial and angular widths so degenerate slider settings display a nonzero region that disagrees with the controls, and its Cartesian overlay is advertised/implemented as Δr × r₁Δθ rather than the requested Δr × Δθ."
+        },
+        "faithfulness": {
+          "winner": "baseline-qwen_FINAL",
+          "confidence": 0.78,
+          "rationale": "Figure 2 is more visually faithful overall because the polar sector diagram is larger and composed much more like the textbook figure, with the same dashed red rays, blue circular arcs, axis placement, and label arrangement that make it recognizable at a glance. Figure 1 includes the light blue shading more clearly, but its actual figure is much too small within the canvas and the labels/geometry feel compressed and less like the original composition."
+        },
+        "labels": {
+          "winner": "baseline-qwen_FINAL",
+          "confidence": 0.86,
+          "rationale": "Figure 2 has larger, more readable labels that more closely match the textbook text and placement, including using “r = 2” rather than Figure 1’s “r = 2.0.” Figure 1 includes the needed annotations, but they are much smaller within the plot, less faithful in placement, and the angle/radius labels are more awkwardly positioned relative to the original."
+        },
+        "concept": {
+          "winner": "baseline-qwen_FINAL",
+          "confidence": 0.62,
+          "rationale": "Both figures correctly render the main polar rectangle at the default values, with the region bounded by r=1.5 and r=2 and by θ=π/6 and θ=π/4 as required (L00007, L00010). Figure 2 is slightly more conceptually accurate because its explanatory text keeps the emphasis on constant-r arcs and constant-θ rays as the polar analogue of a Cartesian rectangle (L00010), whereas Figure 1’s optional overlay and tooltip describe a physical-looking rectangle with side lengths Δr and Δθ, which can misleadingly suggest that angular width itself is a tangential length rather than requiring polar scaling."
+        }
+      },
+      "aggregator": {
+        "winner": "baseline-qwen_FINAL",
+        "confidence": 0.78,
+        "explanation": "Figure 2 is stronger overall because it more faithfully matches the intended polar-rectangle diagram: the annular sector is larger and better composed, the dashed rays and circular arcs are closer to the source geometry, and the labels are more readable and textbook-like than Figure 1’s smaller, more awkwardly placed annotations. Figure 1 has better interaction behavior, especially for degenerate slider settings and the requested overlay, but visually and conceptually it is weaker because the region is undersized, its labels are less faithful, and its overlay can misleadingly treat angular width like a Cartesian length."
+      },
+      "evalModel": "gpt-5.5",
+      "evaluatedAt": "2026-08-14T18:42:05.071Z"
+    }
+  },
+  "math__5.8.4": {
+    "setupA": "baseline-gemini_FINAL",
+    "setupB": "baseline-qwen_FINAL",
+    "subject": "math",
+    "figure": "5.8.4",
+    "machineEval": {
+      "figure1Setup": "baseline-qwen_FINAL",
+      "figure2Setup": "baseline-gemini_FINAL",
+      "mode": "2d",
+      "dimensions": {
+        "geometry": {
+          "winner": "baseline-qwen_FINAL",
+          "confidence": 0.86,
+          "rationale": "Figure 1 more faithfully reconstructs the three-panel hydrostatic-force layout: it has separate panels for the plate, partitioned plate, and representative strip; consistent depth axis, a/b/x markings, dashed reference lines, w(x), h(x), Δx, and strip labels. Figure 2 captures the general idea, but its panel B highlighted strip is structurally wrong at the default settings because the polygon is placed far below the intended partition interval, and its partition/reference-line construction is less consistent; it also omits or fades some panel structure in the combined mode rather than preserving the original layout."
+        },
+        "interactivity": {
+          "winner": "baseline-qwen_FINAL",
+          "confidence": 0.93,
+          "rationale": "Figure 1's n, k, and combined-view handlers consistently recompute and redraw the relevant strips, detail view, and force approximation, with k clamped when n decreases and an actual accumulated-sum animation in the combined mode. Figure 2 updates the sliders and readouts, but its panel (b) highlighted strip is computed with an incorrect y-coordinate formula so the selected strip often appears in the wrong vertical location, and its combined toggle mostly hides panels rather than animating strip construction or showing an accumulated pressure sum."
+        },
+        "faithfulness": {
+          "winner": "baseline-qwen_FINAL",
+          "confidence": 0.86,
+          "rationale": "Figure 1 is more recognizable as the textbook figure because it preserves the three-panel layout, the yellow irregular object, horizontal slice lines, labels, and the highlighted strip concept. Figure 2 keeps the pale blue background and panel arrangement, but the central yellow region/irregular shape is largely missing or replaced by an unrelated blue polygon/rectangles, making the main geometry much less faithful to the original."
+        },
+        "labels": {
+          "winner": "baseline-gemini_FINAL",
+          "confidence": 0.78,
+          "rationale": "Figure 2 has generally cleaner, more readable labels on a light background and better spacing across the three panels, whereas Figure 1’s labels are much smaller, cramped into narrow dark panels, and several annotations are hard to read or visually lost against the artwork. Figure 1 appears to include many of the needed labels, but their placement and scale are poorer; Figure 2 is still imperfect and some labels are tiny, but it better preserves label legibility and avoids clutter."
+        },
+        "concept": {
+          "winner": "baseline-qwen_FINAL",
+          "confidence": 0.62,
+          "rationale": "Figure 1 more correctly represents the main derivation geometry: the surface is partitioned into horizontal strips between the marked x_i levels in panel (b), and panel (c) shows a rectangle with width w(x*_k), height Δx_k, and depth h(x*_k), matching the intended Riemann-sum setup (L00007, L00028). Figure 2 has a serious conceptual/geometric error in panel (b): its highlighted kth strip is drawn with vertical coordinates that do not match the partition interval [x_{k-1}, x_k], so it can appear far below the actual kth strip, undermining the strip decomposition central to the derivation (L00007, L00028). Figure 1 is not perfect—it mislabels x_{k-1} as something like xₖ₁ in panel (c), and its readouts introduce an unsupported ρg factor even though the formula uses weight density ρ alone (L00024-L00026)—but Figure 2’s incorrect strip placement is the more damaging false representation of the core construction."
+        }
+      },
+      "aggregator": {
+        "winner": "baseline-qwen_FINAL",
+        "confidence": 0.88,
+        "explanation": "Figure 1 is stronger overall because it preserves the intended three-panel hydrostatic-force construction, with consistent partition levels, highlighted strip/detail geometry, depth and width markings, and interactive recomputation/animation that match the Riemann-sum setup. Figure 2 has cleaner and more legible labeling, but relative to Figure 1 it suffers from a more serious flaw: the highlighted kth strip is placed at incorrect vertical coordinates and its combined view hides or weakens the panel structure rather than accurately showing the strip construction. Thus Figure 1’s labels are less readable, but Figure 2’s central geometry and interaction errors are more damaging."
+      },
+      "evalModel": "gpt-5.5",
+      "evaluatedAt": "2026-08-14T18:42:54.163Z"
+    }
+  },
+  "chemistry__CNX_Chem_02_03_MassSpec": {
+    "setupA": "baseline-gemini_FINAL",
+    "setupB": "baseline-qwen_FINAL",
+    "subject": "chemistry",
+    "figure": "CNX_Chem_02_03_MassSpec",
+    "machineEval": {
+      "figure1Setup": "baseline-gemini_FINAL",
+      "figure2Setup": "baseline-qwen_FINAL",
+      "mode": "3d",
+      "dimensions": {
+        "geometry": {
+          "winner": "baseline-gemini_FINAL",
+          "confidence": 0.72,
+          "rationale": "Figure 1 better matches the original textbook schematic geometry: it preserves the side-by-side instrument and spectrum layout, the long curved flight tube/detector relationship, the magnet region placement, five isotope bars with more accurate abundance scaling, and fuller y-axis tick/grid labeling from 0 to 100. Figure 2 uses more genuinely 3D primitives, but its perspective view, compressed proportions, simplified spectrometer path, smaller chart, missing/less complete tick marks, and altered spatial layout make it less faithful to the source figure."
+        },
+        "interactivity": {
+          "winner": "baseline-gemini_FINAL",
+          "confidence": 0.96,
+          "rationale": "Figure 1's slider, bar clicks, and view buttons are wired and generally recompute/redraw the intended beam and bar highlights, whereas Figure 2 calls createBeamLines()/updateDetection() before barMeshes is initialized, causing a ReferenceError that prevents the rest of the figure and its handlers from being set up. Figure 1 is imperfect because the magnetic-field slider is really an amu-focus control and the view buttons mostly reframe rather than truly hiding panels, but Figure 2's interactions are effectively broken at load time, and even aside from that its bar-click highlighting would conflict with the detector readout rather than tune or annotate the selected isotope correctly."
+        },
+        "faithfulness": {
+          "winner": "baseline-gemini_FINAL",
+          "confidence": 0.86,
+          "rationale": "Figure 1 is more visually faithful because it preserves the main mass spectrometer composition with a horizontal tube, purple magnetic field, large gray magnets, multiple curved ion paths, detector, and a spectrum axis area, making it recognizable as the original figure. Figure 2 is much smaller and overly simplified, with the apparatus reduced to tiny sparse shapes on a mostly blank canvas and no visible spectrum bars, so it is much less recognizable at a glance."
+        },
+        "labels": {
+          "winner": "baseline-gemini_FINAL",
+          "confidence": 0.94,
+          "rationale": "Figure 1 has at least some relevant textbook-style labels, including “Magnetic field deflects lightest ions most,” “Detector,” and the chart y-axis “Relative abundance (%),” whereas Figure 2 essentially lacks the original diagram annotations and spectrum labels entirely. Figure 1 still misses many required labels from the reference and includes distracting UI text not in the original, but Figure 2 is far worse because its labels are mostly interface controls rather than figure annotations."
+        },
+        "concept": {
+          "winner": "baseline-gemini_FINAL",
+          "confidence": 0.78,
+          "rationale": "Figure 1 more truthfully represents the specified mass-spectrometer principle: it shows the ordered stages from sample/heater/electron beam/acceleration/magnet to a detector and explicitly places different mass ion paths at different positions along the detector, with lighter ions more deflected, matching the brief (L00014, L00017). Figure 2 includes the same stages and correct isotope abundances, but its computed highlighted/detected beam is based on an exit-angle criterion that does not actually align with the drawn detector position, so its assertion that a given isotope is being detected can contradict the geometry of ions arriving at the detector (L00017). Both figures chart the five zirconium isotope peaks with the correct relative order and approximate percentages, but Figure 1 also labels all requested mass values on the x-axis more completely, whereas Figure 2 omits a 91 tick despite showing a Zr-91 peak (L00014, L00017)."
+        }
+      },
+      "aggregator": {
+        "winner": "baseline-gemini_FINAL",
+        "confidence": 0.95,
+        "explanation": "Figure 1 is clearly stronger overall: it preserves the recognizable mass-spectrometer layout, curved ion paths, detector relationship, magnetic-field region, isotope spectrum, and relevant labels much better than Figure 2. It also has mostly functioning controls and redraw behavior, while Figure 2 appears to break during initialization and lacks visible spectrum/annotation detail, making its simplified geometry and interaction model substantially less faithful and less usable. Although Figure 1 has imperfections such as incomplete labels and a somewhat misleading slider, these are minor relative to Figure 2's broken interactivity, sparse rendering, and weaker conceptual alignment."
+      },
+      "evalModel": "gpt-5.5",
+      "evaluatedAt": "2026-08-14T18:43:35.509Z"
+    }
+  },
+  "cs__ConvAlex": {
+    "setupA": "baseline-gemini_FINAL",
+    "setupB": "baseline-qwen_FINAL",
+    "subject": "cs",
+    "figure": "ConvAlex",
+    "machineEval": {
+      "figure1Setup": "baseline-gemini_FINAL",
+      "figure2Setup": "baseline-qwen_FINAL",
+      "mode": "3d",
+      "dimensions": {
+        "geometry": {
+          "winner": "baseline-gemini_FINAL",
+          "confidence": 0.86,
+          "rationale": "Figure 1 better reconstructs the AlexNet geometry because it includes the full sequence of input, five convolutional feature-map volumes, fully connected layers, and output with dimensions and relative spatial shrinkage/channel growth represented in the block proportions. Figure 2 introduces separate small convolution-kernel blocks that distort the layer count and spatial relationships, omits/merges parts of the five-convolution-layer sequence, uses less accurate proportions such as a non-square input image, and places arrows through the blocks rather than as clean inter-layer flow indicators."
+        },
+        "interactivity": {
+          "winner": "baseline-qwen_FINAL",
+          "confidence": 0.9,
+          "rationale": "Figure 2 implements the requested controls much more correctly: its slider is constrained to convolution layers 1–3, updates the displayed kernel/output dimensions, and highlights the relevant conv/filter and feature-map meshes, while Figure 1’s slider ranges from -1 to 9 and selects input/FC layers as well as conv layers despite the intended layer-index control. Figure 2 also provides a real selected-block drag rotation interaction, whereas Figure 1 only relies on general OrbitControls/oblique reveal and does not rotate a selected tensor block. Figure 2 is not perfect—the animation does not update the layer info overlay as it steps, and the drag/reset bookkeeping is a bit fragile—but Figure 1 omits or mis-scopes more of the requested interaction behavior."
+        },
+        "faithfulness": {
+          "winner": "baseline-gemini_FINAL",
+          "confidence": 0.93,
+          "rationale": "Figure 1 is much more recognizable as the AlexNet textbook diagram: it preserves the left-to-right architecture layout, brown convolution blocks, tall cyan fully connected bars, dimensional labels, and stage labels/arrows. Figure 2 only loosely shows a chain of blocks; it loses most annotations, uses translucent cyan cubes for many layers instead of the original brown feature maps, and the composition is too sparse to resemble the reference at a glance."
+        },
+        "labels": {
+          "winner": "baseline-gemini_FINAL",
+          "confidence": 0.98,
+          "rationale": "Figure 1 includes most of the original layer and dimension labels, including the input size, intermediate feature map sizes, FC sizes, and bottom operation labels, even though many are too small, cramped, and somewhat cluttered. Figure 2 has almost no readable labels or annotations matching the textbook figure, with only tiny/illegible markings near the FC layers and no clear dimension or stage labels, so it is much worse for label quality."
+        },
+        "concept": {
+          "winner": "baseline-qwen_FINAL",
+          "confidence": 0.82,
+          "rationale": "Figure 2 more accurately teaches the core AlexNet volume diagram because it separates orange convolution kernels from teal feature-map volumes and labels the first feature maps as 55×55×96, 27×27×256, and 13×13×384, matching the brief's distinction between kernels and activation volumes and the intended spatial-shrink/depth-increase pattern (L00007). Figure 1 labels the 55×55×96, 27×27×256, and 13×13×384 stages on orange blocks, which makes feature-map dimensions look like convolutional filter/kernel blocks rather than teal feature-map volumes, a more serious conceptual confusion despite its generally correct AlexNet layer dimensions and forward arrows (L00007). Figure 2 is still imperfect because it places ellipsis dots on fully connected columns rather than within the teal feature-map channel stacks and simplifies later convolutional stages, but those issues are less misleading than Figure 1's kernel/feature-map conflation (L00007)."
+        }
+      },
+      "aggregator": {
+        "winner": "baseline-gemini_FINAL",
+        "confidence": 0.74,
+        "explanation": "Figure 1 is the stronger overall reconstruction because it much more faithfully preserves the AlexNet textbook layout, layer sequence, proportions, dimensional labels, and recognizable visual styling, whereas Figure 2 drops most annotations and distorts the architecture with extra kernel blocks and simplified/merged convolution stages. Figure 2 is better on the authored interactions and has a conceptual advantage in separating kernels from feature-map volumes, but these strengths do not outweigh Figure 1’s substantially better geometry, rendered faithfulness, and label coverage."
+      },
+      "evalModel": "gpt-5.5",
+      "evaluatedAt": "2026-08-14T18:43:56.376Z"
+    }
+  },
+  "cs__GraphNodeEdgeAdjacency": {
+    "setupA": "baseline-gemini_FINAL",
+    "setupB": "baseline-qwen_FINAL",
+    "subject": "cs",
+    "figure": "GraphNodeEdgeAdjacency",
+    "machineEval": {
+      "figure1Setup": "baseline-qwen_FINAL",
+      "figure2Setup": "baseline-gemini_FINAL",
+      "mode": "2d",
+      "dimensions": {
+        "geometry": {
+          "winner": "baseline-gemini_FINAL",
+          "confidence": 0.78,
+          "rationale": "Figure 2 better reconstructs the likely full structure: it has the same 6-node/7-edge topology, correct 6×6 adjacency, 5×6 node-data and 4×7 edge-data matrices, and it also shows the node and edge feature vectors as small colored bars attached to the graph itself, which Figure 1 omits. Figure 1 captures the basic topology and matrices, but its graph panel is structurally simpler and less complete, with more spread-out proportions and less faithful labeling/detail for the edge/node feature representations."
+        },
+        "interactivity": {
+          "winner": "baseline-qwen_FINAL",
+          "confidence": 0.82,
+          "rationale": "Figure 1 implements the requested node clicks, edge clicks, and panel visibility toggles, whereas Figure 2's node/edge focus interactions work but it omits the requested panel a–d toggle entirely. Figure 1 is not perfect because its highlight overlay group is separate from the panels, so hiding a matrix panel can leave stale highlight boxes visible, but this is still less severe than Figure 2 lacking the comparison/toggle interaction and relying only on focus dropdowns/step controls."
+        },
+        "faithfulness": {
+          "winner": "baseline-gemini_FINAL",
+          "confidence": 0.94,
+          "rationale": "Figure 2 is more visually faithful because it preserves the key colored node and edge feature bars around the graph and arranges the graph and three matrix panels in a composition much closer to the reference. Figure 1 includes the same basic graph topology and matrices, but the graph omits the prominent surrounding feature bars and the whole figure is much more miniaturized and sparse, making it less recognizable as the original at a glance."
+        },
+        "labels": {
+          "winner": "baseline-gemini_FINAL",
+          "confidence": 0.88,
+          "rationale": "Figure 2 has noticeably better label quality: the panel letters, node numbers, matrix titles, row/column indices, and node/edge data annotations are larger and more readable, with placements closer to the reference. Figure 1 contains many of the same labels, but the whole figure is scaled down so the matrix titles, axis numbers, and data annotations are very small and difficult to read at inline size; its labels are also less visually balanced and less faithful in emphasis."
+        },
+        "concept": {
+          "winner": "baseline-qwen_FINAL",
+          "confidence": 0.62,
+          "rationale": "Both figures correctly depict the same 6-node undirected graph, a symmetric binary adjacency matrix, node-feature columns in X, and edge-feature columns in E in the specified edge order (L00007). Figure 1 is slightly stronger conceptually because selecting an edge highlights the corresponding two symmetric adjacency entries as well as the edge-feature column, reinforcing that A encodes connected node pairs while E stores edge attributes; Figure 2’s edge focus only emphasizes E and the graph edge, so it teaches the relationship between an edge and the adjacency matrix less completely. Both figures share minor inaccuracies/omissions relative to the brief, especially the lack of visible pair labels on edges in panel a and using D_E rather than the stated Dᴷ for the edge-feature dimension (L00007)."
+        }
+      },
+      "aggregator": {
+        "winner": "baseline-gemini_FINAL",
+        "confidence": 0.82,
+        "explanation": "Figure 2 is stronger overall because it more faithfully reconstructs the full visual and structural design: it preserves the 6-node/7-edge graph, correctly sized adjacency/node/edge matrices, and the prominent node and edge feature bars that Figure 1 omits or renders much less completely. Its labels and matrix annotations are also larger, clearer, and closer to the reference, whereas Figure 1 is more miniaturized and sparse. Figure 1 has better implemented interaction coverage, especially panel toggles and adjacency highlighting on edge selection, but that advantage is outweighed by Figure 2’s substantially better visual faithfulness, labeling, and structural completeness."
+      },
+      "evalModel": "gpt-5.5",
+      "evaluatedAt": "2026-08-14T18:44:35.565Z"
+    }
+  },
+  "physics__flatland_camera_linear": {
+    "setupA": "baseline-gemini_FINAL",
+    "setupB": "baseline-qwen_FINAL",
+    "subject": "physics",
+    "figure": "flatland_camera_linear",
+    "machineEval": {
+      "figure1Setup": "baseline-qwen_FINAL",
+      "figure2Setup": "baseline-gemini_FINAL",
+      "mode": "2d",
+      "dimensions": {
+        "geometry": {
+          "winner": "baseline-qwen_FINAL",
+          "confidence": 0.86,
+          "rationale": "Figure 1 better reconstructs the textbook structure: it has the full 13-sample scene and sensor arrays with more complete tick labeling including the ellipsis and reversed sensor indexing, a correctly split occluder with a small aperture, explicit labels, and many blocked rays plus the surviving ray mapped to the reversed sensor cell. Figure 2 captures the general layout but its sensor tick labeling is sparser and less faithful, it fills selected cells solid red rather than preserving the vector-cell appearance, and its ray/axis presentation is more simplified and less structurally close to the original."
+        },
+        "interactivity": {
+          "winner": "baseline-qwen_FINAL",
+          "confidence": 0.96,
+          "rationale": "Figure 1 implements the requested interactions much more correctly: dragging scene cells changes bounded albedo values in real time and redraws the reversed sensor measurement vector, while the flip toggle redraws the sensor axis and adds reversal-highlight connectors. Figure 2’s controls mostly only select/highlight a scene pixel and redraw rays; it has no working drag-to-edit albedo interaction and no sensor measurement vector that updates with intensity values, so it misses the central advertised interaction even though its pixel-selection slider and axis toggle do function."
+        },
+        "faithfulness": {
+          "winner": "baseline-gemini_FINAL",
+          "confidence": 0.68,
+          "rationale": "Figure 2 is more visually faithful at a glance because it preserves the filled red scene and sensor pixels from the original, along with the same basic scene-bar/pinhole/sensor geometry. Figure 1 has a somewhat cleaner label layout, but its highlighted pixels are only red outlines rather than filled red blocks, which makes a key visual feature of the original less recognizable; Figure 2’s overlapping Occluder label and compressed/truncated labels are worse, but less damaging to the overall resemblance."
+        },
+        "labels": {
+          "winner": "baseline-gemini_FINAL",
+          "confidence": 0.64,
+          "rationale": "Figure 2 preserves more of the required right-side labels, with “Aperture” fully visible and “Camera sens” only partially clipped, whereas Figure 1 clips “Aperture” to “Apertu” and reduces “Camera sensor” to just “Camera.” Figure 1 places “Occluder” more cleanly than Figure 2, where it overlaps the black bar, but overall Figure 2’s required label text is more complete and closer to the original."
+        },
+        "concept": {
+          "winner": "baseline-qwen_FINAL",
+          "confidence": 0.9,
+          "rationale": "Figure 1 more accurately teaches the intended one-dimensional flatland camera: it represents a scene intensity vector with cell intensities, copies them to a sensor measurement vector with the sensor coordinate axis reversed, and explicitly shows scene index i mapping to the reversed sensor position through the pinhole, matching the brief's fixed-depth intensity line, reversed sensor axis, and linear camera mapping (L00009, L00012). Figure 2 does show a reversed sensor axis, but it mostly highlights a single selected pixel rather than varying world intensities or a full sensor vector, and its drawn 'pinhole' ray generally does not pass through the aperture/pinhole it labels, which makes the geometry of the camera mapping less truthful (L00012)."
+        }
+      },
+      "aggregator": {
+        "winner": "baseline-qwen_FINAL",
+        "confidence": 0.87,
+        "explanation": "Figure 1 is stronger overall because the high-confidence source-based agents found it much closer to the intended flatland camera model: it reconstructs the full scene/sensor structure, reversed sensor indexing, aperture mapping, editable albedo values, and updating measurement vector, whereas Figure 2 mostly offers selection/highlighting and simplified rays without the central editable sensor-vector behavior. Figure 2 is somewhat more visually faithful in the rendered screenshot, with filled red pixels and more complete right-side label text, but its sparser tick labeling, missing interactive intensity updates, and less truthful pinhole/ray mapping make it weaker on the core geometry, interaction, and concept requirements."
+      },
+      "evalModel": "gpt-5.5",
+      "evaluatedAt": "2026-08-14T18:45:09.674Z"
+    }
+  },
+  "physics__plenoptic_function": {
+    "setupA": "baseline-gemini_FINAL",
+    "setupB": "baseline-qwen_FINAL",
+    "subject": "physics",
+    "figure": "plenoptic_function",
+    "machineEval": {
+      "figure1Setup": "baseline-gemini_FINAL",
+      "figure2Setup": "baseline-qwen_FINAL",
+      "mode": "2d",
+      "dimensions": {
+        "geometry": {
+          "winner": "baseline-qwen_FINAL",
+          "confidence": 0.82,
+          "rationale": "Figure 2 better preserves the likely structural topology of the textbook diagram: it has the pinhole camera with a split aperture, two sensor/sample dots inside the camera, crossing incoming rays through the aperture, a separate free-space starburst point, and the tree/bird/ground layout in more faithful relative proportions. Figure 1 captures the general idea but redraws every point as an interactive ray distribution, uses two aperture-edge rays per inside point rather than the clear crossed pinhole rays, and its outside starbursts and movable-dot layout make the structure less faithful to the original static figure."
+        },
+        "interactivity": {
+          "winner": "baseline-qwen_FINAL",
+          "confidence": 0.82,
+          "rationale": "Figure 2 implements the requested controls more directly and coherently: clicking anywhere moves a single sampling point, recomputes the angular distribution, and updates the inside-camera checkbox consistently, while the checkbox and guided steps move the point between valid free-space and camera locations and redraw the dense/sparse distribution. Figure 1's controls mostly work, but its click interaction moves the nearest of four separate points rather than a clearly defined sampling point, and its free-space/inside controls move all four points at once, making the advertised interaction less precise and more ambiguous even though the redraws themselves generally function."
+        },
+        "faithfulness": {
+          "winner": "baseline-gemini_FINAL",
+          "confidence": 0.72,
+          "rationale": "Figure 1 is more visually faithful overall because it preserves the main composition more recognizably: the pinhole camera with two red samples on the left, crossed rays, two dense radial light distributions, a ground line, bird, and a larger rounded green tree on the right. Figure 2 has the same basic elements, but its proportions are less close to the reference—the tree is smaller and more simplified, the exterior radial distributions are less prominent, and the overall scene feels more sparse and compressed compared with the original."
+        },
+        "labels": {
+          "winner": "baseline-gemini_FINAL",
+          "confidence": 0.68,
+          "rationale": "Figure 1 matches the original label slightly better: it includes the required “Pinhole camera” text in a clear, readable size and places it above the camera box similarly to the reference. Figure 2 also includes the label, but it is smaller and less prominent, and its right-side UI adds a more conspicuous invented heading and explanatory text not present in the original; Figure 1 also has extra UI text, but its core diagram label is clearer and closer to the reference."
+        },
+        "concept": {
+          "winner": "baseline-qwen_FINAL",
+          "confidence": 0.78,
+          "rationale": "Figure 2 is more conceptually accurate because it preserves the intended four-location idea in its main scene—two camera-internal samples plus two free-space samples—and more explicitly distinguishes nonzero aperture-passing directions from zero directions with grey zero samples, matching the statement that inside the pinhole camera most directional values are zero and only specific directions have nonzero intensity (L00017, L00022-L00025, L00028). Figure 1 correctly conveys dense angular sampling in free space and sparse camera-interior rays, but its camera-interior samples show only two boundary rays through the aperture and no zero-direction samples, which can misleadingly suggest that the nonzero directions are just the aperture-edge directions rather than the allowed aperture-constrained subset of the plenoptic function (L00024-L00028)."
+        }
+      },
+      "aggregator": {
+        "winner": "baseline-qwen_FINAL",
+        "confidence": 0.78,
+        "explanation": "Figure 2 is stronger overall because it more faithfully preserves the intended structural and conceptual setup: two internal camera samples, free-space samples, crossing pinhole rays, and clearer distinction between nonzero aperture-passing directions and zero directions. Compared with Figure 1, its interactions are also more coherent, using a single sampling point and consistent inside/outside behavior, whereas Figure 1’s multiple movable points and grouped controls make the interaction more ambiguous. Figure 1 has the clearer rendered label and a more visually similar composition, but those advantages are outweighed by Figure 2’s better topology, conceptual accuracy, and control behavior."
+      },
+      "evalModel": "gpt-5.5",
+      "evaluatedAt": "2026-08-14T18:45:37.379Z"
+    }
+  },
+  "physics__yaw_pitch_roll": {
+    "setupA": "baseline-gemini_FINAL",
+    "setupB": "baseline-qwen_FINAL",
+    "subject": "physics",
+    "figure": "yaw_pitch_roll",
+    "machineEval": {
+      "figure1Setup": "baseline-qwen_FINAL",
+      "figure2Setup": "baseline-gemini_FINAL",
+      "mode": "3d",
+      "dimensions": {
+        "geometry": {
+          "winner": "baseline-gemini_FINAL",
+          "confidence": 0.86,
+          "rationale": "Figure 2 better reconstructs the intended 3D geometry because it models the camera frame, image plane, optical ray, and projected point p as a coherent spatial system: p is computed as the actual intersection of the ray from the origin to P with the moving image plane, and the oblique camera projection is chosen to match the printed diagram's 3D layout. Figure 1 includes the right general elements, but its p point is essentially placed by hand rather than being the true projection of P, the dashed segment does not form a geometrically consistent projection ray through the origin, and its rotation arrows/image plane relationships are more static and schematic rather than accurately tied to the camera-frame geometry."
+        },
+        "interactivity": {
+          "winner": "baseline-gemini_FINAL",
+          "confidence": 0.74,
+          "rationale": "Figure 2 has more correct interaction behavior because its sliders/order/animation recompute the camera group each frame and, importantly, recompute the projected image point p from the fixed world point P and the moving image plane, so the projection geometry changes consistently. Figure 1's sliders and individual animation buttons do rotate the plane and update the dashed line, but p is just a fixed local point carried with the plane rather than a recalculated projection of P, its p/local-axis labels become stale, and its advertised Roll→Pitch→Yaw order appears to use the wrong Euler order. Figure 2 is not perfect: yaw and pitch are unnecessarily limited to ±90°, and its animation is a sequence button rather than separate per-axis controls, but its implemented controls are generally more physically coherent."
+        },
+        "faithfulness": {
+          "winner": "baseline-qwen_FINAL",
+          "confidence": 0.98,
+          "rationale": "Figure 1 is much more recognizable as the textbook Euler-angle diagram: it includes the main coordinate axes, the tilted plane, local green axes, point/projection markings, and red yaw/pitch/roll rotation arcs with labels. Figure 2 only shows a faint set of axes, dashed construction lines, and a point, omitting most of the distinctive plane, colored rotation annotations, and local coordinate structure that define the original."
+        },
+        "labels": {
+          "winner": "baseline-qwen_FINAL",
+          "confidence": 0.96,
+          "rationale": "Figure 1 includes most of the key textbook annotations such as Yaw, Pitch, Roll, axis labels X/Y/Z, angle labels, origin, and local x/y/z/p markings, and they are generally readable and placed near the intended parts of the diagram. Figure 2 omits nearly all of the original diagram labels and annotations, has only UI/control text plus a small cluttered/overlapping cluster of unreadable labels at the bottom-left, so it matches the original label content much worse."
+        },
+        "concept": {
+          "winner": "baseline-gemini_FINAL",
+          "confidence": 0.78,
+          "rationale": "Figure 2 more truthfully represents the projection geometry by placing p at the intersection of the ray from the origin to P with the rotating image plane, so the dashed projection relation remains meaningful as rotation changes, whereas Figure 1 keeps p fixed on the plane and merely draws a dashed segment to P that is not generally the projective ray or exact projection (L00014). Figure 2 also makes yaw, pitch, and roll act about the displayed Y, X, and Z camera axes respectively, while Figure 1 draws the labeled X axis as a diagonal vector with a Z component, so its labeled coordinate frame is not made of the stated principal axes and pitch is not visually about the labeled X axis (L00014). Figure 2 is not perfect because its internal axis remapping appears left-handed relative to the stated right-handed X,Y,Z convention, but Figure 1 has both the non-principal X-axis problem and the weaker projection relation, so Figure 2 is conceptually more accurate overall (L00014)."
+        }
+      },
+      "aggregator": {
+        "winner": "baseline-gemini_FINAL",
+        "confidence": 0.62,
+        "explanation": "Figure 2 is stronger overall because it reconstructs the projection geometry and interactions coherently: the image point p is recomputed as the ray-plane intersection as the camera rotates, whereas Figure 1 mostly carries a hand-placed p with the plane and its dashed projection relation is not generally geometrically valid. Figure 1 is much more visually faithful to the textbook screenshot and has far better labels and rotation annotations, but those presentation strengths do not overcome its weaker underlying geometry and less correct interactive behavior compared with Figure 2."
+      },
+      "evalModel": "gpt-5.5",
+      "evaluatedAt": "2026-08-14T18:46:33.866Z"
+    }
+  }
+}

@@ -1,0 +1,407 @@
+{
+  "math__14.1.3": {
+    "setupA": "full-pipeline-kimi_FINAL",
+    "setupB": "no-iteration-qwen_FINAL",
+    "subject": "math",
+    "figure": "14.1.3",
+    "machineEval": {
+      "figure1Setup": "full-pipeline-kimi_FINAL",
+      "figure2Setup": "no-iteration-qwen_FINAL",
+      "mode": "3d",
+      "dimensions": {
+        "geometry": {
+          "winner": "full-pipeline-kimi_FINAL",
+          "confidence": 0.88,
+          "rationale": "Figure 1 better reconstructs the 3D geometry: it includes a full base plane, clipped irregular region with partition grid, a correctly proportioned highlighted cell and column, red base/top sample points, vertical dashed connector, and leaders that target the actual geometric features. Figure 2 captures the general idea but is less accurate: its axes originate through the central region rather than framing the base plane, it lacks the grey floor surface, uses a coarser/different cell size, its default surface dips below the base over much of the domain, and several annotation arrows use swapped coordinate arguments so they point to geometrically incorrect locations."
+        },
+        "interactivity": {
+          "winner": "full-pipeline-kimi_FINAL",
+          "confidence": 0.86,
+          "rationale": "Figure 1’s equation input correctly drives both surface meshes, the highlighted column height, leaders, and the numeric volume readout, and its drag handler works from the red point or column while updating the sample location and clamping it to the region. Figure 2 also has the requested input and drag interactions, but its column height is clamped to a small positive value for negative function values, so the drawn column and top dot can contradict the displayed negative height/volume and the surface; it also can produce NaN geometry for non-finite sampled values and only starts dragging from the tiny base dot. Figure 1 is not perfect because its drag clamp unnecessarily restricts the sample to a central square before clamping to the blob, but its controls are more internally consistent and robust overall."
+        },
+        "faithfulness": {
+          "winner": "full-pipeline-kimi_FINAL",
+          "confidence": 0.93,
+          "rationale": "Figure 1 is much more recognizable as the textbook figure: it preserves the translucent cyan surface over a gridded base plane, the teal sample area, the vertical orange rectangular column, and the main labels arranged in a similar composition. Figure 2 includes some of the same conceptual elements, but the surface shape is visually distorted into a narrow downward-pointing form, the base/grid and volume column are much less clear, and the labels are cluttered around the center, making it less faithful at a glance."
+        },
+        "labels": {
+          "winner": "full-pipeline-kimi_FINAL",
+          "confidence": 0.86,
+          "rationale": "Figure 1 includes essentially all of the reference labels with clearer separation: axes, z = f(x,y), Height f(x*k,y*k), Volume f(x*k,y*k)ΔAk, Area ΔAk, and the sample point are readable and placed around the diagram with relatively little overlap. Figure 2 also has most labels, but they are much more cramped: the z and z=f(x,y) labels collide visually, the height/volume/sample-point annotations cluster around the center, and the volume text overlaps the artwork, making the annotations harder to read and less faithful to the spacious layout of the original."
+        },
+        "concept": {
+          "winner": "full-pipeline-kimi_FINAL",
+          "confidence": 0.9,
+          "rationale": "Figure 1 more truthfully represents the key concept that the highlighted parallelepiped has base area ΔA_k, height f(x*_k,y*_k), and volume f(x*_k,y*_k)ΔA_k: its orange column, top sample point, dashed height line, labels, and readout are all tied to the same sampled function value (L00009, L00012). Figure 2 has the correct label text, but several annotation arrows use the coordinate mapping incorrectly, so the height/volume/sample leaders point to positions that are not actually the column height or sample point, weakening or misdirecting the mathematical assertion those labels are supposed to make (L00012). Figure 1 also explicitly connects the single column to a Riemann-sum term and limit, whereas Figure 2 mostly shows the term without clearly conveying the limiting Riemann-sum interpretation requested in the brief (L00009, L00012)."
+        }
+      },
+      "aggregator": {
+        "winner": "full-pipeline-kimi_FINAL",
+        "confidence": 0.91,
+        "explanation": "Figure 1 is clearly stronger overall: it more accurately reconstructs the base plane, clipped region, partition cell, column, sample points, and leader lines, while Figure 2 has geometric issues such as misplaced axes, missing/unclear floor surface, incorrect arrow targets, and a surface/column relationship that can become inconsistent. Figure 1 is also more faithful and readable, with labels and annotations placed more like the reference and tied to the same sampled function value, whereas Figure 2’s labels are cramped and some conceptual annotations point to the wrong geometric features."
+      },
+      "evalModel": "gpt-5.5",
+      "evaluatedAt": "2026-08-14T19:15:51.134Z"
+    }
+  },
+  "math__14.3.3": {
+    "setupA": "full-pipeline-kimi_FINAL",
+    "setupB": "no-iteration-qwen_FINAL",
+    "subject": "math",
+    "figure": "14.3.3",
+    "machineEval": {
+      "figure1Setup": "full-pipeline-kimi_FINAL",
+      "figure2Setup": "no-iteration-qwen_FINAL",
+      "mode": "2d",
+      "dimensions": {
+        "geometry": {
+          "winner": "full-pipeline-kimi_FINAL",
+          "confidence": 0.86,
+          "rationale": "Figure 1 better preserves the polar-rectangle structure: it uses a single polar scale so the constant-r boundaries are true circular arcs, the constant-θ boundaries are dashed rays from the origin, and the filled annular sector has the correct proportions between r = 1.5, r = 2, θ = π/6, and θ = π/4. Figure 2 has the same basic topology, but its plot-frame scaling can make the circular arcs appear distorted depending on the container aspect ratio, and it omits/weakens some structural cues such as the pole marker and extended constant-r arcs; its optional straight overlay is also axis-aligned rather than locally aligned to the polar rectangle."
+        },
+        "interactivity": {
+          "winner": "full-pipeline-kimi_FINAL",
+          "confidence": 0.86,
+          "rationale": "Figure 1’s sliders and overlay consistently recompute and redraw the polar rectangle, arcs, rays, labels, and comparison rectangle, and when bounds cross it updates the displayed controls to match the corrected drawing. Figure 2’s basic controls redraw, but its degenerate-bound handling is weaker: when r₂ ≤ r₁ or θ₂ ≤ θ₁ it silently uses adjusted local values for the drawing without updating state or slider readouts, so the displayed inputs can disagree with the figure; its overlay is also less faithful because it draws a screen-aligned rectangle with a tangential height based on r₁Δθ rather than the advertised Δr × Δθ comparison."
+        },
+        "faithfulness": {
+          "winner": "full-pipeline-kimi_FINAL",
+          "confidence": 0.9,
+          "rationale": "Figure 1 is more visually faithful because it preserves the light blue shaded polar rectangle, thick blue circular arcs, red dashed bounding rays, and overall annular-sector composition of the reference. Figure 2 has a similar basic geometry, but the region is not visibly shaded and the drawing appears more sparse and less recognizable as the original shaded polar rectangle."
+        },
+        "labels": {
+          "winner": "no-iteration-qwen_FINAL",
+          "confidence": 0.72,
+          "rationale": "Both figures include the required labels r = 2, r = 1.5, θ = π/4, θ = π/6, and R, but Figure 2 matches the original annotations better because it avoids the extra 'polar axis' label that Figure 1 invents. Figure 1's mathematical labels are readable and reasonably placed, but the added axis annotation is not in the reference and makes its labeling less faithful; Figure 2's θ labels are slightly less ideally positioned but still readable and less cluttered by extraneous diagram text."
+        },
+        "concept": {
+          "winner": "full-pipeline-kimi_FINAL",
+          "confidence": 0.9,
+          "rationale": "Figure 1 more truthfully maintains the key relationships: R is an annular sector bounded by constant-r circular arcs and constant-θ rays, with labels that update to the actual radii and angles or show π/6 and π/4 only when close to those values, matching the specified bounds 1.5 ≤ r ≤ 2 and π/6 ≤ θ ≤ π/4 (L00007, L00010). Figure 2 draws the basic polar rectangle correctly at the default state, but its θ labels are hard-coded as θ = π/6 and θ = π/4 even when the angle sliders or demo steps change θ to other values, so it can assert false boundary conditions while showing different rays, undermining the constant-θ concept required by the brief (L00010)."
+        }
+      },
+      "aggregator": {
+        "winner": "full-pipeline-kimi_FINAL",
+        "confidence": 0.9,
+        "explanation": "Figure 1 is clearly stronger overall: it preserves the annular-sector geometry with true circular constant-r arcs, dashed constant-θ rays, visible shading, and interactive updates that keep the displayed values consistent with the drawing. Figure 2 has slightly cleaner labeling because it avoids Figure 1’s extra “polar axis” text, but it is weaker geometrically and conceptually, with possible arc distortion, sparse or missing shading, less faithful overlay behavior, and hard-coded angle labels that can become false when controls change."
+      },
+      "evalModel": "gpt-5.5",
+      "evaluatedAt": "2026-08-14T19:16:23.015Z"
+    }
+  },
+  "math__5.8.4": {
+    "setupA": "full-pipeline-kimi_FINAL",
+    "setupB": "no-iteration-qwen_FINAL",
+    "subject": "math",
+    "figure": "5.8.4",
+    "machineEval": {
+      "figure1Setup": "no-iteration-qwen_FINAL",
+      "figure2Setup": "full-pipeline-kimi_FINAL",
+      "mode": "2d",
+      "dimensions": {
+        "geometry": {
+          "winner": "no-iteration-qwen_FINAL",
+          "confidence": 0.74,
+          "rationale": "Figure 1 better preserves the textbook structure of the three-panel hydrostatic-force construction: the water begins at the wavy free surface, the vertical depth axis and tick/dot positions align with the sampled depths, the dashed a/b and x lines connect to the actual plate geometry, and the kth rectangular strip, Δx, h(x*k), and w(x*k) annotations are laid out coherently. Figure 2 has several structural inaccuracies: its blue fluid fill extends above the free surface, the panel (a)/(c) a and b dashed guide lines do not match the actual blob endpoints, and the sampling dot in panel (c) is placed left of the axis rather than on it, making the geometry less faithful despite generally similar components."
+        },
+        "interactivity": {
+          "winner": "full-pipeline-kimi_FINAL",
+          "confidence": 0.78,
+          "rationale": "Figure 2 is better because its k slider actually highlights the selected strip in panel (b), updates panel (c), and updates a numeric readout for h(xₖ*), w(xₖ*), Δxₖ, the strip force, and the Riemann-sum error as n changes. Figure 1 redraws panel (c) for k and changes the partition for n, but it does not highlight the corresponding strip in panel (b), its n slider does not visibly show the force approximation refining in the three-panel view, and its k slider allows out-of-range selections that get snapped back. Figure 2's animated single-panel mode is less robust than Figure 1's build button, but its main requested k and n interactions work much more correctly."
+        },
+        "faithfulness": {
+          "winner": "full-pipeline-kimi_FINAL",
+          "confidence": 0.99,
+          "rationale": "Figure 2 is clearly recognizable as the original three-panel textbook figure, preserving the blue water background, yellow submerged shape, dashed red depth lines, strip annotations, labels, arrows, and panel layout. Figure 1 fails to render the figure at all and instead shows only an error message, so it has essentially no visual resemblance to the reference."
+        },
+        "labels": {
+          "winner": "full-pipeline-kimi_FINAL",
+          "confidence": 0.99,
+          "rationale": "Figure 2 is clearly better because it renders the expected mathematical labels and annotations across the three panels, including a, b, x, w(x), h(x), A_i-style strip labels, x_k terms, Δx_k, and panel captions, albeit somewhat small at inline size. Figure 1 does not render the diagram at all and only shows an error message, so it has none of the required figure labels or annotations."
+        },
+        "concept": {
+          "winner": "no-iteration-qwen_FINAL",
+          "confidence": 0.68,
+          "rationale": "Figure 1 is conceptually a little more faithful to the brief: it consistently shows the downward depth axis, h(x) as the vertical distance from the fluid surface to level x, w(x) across the surface at that level, partition points a=x0 through b=xn, and the kth rectangle with width w(x*_k), height Δx_k, and depth h(x*_k) (L00007, L00028-L00029). Figure 2 also teaches the main Riemann-sum idea correctly, but it introduces a specific parameterization h=1+3t and numerical readouts that can blur the brief’s x-depth setup, and its x*_k marker is visually placed off the axis rather than cleanly on the depth level, making it slightly less conceptually clean even though the formula it computes is broadly consistent with the required integral (L00016-L00026, L00029)."
+        }
+      },
+      "aggregator": {
+        "winner": "full-pipeline-kimi_FINAL",
+        "confidence": 0.9,
+        "explanation": "Figure 2 is the clear overall winner because it actually renders the recognizable three-panel hydrostatic-force diagram with the expected water, plate, dashed depth guides, strip annotations, mathematical labels, and working k/n controls, while Figure 1 reportedly appears only as an error message in the rendered view and therefore loses the main visual and labeling requirements. Figure 1’s source may encode a somewhat cleaner textbook geometry and concept, but those advantages are outweighed by Figure 2’s successful rendering and stronger interactivity; Figure 2’s remaining weaknesses are localized geometric issues such as imperfect guide-line alignment and an off-axis sample marker rather than total failure to display the figure."
+      },
+      "evalModel": "gpt-5.5",
+      "evaluatedAt": "2026-08-14T19:17:18.914Z"
+    }
+  },
+  "chemistry__CNX_Chem_02_03_MassSpec": {
+    "setupA": "full-pipeline-kimi_FINAL",
+    "setupB": "no-iteration-qwen_FINAL",
+    "subject": "chemistry",
+    "figure": "CNX_Chem_02_03_MassSpec",
+    "machineEval": {
+      "figure1Setup": "full-pipeline-kimi_FINAL",
+      "figure2Setup": "no-iteration-qwen_FINAL",
+      "mode": "3d",
+      "dimensions": {
+        "geometry": {
+          "winner": "full-pipeline-kimi_FINAL",
+          "confidence": 0.93,
+          "rationale": "Figure 1 reconstructs the instrument geometry much more accurately: it uses a straight tube plus an actual curved torus bend and aligned exit tube, tilted magnet poles wrapping the bend, detector placed at the tube end, five isotope paths with mass-dependent radii, and a spectrum with correct isotope count, relative bar heights, dense grid/ticks, and side-by-side layout. Figure 2 is a rougher schematic: the magnet is simply vertical cylinders around a rectangular slab, the tube bends are not modeled as a continuous curved vacuum tube, the ion paths are only thin line segments with a less realistic and partly inconsistent radius mapping, the spectrum has fewer grid/tick details, and the initial perspective/combined layout is less like a textbook diagram."
+        },
+        "interactivity": {
+          "winner": "full-pipeline-kimi_FINAL",
+          "confidence": 0.95,
+          "rationale": "Figure 1’s magnetic-field slider actually rebuilds ion paths, updates the displayed B value, identifies when an isotope is on the detector, and synchronizes the highlighted spectrum bar and detector/m/z readout; its bar clicks tune the field to the selected isotope and thereby highlight the matching beam, and its side-by-side/instrument/spectrum controls reach the advertised states. Figure 2’s slider changes paths and a numeric readout, but its detection mapping is crude and truncated so the range never properly reaches Zr-96, it always highlights the nearest bar even when no isotope should be detected, and clicking a bar only colors the bar/popup without changing or highlighting the corresponding ion path curvature, so a major requested interaction is functionally missing."
+        },
+        "faithfulness": {
+          "winner": "full-pipeline-kimi_FINAL",
+          "confidence": 0.78,
+          "rationale": "Figure 1 is more visually faithful because it preserves the original's side-by-side composition: a horizontal mass spectrometer on the left feeding curved teal ion paths into a detector and a flat abundance spectrum on the right with similar labels and bar positions. Figure 2 has recognizable components, but its strong 3D perspective, oversized vertical magnet, angled spectrum plot, and altered proportions make it read less like the textbook figure at a glance."
+        },
+        "labels": {
+          "winner": "full-pipeline-kimi_FINAL",
+          "confidence": 0.82,
+          "rationale": "Figure 1 has substantially more complete and readable labels matching the reference, including the main instrument annotations and spectrum axis/isotope labels. Figure 2 includes many of the same labels but they are extremely small and difficult to read at inline size, especially around the instrument and spectrum, making the annotations much less effective; Figure 1 is cluttered and has some overlaps near the detector/spectrum, but its labels are still more legible and complete overall."
+        },
+        "concept": {
+          "winner": "full-pipeline-kimi_FINAL",
+          "confidence": 0.84,
+          "rationale": "Figure 1 more truthfully teaches the key concepts: it shows the left-to-right mass spectrometer stages, explicitly labels that the magnetic field deflects the lightest ions most, and connects five zirconium isotope paths to a spectrum with m/z on x-axis and relative abundance on y-axis with approximately correct labeled peaks (L00014, L00017). Figure 2 has a mostly correct spectrum, but its interactive deflection/detection model is less conceptually accurate because the B-to-detected-mass mapping effectively never correctly resolves Zr-96 at the detector and highlights paths by closest endpoint rather than clearly showing ions of different mass-to-charge ratios arriving at different detector positions, weakening the stated separation principle (L00010, L00014, L00017)."
+        }
+      },
+      "aggregator": {
+        "winner": "full-pipeline-kimi_FINAL",
+        "confidence": 0.91,
+        "explanation": "Figure 1 is the clear winner because it more accurately reconstructs the mass spectrometer geometry, preserves the side-by-side textbook composition, and provides more readable, complete labels while Figure 2 uses a rougher 3D schematic with less faithful proportions and tiny annotations. Figure 1 also has substantially stronger interactions: its magnetic-field slider, detector readout, isotope highlighting, and spectrum clicks are synchronized, whereas Figure 2’s detection mapping is truncated, often highlights the nearest bar incorrectly, and does not properly connect selected spectrum bars to ion path curvature. Conceptually, Figure 1 better communicates mass-dependent deflection and the five zirconium isotope peaks, while Figure 2’s simplified path and detection behavior weakens the separation principle."
+      },
+      "evalModel": "gpt-5.5",
+      "evaluatedAt": "2026-08-14T19:17:50.050Z"
+    }
+  },
+  "cs__ConvAlex": {
+    "setupA": "full-pipeline-kimi_FINAL",
+    "setupB": "no-iteration-qwen_FINAL",
+    "subject": "cs",
+    "figure": "ConvAlex",
+    "machineEval": {
+      "figure1Setup": "full-pipeline-kimi_FINAL",
+      "figure2Setup": "no-iteration-qwen_FINAL",
+      "mode": "3d",
+      "dimensions": {
+        "geometry": {
+          "winner": "full-pipeline-kimi_FINAL",
+          "confidence": 0.86,
+          "rationale": "Figure 1 reconstructs the architecture as a wide oblique 3D pipeline with a thick input image block, appropriately sized feature-map cuboids, a separate convolution kernel cube, multiple intermediate blocks, arrows, and tall fully connected stacks with proportions closer to the textbook AlexNet-style diagram. Figure 2 has the same basic element count, but its perspective camera and much smaller, more cube-like convolution blocks make the geometry look less like the flat oblique source; its input is only a tilted plane and the FC layers are overly thin bars, so the spatial proportions and viewpoint are noticeably less accurate."
+        },
+        "interactivity": {
+          "winner": "full-pipeline-kimi_FINAL",
+          "confidence": 0.82,
+          "rationale": "Figure 1 has the stronger interaction correctness because its layer slider consistently highlights the selected convolution block and updates the information panel, its data-flow animation restores the selected-stage highlight afterward, and it implements a genuine custom drag-to-rotate behavior for the selected tensor block. Figure 2's slider does update text and highlighting, but the data-flow toggle conflicts with it by clearing or overriding the selected highlight without restoring it, the input image step is effectively not highlighted because MeshBasicMaterial has no emissive response, and it does not implement the requested selected-block drag rotation beyond ordinary camera orbiting. Figure 1 is not perfect because its flow animation omits the input image, includes kernel/extra blocks, and does not update the dimensions overlay step-by-step, but its controls are more coherent and less self-contradictory than Figure 2's."
+        },
+        "faithfulness": {
+          "winner": "full-pipeline-kimi_FINAL",
+          "confidence": 0.78,
+          "rationale": "Figure 1 is more immediately recognizable as the AlexNet-style textbook figure because it preserves the visible input image, left-to-right sequence of orange convolution blocks, cyan fully connected layers, and most dimension labels in the expected order. Figure 2 has a more oblique 3D perspective, but the input image is nearly edge-on and barely recognizable, the convolution blocks are overly bulky/cubic, and the composition diverges more from the reference at a glance."
+        },
+        "labels": {
+          "winner": "full-pipeline-kimi_FINAL",
+          "confidence": 0.68,
+          "rationale": "Figure 1 has larger, more readable labels and includes most of the key dimension and layer annotations, whereas Figure 2's labels are generally much too small to read comfortably at the displayed size. Figure 1 does suffer from significant clutter and collisions in the middle layers and concatenated top labels like 40964096/10001000, but Figure 2's annotations are so tiny and distant that several required labels are effectively illegible despite somewhat cleaner spacing."
+        },
+        "concept": {
+          "winner": "no-iteration-qwen_FINAL",
+          "confidence": 0.72,
+          "rationale": "Figure 2 is more conceptually accurate because its first three labeled convolutional volumes visibly shrink in spatial face size while increasing in depth for 55×55×96, 27×27×256, and 13×13×384, matching the intended AlexNet progression (L00008, L00012), whereas Figure 1 labels those same stages but makes the third block wider than the second and less deep than the 27×27×256 block, weakening or contradicting the spatial-shrink/depth-growth concept. Both figures wrongly color the feature-map volumes orange rather than teal and reserve teal for later FC bars, blurring the brief’s distinction between teal feature maps and orange convolution kernels (L00007-L00008), but Figure 1 is worse because it also adds confusing opposing/bracket arrows around the Conv 3×3 region instead of a consistently left-to-right data flow (L00010)."
+        }
+      },
+      "aggregator": {
+        "winner": "full-pipeline-kimi_FINAL",
+        "confidence": 0.82,
+        "explanation": "Figure 1 is the stronger overall reconstruction: it better matches the rendered AlexNet-style layout with a recognizable input image, left-to-right sequence of convolution blocks, readable dimension/layer labels, more accurate oblique pipeline proportions, and more coherent interactive behavior including slider highlighting and selected-block rotation. Figure 2 has a conceptual advantage in showing the early feature maps shrinking spatially while increasing in depth, but relative to Figure 1 it is weaker in the visible rendering because the input is nearly edge-on, labels are too small, convolution/FC proportions are less faithful, and its interactions conflict by losing or overriding selected highlights."
+      },
+      "evalModel": "gpt-5.5",
+      "evaluatedAt": "2026-08-14T19:18:19.973Z"
+    }
+  },
+  "cs__GraphNodeEdgeAdjacency": {
+    "setupA": "full-pipeline-kimi_FINAL",
+    "setupB": "no-iteration-qwen_FINAL",
+    "subject": "cs",
+    "figure": "GraphNodeEdgeAdjacency",
+    "machineEval": {
+      "figure1Setup": "no-iteration-qwen_FINAL",
+      "figure2Setup": "full-pipeline-kimi_FINAL",
+      "mode": "2d",
+      "dimensions": {
+        "geometry": {
+          "winner": "no-iteration-qwen_FINAL",
+          "confidence": 0.86,
+          "rationale": "Figure 1 better preserves the attributed-graph structure: it has the same 6-node/7-edge topology, a 6×6 adjacency matrix, a rectangular node-data matrix whose 5 rows match the 5-segment node feature stacks, and a 4×7 edge-data matrix matching the edge feature stacks. Figure 2 has the same basic topology, but it makes node and edge feature stacks vary in length while the corresponding X and E matrices have fixed row counts, so the graph-side features no longer structurally match the matrix representations; it also rearranges the panels less faithfully."
+        },
+        "interactivity": {
+          "winner": "no-iteration-qwen_FINAL",
+          "confidence": 0.84,
+          "rationale": "Figure 1 more faithfully implements the requested interactions: node clicks consistently highlight the matching adjacency row/column and X column, edge clicks highlight the correct E column and visibly ring the two endpoint nodes, and the panel-focus radio controls correctly dim the intended panels. Figure 2 has useful extra controls, but its edge click does not actually highlight the two connected node circles, and its graph feature stacks have variable lengths that do not consistently match the fixed X/E matrix columns being highlighted, so some selections imply a mismatch between the drawn graph attributes and the matrix entries."
+        },
+        "faithfulness": {
+          "winner": "full-pipeline-kimi_FINAL",
+          "confidence": 0.92,
+          "rationale": "Figure 2 is more visually faithful because it preserves the main composition of the original: a large graph on the left, adjacency matrix near the center, node data in the upper right, and edge data below it, with broadly matching colors and matrix styles. Figure 1 contains the same general ingredients but compresses them into a small horizontal row with the right-side panels not stacked like the reference, making the overall textbook layout much less recognizable at a glance."
+        },
+        "labels": {
+          "winner": "full-pipeline-kimi_FINAL",
+          "confidence": 0.93,
+          "rationale": "Figure 2 has much larger and more readable panel labels, matrix titles, axis numbers, and formulas, and it includes the key labels from the original such as “Adjacency matrix, A,” “Node data, X,” and “Edge data, E.” Figure 1 also attempts these labels, but they are rendered extremely small at inline size and many annotations are difficult or impossible to read comfortably, making it substantially worse for label quality."
+        },
+        "concept": {
+          "winner": "no-iteration-qwen_FINAL",
+          "confidence": 0.93,
+          "rationale": "Figure 1 represents the graph connectivity, adjacency matrix, node feature matrix, and edge feature matrix consistently: its 6-node undirected graph uses the specified seven edges, its symmetric binary A matches those edges, X has one fixed-length feature column per node, and E has one fixed-length feature column per edge in the same edge order (L00007). Figure 2 gets the graph connectivity and matrix labels mostly right, but it depicts variable-length node and edge feature stacks in panel a while X and E have fixed row counts, yet its narration/tooltips claim those stacks are the same feature vectors stored in the matrix columns; that contradicts the requirement that X is a D × N matrix with D-dimensional node vectors and E is a Dᴷ × E matrix with fixed-dimensional edge vectors (L00007). Both figures are weak on visibly marking edge identities directly in panel a, but Figure 2’s feature-dimension mismatch is a substantive false relationship whereas Figure 1’s matrices and feature stacks remain conceptually consistent."
+        }
+      },
+      "aggregator": {
+        "winner": "no-iteration-qwen_FINAL",
+        "confidence": 0.74,
+        "explanation": "Figure 1 is stronger overall because it keeps the graph, adjacency matrix, node-feature matrix, and edge-feature matrix structurally and conceptually consistent, and its interactions correctly link node and edge selections to the corresponding matrix entries. Figure 2 is more faithful to the original visual layout and has much clearer labels, but it introduces a substantive mismatch between variable-length feature stacks and fixed-size X/E matrix columns, and its edge interaction fails to highlight the connected endpoint nodes as well as Figure 1."
+      },
+      "evalModel": "gpt-5.5",
+      "evaluatedAt": "2026-08-14T19:18:54.726Z"
+    }
+  },
+  "physics__flatland_camera_linear": {
+    "setupA": "full-pipeline-kimi_FINAL",
+    "setupB": "no-iteration-qwen_FINAL",
+    "subject": "physics",
+    "figure": "flatland_camera_linear",
+    "machineEval": {
+      "figure1Setup": "no-iteration-qwen_FINAL",
+      "figure2Setup": "full-pipeline-kimi_FINAL",
+      "mode": "2d",
+      "dimensions": {
+        "geometry": {
+          "winner": "full-pipeline-kimi_FINAL",
+          "confidence": 0.75,
+          "rationale": "Figure 2 better reconstructs the core 2D pinhole-camera structure: the scene and sensor arrays are contiguous segmented rows, the pinhole ray consistently passes through the aperture to the mirrored sensor cell, and the occluder/aperture geometry and axis reversal are laid out cleanly. Figure 1 has broadly similar components, but its cells are separated by gaps, its interactive aligned mode incorrectly turns the pinhole path into a vertical ray that bypasses the aperture, and its sensor-axis labeling/ellipsis placement is less coherent."
+        },
+        "interactivity": {
+          "winner": "full-pipeline-kimi_FINAL",
+          "confidence": 0.93,
+          "rationale": "Figure 2 has more correct interaction behavior: dragging scene cells updates the scene intensities, mirrored sensor measurements, and rays consistently, and the sensor-axis toggle only redraws the axis labeling while preserving the pinhole inversion. Figure 1’s drag mostly works, but its axis toggle incorrectly changes the physical scene-to-sensor mapping and even draws a vertical ray that bypasses the pinhole, so the control reverses the intended meaning; it also has a sensor-cell tooltip closure bug that can reference an invalid albedo value and throw on hover."
+        },
+        "faithfulness": {
+          "winner": "no-iteration-qwen_FINAL",
+          "confidence": 0.78,
+          "rationale": "Figure 1 is more visually faithful overall because it preserves the original composition with a larger fan of red rays, clearer separation of the scene row, occluder/aperture, pinhole, and lower sensor, and label placement that more closely matches the textbook diagram. Figure 2 is recognizable but is more compressed vertically, uses fewer rays, has some label overlap/cropping around the aperture, and the ray fan looks less like the dense radiating pattern in the original."
+        },
+        "labels": {
+          "winner": "no-iteration-qwen_FINAL",
+          "confidence": 0.63,
+          "rationale": "Figure 1 has most of the original labels present with cleaner placement overall, including more textbook-like subscripts for ℓ_w and ℓ_s and less collision between labels and rays. Figure 2 correctly labels “Camera sensor,” which Figure 1 appears to get wrong as “Camera set,” but Figure 2’s ℓ_w/ℓ_s labels are rendered as awkward underscore text, the Occluder label collides with a red ray, and the Aperture label is crowded against the bar, making its label quality worse overall."
+        },
+        "concept": {
+          "winner": "full-pipeline-kimi_FINAL",
+          "confidence": 0.86,
+          "rationale": "Figure 2 more accurately preserves the pinhole inversion while using reversed sensor coordinates: rays from scene cell i land at the mirrored physical sensor cell, and the default reversed sensor axis makes the image-coordinate correspondence consistent with the brief’s statement that the sensor axis is reversed relative to the scene (L00007-L00009, L00012). Figure 1 initially shows this idea, but its 'aligned' state falsely redraws the ray vertically to the same physical index, effectively removing pinhole inversion, and its narration asserts an anti-diagonal mapping in a way that conflicts with the reversed-coordinate setup; this would give students a less correct understanding of the camera-as-linear-map relationship (L00009, L00012)."
+        }
+      },
+      "aggregator": {
+        "winner": "full-pipeline-kimi_FINAL",
+        "confidence": 0.84,
+        "explanation": "Figure 2 is stronger overall because it more correctly implements the pinhole-camera geometry and interactions: scene cells map through the aperture to mirrored sensor cells, dragging updates intensities and rays consistently, and the sensor-axis toggle preserves the physical inversion. Figure 1 is more visually faithful to the textbook styling, with denser rays and cleaner rendered labels, but it has more serious functional and conceptual flaws: its aligned mode changes the physical mapping, draws a vertical ray that bypasses the pinhole, and can mislead students about the camera-as-linear-map relationship."
+      },
+      "evalModel": "gpt-5.5",
+      "evaluatedAt": "2026-08-14T19:19:24.068Z"
+    }
+  },
+  "physics__plenoptic_function": {
+    "setupA": "full-pipeline-kimi_FINAL",
+    "setupB": "no-iteration-qwen_FINAL",
+    "subject": "physics",
+    "figure": "plenoptic_function",
+    "machineEval": {
+      "figure1Setup": "full-pipeline-kimi_FINAL",
+      "figure2Setup": "no-iteration-qwen_FINAL",
+      "mode": "2d",
+      "dimensions": {
+        "geometry": {
+          "winner": "full-pipeline-kimi_FINAL",
+          "confidence": 0.88,
+          "rationale": "Figure 1 better preserves the apparent structure of the textbook scene: the pinhole camera is on the left with an actual gap in the right wall, the tree and bird occupy the right side at more plausible relative scale, there are two free-space red sampling points with full radial inward arrow fans, and two interior camera points with single rays through the aperture. Figure 2 is more compressed and schematic, adds an unrelated black ground band, changes the tree/canopy proportions substantially, simplifies the camera as a closed rectangle with a white slit, and introduces a movable sparse-cone probe that does not match the original node/ray topology as closely."
+        },
+        "interactivity": {
+          "winner": "full-pipeline-kimi_FINAL",
+          "confidence": 0.78,
+          "rationale": "Figure 1 has more reliable handlers: its click coordinate conversion uses the SVG CTM so moved samples land where the user clicks, and its camera/free toggle consistently changes the interaction mode and redraws the appropriate fan or aperture ray. Figure 2 redraws a probe, but its click mapping ignores SVG viewBox letterboxing/aspect-ratio scaling so clicks can place the probe at the wrong visual location, and its “Inside camera” mode can still show a free-space burst if the user clicks outside while the camera button remains active, making the control state inconsistent with the displayed distribution."
+        },
+        "faithfulness": {
+          "winner": "full-pipeline-kimi_FINAL",
+          "confidence": 0.87,
+          "rationale": "Figure 1 is more visually faithful because it preserves the original’s main composition: a pinhole camera on the left, two red sampling points with crossing rays, radial black light arrows in the middle, and a tree on the right without adding major new scene structure. Figure 2 is recognizable but less faithful at a glance because it invents a thick ground line, flattens and compresses the scene vertically, makes the tree and light-arrow groups smaller and more schematic, and changes the overall balance of the original more noticeably."
+        },
+        "labels": {
+          "winner": "full-pipeline-kimi_FINAL",
+          "confidence": 0.82,
+          "rationale": "Figure 1 has the required “Pinhole camera” label at a readable size and placed clearly above the camera, closer to the reference. Figure 2 includes the same label but it is much smaller and less comfortable to read at inline size, while also adding more prominent invented sidebar labels and controls that do not appear in the original."
+        },
+        "concept": {
+          "winner": "full-pipeline-kimi_FINAL",
+          "confidence": 0.93,
+          "rationale": "Figure 1 more accurately represents the key relationship that inside a pinhole camera most directions are zero and only rays passing through the aperture are non-zero, because its two interior sampling-point rays are geometrically routed through the camera gap (L00017, L00024-L00025, L00028). Figure 2 correctly shows free-space radial directional samples, but its fixed in-camera rays visibly cross the camera wall outside the aperture, falsely implying non-zero light can enter through blocked directions, and its sparse cone can mark multiple directions as non-zero without ensuring they pass through the pinhole (L00024-L00025, L00028)."
+        }
+      },
+      "aggregator": {
+        "winner": "full-pipeline-kimi_FINAL",
+        "confidence": 0.9,
+        "explanation": "Figure 1 is stronger across all dimensions: it preserves the textbook composition more faithfully, with the pinhole camera on the left, a real aperture, appropriately placed tree/bird elements, readable labeling, and sampling rays that correctly pass through the pinhole when inside the camera. Figure 2 is less accurate and less faithful because it compresses and alters the scene, adds invented elements like a ground band and sidebar labels, uses smaller labels, and can depict rays or interaction states that imply light entering through blocked camera walls rather than only through the aperture."
+      },
+      "evalModel": "gpt-5.5",
+      "evaluatedAt": "2026-08-14T19:20:02.763Z"
+    }
+  },
+  "physics__yaw_pitch_roll": {
+    "setupA": "full-pipeline-kimi_FINAL",
+    "setupB": "no-iteration-qwen_FINAL",
+    "subject": "physics",
+    "figure": "yaw_pitch_roll",
+    "machineEval": {
+      "figure1Setup": "no-iteration-qwen_FINAL",
+      "figure2Setup": "full-pipeline-kimi_FINAL",
+      "mode": "3d",
+      "dimensions": {
+        "geometry": {
+          "winner": "no-iteration-qwen_FINAL",
+          "confidence": 0.88,
+          "rationale": "Figure 1 better preserves the projection geometry: its image plane is perpendicular to the optical Z axis, the point p lies on a straight dashed ray from the origin to the world point P, and the labeled axes match the likely textbook convention with Y vertical, Z as the optical axis, and X receding. Figure 2 uses a less faithful coordinate layout, a perspective camera rather than a textbook-style orthographic/isometric diagram, a rectangular rather than square image plane, and most importantly its dashed origin→p→P path is not actually collinear at the initial state, so the central projection geometry is geometrically wrong."
+        },
+        "interactivity": {
+          "winner": "full-pipeline-kimi_FINAL",
+          "confidence": 0.78,
+          "rationale": "Figure 2 is better because its sliders and rotation-order buttons recompute the plane orientation, and its one-at-a-time animation highlights the active axis while continuously updating the image point p and dashed ray through p to the fixed world point P. Figure 1 has a serious step-control bug: when Step 1 or Step 2 finishes, getDisplayAngles immediately returns all three slider angles, so the figure no longer holds the advertised partial Euler-step orientation; it also parents the dashed ray to the rotating camera group, so the ray rotates away from the fixed P instead of being recomputed to connect p and P. Figure 2 is not perfect because the image plane rotates mostly about its own fixed center rather than moving as a fully rigid camera plane about the origin, but its advertised controls work more consistently than Figure 1's."
+        },
+        "faithfulness": {
+          "winner": "no-iteration-qwen_FINAL",
+          "confidence": 0.86,
+          "rationale": "Figure 1 is more visually faithful because its overall composition matches the reference more closely: the origin is on the left, Y rises vertically, X slants up-right, Z extends rightward, and the plane, p/P points, dashed line, green vectors, and red yaw/pitch/roll arcs are arranged in roughly the same spatial relationship. Figure 2 contains many of the same elements, but the camera/view is rotated so the axes spread in a different configuration, the plane and points sit on the opposite side of the origin, and the labels/arcs are much smaller and less immediately recognizable as the textbook diagram."
+        },
+        "labels": {
+          "winner": "no-iteration-qwen_FINAL",
+          "confidence": 0.83,
+          "rationale": "Figure 1 has substantially more readable and complete diagram labels, including Yaw, Pitch, Roll, θY/θX/θZ, X/Y/Z, origin, p and P placed near the corresponding features. Figure 2’s diagram labels are much smaller and harder to read at inline size, several labels are lower-case or weakly placed compared with the reference, and the added UI text creates more competing clutter without improving the textbook annotations."
+        },
+        "concept": {
+          "winner": "no-iteration-qwen_FINAL",
+          "confidence": 0.72,
+          "rationale": "Figure 1 more truthfully represents the projection geometry at the authored/default state: its image point p lies on the straight dashed ray from the origin to the world point P, matching the intended camera projection relationship (L00014). Figure 2 correctly uses the standard Y-up, X-lateral, Z-forward axes and labels yaw/pitch/roll about Y/X/Z (L00014), but its dashed “origin→p→P” polyline is not actually a straight projection ray through p to P, so the geometry it teaches is less accurate for projection. Both figures identify yaw as about Y, pitch as about X, and roll as about Z (L00014), but Figure 1’s projection relationship is conceptually stronger while Figure 2’s kinked/non-collinear ray can mislead students about the projection setup."
+        }
+      },
+      "aggregator": {
+        "winner": "no-iteration-qwen_FINAL",
+        "confidence": 0.84,
+        "explanation": "Figure 1 is stronger overall because it more accurately preserves the textbook projection geometry: the image point p lies on a straight ray from the origin to P, the image plane and axes match the intended convention, and its labels/arcs are more readable and faithful to the reference. Figure 2 has better-behaving interactive controls and animation, but compared with Figure 1 its default diagram is less faithful visually and geometrically, especially because the dashed origin–p–P path is not collinear and can misrepresent the central projection relationship."
+      },
+      "evalModel": "gpt-5.5",
+      "evaluatedAt": "2026-08-14T19:20:50.082Z"
+    }
+  }
+}

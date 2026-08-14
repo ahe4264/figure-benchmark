@@ -1,0 +1,407 @@
+{
+  "chemistry__CNX_Chem_09_01_Manometer": {
+    "setupA": "baseline-gemini_FINAL",
+    "setupB": "full-pipeline-qwen_FINAL",
+    "subject": "chemistry",
+    "figure": "CNX_Chem_09_01_Manometer",
+    "machineEval": {
+      "figure1Setup": "baseline-gemini_FINAL",
+      "figure2Setup": "full-pipeline-qwen_FINAL",
+      "mode": "2d",
+      "dimensions": {
+        "geometry": {
+          "winner": "baseline-gemini_FINAL",
+          "confidence": 0.86,
+          "rationale": "Figure 1 better reconstructs the three manometer structures simultaneously: each panel keeps the correct relative mercury levels for closed-end, open-end with Pgas < Patm, and open-end with Pgas > Patm, with appropriate closed/open ends, pressure arrows, formulas, and dashed h reference lines. Figure 2 has a cleaner U-tube shape, but it uses one shared gas pressure for all panels, so at any given state one or more non-active panels can show zero or physically mismatched height differences despite being labeled as a different configuration; its h guide lines are also solid short ticks rather than the clearer dashed reference construction in Figure 1."
+        },
+        "interactivity": {
+          "winner": "baseline-gemini_FINAL",
+          "confidence": 0.86,
+          "rationale": "Figure 1's controls more consistently recompute and redraw the intended active configuration: toggling updates the highlighted formula and slider range/value, and the pressure slider changes the corresponding mercury height with the correct sign for each manometer case. Figure 2's handlers redraw, but the single pressure slider range allows active open-end configurations to enter physically contradictory states—for example highlighting the Pgas = Patm − hρg case while Pgas is above atmospheric pressure, with h simply clamped to zero—so the advertised configuration and displayed formula can disagree with the drawn state."
+        },
+        "faithfulness": {
+          "winner": "full-pipeline-qwen_FINAL",
+          "confidence": 0.78,
+          "rationale": "Figure 2 is more recognizable as the original three-panel manometer figure because all three configurations remain visibly present with similar U-tube geometry, gas bulbs, pressure arrows, h markers, and equations arranged in the same left-to-right sequence. Figure 1 has broadly similar content, but the two inactive panels are faded almost to invisibility and the active panel uses dotted guide lines and a more reduced, washed-out presentation, making the overall textbook composition less immediately faithful."
+        },
+        "labels": {
+          "winner": "baseline-gemini_FINAL",
+          "confidence": 0.78,
+          "rationale": "Figure 1 includes essentially all of the original diagram labels in the three configurations, including Gas, Closed end, Vacuum, P_atm, Open end, h, and the pressure equations, and they are generally more readable than in Figure 2. Figure 2's diagram labels and equations are much smaller and fainter, with some labels such as the third-panel Open end absent or hard to discern, and the bottom equations are less legible at inline size."
+        },
+        "concept": {
+          "winner": "baseline-gemini_FINAL",
+          "confidence": 0.93,
+          "rationale": "Figure 1 more accurately represents all three required cases simultaneously: the closed-end panel has a vacuum arm with the right mercury level higher and P_gas = hρg, the open-end low-gas-pressure panel has the gas-side liquid higher and P_gas = P_atm − hρg, and the open-end high-gas-pressure panel has the open-arm liquid higher and P_gas = P_atm + hρg, matching the brief (L00014, L00017). Figure 2 has the correct formulas and can show the correct active case, but its single gas-pressure state is applied to all panels, so inactive canonical panels can show equal levels or a height relationship inconsistent with their own label/formula—for example, when P_gas is below atmospheric, the plus-formula panel no longer shows the open-arm liquid higher as required (L00014-L00017)."
+        }
+      },
+      "aggregator": {
+        "winner": "baseline-gemini_FINAL",
+        "confidence": 0.88,
+        "explanation": "Figure 1 is stronger overall because it preserves the correct pressure-height relationships across all three manometer cases and its controls keep the active formula, slider behavior, and mercury levels consistent. Figure 2 is visually more faithful to the textbook-style three-panel layout, but its shared pressure state can make inactive panels contradict their own labeled formulas, and its smaller/fainter labels are less readable than Figure 1’s."
+      },
+      "evalModel": "gpt-5.5",
+      "evaluatedAt": "2026-08-14T18:47:34.798Z"
+    }
+  },
+  "chemistry__CNX_Chem_18_02_HallHerCell": {
+    "setupA": "baseline-gemini_FINAL",
+    "setupB": "full-pipeline-qwen_FINAL",
+    "subject": "chemistry",
+    "figure": "CNX_Chem_18_02_HallHerCell",
+    "machineEval": {
+      "figure1Setup": "full-pipeline-qwen_FINAL",
+      "figure2Setup": "baseline-gemini_FINAL",
+      "mode": "2d",
+      "dimensions": {
+        "geometry": {
+          "winner": "full-pipeline-qwen_FINAL",
+          "confidence": 0.86,
+          "rationale": "Figure 1 better reconstructs the Hall-Héroult cell structure: it preserves the broad U-shaped steel shell and ceramic lining, the correct vertical layering of crust, electrolyte, molten aluminum, and carbon cathode, two large suspended carbon anodes with multi-prong supports, visible gas bubbles around the anodes, and a more complete exhaust hood/leader-line layout. Figure 2 captures the same general concept but is more schematic and proportionally compressed, has simplified or less faithful busbar/hanger and exhaust geometry, lacks a static bubble field at initial render, and its electrolyte/aluminum/cathode layering and electrical lead styling are less structurally convincing."
+        },
+        "interactivity": {
+          "winner": "full-pipeline-qwen_FINAL",
+          "confidence": 0.78,
+          "rationale": "Figure 1's controls more reliably do what they advertise: the run/pause button actually toggles the electrolysis animation, the current slider immediately updates the displayed value, bubble rate, ion motion speed, and molten aluminum thickness, and the step buttons consistently reset the scene state. Figure 2's current slider does affect future bubble/ion spawning and gradual aluminum growth, but it lacks an explicit animation control and its Reset Simulation handler changes internal aluminum state without redrawing the aluminum/electrolyte layers, leaving a stale figure until later animation updates; at zero current, existing bubbles and ions also keep moving, so the control does not fully stop the process."
+        },
+        "faithfulness": {
+          "winner": "full-pipeline-qwen_FINAL",
+          "confidence": 0.62,
+          "rationale": "Figure 1 is more visually faithful overall because the two large black carbon anodes, green electrolyte layer, gray molten aluminum layer, black cathode, outer shell, busbar, exhaust line, and label layout more closely match the textbook composition at a glance. Figure 2 is recognizable, but its anodes are noticeably smaller and higher relative to the cell, the cathode/aluminum proportions are more distorted, and the overall geometry reads less like the original."
+        },
+        "labels": {
+          "winner": "baseline-gemini_FINAL",
+          "confidence": 0.62,
+          "rationale": "Figure 2 has slightly clearer and better-spaced diagram labels overall, especially on the right side where the material labels are more legible and less compressed. Figure 1 includes the same main labels, but several are very tiny and the right-side annotations are more cramped against the artwork, making them harder to read at inline size."
+        },
+        "concept": {
+          "winner": "full-pipeline-qwen_FINAL",
+          "confidence": 0.78,
+          "rationale": "Figure 1 is more conceptually accurate because it consistently labels the cathode as negative and presents Al³⁺ reduction to molten aluminum at the cathode, while showing O₂, CO, and CO₂ bubbles at the positive carbon anodes as specified (L00012-L00014, L00019); Figure 2 also shows the main cell layout, but its control text and anode tooltips repeatedly reduce the anode products to CO/CO₂ and omit O₂ despite the brief explicitly listing oxygen as an anode product (L00007, L00012, L00014). Figure 1 also better ties the carbon-anode oxidation to O₂ formation and subsequent CO/CO₂ production, whereas Figure 2 is slightly less precise about that chemistry."
+        }
+      },
+      "aggregator": {
+        "winner": "full-pipeline-qwen_FINAL",
+        "confidence": 0.82,
+        "explanation": "Figure 1 is stronger overall: it more accurately reconstructs the Hall-Héroult cell geometry and layering, has controls that more reliably update the animation and state, and presents the cathode/anode chemistry more completely, including Al³⁺ reduction and O₂/CO/CO₂ production. Figure 2 has somewhat clearer label spacing, but relative to Figure 1 it is more schematic and proportionally compressed, has less faithful anode/cathode/electrolyte structure, weaker reset/current behavior, and omits some specified anode chemistry in its explanatory text."
+      },
+      "evalModel": "gpt-5.5",
+      "evaluatedAt": "2026-08-14T18:48:09.652Z"
+    }
+  },
+  "cs__SupervisedSurface": {
+    "setupA": "baseline-gemini_FINAL",
+    "setupB": "full-pipeline-qwen_FINAL",
+    "subject": "cs",
+    "figure": "SupervisedSurface",
+    "machineEval": {
+      "figure1Setup": "baseline-gemini_FINAL",
+      "figure2Setup": "full-pipeline-qwen_FINAL",
+      "mode": "3d",
+      "dimensions": {
+        "geometry": {
+          "winner": "baseline-gemini_FINAL",
+          "confidence": 0.9,
+          "rationale": "Figure 1 better matches the likely textbook geometry by showing both the 3D loss surface and 2D heatmap simultaneously side by side, with matching axis ranges, loss scale ticks, grid walls, markers, and consistent surface/contour mapping. Figure 2 is geometrically less faithful because it toggles between panels instead of reconstructing the two-panel layout, uses a different shifted loss function and marker/path configuration, starts in a perspective single-panel view, and implements the heatmap as a canvas texture rather than a fully geometric contour/heatmap panel."
+        },
+        "interactivity": {
+          "winner": "baseline-gemini_FINAL",
+          "confidence": 0.86,
+          "rationale": "Figure 1 implements the requested interactions more directly: dragging the current marker updates both the 3D surface marker and heatmap marker, recomputes the displayed parameters and loss, and automatically starts an animated gradient-descent path; its learning-rate slider immediately restarts the descent and spans a range large enough to show instability. Figure 2 has working view buttons, dragging, and a run button, but dragging only resets the point and requires a separate run action, its learning-rate range is narrower and clamps descent steps to the domain, and its 3D/2D toggle is flawed because label visibility is manually hidden but then the scaffold label synchronizer can re-show hidden-view labels, leaving stale labels over the active view."
+        },
+        "faithfulness": {
+          "winner": "baseline-gemini_FINAL",
+          "confidence": 0.78,
+          "rationale": "Figure 1 is more recognizable as the reference because it attempts both the 3D loss surface and the 2D heatmap with similar brown coloring and labeled panels, whereas Figure 2 only shows a single tiny 3D surface in the screenshot and omits the visible heatmap/contour panel and marker composition. Figure 1 is cluttered and far too small, but Figure 2's surface also has a sharper spike-like shape and provides less of the original two-panel visual structure."
+        },
+        "labels": {
+          "winner": "baseline-gemini_FINAL",
+          "confidence": 0.72,
+          "rationale": "Figure 1 is better because it at least attempts to label both the 3D loss surface and the heatmap with panel-style titles and axis labels for Intercept, Slope, and Loss, whereas Figure 2 only shows the 3D surface labels and lacks the corresponding heatmap/panel labels from the reference. However, Figure 1's labels are still very small and cluttered/overlapping, while Figure 2's plot labels are even more microscopic and incomplete, with many unrelated UI labels dominating the view."
+        },
+        "concept": {
+          "winner": "baseline-gemini_FINAL",
+          "confidence": 0.86,
+          "rationale": "Figure 1 more truthfully represents the intended supervised-learning loss landscape: it shows both the 3D convex quadratic surface and corresponding heatmap over the same parameter plane with matching markers, an interior global minimum, and a loss scale that reaches 70 as specified (L00007). Figure 2 also uses a convex quadratic with a visible optimum, but its loss function exceeds the stated 0–70 vertical/color scale over the displayed domain, so the plotted surface and labels can imply off-scale losses while the colors clamp at 70; it also does worse at conveying the two-panel a)/b) correspondence because the surface and heatmap are toggled rather than simultaneously labeled panels (L00007)."
+        }
+      },
+      "aggregator": {
+        "winner": "baseline-gemini_FINAL",
+        "confidence": 0.88,
+        "explanation": "Figure 1 is the clear overall winner because it more faithfully reconstructs the intended two-panel loss-landscape figure, showing the 3D convex surface and matching 2D heatmap together with corresponding markers, labels, scales, and interactions. Figure 2 has some working controls, but relative to Figure 1 it loses key structure by toggling views instead of presenting the paired panels, uses a less faithful shifted/off-scale loss representation, has incomplete or stale labels, and its dragging/descent behavior is less direct."
+      },
+      "evalModel": "gpt-5.5",
+      "evaluatedAt": "2026-08-14T18:49:06.148Z"
+    }
+  },
+  "cs__TransformerSWIN": {
+    "setupA": "baseline-gemini_FINAL",
+    "setupB": "full-pipeline-qwen_FINAL",
+    "subject": "cs",
+    "figure": "TransformerSWIN",
+    "machineEval": {
+      "figure1Setup": "full-pipeline-qwen_FINAL",
+      "figure2Setup": "baseline-gemini_FINAL",
+      "mode": "3d",
+      "dimensions": {
+        "geometry": {
+          "winner": "full-pipeline-qwen_FINAL",
+          "confidence": 0.83,
+          "rationale": "Figure 1 is geometrically closer to the likely source figure because it preserves the portrait image plane, the window partitions, shifted/clipped offset windows, fine token grid, and panel states a–f with appropriate proportions; Figure 2 instead replaces the image-window diagram with an 8×8 array of extruded square boxes, artificial gaps between windows, and a tilted 3D block view that changes the spatial structure substantially. Figure 1 is not perfect because it shows the panels interactively one at a time rather than reconstructing all six panels simultaneously, and it relies on a textured planar image, but Figure 2 has more severe geometric mismatches in primitives, proportions, viewpoint, and layout."
+        },
+        "interactivity": {
+          "winner": "baseline-gemini_FINAL",
+          "confidence": 0.82,
+          "rationale": "Figure 2 handles the main controls more correctly: its slider only reaches the intended 1×1, 2×2, and 4×4 states, it recomputes the layout and labels consistently, and it disables offset in the degenerate 1×1 case so the drawing cannot contradict the label. Figure 1 has a better tile-click visualization because it highlights a whole window and draws a full within-window attention graph, but its slider incorrectly allows a 3×3 state and, worse, offset mode remains possible at N=1, producing clipped multiple tiles while labeling the result as the 1×1 window/panel f; that is a serious interaction-extreme failure."
+        },
+        "faithfulness": {
+          "winner": "full-pipeline-qwen_FINAL",
+          "confidence": 0.95,
+          "rationale": "Figure 1 is much more recognizable as the textbook figure because it preserves the slanted image-plane composition, the underlying mural/graffiti-like picture, the white window grid, and the panel label/4×4 caption. Figure 2 only shows abstract colored square groups with no recognizable original image content or graffiti wall, so it reads more like a generic window-partition diagram than the referenced figure."
+        },
+        "labels": {
+          "winner": "full-pipeline-qwen_FINAL",
+          "confidence": 0.86,
+          "rationale": "Figure 1 better matches the original labels for the displayed panel by including the panel marker “b)” and the correct caption “4×4 windows,” and its side controls at least list the original a–f captions. Figure 2 only includes “4×4 windows” and omits the panel letter, while adding several non-original annotations such as the Swin Transformer title, partition-size controls, checkbox text, and instructional note, making its labeling less faithful and more cluttered."
+        },
+        "concept": {
+          "winner": "full-pipeline-qwen_FINAL",
+          "confidence": 0.88,
+          "rationale": "Figure 1 is conceptually closer because it represents the stated Swin partition cases as an image cut into 4×4, shifted 4×4, 2×2, shifted 2×2, and 1×1 window partitions with matching a–f/caption logic, including the half-window offset and single global region (L00007). Figure 2 teaches a partially related idea of local self-attention on an 8×8 token grid, but it does not represent the six labeled panels or original photograph reference and replaces windowed image tiles with individual colored token blocks, which makes the textbook partitioning scheme less accurately conveyed (L00007); it also gives much less support for the alternating regular/offset strategy enabling cross-window information flow without global attention cost (L00007)."
+        }
+      },
+      "aggregator": {
+        "winner": "full-pipeline-qwen_FINAL",
+        "confidence": 0.89,
+        "explanation": "Figure 1 is the clear overall winner because it much more closely preserves the original textbook figure’s rendered appearance and source-level concept: the portrait image plane, mural-like underlying image, white window partitions, shifted/clipped 4×4 and 2×2 cases, 1×1 global case, and a–f caption logic. Figure 2 has stronger interaction behavior for the slider and offset controls, but relative to Figure 1 it replaces the image-window diagram with abstract extruded token blocks, omits the panel lettering and several original visual cues, and conveys a more generic local-attention grid rather than the intended Swin partition sequence."
+      },
+      "evalModel": "gpt-5.5",
+      "evaluatedAt": "2026-08-14T18:49:35.881Z"
+    }
+  },
+  "cs__VAENonLinearLVM": {
+    "setupA": "baseline-gemini_FINAL",
+    "setupB": "full-pipeline-qwen_FINAL",
+    "subject": "cs",
+    "figure": "VAENonLinearLVM",
+    "machineEval": {
+      "figure1Setup": "baseline-gemini_FINAL",
+      "figure2Setup": "full-pipeline-qwen_FINAL",
+      "mode": "3d",
+      "dimensions": {
+        "geometry": {
+          "winner": "full-pipeline-qwen_FINAL",
+          "confidence": 0.64,
+          "rationale": "Figure 2 better preserves a coherent 3D geometry: the joint distribution is a true x1-x2-z box with square conditional slice planes perpendicular to the latent z axis, a continuous decoder manifold passing through the slice centers, and a separate marginal x1-x2 panel with matching projected curve. Figure 1 captures the broad idea, but its axes are less geometrically faithful because it maps latent z laterally and x1 into depth, uses non-square observation slices that distort the conditional densities, adds many extra contour circles, and relies on an oblique shear that makes the spatial relationships and labels less consistent."
+        },
+        "interactivity": {
+          "winner": "baseline-gemini_FINAL",
+          "confidence": 0.86,
+          "rationale": "Figure 1 has substantially more correct controls: its z slider continuously moves the slice and recomputes the displayed conditional density, and dragging on the right panel updates a posterior curve in real time. Its marginalization animation is still incomplete because it mostly sweeps the selected slice rather than truly collapsing/integrating the joint into the marginal. Figure 2 is weaker because the z slider only changes opacity between two fixed precomputed slices instead of moving/recomputing a slice, its marginalization button shows a mostly symbolic blank sweep plane, and its posterior interaction requires toggling and dragging a tiny marker in the left coordinate plane rather than naturally dragging an observation on the right x1-x2 marginal panel."
+        },
+        "faithfulness": {
+          "winner": "full-pipeline-qwen_FINAL",
+          "confidence": 0.78,
+          "rationale": "Figure 2 is more recognizable overall: it preserves the main composition of a 3D wireframe volume with warm brown probability slices, a cyan trajectory, and a separate tall marginal heatmap panel with similar labels. Figure 1 includes more of the intended elements, but its marginal panel is the wrong landscape shape, the scene is cluttered with invented red rings/markers and posterior annotations, and the overall proportions look less like the reference at a glance."
+        },
+        "labels": {
+          "winner": "full-pipeline-qwen_FINAL",
+          "confidence": 0.78,
+          "rationale": "Figure 2 has the main labels from the original more legibly placed, including x1, x2, z, Pr(x,z|φ), Pr(x|φ), and the marginalization text, with less crowding. Figure 1 includes many of these labels but they are much smaller, crowded around the 3D cube and marginalization text, and it adds an extra red posterior label not present in the reference, making the annotations less faithful and more cluttered."
+        },
+        "concept": {
+          "winner": "full-pipeline-qwen_FINAL",
+          "confidence": 0.68,
+          "rationale": "Figure 2 is conceptually more accurate because its right-panel marginal density is actually computed by summing/integrating conditional Gaussian contributions over latent z, matching the stated link from Pr(x,z|phi) to Pr(x|phi) by marginalization (L00007), whereas Figure 1 labels the right panel as a marginal but uses a simplified density tied to x1≈z rather than integrating the same 2D conditional blobs it draws on the left. Figure 2 also keeps a coherent latent-manifold model in which each conditional blob is centered on a nonlinear decoder curve (L00007), while Figure 1 appears to misplace or swap some axis labels relative to its own coordinate mapping, making the x1/x2/z interpretation less reliable. Figure 1 does better at including the requested multicolored projected curves, but Figure 2’s main mathematical relationship is truer; Figure 2’s weakness is that it omits the specified family of many differently colored z-slice curves and mostly shows only two slice planes plus a teal projected curve (L00007)."
+        }
+      },
+      "aggregator": {
+        "winner": "full-pipeline-qwen_FINAL",
+        "confidence": 0.74,
+        "explanation": "Figure 2 is stronger overall because it more faithfully preserves the reference composition and labels, with a coherent x1-x2-z geometry, legible probability annotations, and a marginal panel that actually reflects integration over latent z. Figure 1 is notably better interactively, with a slider and dragging behavior that update the displayed densities more meaningfully, but it is weaker than Figure 2 in visual fidelity and conceptual/geometric accuracy due to cluttered extra annotations, distorted slice geometry, and a less correct marginal density."
+      },
+      "evalModel": "gpt-5.5",
+      "evaluatedAt": "2026-08-14T18:50:47.648Z"
+    }
+  },
+  "physics__flying_bird": {
+    "setupA": "baseline-gemini_FINAL",
+    "setupB": "full-pipeline-qwen_FINAL",
+    "subject": "physics",
+    "figure": "flying_bird",
+    "machineEval": {
+      "figure1Setup": "full-pipeline-qwen_FINAL",
+      "figure2Setup": "baseline-gemini_FINAL",
+      "mode": "3d",
+      "dimensions": {
+        "geometry": {
+          "winner": "full-pipeline-qwen_FINAL",
+          "confidence": 0.72,
+          "rationale": "Figure 1 better matches the intended 3D projection geometry with a camera center O, image plane between O and the receding bird positions, multiple projection rays, projected bird positions, shrinking image-plane velocity arrows, and a clear vanishing point/direction relationship. Figure 2 has some mathematically good perspective projection of the bird outline, but it uses fewer bird samples, changes the coordinate/view convention, adds extra path/grid elements, and its grid helper appears incorrectly oriented relative to the image plane, making the spatial reconstruction less faithful."
+        },
+        "interactivity": {
+          "winner": "full-pipeline-qwen_FINAL",
+          "confidence": 0.88,
+          "rationale": "Figure 1's controls are imperfect but functional: the fly button, scrubber, and velocity-direction sliders update the scene, recompute the vanishing point, projection rays, projected trail, and labels without admitting obvious degenerate states. Figure 2 attempts the better requested drag interaction, but its animation override references nonexistent ArrowHelper.direction properties, which will throw during the update loop and stop the live redraw, making autoplay, slider updates, and FOE dragging effectively broken or stale."
+        },
+        "faithfulness": {
+          "winner": "full-pipeline-qwen_FINAL",
+          "confidence": 0.86,
+          "rationale": "Figure 1 is more recognizable because it includes the key visual ingredients of the reference—an image plane, a diagonal green trajectory/ray structure, red velocity arrows, and repeated dark bird-like marks—whereas Figure 2 mostly shows two pale grid planes with a red and black point and lacks the prominent birds, red arrows, and green perspective rays that define the original."
+        },
+        "labels": {
+          "winner": "baseline-gemini_FINAL",
+          "confidence": 0.58,
+          "rationale": "Figure 2 is slightly better because its readable side text at least references the vanishing point and projected velocity arrows, whereas Figure 1 only provides unrelated control labels such as velocity azimuth/elevation and no useful diagram annotations. Both figures badly miss the original labels like “V,” “O,” and “Vanishing point” as placed annotations on the artwork, and the actual diagrams are too small for any embedded labels to be readable."
+        },
+        "concept": {
+          "winner": "baseline-gemini_FINAL",
+          "confidence": 0.76,
+          "rationale": "Figure 2 is conceptually more accurate because it keeps the bird's 3D motion as a straight constant-velocity translation with equal-length 3D velocity arrows while computing the vanishing point and projected velocity shrinkage from a consistent perspective projection, so projected positions and velocities converge correctly toward the motion-direction vanishing point (L00016). Figure 1 also gets the main vanishing-point geometry mostly right, but it manually shrinks the 3D bird sprites as they recede, which can falsely suggest the physical bird changes size rather than only its image shrinking in the camera, whereas the brief distinguishes constant 3D velocity/object motion from shrinking image-plane velocities and projections (L00008-L00013, L00016)."
+        }
+      },
+      "aggregator": {
+        "winner": "full-pipeline-qwen_FINAL",
+        "confidence": 0.78,
+        "explanation": "Figure 1 is the stronger overall result because it more faithfully renders the intended perspective setup, including the camera center, image plane, receding bird samples, projection rays, shrinking projected velocities, and a clear vanishing-point relationship, while Figure 2’s rendered view lacks many of these salient visual elements and its live update path is reportedly broken. Figure 2 has somewhat better conceptual treatment of constant 3D motion and slightly more relevant side text, but those advantages are outweighed by Figure 1’s more complete geometry, recognizable visual correspondence to the reference, and functional controls compared with Figure 2’s stale or failing interactivity."
+      },
+      "evalModel": "gpt-5.5",
+      "evaluatedAt": "2026-08-14T18:51:45.696Z"
+    }
+  },
+  "physics__pinhole_and_sensor": {
+    "setupA": "baseline-gemini_FINAL",
+    "setupB": "full-pipeline-qwen_FINAL",
+    "subject": "physics",
+    "figure": "pinhole_and_sensor",
+    "machineEval": {
+      "figure1Setup": "full-pipeline-qwen_FINAL",
+      "figure2Setup": "baseline-gemini_FINAL",
+      "mode": "3d",
+      "dimensions": {
+        "geometry": {
+          "winner": "full-pipeline-qwen_FINAL",
+          "confidence": 0.63,
+          "rationale": "Figure 1 better preserves the intended pinhole-camera geometry: the camera center, virtual plane, sensor plane, projection ray, point P, and house are arranged along a consistent forward optical axis with a rectangular N-by-M sensor grid and a more genuinely volumetric house. Figure 2 has a nicer computed pixel rasterization, but it remaps the optical axis into a different internal coordinate direction, uses a square N-by-N sensor despite N/M labeling, relies on an oblique sheared view, and represents the house with mostly flat/open surfaces, making the overall 3D reconstruction less faithful."
+        },
+        "interactivity": {
+          "winner": "baseline-gemini_FINAL",
+          "confidence": 0.86,
+          "rationale": "Figure 2 has more correct and coherent interactions: its focal length, sensor width, and resolution handlers rebuild the planes/grids, rerasterize the sensor image, update the projected/snap points, update numeric slider values, and in pixel mode recompute the intrinsic matrix. Figure 1’s basic sliders and drag do update the main ray/projection/grid, but several displayed labels stay at their initial positions after f or w changes, the P label does not follow the dragged point, the sensor image patch is not recomputed from focal length, and its readout only partially reports intrinsic entries rather than a matrix; at extremes its snapped-cell drawing can be clamped while the displayed pixel indices are not."
+        },
+        "faithfulness": {
+          "winner": "baseline-gemini_FINAL",
+          "confidence": 0.74,
+          "rationale": "Figure 2 is more recognizable at a glance because it preserves the main left-to-right composition with a labeled sensor plane, camera center, virtual image plane, optical axis, and a colored 3D object on the right in roughly the same red/yellow/green scheme. Figure 1 includes a more faithful gray pixel grid and colored projected stripes on the sensor, but the overall scene is much smaller, harder to read, and the right-side object is reduced to thin colored slabs rather than the prominent block-like object in the reference."
+        },
+        "labels": {
+          "winner": "baseline-gemini_FINAL",
+          "confidence": 0.86,
+          "rationale": "Figure 2 has much more readable and appropriately sized labels, including key annotations such as Image plane/sensor, N pixels, M pixels, Camera center, Xc/Yc/Zc, Virtual image plane, optical/principal axis, w, f, and P, with generally clear placement. Figure 1 includes several similar labels but they are extremely small at the rendered scale, harder to read, and some annotations are cramped or nearly illegible, making it weaker on label quality despite covering much of the same content."
+        },
+        "concept": {
+          "winner": "baseline-gemini_FINAL",
+          "confidence": 0.68,
+          "rationale": "Figure 2 more truthfully represents the core pinhole geometry: the pinhole is at the origin, the virtual plane is at +f, the physical sensor is at -f, and the ray/projection computations consistently use the optical-axis coordinate, so the projection chain from P to continuous and snapped sensor location is conceptually coherent (L00007-L00010, L00015). Figure 1 models the front/back projection and M-by-N grid better, but it places the Zc and optical/principal-axis labels on the wrong geometric axis while the actual Zc arrow is elsewhere, which directly corrupts the camera-coordinate-frame concept that the brief explicitly requires (L00015). Figure 2 is not perfect because it asserts an N×N square resolution rather than the requested N×M/M-by-N sensor and therefore over-specializes the intrinsic readout, but this is less damaging than Figure 1 mislabeling the optical-axis coordinate frame (L00012, L00015)."
+        }
+      },
+      "aggregator": {
+        "winner": "baseline-gemini_FINAL",
+        "confidence": 0.82,
+        "explanation": "Figure 2 is the clearer overall match because it has more readable labels and a more recognizable rendered composition, and its interactions more consistently rebuild the projection, grids, pixel snapping, and intrinsic readout when controls change. Figure 1 has stronger source-level geometry in some respects, especially the M-by-N sensor grid and volumetric arrangement, but it is visually harder to read, has stale or cramped annotations, and its interactive updates are less complete. Figure 2’s main weakness is its square N-by-N simplification and some geometric compromises, but these are outweighed by its better labeling, rendering faithfulness, interaction behavior, and conceptual camera-frame coherence."
+      },
+      "evalModel": "gpt-5.5",
+      "evaluatedAt": "2026-08-14T18:52:45.542Z"
+    }
+  },
+  "physics__reprojection_error": {
+    "setupA": "baseline-gemini_FINAL",
+    "setupB": "full-pipeline-qwen_FINAL",
+    "subject": "physics",
+    "figure": "reprojection_error",
+    "machineEval": {
+      "figure1Setup": "baseline-gemini_FINAL",
+      "figure2Setup": "full-pipeline-qwen_FINAL",
+      "mode": "3d",
+      "dimensions": {
+        "geometry": {
+          "winner": "baseline-gemini_FINAL",
+          "confidence": 0.78,
+          "rationale": "Figure 1 better preserves the core projective geometry: the 3D points, image-plane points, and dashed rays are collinear through the pinhole/origin, with the projected triangle lying consistently on the image plane. Figure 2 includes more decorative/detail elements, but its image plane is artificially rotated while the projection math still assumes an untilted plane, causing the projection rays through the observed points to become geometrically inconsistent/kinked rather than true straight pinhole rays; this is a significant spatial-relationship error despite its richer element count."
+        },
+        "interactivity": {
+          "winner": "baseline-gemini_FINAL",
+          "confidence": 0.86,
+          "rationale": "Figure 1 has working sliders and a working aggregate/per-point toggle, and dragging observed points updates the drawn residual vectors and numeric values, even though it does not support dragging the reprojected estimates and its observed-point drag indirectly moves the underlying 3D point. Figure 2 implements more advertised affordances, but key handlers are broken: dragging a reprojected point is immediately overwritten by updateScene recomputing it from the sliders, and its aggregate error toggle attempts to hide/show label divs that the global label sync then unhides, so the displayed mode does not reliably match the selected control."
+        },
+        "faithfulness": {
+          "winner": "full-pipeline-qwen_FINAL",
+          "confidence": 0.88,
+          "rationale": "Figure 2 is more visually faithful because it preserves the core composition of the original: a large orange 3D triangle on the right with red/blue/green vertices, dashed projection rays to a left image plane, and a smaller projected triangle with local axes. Figure 1 includes some similar elements, but the large triangle is compressed too close to the plane, the vertex arrangement is less recognizable, and the projected/perturbed points are cluttered and visually confusing compared with the original."
+        },
+        "labels": {
+          "winner": "full-pipeline-qwen_FINAL",
+          "confidence": 0.62,
+          "rationale": "Figure 2 includes the main point labels P1, P2, and P3 on the 3D triangle and appears to include the projected p/p′ labels and coordinate axes, whereas Figure 1 is missing or obscures important labels such as P1 and X_L and has several point labels crowded together near the image plane. Figure 2’s labels are unfortunately very small and it adds non-reference UI/error text, but Figure 1 also adds invented numeric annotations and has worse overlap/clutter around the projected points."
+        },
+        "concept": {
+          "winner": "baseline-gemini_FINAL",
+          "confidence": 0.88,
+          "rationale": "Figure 1 more correctly represents the key concept that reprojection error is the 2D distance on the image plane between observed image points p_i and reprojected points p'_i computed from the same 3D points using estimated parameters (L00013-L00023, L00028). Its observed points are actual pinhole projections of the 3D triangle and its red segments connect those points to estimated reprojected counterparts on the same image plane (L00025, L00028). Figure 2 also shows p_i, p'_i and red residuals, but it introduces fixed noise offsets and even a baseline with correct-looking parameters can still have nonzero error, which weakens the stated ground-truth/estimated-parameter relationship (L00014-L00022); additionally its image plane is rotated for display while the projection coordinates are computed as if the plane were not rotated, so the shown projection rays/observed points are not geometrically consistent with projection through the camera (L00017-L00021, L00028)."
+        }
+      },
+      "aggregator": {
+        "winner": "baseline-gemini_FINAL",
+        "confidence": 0.74,
+        "explanation": "Figure 1 is stronger overall because it better preserves the underlying reprojection-error concept and projective geometry: its 3D points, image-plane points, and rays are consistent through the pinhole, and its interactive controls and residual updates work more reliably. Figure 2 is visually closer to the reference composition and has somewhat better visible labeling, but it suffers from a serious mismatch between its rotated image plane and untilted projection math, plus broken or misleading interactions such as overwritten reprojected-point dragging and unreliable aggregate/per-point display behavior."
+      },
+      "evalModel": "gpt-5.5",
+      "evaluatedAt": "2026-08-14T18:53:20.619Z"
+    }
+  },
+  "physics__translations": {
+    "setupA": "baseline-gemini_FINAL",
+    "setupB": "full-pipeline-qwen_FINAL",
+    "subject": "physics",
+    "figure": "translations",
+    "machineEval": {
+      "figure1Setup": "full-pipeline-qwen_FINAL",
+      "figure2Setup": "baseline-gemini_FINAL",
+      "mode": "2d",
+      "dimensions": {
+        "geometry": {
+          "winner": "full-pipeline-qwen_FINAL",
+          "confidence": 0.74,
+          "rationale": "Figure 1 better reconstructs the structural layout of the translation diagram: it keeps the axes, orange squares, red displacement arrows, labels, and homogeneous transformation matrices together in the drawing area with clearer relative proportions and a distinct thicker/darker resultant t+s arrow. Figure 2 captures the basic square-and-vector topology, but it pushes the matrices into the control panel rather than the figure, uses a larger y-range with more empty space, and gives the resultant vector essentially the same line styling as the component vectors, making the composed translation less structurally faithful."
+        },
+        "interactivity": {
+          "winner": "baseline-gemini_FINAL",
+          "confidence": 0.88,
+          "rationale": "Figure 2's interaction set is more correct and complete: dragging and the range controls both recompute the square positions, vectors, individual matrices, and composed matrix consistently, and it handles zero and negative translations reasonably. Figure 1's drag interactions mostly work, but it constrains t to a narrow positive range and constrains s indirectly by clamping the final position, so the user cannot freely set the advertised translation vectors or explore degenerate/negative cases; it also shows less matrix feedback for the chained translation than Figure 2."
+        },
+        "faithfulness": {
+          "winner": "baseline-gemini_FINAL",
+          "confidence": 0.86,
+          "rationale": "Figure 2 is more visually faithful because it preserves the main textbook motif at a glance: black x/y axes, orange source and translated squares, and a red translation vector with a clear arrowhead and label. Figure 1 has a similar basic layout, but the red vector lacks the prominent arrowhead, the matrix annotation is placed intrusively inside the drawing area, and the overall composition reads less like the original textbook diagram."
+        },
+        "labels": {
+          "winner": "baseline-gemini_FINAL",
+          "confidence": 0.72,
+          "rationale": "Figure 2 has the essential diagram labels x, y, and t placed cleanly and readably with less interference in the drawing, whereas Figure 1 adds a prominent transformation-matrix annotation inside the plot that is not present in the textbook figure and creates extra clutter near the y-axis. Both figures include non-original interface text, but Figure 1’s extra in-canvas annotation more directly degrades label fidelity to the reference."
+        },
+        "concept": {
+          "winner": "baseline-gemini_FINAL",
+          "confidence": 0.62,
+          "rationale": "Both figures correctly represent a translation as adding a vector to the original square’s position and correctly show two translations composing to the direct vector t+s (L00007-L00023, L00026, L00053-L00054). Figure 2 is slightly more conceptually accurate because it explicitly displays the individual translation matrices for t and s and their product S·T with the last column equal to the component sum, matching the homogeneous-coordinate motivation that chaining translations is matrix multiplication (L00028-L00030, L00053-L00054). Figure 1 is also broadly correct, but it only shows T(t) and the composed matrix rather than the separate second translation matrix, and its interaction constrains t to an upper-right case, making the general arbitrary-vector rule less directly represented than Figure 2 (L00007-L00023)."
+        }
+      },
+      "aggregator": {
+        "winner": "baseline-gemini_FINAL",
+        "confidence": 0.82,
+        "explanation": "Figure 2 is stronger overall because it more cleanly preserves the rendered textbook motif with readable x/y/t labels, orange squares, and a clear red translation arrow, while Figure 1’s in-canvas matrix annotation and less prominent arrowhead make the visual result more cluttered. It also provides more complete and correct interaction and matrix feedback, allowing dragging/range controls to update positions, vectors, and composed matrices consistently, whereas Figure 1 constrains the translations and does not represent the second translation matrix as explicitly. Figure 1 has a structural advantage in keeping matrices inside the drawing and emphasizing the resultant vector, but that is outweighed by Figure 2’s higher-fidelity rendering, broader interaction support, and slightly clearer homogeneous-coordinate composition."
+      },
+      "evalModel": "gpt-5.5",
+      "evaluatedAt": "2026-08-14T18:54:02.016Z"
+    }
+  }
+}

@@ -1,0 +1,407 @@
+{
+  "math__1.6.1": {
+    "setupA": "no-iteration-kimi_FINAL",
+    "setupB": "no-iteration-qwen_FINAL",
+    "subject": "math",
+    "figure": "1.6.1",
+    "machineEval": {
+      "figure1Setup": "no-iteration-qwen_FINAL",
+      "figure2Setup": "no-iteration-kimi_FINAL",
+      "mode": "2d",
+      "dimensions": {
+        "geometry": {
+          "winner": "no-iteration-qwen_FINAL",
+          "confidence": 0.88,
+          "rationale": "Figure 1 better matches the intended unit-circle structure: it has a continuous dashed left portion of the circle, a solid right arc, correctly placed radii, angle arcs, shaded sector, P and Q labels, and the textbook-style caption with proportions closer to the original. Figure 2 includes the same basic components but its dashed circle is broken into short separated left arcs, adds an extra readout box not present in the original, and its curved arrow/label styling and caption are less faithful, making the reconstructed 2D structure less accurate."
+        },
+        "interactivity": {
+          "winner": "no-iteration-qwen_FINAL",
+          "confidence": 0.72,
+          "rationale": "Figure 1 has the more correct interaction behavior: both sliders immediately recompute and redraw P, Q, radii, labels, and the sector, and its animation is a smooth toggle that repeatedly approaches c from below and above while keeping the x slider/output synchronized. Figure 2's sliders also generally work, but its animation is less correct because after reaching c from below it deliberately moves x away from c before approaching from above, and the play button cannot toggle/stop or indicate its running state. Both figures mishandle the periodic wraparound case near 0 and 2π by shading the large sector instead of the small angular gap, but Figure 1's implemented controls are otherwise cleaner and more faithful."
+        },
+        "faithfulness": {
+          "winner": "no-iteration-kimi_FINAL",
+          "confidence": 0.92,
+          "rationale": "Figure 2 is much more recognizable as the textbook figure: it preserves the large unit-circle composition, axes, colored P and Q points, sector shading, curved arrow, and coordinate labels in approximately the right places. Figure 1 has the same basic geometry but it is scaled down and visually disrupted by a large empty rectangle on the left, clipped/missing labels, and a misplaced/mostly absent caption, making it much less faithful at a glance."
+        },
+        "labels": {
+          "winner": "no-iteration-kimi_FINAL",
+          "confidence": 0.93,
+          "rationale": "Figure 2 has the main point labels Q(cos c, sin c) and P(cos x, sin x) clearly present and placed near the correct points, with readable x and c angle labels, whereas Figure 1 loses most of the P and Q labels so only stray closing parentheses are visible. Figure 2 still has problems: the bottom explanatory caption is incomplete and there is stray clipped text near the upper left plus an extra coordinate readout, but Figure 1's caption is even more badly clipped and its key point annotations are essentially missing."
+        },
+        "concept": {
+          "winner": "no-iteration-qwen_FINAL",
+          "confidence": 0.92,
+          "rationale": "Figure 1 more accurately represents the core idea that P(cos x, sin x) on the unit circle moves toward Q(cos c, sin c) as x approaches c, with correctly placed labels and a curved arrow pointing toward Q from the x<c side (L00007-L00012, L00016). Figure 2 has the same basic coordinate setup, but its curved arrow is drawn on the c+ side pointing away from Q, which contradicts the required indication that P moves toward Q as x approaches c (L00007, L00016), and its narration says the coordinate difference is “exactly” the angular gap, which is mathematically false since angular separation is not equal to coordinate differences (L00007-L00012)."
+        }
+      },
+      "aggregator": {
+        "winner": "no-iteration-qwen_FINAL",
+        "confidence": 0.62,
+        "explanation": "Figure 1 is stronger overall because it more accurately implements the intended unit-circle geometry and interaction: P and Q, the radii, sector, sliders, and animation better support the idea of P approaching Q as x approaches c. Figure 2 is more visually recognizable in the rendered screenshot, with clearer point labels, but it has less faithful structural details, a less correct animation, and conceptually misleading arrow/narration choices relative to Figure 1."
+      },
+      "evalModel": "gpt-5.5",
+      "evaluatedAt": "2026-08-14T19:22:21.650Z"
+    }
+  },
+  "math__15.2.12": {
+    "setupA": "no-iteration-kimi_FINAL",
+    "setupB": "no-iteration-qwen_FINAL",
+    "subject": "math",
+    "figure": "15.2.12",
+    "machineEval": {
+      "figure1Setup": "no-iteration-qwen_FINAL",
+      "figure2Setup": "no-iteration-kimi_FINAL",
+      "mode": "2d",
+      "dimensions": {
+        "geometry": {
+          "winner": "no-iteration-qwen_FINAL",
+          "confidence": 0.93,
+          "rationale": "Figure 1 better matches the original structure: panel (a) has the vertical segment at x = −π/2 directed upward from y=1 to y=2 with the expected negative alignment against the downward field, and panel (b) reconstructs the parabola y=x² from (−1,1) to (2,4) with appropriate ticks and proportions. Figure 2 reverses the orientation of the vertical segment in panel (a), giving the wrong tangent direction and integral sign, keeps an overly broad fixed plotting range for both panels that distorts the panel (a) proportions, and adds an extra dashed full-parabola guide not present in the core structure."
+        },
+        "interactivity": {
+          "winner": "no-iteration-kimi_FINAL",
+          "confidence": 0.82,
+          "rationale": "Figure 2’s controls more reliably update the intended state: panel toggles resample the path, the t slider updates the moving point, field/tangent vectors, local dot product, and accumulated/total integral, and endpoint dragging recomputes the curve and readouts with better handling of zero-length tangents. Figure 1’s handlers mostly work, but its vertical segment is oriented upward rather than the requested downward direction, so the displayed line integral for panel (a) has the wrong sign relative to the figure brief; it also silently constrains the vertical segment’s endpoints and can draw a spurious tangent arrow in degenerate zero-length cases. Figure 2 is not perfect because the parabolic endpoint drag is constrained mostly to x-position, but its advertised interactions are overall more mathematically and interactively correct."
+        },
+        "faithfulness": {
+          "winner": "no-iteration-qwen_FINAL",
+          "confidence": 0.88,
+          "rationale": "Figure 1 is more visually faithful because it closely preserves panel (a)'s composition: the pale green vector-field region, axes placement with the y-axis right of center, the red vertical curve at x = -π/2, the C label, and the general arrow-field pattern. Figure 2 is recognizable as the same panel, but its curve is much shorter, the C label is missing, the title is tiny and awkwardly placed, the axes/proportions are less like the original, and the added colored tangent/field arrows make it read less like the textbook figure."
+        },
+        "labels": {
+          "winner": "no-iteration-qwen_FINAL",
+          "confidence": 0.86,
+          "rationale": "Figure 1 has the required textbook labels for panel (a)—including “Vectors not to scale,” x, y, y-axis values 1 and 2, −π/2, C, and (a)—placed mostly readably, whereas Figure 2 is missing the important C label and its title is very small and collides with the y-axis arrow. Figure 1 does add extra invented annotations such as F/T and integral text that clutter the diagram, but Figure 2’s omission of C and poorer title placement make its label quality worse overall."
+        },
+        "concept": {
+          "winner": "no-iteration-qwen_FINAL",
+          "confidence": 0.74,
+          "rationale": "Figure 1 is more conceptually accurate for the worked example because it treats panel (a) as the parametrized curve r(t)=(-π/2,t), 1≤t≤2, so the motion is upward and the integral is −1 as computed in the text (L00007-L00021), while Figure 2 reverses that orientation and explicitly teaches F·T=+1 and a positive integral for part (a), contradicting the given calculation. Both figures represent panel (b) as the parabolic path y=x² from x=-1 to x=2 with the correct large positive integral (L00022-L00039), but Figure 2’s wrong sign and direction for part (a) is a more serious mathematical error; this judgment is tempered by the authored brief’s conflicting downward wording for panel (a) (L00042)."
+        }
+      },
+      "aggregator": {
+        "winner": "no-iteration-qwen_FINAL",
+        "confidence": 0.84,
+        "explanation": "Figure 1 is stronger overall: it preserves the intended visual composition and labels of panel (a), reconstructs the parabolic panel (b) with better proportions, and matches the textbook/contextual interpretation of the upward vertical path and negative integral. Figure 2 has better interactive behavior in several controls, but relative to Figure 1 it reverses the panel (a) segment orientation, omits the important C label, distorts the layout/proportions, and presents the wrong sign for the line integral under the conceptual reading."
+      },
+      "evalModel": "gpt-5.5",
+      "evaluatedAt": "2026-08-14T19:23:20.369Z"
+    }
+  },
+  "chemistry__CNX_Chem_01_01_FuelCell": {
+    "setupA": "no-iteration-kimi_FINAL",
+    "setupB": "no-iteration-qwen_FINAL",
+    "subject": "chemistry",
+    "figure": "CNX_Chem_01_01_FuelCell",
+    "machineEval": {
+      "figure1Setup": "no-iteration-qwen_FINAL",
+      "figure2Setup": "no-iteration-kimi_FINAL",
+      "mode": "2d",
+      "dimensions": {
+        "geometry": {
+          "winner": "no-iteration-kimi_FINAL",
+          "confidence": 0.78,
+          "rationale": "Figure 2 better preserves the fuel-cell stack as a continuous layered structure: gray electrode/flow-field blocks, dark gas channels, purple catalyst/electrode layers, and the blue proton-exchange membrane are contiguous and proportioned more plausibly, with the inlet/outlet arrows and electron/proton paths aligned to those components. Figure 1 includes the same basic labels and species, but its gray plates and flow channels are separated by large empty gaps from the anode/cathode/membrane stack, the membrane is disproportionately wide, and the gas/electrode topology feels less physically connected to the original schematic."
+        },
+        "interactivity": {
+          "winner": "no-iteration-kimi_FINAL",
+          "confidence": 0.86,
+          "rationale": "Figure 2 is better because its cycle control actually starts and pauses moving particles along the fuel-cell paths, and its feed-rate slider redraws arrows and updates particle visibility/speed, whereas Figure 1’s cycle button only advances a static highlight box and does not animate electron flow, proton migration, or H2 splitting. Both figures incorrectly let the H2 feed-rate control affect more than just the hydrogen inlet/current path, but Figure 1 is worse because it thickens every arrow in the diagram with no particle-flow update, while Figure 2 at least makes the advertised current/flow behavior visibly dynamic. Both label toggles work, though Figure 2’s clean schematic also fades components slightly while Figure 1 simply hides labels."
+        },
+        "faithfulness": {
+          "winner": "no-iteration-kimi_FINAL",
+          "confidence": 0.98,
+          "rationale": "Figure 2 is much more visually faithful to the reference: it preserves the central fuel-cell composition with gray blocks, black gas channels, purple anode/cathode layers, blue proton exchange membrane, labeled hydrogen/oxygen/water flows, and the yellow electric-power load at the top. Figure 1 loses the recognizable structure by using a large dark background, omitting or greatly minimizing the gray cell body and colored membrane/electrode geometry, misplacing labels and molecules, and generally looking like a sparse schematic rather than the textbook figure."
+        },
+        "labels": {
+          "winner": "no-iteration-kimi_FINAL",
+          "confidence": 0.98,
+          "rationale": "Figure 2 includes the required labels from the reference—Electric power, Hydrogen, Oxygen, Unused hydrogen, Water, Anode, Proton exchange membrane, and Cathode—with generally readable sizing and sensible placement. Figure 1 has many of the same labels but they are extremely small, faint, poorly positioned, and some appear clipped or outside the main diagram area, making the annotations much harder to read at inline size."
+        },
+        "concept": {
+          "winner": "no-iteration-kimi_FINAL",
+          "confidence": 0.78,
+          "rationale": "Figure 2 is more concept-accurate because it explicitly represents the separated half-reactions with correct anode and cathode equations, shows protons crossing the proton exchange membrane while electrons are forced through the external load, and connects oxygen plus returning electrons/protons to water formation, matching the required operation of the cell (L00014-L00017). Figure 1 is broadly correct about the component layout, reactant inlets, electron/proton paths, and water/unused hydrogen outlets (L00017), but it is less precise: it does not state the half-reactions and its schematic particle placement gives a less clear account of the cathode reduction process than Figure 2, even though it does not contain a major conceptual error."
+        }
+      },
+      "aggregator": {
+        "winner": "no-iteration-kimi_FINAL",
+        "confidence": 0.94,
+        "explanation": "Figure 2 is consistently stronger: it more faithfully matches the reference fuel-cell diagram with contiguous gray cell blocks, dark gas channels, purple electrode layers, a blue proton-exchange membrane, readable labels, and correctly aligned hydrogen, oxygen, water, proton, and electron paths. Compared with Figure 2, Figure 1 is visually sparse and poorly connected, with tiny or misplaced labels, large gaps in the cell geometry, and weaker conceptual communication because it lacks explicit half-reactions and does not clearly show cathode water formation. Figure 2 also implements the intended interaction more effectively by animating particle/current flow and updating with the feed-rate control, while Figure 1 mostly changes static highlighting and arrow thickness."
+      },
+      "evalModel": "gpt-5.5",
+      "evaluatedAt": "2026-08-14T19:24:03.493Z"
+    }
+  },
+  "chemistry__CNX_Chem_07_06_Axeq": {
+    "setupA": "no-iteration-kimi_FINAL",
+    "setupB": "no-iteration-qwen_FINAL",
+    "subject": "chemistry",
+    "figure": "CNX_Chem_07_06_Axeq",
+    "machineEval": {
+      "figure1Setup": "no-iteration-qwen_FINAL",
+      "figure2Setup": "no-iteration-kimi_FINAL",
+      "mode": "3d",
+      "dimensions": {
+        "geometry": {
+          "winner": "no-iteration-kimi_FINAL",
+          "confidence": 0.68,
+          "rationale": "Figure 2 better reconstructs the actual 3D molecular geometry by including central Cl and F atoms, Cl–F bonds, and volumetric lone-pair cylinders in the correct axial/equatorial arrangements, whereas Figure 1 mostly uses a bipyramidal wireframe with labels and red segments but lacks proper central-to-F bonds or atom primitives. Figure 1 also has a more serious element-count problem because its hidden F labels are likely re-shown by the label sync, making lone-pair positions appear labeled as F, while Figure 2’s main geometric flaw is the extra/overlaid axial and equatorial frame edges and some label-visibility issues."
+        },
+        "interactivity": {
+          "winner": "no-iteration-kimi_FINAL",
+          "confidence": 0.78,
+          "rationale": "Figure 2 has the more correct interactions: its panel buttons and demo step actually switch the visible molecular groups and recreate the correct F labels for panels B–D, and its Axial/Equatorial HTML labels are genuinely clickable. Figure 1's arrangement radios change lone-pair lines and caption, but its F labels are hidden only by setting display:none, which the shared _syncLabels loop immediately overrides, so all five F labels remain visible and the displayed molecule disagrees with the selected arrangement. Both figures fall short of highlighting all panels (b)–(d) simultaneously, but Figure 2's controls produce a more coherent updated state overall; its main flaw is that Cl/Axial/Equatorial labels intended to be hidden on panel switches can also be re-shown by _syncLabels."
+        },
+        "faithfulness": {
+          "winner": "no-iteration-kimi_FINAL",
+          "confidence": 0.82,
+          "rationale": "Figure 2 more clearly resembles the textbook’s panel (a): it shows a single trigonal-bipyramidal framework with green edges, central Cl, and black Equatorial/Axial arrows in a comparable composition. Figure 1 includes a very small panel (a) and an additional distorted/incorrect panel (b) with misplaced or extra F labels, making the overall view less recognizable as the original figure at a glance."
+        },
+        "labels": {
+          "winner": "no-iteration-qwen_FINAL",
+          "confidence": 0.66,
+          "rationale": "Figure 1 has more of the original figure’s required chemistry labels, including Cl and multiple F labels plus panel labels beyond (a), whereas Figure 2 only labels the single (a) geometry and omits the F-labelled panels (b)–(d) entirely. Figure 2’s Equatorial/Axial labels are larger and cleaner, but its label set is far less complete, while Figure 1 is cluttered with UI text and some small/awkward labels yet still better matches the original annotations overall."
+        },
+        "concept": {
+          "winner": "no-iteration-kimi_FINAL",
+          "confidence": 0.72,
+          "rationale": "Both figures correctly place the axial positions opposite each other, the equatorial positions in a triangular plane, and the ClF3 arrangements with panel (b) having both lone pairs equatorial and the observed T shape, panel (c) one axial/one equatorial lone pair, and panel (d) both lone pairs axial (L00010-L00014, L00021). Figure 2 teaches the VSEPR concept more completely by explicitly stating the equatorial 120° spacing, why equatorial lone pairs minimize repulsion, and that (b) is observed while (d) is least favorable; Figure 1’s geometry is mostly correct but its explanatory assertions are thinner, especially for why (c) and (d) are less favorable and why (d) has the greatest lone-pair–bond-pair repulsion (L00021)."
+        }
+      },
+      "aggregator": {
+        "winner": "no-iteration-kimi_FINAL",
+        "confidence": 0.79,
+        "explanation": "Figure 2 is stronger overall because it more accurately reconstructs the trigonal-bipyramidal ClF3 geometry, with central Cl/F atoms, Cl–F bonds, and axial/equatorial lone-pair arrangements, and its controls produce more coherent panel changes than Figure 1. It also more closely matches the rendered textbook composition and explains the VSEPR concept more completely, whereas Figure 1 suffers from serious label-sync issues that can make lone-pair positions appear as F atoms and gives thinner conceptual justification. Figure 1 has a more complete set of visible chemistry labels, but that advantage is outweighed by Figure 2’s better geometry, interaction behavior, faithfulness, and conceptual accuracy."
+      },
+      "evalModel": "gpt-5.5",
+      "evaluatedAt": "2026-08-14T19:24:44.470Z"
+    }
+  },
+  "cs__GanStyleGANArch": {
+    "setupA": "no-iteration-kimi_FINAL",
+    "setupB": "no-iteration-qwen_FINAL",
+    "subject": "cs",
+    "figure": "GanStyleGANArch",
+    "machineEval": {
+      "figure1Setup": "no-iteration-kimi_FINAL",
+      "figure2Setup": "no-iteration-qwen_FINAL",
+      "mode": "3d",
+      "dimensions": {
+        "geometry": {
+          "winner": "no-iteration-kimi_FINAL",
+          "confidence": 0.9,
+          "rationale": "Figure 1 better reconstructs the architecture geometry: its tensor blocks scale in both height and depth from 4×4 to 8×8, the style/noise injection elements are vertically aligned with the appropriate pipeline positions, and the output is a proper image-like patch on the final block. Figure 2 has several geometric errors, most notably the output “pixel grid” collapses all columns into the same x/z position so it becomes a vertical stack rather than an image, its 8×8 tensors are not deeper than 4×4 tensors, and some arrows such as the z→w connection are misdirected or diagonally routed where the source-style diagram expects cleaner aligned flow."
+        },
+        "interactivity": {
+          "winner": "no-iteration-kimi_FINAL",
+          "confidence": 0.74,
+          "rationale": "Figure 1 is better overall because its trace control actually animates a visible dot through z→w→style paths and its demo/step controls consistently update trace state and ψ, whereas Figure 2’s trace buttons mostly only change UI state and attempt highlighting via an emissive property on MeshBasicMaterial, which will not visibly highlight the objects. Figure 2’s noise slider is somewhat better because it updates a numeric value and reveals channel stripes on synthesis blocks, while Figure 1’s ψ slider mainly fades/scales noise planes and arrows and does not truly highlight affected channels, but Figure 1’s core pipeline interaction is much more functional."
+        },
+        "faithfulness": {
+          "winner": "no-iteration-kimi_FINAL",
+          "confidence": 0.88,
+          "rationale": "Figure 1 is more visually faithful because it preserves the labeled three-part structure, noise blocks above the pipeline, style pathway below, 3D feature blocks, arrows, and much of the original color scheme and annotation layout. Figure 2 captures the rough flow and block colors, but it omits most labels and noise annotations in the screenshot, has misplaced/off-screen text, and looks more like a simplified schematic than the original textbook figure."
+        },
+        "labels": {
+          "winner": "no-iteration-kimi_FINAL",
+          "confidence": 0.92,
+          "rationale": "Figure 1 includes many of the original annotations such as the Noise/Main generative pipeline/Style section labels, block dimensions, noise labels, style labels, linear transform, and latent/intermediate variable labels, whereas Figure 2 omits almost all diagram labels and even has a small clipped text fragment at the bottom-left. Figure 1's labels are often too small and cluttered/overlapping, especially in the style area, but it still matches the original labeling far better than Figure 2, which is largely unlabeled."
+        },
+        "concept": {
+          "winner": "no-iteration-kimi_FINAL",
+          "confidence": 0.86,
+          "rationale": "Figure 1 more truthfully represents the core StyleGAN dataflow: z is described as mapped by a fully connected network to w, then to three 2×1×512 style vectors, with 4×4×1/8×8×1 noise broadcast to every channel and styles applying per-channel scale/offset at successive blocks (L00007). Figure 2 has many correct labels, but its explicit z→w arrow is drawn in the wrong direction, pointing back toward z rather than from z through the mapping network to w, which directly contradicts the stated latent-to-intermediate mapping (L00007); it also has a less reliable output depiction due to the collapsed pixel grid, while Figure 1 avoids that false visual assertion."
+        }
+      },
+      "aggregator": {
+        "winner": "no-iteration-kimi_FINAL",
+        "confidence": 0.91,
+        "explanation": "Figure 1 is clearly stronger overall: it more faithfully preserves the StyleGAN architecture layout, labeling, tensor geometry, noise/style pathways, and z→w→style dataflow, while Figure 2 omits many labels, misplaces text, and contains geometric errors such as a collapsed output grid and insufficient depth scaling. Figure 1 also has more functional core interactivity, with visible trace animation and responsive controls, whereas Figure 2’s trace highlighting is largely ineffective and some arrows, especially the z→w connection, contradict the intended mapping direction."
+      },
+      "evalModel": "gpt-5.5",
+      "evaluatedAt": "2026-08-14T19:25:11.954Z"
+    }
+  },
+  "cs__ResidualNormTypes": {
+    "setupA": "no-iteration-kimi_FINAL",
+    "setupB": "no-iteration-qwen_FINAL",
+    "subject": "cs",
+    "figure": "ResidualNormTypes",
+    "machineEval": {
+      "figure1Setup": "no-iteration-qwen_FINAL",
+      "figure2Setup": "no-iteration-kimi_FINAL",
+      "mode": "3d",
+      "dimensions": {
+        "geometry": {
+          "winner": "no-iteration-qwen_FINAL",
+          "confidence": 0.9,
+          "rationale": "Figure 1 reconstructs the normalization geometry more accurately: BatchNorm is a single channel slab across batch and position, LayerNorm is one batch/sample slab across channel and position, GroupNorm is one sample with a contiguous channel group, and InstanceNorm is one sample-channel column over position. Figure 2 uses a comparable voxel cube and isometric camera, but its LayerNorm region incorrectly spans multiple batch samples, its GhostNorm subgroup is asymmetrical rather than a clean split, and its GroupNorm channel group is less proportional, so its spatial relationships are less faithful."
+        },
+        "interactivity": {
+          "winner": "no-iteration-qwen_FINAL",
+          "confidence": 0.86,
+          "rationale": "Figure 1’s normalization selector reliably recomputes the highlighted cell set for all five methods and its predicates match the intended scopes, whereas Figure 2’s LayerNorm button highlights multiple batch indices instead of one sample, directly contradicting its own description. Figure 1’s aggregation animation sweeps through the selected orange cells and resets on type changes, while Figure 2’s scan often sweeps only one axis through a region that is pooled over multiple axes and can visually scan the whole cube rather than the highlighted scope."
+        },
+        "faithfulness": {
+          "winner": "no-iteration-qwen_FINAL",
+          "confidence": 0.86,
+          "rationale": "Figure 1 is more recognizable as the reference BatchNorm panel because it preserves the solid gridded cube, light gray/orange color scheme, and a broad orange vertical slab spanning much of the visible cube face. Figure 2 uses separated dark blocks and shows the orange region as a thin L-shaped strip rather than the large highlighted plane in the textbook figure, making the normalization region and overall appearance less faithful."
+        },
+        "labels": {
+          "winner": "no-iteration-qwen_FINAL",
+          "confidence": 0.74,
+          "rationale": "Figure 1 has the main required labels for the shown BatchNorm cube—batch index, channel, position, and BatchNorm—placed mostly around the diagram and generally readable, whereas Figure 2 places several labels directly on or very close to the cube, making position and channel less clean and more cluttered. Both add non-original UI/annotation text and neither recreates the full five-panel labeling of the reference, but Figure 2 is more cluttered with extra explanatory text and button labels, while Figure 1’s invented pool arrows are less disruptive overall."
+        },
+        "concept": {
+          "winner": "no-iteration-qwen_FINAL",
+          "confidence": 0.9,
+          "rationale": "Figure 1 is more conceptually accurate because it correctly encodes BatchNorm as all batch instances and positions for one channel, LayerNorm as all channels and positions for one batch instance, GroupNorm as a subset of channels over positions within one batch instance, and InstanceNorm as positions for one channel in one batch instance (L00010,L00012-L00014). Figure 2 gets BatchNorm, GroupNorm, and InstanceNorm mostly right, but its LayerNorm highlights multiple batch instances despite the brief requiring a single batch instance (L00012), while both figures misrepresent GhostNorm relative to the brief: Figure 1 shows a single-channel half-batch/all-position region and Figure 2 shows a single-channel batch subgroup, whereas the brief specifies all batch instances and all channels but not spatial position (L00011)."
+        }
+      },
+      "aggregator": {
+        "winner": "no-iteration-qwen_FINAL",
+        "confidence": 0.91,
+        "explanation": "Figure 1 is the clear overall winner because it more accurately represents the normalization scopes in geometry and behavior: its BatchNorm, LayerNorm, GroupNorm, and InstanceNorm selections match the intended sample/channel/position relationships, while Figure 2 notably makes LayerNorm span multiple batch samples. Figure 1 is also more visually faithful and readable, preserving a solid gridded cube with a broad orange normalization slab and cleaner labels, whereas Figure 2’s separated blocks, thin L-shaped highlight, cluttered labels, and less accurate scan animation make the normalization region harder to interpret. Both figures have issues with GhostNorm, but Figure 2 has more severe errors across geometry, interaction, and rendered presentation."
+      },
+      "evalModel": "gpt-5.5",
+      "evaluatedAt": "2026-08-14T19:25:36.011Z"
+    }
+  },
+  "cs__TransformerDecoder": {
+    "setupA": "no-iteration-kimi_FINAL",
+    "setupB": "no-iteration-qwen_FINAL",
+    "subject": "cs",
+    "figure": "TransformerDecoder",
+    "machineEval": {
+      "figure1Setup": "no-iteration-kimi_FINAL",
+      "figure2Setup": "no-iteration-qwen_FINAL",
+      "mode": "2d",
+      "dimensions": {
+        "geometry": {
+          "winner": "no-iteration-kimi_FINAL",
+          "confidence": 0.67,
+          "rationale": "Figure 1 better preserves the textbook-style row-wise pipeline: all seven input tokens have individual embedding vectors and arrows into the transformer, the dashed embedding/transformer containers are proportioned like the original, and the probability outputs are drawn as distribution-like bars with target labels and vocabulary labels. Figure 2 has a cleaner explicit fan-out to the softmax rows and better residual-skip details inside the transformer, but it collapses the embeddings-to-transformer flow into a single central arrow and represents probability rows as mostly uniform boxes rather than probability bars, making the overall structure less faithful."
+        },
+        "interactivity": {
+          "winner": "no-iteration-kimi_FINAL",
+          "confidence": 0.78,
+          "rationale": "Figure 1 has more complete and correctly wired interactions: the K slider rebuilds the transformer stack across the full range, residual/add, attention, embeddings, and softmax/probability groups are actually clickable with explanatory popups/tooltips, and the 'yourself' animation runs to the final target row. Figure 2's K slider and trace button function, but it makes only the embedding container, whole transformer, and softmax rectangles clickable, leaving residual adds and probability rows without the requested handlers, and its trace is mostly a straight horizontal overlay rather than following the internal masked-attention/residual path."
+        },
+        "faithfulness": {
+          "winner": "no-iteration-qwen_FINAL",
+          "confidence": 0.62,
+          "rationale": "Figure 2 is more visually faithful overall: it preserves the broad left-to-right composition, the tall orange masked-attention block, the teal processing blocks, and the probability rows on the right in proportions closer to the reference. Figure 1 has the same general elements, but its central transformer section looks much emptier and less like the original, with the orange attention block appearing too small and squat and the output probability rows rendered less like the reference."
+        },
+        "labels": {
+          "winner": "no-iteration-kimi_FINAL",
+          "confidence": 0.62,
+          "rationale": "Figure 1 has slightly better label quality because its main diagram labels and input/output token labels are larger and more legible at inline size, and it preserves the key section headings and token annotations more clearly. Figure 2 includes the same core labels, but many are noticeably smaller, especially the left token labels, headings, and bottom vocabulary labels, making them harder to read; its annotations are generally cleaner but less readable overall."
+        },
+        "concept": {
+          "winner": "no-iteration-qwen_FINAL",
+          "confidence": 0.82,
+          "rationale": "Figure 2 is conceptually more accurate because it consistently describes causal self-attention as position i attending only to positions ≤ i and shows every position leading to its own Linear + softmax probability row with the shifted targets It through yourself, matching the masked autoregressive next-token training described in the brief (L00007). Figure 1 includes the correct tokens, shifted targets, and lower-triangular mask, but its narration/tooltips falsely say positions are processed “independently,” which contradicts masked self-attention mixing information from earlier positions, and its geometry only clearly routes a central transformer output toward the softmax area rather than each processed token representation feeding its corresponding head (L00007)."
+        }
+      },
+      "aggregator": {
+        "winner": "no-iteration-kimi_FINAL",
+        "confidence": 0.62,
+        "explanation": "Figure 1 is stronger overall because it better preserves the row-wise token-to-embedding-to-transformer pipeline, has more legible labels, and implements more of the requested interactions correctly, including clickable residual/attention/embedding/softmax elements and a fuller K-slider behavior. Figure 2 is visually closer in some rendered proportions and is conceptually cleaner about causal attention and per-position softmax outputs, but relative to Figure 1 it collapses important embedding-to-transformer flow, has less readable labels, and omits several requested interactive handlers."
+      },
+      "evalModel": "gpt-5.5",
+      "evaluatedAt": "2026-08-14T19:26:17.177Z"
+    }
+  },
+  "physics__boats": {
+    "setupA": "no-iteration-kimi_FINAL",
+    "setupB": "no-iteration-qwen_FINAL",
+    "subject": "physics",
+    "figure": "boats",
+    "machineEval": {
+      "figure1Setup": "no-iteration-qwen_FINAL",
+      "figure2Setup": "no-iteration-kimi_FINAL",
+      "mode": "2d",
+      "dimensions": {
+        "geometry": {
+          "winner": "no-iteration-qwen_FINAL",
+          "confidence": 0.72,
+          "rationale": "Figure 1 better matches the likely textbook structure: it keeps the diagram as a simple geometric construction with cliff/water/boat, a vertical height h, horizontal distance d?, solid line of sight, right-angle marker, and α angle annotations. Figure 2 captures the same basic idea but is structurally more cluttered and less faithful, adding a readout panel, shaded mast, measurement-error dashed rays and estimated intersections, while its d? label is not tied to a clear dimension segment and the extra elements change the topology of the original explanatory diagram."
+        },
+        "interactivity": {
+          "winner": "no-iteration-kimi_FINAL",
+          "confidence": 0.86,
+          "rationale": "Figure 2’s controls more consistently recompute the full diagram and associated readouts: switching methods updates button state and disables the irrelevant slider, the height and baseline sliders redraw the geometry, angles, estimated distance/error text, and the triangulation case handles small-baseline/near-degenerate cases by indicating an unreliable off-screen intersection. Figure 1’s basic sliders and toggle do work, but the separation slider merely moves one observer while keeping the boat fixed with no recomputed distance/readout, the irrelevant slider remains active in the other mode, and its separation range can place the lower observer below the water, making its interaction less robust at extremes."
+        },
+        "faithfulness": {
+          "winner": "no-iteration-qwen_FINAL",
+          "confidence": 0.82,
+          "rationale": "Figure 1 is more visually faithful because it preserves the textbook figure’s basic composition: a vertical cliff at the left edge, turquoise water to the right, a high observer with height h, horizontal reference line, sight line to a small boat, and angle/distance labels in roughly the same arrangement. Figure 2 has the same conceptual elements, but its large rounded hill/sloping shoreline and added in-plot information box make it read less like the original cliff-and-water diagram and more like a redesigned scene."
+        },
+        "labels": {
+          "winner": "no-iteration-qwen_FINAL",
+          "confidence": 0.78,
+          "rationale": "Figure 1 has the core diagram labels closer to the reference, including h, d?, and two α labels placed at the relevant angle locations, with relatively little invented in-figure annotation. Figure 2’s labels are larger and readable, but it omits the second α angle label seen in the reference state and adds a prominent non-original explanatory textbox inside the drawing area, which clutters the figure and does not match the textbook annotation style."
+        },
+        "concept": {
+          "winner": "no-iteration-kimi_FINAL",
+          "confidence": 0.78,
+          "rationale": "Figure 2 teaches the two intended geometric ideas more accurately: its single-observer mode explicitly ties known height h and the measured dip angle to d = h/tan(α), matching the height-plus-horizon method (L00012, L00022), and its two-observer mode shows a known baseline t with two sight lines intersecting at the boat, directly representing triangulation from distinct vantage points (L00012, L00021-L00022). Figure 1 conveys the same broad ideas, but its single-observer reference is less faithful to the stated horizon-line method because the drawn horizon and the horizontal angle reference are not the same line, and its triangulation panel includes a right-angle marker near a slanted baseline that can falsely suggest an unnecessary perpendicular/right-triangle condition rather than general triangulation (L00012, L00022)."
+        }
+      },
+      "aggregator": {
+        "winner": "no-iteration-qwen_FINAL",
+        "confidence": 0.67,
+        "explanation": "Figure 1 is the stronger overall match to the intended textbook-style diagram: compared with Figure 2, it preserves the simple cliff-water-boat construction, the height and distance annotations, and the relevant angle labels with less invented visual clutter. Figure 2 has more robust controls and presents the intended geometric methods more explicitly, but relative to Figure 1 it redesigns the scene with extra panels, dashed/error elements, and less faithful label placement, making it less faithful as a figure."
+      },
+      "evalModel": "gpt-5.5",
+      "evaluatedAt": "2026-08-14T19:26:58.242Z"
+    }
+  },
+  "physics__telescope2": {
+    "setupA": "no-iteration-kimi_FINAL",
+    "setupB": "no-iteration-qwen_FINAL",
+    "subject": "physics",
+    "figure": "telescope2",
+    "machineEval": {
+      "figure1Setup": "no-iteration-kimi_FINAL",
+      "figure2Setup": "no-iteration-qwen_FINAL",
+      "mode": "2d",
+      "dimensions": {
+        "geometry": {
+          "winner": "no-iteration-kimi_FINAL",
+          "confidence": 0.93,
+          "rationale": "Figure 1 better reconstructs the textbook optical layout: it preserves the long horizontal proportions, large convex objective and smaller concave eyepiece, correctly separated f₁ and f₂ brackets to the shared focus, distinct thick/thin purple ray bundle segments, dashed construction ray, double-headed d marker, reference lines, and arrowed δᵢ/δₒ angle arcs. Figure 2 captures the basic two-lens ray topology, but its rays are compressed close to the axis, the lens outlines are simpler open curves, angle arcs lack arrowheads/reference-line styling, the d arrow is only single-ended, focal-point/d-offset marking is less faithful, and several proportions and annotations are noticeably less like the original."
+        },
+        "interactivity": {
+          "winner": "no-iteration-kimi_FINAL",
+          "confidence": 0.92,
+          "rationale": "Figure 1 implements the requested focal-length sliders, input-angle dragging, and lens-2 dragging with coherent recomputation of the ray paths, lens separation, focal marker, brackets, and live readout, and it warns when the system is off the afocal condition. Figure 2 has working sliders for analogous states, but it lacks the requested drag interactions, does not reset lens 2 to the afocal separation when focal-length sliders are changed after an offset, continues to display the afocal magnification and δₒ even when the offset makes the exit rays non-parallel, mislabels the f₂ bracket when lens 2 is offset, and its offset/focal-length ranges can produce degenerate division-by-zero/NaN ray geometry."
+        },
+        "faithfulness": {
+          "winner": "no-iteration-kimi_FINAL",
+          "confidence": 0.92,
+          "rationale": "Figure 1 is more visually faithful: it preserves the original’s wide optical layout with a large objective lens, smaller eyepiece to the right, blue horizontal axis, purple ray paths, focal-length brackets, and the d marker in roughly the same composition. Figure 2 contains the same basic elements but compresses the lens spacing and scale much more, makes the ray geometry and focal brackets less like the reference, and overall reads as a simplified/redrawn variant rather than the same textbook figure."
+        },
+        "labels": {
+          "winner": "no-iteration-kimi_FINAL",
+          "confidence": 0.91,
+          "rationale": "Figure 1 has more complete and readable diagram labels matching the reference, including lens 1, lens 2, both δi annotations, δo, d, f1, and f2 with generally clear placement. Figure 2’s labels are much smaller at inline size, δo and the δi labels are hard to read, f2 appears missing or not clearly labeled, and the focal-length annotations are less faithful and more cramped around the lenses."
+        },
+        "concept": {
+          "winner": "no-iteration-kimi_FINAL",
+          "confidence": 0.88,
+          "rationale": "Figure 1 more accurately represents the Galilean afocal geometry: its ray tracing makes lens 1 send the parallel input bundle toward the shared focal point and makes the concave eyepiece return the rays to a parallel output bundle with larger angular deviation, matching the described δₒ/δᵢ = f₁/f₂ relationship in the shared-focus configuration (L00007, L00010). Figure 2 gets the basic afocal case mostly right, but when its lens-2 offset is changed it still labels the distance from the displaced eyepiece to the objective focus as f₂ and continues to display M = f₁/f₂ even though the exit bundle is no longer parallel, whereas Figure 1 marks the afocal seat separately and warns that the clean law holds only at the shared-focus separation (L00010). Figure 2 also includes a false narration claim that the focal-point offset d shifts when lens 2 is moved, although d is set by the objective focal length and input angle in the shared focal plane, not by eyepiece displacement (L00007-L00010)."
+        }
+      },
+      "aggregator": {
+        "winner": "no-iteration-kimi_FINAL",
+        "confidence": 0.93,
+        "explanation": "Figure 1 is the clear winner because it more faithfully reconstructs the Galilean afocal layout, with better proportions, lens shapes, ray geometry, focal brackets, angle annotations, and readable labels matching the reference. Compared with Figure 1, Figure 2 is more compressed and simplified, has weaker or missing annotations such as f₂ and arrow styling, lacks requested drag interactions, and can display misleading afocal quantities when the eyepiece is offset. Figure 1 also handles the underlying concept more correctly by distinguishing the shared-focus afocal condition and warning when that condition is broken, whereas Figure 2 continues to present some labels and magnification claims as if the system remained afocal."
+      },
+      "evalModel": "gpt-5.5",
+      "evaluatedAt": "2026-08-14T19:27:41.314Z"
+    }
+  }
+}

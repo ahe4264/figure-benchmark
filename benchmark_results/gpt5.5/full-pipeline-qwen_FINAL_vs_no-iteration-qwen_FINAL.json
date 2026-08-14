@@ -1,0 +1,407 @@
+{
+  "math__14.6.7": {
+    "setupA": "full-pipeline-qwen_FINAL",
+    "setupB": "no-iteration-qwen_FINAL",
+    "subject": "math",
+    "figure": "14.6.7",
+    "machineEval": {
+      "figure1Setup": "full-pipeline-qwen_FINAL",
+      "figure2Setup": "no-iteration-qwen_FINAL",
+      "mode": "3d",
+      "dimensions": {
+        "geometry": {
+          "winner": "full-pipeline-qwen_FINAL",
+          "confidence": 0.82,
+          "rationale": "Figure 1 reconstructs the same spherical wedge geometry as Figure 2 but is more accurate in the annotation geometry: its rho dimension arrows point inward between the tick marks and its arc arrowheads are flat planar markers like a textbook diagram, while Figure 2 places cone arrowheads on the rho dimension lines pointing outward from the measured interval and uses 3D cone arrowheads on planar angle arcs. Figure 1 also uses a camera angle that better exposes the theta bounding face, whereas Figure 2's view is more oblique to that feature; the underlying wedge surfaces and sector shell are otherwise very similar."
+        },
+        "interactivity": {
+          "winner": "tie",
+          "confidence": 0.86,
+          "rationale": "Both figures implement the same slider and step-button logic: each input updates the internal parameter, displayed numeric value, and rebuilds the wedge, guides, and annotations, and the demo buttons tween to valid preset states. They also share the same interaction flaw: when a lower-bound slider is moved past its paired upper bound, or an upper bound below the lower bound, rebuildDynamic silently clamps the internal parameter without updating the corresponding slider or value label, so the displayed control state can disagree with the drawn wedge and later interactions proceed from hidden internal values. Neither figure is meaningfully better on control correctness."
+        },
+        "faithfulness": {
+          "winner": "full-pipeline-qwen_FINAL",
+          "confidence": 0.64,
+          "rationale": "Figure 1 is more visually faithful because its highlighted spherical-coordinate volume uses brighter orange/yellow translucent faces and reads more like the colored shell element in the reference, while Figure 2’s highlighted wedge is darker and more monochrome brown, making it less recognizable as the multicolored patch from the textbook figure. Both figures simplify the reference and include the same extra UI panel, but Figure 1 better preserves the overall annotated spherical-sector composition and color impression."
+        },
+        "labels": {
+          "winner": "full-pipeline-qwen_FINAL",
+          "confidence": 0.82,
+          "rationale": "Figure 1 has noticeably larger and more readable labels for ρ1, ρ2, θ1, θ2, φ1, φ2 and the axes, with placements that more closely correspond to the reference. Figure 2 includes the same label set but the text is smaller and harder to read, especially the radial labels near the wedge and the polar-angle labels, making the annotations less clear at inline size."
+        },
+        "concept": {
+          "winner": "full-pipeline-qwen_FINAL",
+          "confidence": 0.62,
+          "rationale": "Both figures correctly construct the main spherical-coordinate wedge as a solid bounded by two constant-ρ spherical surfaces, two constant-θ vertical half-planes, and two constant-φ cones, with φ measured from the z-axis and θ in the horizontal plane (L00007-L00012, L00015). Figure 1 is slightly more conceptually accurate because its ρ₁ and ρ₂ dimension arrows point inward along the marked z-axis intervals, better indicating radii measured from the origin as requested, whereas Figure 2’s ρ arrowheads point outward at the endpoints and less clearly represent the radial extents marked along the z-axis (L00015). Both figures share the same minor mismatch with the textbook color associations for green spheres, yellow planes, and pink cones, instead assigning orange/yellow/green face roles, so that does not distinguish them (L00009-L00011, L00015)."
+        }
+      },
+      "aggregator": {
+        "winner": "full-pipeline-qwen_FINAL",
+        "confidence": 0.84,
+        "explanation": "Figure 1 is stronger overall: compared with Figure 2, it has clearer and larger labels, a more faithful bright multicolor spherical wedge, and more accurate annotation geometry, including inward ρ dimension arrows and flatter planar angle arrowheads. Figure 2 reconstructs the same underlying wedge and shares the same interaction behavior and slider-clamping flaw, but its darker coloration, smaller labels, outward-pointing ρ arrows, and more oblique view make the intended spherical-coordinate element less clear."
+      },
+      "evalModel": "gpt-5.5",
+      "evaluatedAt": "2026-08-14T19:17:49.993Z"
+    }
+  },
+  "chemistry__CNX_Chem_02_06_IonCharges": {
+    "setupA": "full-pipeline-qwen_FINAL",
+    "setupB": "no-iteration-qwen_FINAL",
+    "subject": "chemistry",
+    "figure": "CNX_Chem_02_06_IonCharges",
+    "machineEval": {
+      "figure1Setup": "no-iteration-qwen_FINAL",
+      "figure2Setup": "full-pipeline-qwen_FINAL",
+      "mode": "2d",
+      "dimensions": {
+        "geometry": {
+          "winner": "full-pipeline-qwen_FINAL",
+          "confidence": 0.86,
+          "rationale": "Figure 2 reconstructs the periodic-table layout more accurately because it separates the title, group label, group numbers, and period labels with proper vertical spacing, whereas Figure 1 crowds the title and group-number row near the same y-position and places the Group label awkwardly around the fourth column. Figure 2 also uses cell proportions and label sizing that better preserve the grid readability while maintaining the same main-table topology, f-block placement, red outline, curved arrow, and dashed highlighted column; Figure 1 has the same overall structure but is more cramped and less faithful in header/axis-label layout."
+        },
+        "interactivity": {
+          "winner": "full-pipeline-qwen_FINAL",
+          "confidence": 0.58,
+          "rationale": "Figure 2 has the same functional click, group-slider, step, and color-toggle behavior as Figure 1, but its charge-color toggle also redraws a charge legend that is correctly created and removed with the toggle, making that interaction more complete and interpretable. Figure 1 switches the colors correctly but provides no charge-value key, so the toggle is less successful at showing what the new coloring means. Both figures share a redraw flaw: repeated slider, toggle, or click interactions accumulate the f-block labels, red outline, and arrow because those objects are recreated but not removed, so Figure 2 is only modestly better."
+        },
+        "faithfulness": {
+          "winner": "full-pipeline-qwen_FINAL",
+          "confidence": 0.78,
+          "rationale": "Figure 2 is more visually faithful overall: its composition, title placement, group label placement, and periodic-table proportions read closer to the reference at a glance. Figure 1 contains the same main elements, but the table appears slightly more compressed and its top labeling is less faithful, with the “Group” label misplaced toward the middle, making it less recognizable as the original layout."
+        },
+        "labels": {
+          "winner": "full-pipeline-qwen_FINAL",
+          "confidence": 0.74,
+          "rationale": "Figure 2 has better label placement overall: the blue 'Group' label is positioned at the left near group 1 as in the reference, whereas Figure 1 places 'Group' awkwardly among the group-number row near the middle, creating a confusing and less faithful annotation. Both figures suffer from very small text and some missing/poorly legible element labels, especially in the noble-gas column, but Figure 2’s headings and numbering are less cluttered and closer to the original layout."
+        },
+        "concept": {
+          "winner": "full-pipeline-qwen_FINAL",
+          "confidence": 0.78,
+          "rationale": "Both figures correctly show the main periodic charge trends: Group 1 and 2 cations, Groups 15–17 anions, variable transition-metal charges such as Cr, Fe, Cu, and Au, and noble gases without charge labels, matching the brief and context (L00010, L00014, L00019). Figure 2 is slightly better conceptually because its charge-color mode includes a legend distinguishing +, −, variable, and no-charge/none categories, so the added color encoding more truthfully communicates the intended ion-charge categories; Figure 1 uses essentially the same data but its charge-color encoding is left unexplained, making that conceptual mapping weaker. Both share minor overstatements such as treating gray/no-label entries as “0/none” or “charge 0” rather than simply no common ion label, but Figure 2’s core charge relationships remain accurate."
+        }
+      },
+      "aggregator": {
+        "winner": "full-pipeline-qwen_FINAL",
+        "confidence": 0.86,
+        "explanation": "Figure 2 is the clear overall winner because it preserves the periodic-table layout more faithfully, with better separation of the title, group label, group numbers, and period labels, while Figure 1 is more cramped and places the “Group” label awkwardly within the header area. Figure 2 also improves the interactive and conceptual presentation by adding a charge-color legend that makes the color toggle interpretable, whereas Figure 1 changes colors without explaining the mapping. Both figures share some issues such as small labels and accumulating redraw artifacts, but Figure 2 is consistently stronger across layout, labeling, faithfulness, interaction, and conceptual communication."
+      },
+      "evalModel": "gpt-5.5",
+      "evaluatedAt": "2026-08-14T19:18:21.679Z"
+    }
+  },
+  "chemistry__CNX_Chem_08_04_Gouy": {
+    "setupA": "full-pipeline-qwen_FINAL",
+    "setupB": "no-iteration-qwen_FINAL",
+    "subject": "chemistry",
+    "figure": "CNX_Chem_08_04_Gouy",
+    "machineEval": {
+      "figure1Setup": "no-iteration-qwen_FINAL",
+      "figure2Setup": "full-pipeline-qwen_FINAL",
+      "mode": "3d",
+      "dimensions": {
+        "geometry": {
+          "winner": "full-pipeline-qwen_FINAL",
+          "confidence": 0.78,
+          "rationale": "Figure 2 better reconstructs the apparatus geometry: it models the electromagnets with distinct bodies, narrower pole pieces, visible opposing pole faces, and field lines that connect across the pole gap, while Figure 1 uses two undifferentiated cylinders and largely concentric field arcs that do not plausibly originate from or terminate on the poles. Figure 2 also keeps the sample centered in a clearer magnet gap and uses a more front-facing orthographic viewpoint closer to a textbook schematic, whereas Figure 1's isometric view and oversized/simple magnet geometry make the spatial relationships less faithful."
+        },
+        "interactivity": {
+          "winner": "no-iteration-qwen_FINAL",
+          "confidence": 0.72,
+          "rationale": "Figure 1 is better because its controls consistently recompute the readout, opacity, tube motion, and field-strength effects from the current slider/sample state, and at B=0 it actually removes the field effect. Figure 2 has the same major balance-direction error as Figure 1, but it adds extra interaction inconsistencies: moving the slider or toggling sample type silently energizes the apparatus, the initial state shows field lines while claiming the beam is inactive, and at B=0 it still leaves visible magnetic field lines. Both figures incorrectly tip the balance opposite the advertised Gouy-balance effect for paramagnetic versus diamagnetic samples, but Figure 2 has more contradictory control behavior."
+        },
+        "faithfulness": {
+          "winner": "full-pipeline-qwen_FINAL",
+          "confidence": 0.78,
+          "rationale": "Figure 2 is more recognizable as the textbook figure because it preserves the main balance composition better: a horizontal beam on a vertical stand, a hanging sample between two electromagnets, and a right-side pan with visible weights. Figure 1 includes some faithful elements such as purple magnetic-field loops, but its oblique composition, oversized base, simplified pan, and less clear suspension of the sample make it read less like the original overall."
+        },
+        "labels": {
+          "winner": "no-iteration-qwen_FINAL",
+          "confidence": 0.78,
+          "rationale": "Figure 1 has the required original labels (Sample, Magnetic field, Electromagnets) with generally readable text and less intrusive leader lines, while Figure 2 also includes the required labels but its Electromagnets annotation has long black leader lines that cut through the central sample/field area and create more visual clutter. Both figures include extra UI text not present in the textbook, but Figure 1's diagram annotations more closely preserve the original placement and clarity."
+        },
+        "concept": {
+          "winner": "full-pipeline-qwen_FINAL",
+          "confidence": 0.72,
+          "rationale": "Figure 2 more truthfully represents the Gouy balance setup by placing the suspended sample in a narrow gap between opposing electromagnet pole faces and drawing field lines through that gap, which better supports the apparatus and magnetic-field concepts in the brief (L00014, L00019). Figure 1 also includes the balance, sample, weights, and magnets, but its field depiction is more like concentric/circular arcs around the gap and is less physically informative about the strong inhomogeneous region between the poles (L00019). Both figures share a significant conceptual flaw in the animated deflection: for a paramagnetic sample that should be drawn into the stronger field and appear heavier, the code rotates the beam so the sample side rises rather than dips, reversing the visual implication of the force/weight change (L00010, L00019). Figure 2 is still better because it starts in a level/off comparison state and its geometry more clearly conveys the correct instrument layout, whereas Figure 1 immediately shows the misleading deflected state by default."
+        }
+      },
+      "aggregator": {
+        "winner": "full-pipeline-qwen_FINAL",
+        "confidence": 0.68,
+        "explanation": "Figure 2 is the stronger overall reconstruction because it more clearly depicts the Gouy balance geometry: the sample sits in a narrow gap between distinct opposing electromagnet pole faces, with field lines spanning that gap, whereas Figure 1 uses more generic cylinders and less physically informative circular field arcs. Figure 2 also reads more like the textbook apparatus with a horizontal beam, stand, hanging sample, and weighted pan, while Figure 1’s oblique view and oversized simplified components make the relationships less faithful. Figure 1 has cleaner labels and more consistent controls, and Figure 2 has notable interaction contradictions, but those weaknesses do not outweigh Figure 2’s advantages in apparatus fidelity and conceptual geometry."
+      },
+      "evalModel": "gpt-5.5",
+      "evaluatedAt": "2026-08-14T19:19:00.047Z"
+    }
+  },
+  "chemistry__CNX_Chem_11_02_electrolyt": {
+    "setupA": "full-pipeline-qwen_FINAL",
+    "setupB": "no-iteration-qwen_FINAL",
+    "subject": "chemistry",
+    "figure": "CNX_Chem_11_02_electrolyt",
+    "machineEval": {
+      "figure1Setup": "full-pipeline-qwen_FINAL",
+      "figure2Setup": "no-iteration-qwen_FINAL",
+      "mode": "3d",
+      "dimensions": {
+        "geometry": {
+          "winner": "tie",
+          "confidence": 1,
+          "rationale": "Figure 1 and Figure 2 are geometrically indistinguishable: the source code for the beaker, solution, electrodes, plug, bulb, wires, particles, labels, and camera setup is the same in both, so neither reconstructs the 3D geometry more accurately than the other."
+        },
+        "interactivity": {
+          "winner": "tie",
+          "confidence": 1,
+          "rationale": "Both figures have identical interaction code, so neither is better: the solution selector, concentration slider, demo buttons, bulb updates, particle rebuilds, and ion-motion toggle all behave the same, including the same limitations such as a narrowed nonzero concentration range and KCl brightness remaining fairly bright even at the slider minimum."
+        },
+        "faithfulness": {
+          "winner": "no-iteration-qwen_FINAL",
+          "confidence": 0.62,
+          "rationale": "Figure 2 is slightly more faithful because its particles are more numerous and distributed between the electrodes, which better suggests the KCl high-conductivity panel with separated ions moving through solution. Figure 1 has the same overall apparatus, bulb, beaker, and labels, but its particles are more clumped near the center and read less like the ion-migration depiction in the reference."
+        },
+        "labels": {
+          "winner": "tie",
+          "confidence": 0.95,
+          "rationale": "Both figures use the same visible labels and UI text, with the same placement, size, and readability; each shows only the selected KCl case with “KCl” and “High conductivity” rather than the full three-panel textbook labeling, so neither is better on label quality."
+        },
+        "concept": {
+          "winner": "tie",
+          "confidence": 1,
+          "rationale": "Figures 1 and 2 are indistinguishable in concept accuracy: both correctly connect ethanol with neutral molecular clusters, no ions, and a dark bulb; KCl with many +/− ions, bright bulb, and cations moving to the negative plate while anions move to the positive plate; and acetic acid with a dim bulb and a mixture of ions and undissociated clusters, matching the intended conductivity/ion-concentration relationship (L00007, L00012, L00016-L00017). Both also share the same conceptual weakness: in the acetic-acid state their particle generator can display unequal numbers of cations and anions, whereas the brief’s weak-electrolyte example shows paired + and − ions and should not imply a net-charged solution (L00014, L00017)."
+        }
+      },
+      "aggregator": {
+        "winner": "no-iteration-qwen_FINAL",
+        "confidence": 0.58,
+        "explanation": "Figure 2 is slightly better because, while the source-code-based geometry, interactivity, labels, and concept judgments find the two figures essentially identical, the rendered screenshot shows Figure 2 with ions more numerous and more evenly distributed between the electrodes. Figure 1 has the same apparatus, controls, labels, and conceptual behavior, but its particles appear more clumped near the center, making the KCl ion-migration/high-conductivity depiction a bit less faithful than Figure 2."
+      },
+      "evalModel": "gpt-5.5",
+      "evaluatedAt": "2026-08-14T19:19:17.133Z"
+    }
+  },
+  "chemistry__CNX_Chem_12_07_Enzyme": {
+    "setupA": "full-pipeline-qwen_FINAL",
+    "setupB": "no-iteration-qwen_FINAL",
+    "subject": "chemistry",
+    "figure": "CNX_Chem_12_07_Enzyme",
+    "machineEval": {
+      "figure1Setup": "full-pipeline-qwen_FINAL",
+      "figure2Setup": "no-iteration-qwen_FINAL",
+      "mode": "2d",
+      "dimensions": {
+        "geometry": {
+          "winner": "full-pipeline-qwen_FINAL",
+          "confidence": 0.9,
+          "rationale": "Figure 1 better preserves the textbook-style structure by showing the unbound enzyme/substrates and the formed substrate complex as two side-by-side states with separate enzymes, duplicated enzyme labels, leader lines, approach arrows, and distinct substrate shapes. Figure 2 collapses the diagram into a single animated central enzyme, so it loses the simultaneous before/after layout and has fewer structural elements; its two substrates are essentially identical/mirrored rather than differentiated, making the topology and proportions less faithful."
+        },
+        "interactivity": {
+          "winner": "no-iteration-qwen_FINAL",
+          "confidence": 0.82,
+          "rationale": "Figure 2 handles the model toggle more correctly across docking states because the conformational fit variable tracks the current docking state even while the lock-and-key model is displayed, so switching to induced fit while docked or mid-docking immediately shows the appropriate closed or partially closed active site. Figure 1’s docking animation works in the normal sequence, but its checkbox handler only changes the model and does not recompute the fit target from the current docking state; if the user docks in lock-and-key and then toggles induced fit, the substrate can remain bound in an incorrectly open induced-fit active site until another docking control action is taken. Figure 1 also leaves its bound-complex panel static regardless of the selected interaction state, whereas Figure 2’s visibility and labels are more consistently tied to the dock state."
+        },
+        "faithfulness": {
+          "winner": "full-pipeline-qwen_FINAL",
+          "confidence": 0.9,
+          "rationale": "Figure 1 is more recognizable as the textbook figure because it preserves the two-part lock-and-key composition with substrates approaching on the left and a substrate complex formed on the right, using similar green enzyme and purple/orange substrate colors. Figure 2 shows only the initial docking scene, with a much larger simplified enzyme, missing the complex-formed state visible in the reference screenshot, and has a label typo/overlap that makes it less faithful at a glance."
+        },
+        "labels": {
+          "winner": "full-pipeline-qwen_FINAL",
+          "confidence": 0.88,
+          "rationale": "Figure 1 has more of the original label set, including 'Substrates,' 'Active site is proper shape,' 'Substrate complex formed,' repeated 'Enzyme' labels, and the '(a) Lock-and-key model' caption, whereas Figure 2 omits the substrate-complex annotation and second state entirely. Figure 2 also has a poorer active-site label with incorrect/merged wording and placement that crowds the substrates, while Figure 1’s labels are smaller but generally more accurate and better separated."
+        },
+        "concept": {
+          "winner": "no-iteration-qwen_FINAL",
+          "confidence": 0.62,
+          "rationale": "Figure 2 more consistently preserves the key conceptual distinction that lock-and-key binding uses an unchanged, pre-formed active site while induced fit involves conformational reshaping around the substrate (L00007, L00010, L00017). Figure 1 is closer to the requested before/after layout, but its interactive state can show the induced-fit model with substrates already docked while the active site remains open and unreshaped after toggling from a docked lock-and-key state, which contradicts the induced-fit claim that the active site changes shape to bond with the substrate (L00007, L00012, L00017); Figure 2 avoids that false relationship, even though it is less faithful about showing distinct substrate shapes."
+        }
+      },
+      "aggregator": {
+        "winner": "full-pipeline-qwen_FINAL",
+        "confidence": 0.73,
+        "explanation": "Figure 1 is stronger overall because it preserves the textbook-style two-state lock-and-key composition, with separate unbound and substrate-complex panels, clearer original labels, distinct substrates, approach arrows, and repeated enzyme annotations that Figure 2 largely omits. Figure 2 has a better internal interaction model for toggling induced fit while docked, but relative to Figure 1 it collapses the before/after structure into one animated enzyme, lacks the formed-complex state, uses less differentiated substrates, and has poorer/overlapping label text."
+      },
+      "evalModel": "gpt-5.5",
+      "evaluatedAt": "2026-08-14T19:20:16.995Z"
+    }
+  },
+  "cs__GraphAdjoint": {
+    "setupA": "full-pipeline-qwen_FINAL",
+    "setupB": "no-iteration-qwen_FINAL",
+    "subject": "cs",
+    "figure": "GraphAdjoint",
+    "machineEval": {
+      "figure1Setup": "no-iteration-qwen_FINAL",
+      "figure2Setup": "full-pipeline-qwen_FINAL",
+      "mode": "2d",
+      "dimensions": {
+        "geometry": {
+          "winner": "full-pipeline-qwen_FINAL",
+          "confidence": 0.86,
+          "rationale": "Figure 2 better reconstructs the intended three-panel construction because it shows panels a, b, and c simultaneously with the original graph, midpoint edge-nodes, final edge graph, and arrows between stages; Figure 1 only displays the original plus one later stage depending on the interactive state, so the full static structure is missing at any one time and its arrows can point to absent panels. Figure 2 is somewhat cramped and its rightmost edge-graph node appears close to or beyond the viewbox, but its node/edge counts and construction layout are still closer to the textbook composite than Figure 1's incomplete panel structure."
+        },
+        "interactivity": {
+          "winner": "no-iteration-qwen_FINAL",
+          "confidence": 0.78,
+          "rationale": "Figure 1 handles the construction controls more correctly: its step buttons and build button actually recompute/redraw distinct states where the figure progresses from original graph to added edge-nodes to connected edge graph, while Figure 2 keeps all stages visible from the start and only changes highlight styling, so its advertised animation does not really construct the graph step by step. Figure 2’s original-edge clicking is available at all times and correctly highlights the corresponding line-graph node and incident connections, whereas Figure 1 only makes original-edge clicking active in the final connected state, but Figure 1 still better satisfies the main interactive construction behavior. Neither implementation provides a true Original-vs-Edge-graph toggle; their overlay checkboxes only show the original graph underneath the edge graph."
+        },
+        "faithfulness": {
+          "winner": "full-pipeline-qwen_FINAL",
+          "confidence": 0.88,
+          "rationale": "Figure 2 is more visually faithful because it preserves the recognizable three-panel composition with the original graph, intermediate edge-node graph, final edge graph, matching orange/teal node colors, labels, and explanatory arrows. Figure 1 only shows a very small version of panel a with large empty space and tiny arrows/text, so it is much less recognizable as the full textbook figure even though the original graph itself is roughly correct."
+        },
+        "labels": {
+          "winner": "full-pipeline-qwen_FINAL",
+          "confidence": 0.86,
+          "rationale": "Figure 2 includes the main labels for all three panels, including a), b), c), 'Original graph', 'Edge graph', the edge-node labels such as 2/3 and 1/5, and the two arrow captions, whereas Figure 1 only shows the first panel prominently and is missing the labels/annotations for panels b and c in the rendered view. Figure 2's labels are quite small and the rightmost edge-graph content appears partly clipped, but Figure 1's annotation text is even smaller and much of the required labeled content is absent."
+        },
+        "concept": {
+          "winner": "full-pipeline-qwen_FINAL",
+          "confidence": 0.78,
+          "rationale": "Both figures correctly implement the central line-graph idea that each original undirected edge becomes a new node and two new nodes are connected exactly when their original edges share an endpoint (L00007). Figure 2 teaches this more accurately as the specified three labeled sub-panels a, b, and c are all simultaneously present, with panel b showing teal nodes on original edges and panel c showing the resulting edge graph; Figure 1 uses the same correct rule but shows only the original plus one later state at a time, so the full three-panel step-by-step construction requested in the brief is less completely represented (L00007)."
+        }
+      },
+      "aggregator": {
+        "winner": "full-pipeline-qwen_FINAL",
+        "confidence": 0.86,
+        "explanation": "Figure 2 is stronger overall because it presents the intended three-panel construction at once, with the original graph, midpoint edge-nodes, final edge graph, arrows, and key labels, whereas Figure 1 only shows the original plus one later state at a time and leaves much of the static textbook composition absent. Figure 1 has better stepwise interactive construction controls, but Figure 2 is more faithful to the rendered layout and conceptual explanation; its main weaknesses are cramped/small labels and some possible right-edge clipping rather than the broader missing-panel problem seen in Figure 1."
+      },
+      "evalModel": "gpt-5.5",
+      "evaluatedAt": "2026-08-14T19:20:52.492Z"
+    }
+  },
+  "physics__brdf": {
+    "setupA": "full-pipeline-qwen_FINAL",
+    "setupB": "no-iteration-qwen_FINAL",
+    "subject": "physics",
+    "figure": "brdf",
+    "machineEval": {
+      "figure1Setup": "no-iteration-qwen_FINAL",
+      "figure2Setup": "full-pipeline-qwen_FINAL",
+      "mode": "3d",
+      "dimensions": {
+        "geometry": {
+          "winner": "full-pipeline-qwen_FINAL",
+          "confidence": 0.78,
+          "rationale": "Figure 2 better matches the likely 3D geometry of the source: it uses a wider rectangular surface with a shallower camera angle, a sparser outgoing lobe, a separate reflection-direction arrow, and the incoming ray gradient/head oriented more plausibly toward the hit point. Figure 1 has the same core primitives but its square surface, steeper view, overly dense hemisphere of outgoing arrows, and less complete reflection/outgoing structure make the spatial proportions and element counts less faithful."
+        },
+        "interactivity": {
+          "winner": "no-iteration-qwen_FINAL",
+          "confidence": 0.62,
+          "rationale": "Both figures have functioning material buttons, glossiness slider, demo-step buttons, and drag handlers that rebuild the incoming ray and update labels/arrows, but Figure 1 better satisfies the live BRDF interaction because its outgoing hemisphere uses twice as many sampled arrows and therefore the recomputed lobe is more meaningful across incoming directions and material changes. Figure 2’s controls mostly work, but its much sparser two-ring fan makes the advertised radiance-lobe update weaker at extremes, and its extra reflection arrow can misleadingly suggest a specular direction even for the diffuse material."
+        },
+        "faithfulness": {
+          "winner": "full-pipeline-qwen_FINAL",
+          "confidence": 0.64,
+          "rationale": "Figure 2 is slightly more visually faithful because the incoming ray uses the yellow-to-orange coloring and placement that better echoes the reference, and the central labels/arrows read a bit more like the original configuration. Figure 1 has the same general plane-and-arrows setup, but its incoming ray appears more uniformly red/orange and more vertical, making the overall resemblance to the reference's diagonal yellow/orange incident direction a bit weaker."
+        },
+        "labels": {
+          "winner": "full-pipeline-qwen_FINAL",
+          "confidence": 0.83,
+          "rationale": "Figure 2 has noticeably larger and more readable labels for ℓ_in(λ), ℓ_out=F(ℓ_in,n,λ,p,q), p, and q, and the main formula appears closer to the reference text. Figure 1 includes similar labels but they are much smaller, harder to read at inline size, and the formula/annotations near the ray are more cramped and less legible."
+        },
+        "concept": {
+          "winner": "no-iteration-qwen_FINAL",
+          "confidence": 0.65,
+          "rationale": "Figure 1 is conceptually closer because its denser set of outgoing arrows more clearly represents scattering over a hemisphere of directions, matching the BRDF idea that outgoing power/radiance is direction-dependent over q and not just a single specular reflection (L00011-L00017, L00033). Figure 2 also shows multiple outgoing arrows, but its much sparser fan plus a distinct persistent reflection-direction arrow makes the default scene more suggestive of a special specular ray, which weakens the intended point that real surfaces scatter across many directions rather than only one (L00020-L00024, L00033). Both figures share a significant conceptual flaw by labeling p and q as surface-tangent coordinate arrows rather than the incoming and outgoing ray directions used in the BRDF equation (L00009-L00017), so the win is modest."
+        }
+      },
+      "aggregator": {
+        "winner": "full-pipeline-qwen_FINAL",
+        "confidence": 0.69,
+        "explanation": "Figure 2 is overall stronger: compared with Figure 1 it better matches the source geometry with a wider, shallower surface, more plausible incident-ray orientation, a clearer reflection-direction structure, and much more legible labels/formula text. Figure 1’s denser outgoing arrows make the BRDF scattering idea and live lobe updates somewhat better, but relative to Figure 2 it is visually less faithful, more cramped, and its spatial proportions and label readability are weaker."
+      },
+      "evalModel": "gpt-5.5",
+      "evaluatedAt": "2026-08-14T19:21:38.742Z"
+    }
+  },
+  "physics__geometry_reconstruction_12": {
+    "setupA": "full-pipeline-qwen_FINAL",
+    "setupB": "no-iteration-qwen_FINAL",
+    "subject": "physics",
+    "figure": "geometry_reconstruction_12",
+    "machineEval": {
+      "figure1Setup": "full-pipeline-qwen_FINAL",
+      "figure2Setup": "no-iteration-qwen_FINAL",
+      "mode": "3d",
+      "dimensions": {
+        "geometry": {
+          "winner": "no-iteration-qwen_FINAL",
+          "confidence": 0.78,
+          "rationale": "Figure 2 has the more coherent 3D reconstruction: the reference camera projection is computed from the actual world point, camera center, and camera basis, so the C₁–p′–P ray is geometrically collinear and the reference camera/plane move with the pose controls. Figure 1 has similar primitives and even updates its arrows dynamically, but its reference-side projection is based on reusing target-camera coordinates rather than projecting the actual world point into C₁, producing a physically incorrect kinked ray and a p′ that is not truly the perspective projection of P."
+        },
+        "interactivity": {
+          "winner": "no-iteration-qwen_FINAL",
+          "confidence": 0.64,
+          "rationale": "Figure 2 has the more correct interactive pose model: changing R and T actually moves/rotates the reference camera center and image plane and recomputes p' and the reference ray from that displayed geometry, while Figure 1 leaves the reference camera, plane, and baseline visually fixed and computes p' from an abstract transform that is not consistent with the drawn reference ray/camera geometry. Figure 1 does better at redrawing the curved arrows and self-loop as depth changes, whereas Figure 2 leaves those annotation arrows stale at their default positions, but the core advertised sliders in Figure 2 produce a more physically coherent two-view update."
+        },
+        "faithfulness": {
+          "winner": "no-iteration-qwen_FINAL",
+          "confidence": 0.78,
+          "rationale": "Figure 2 is more recognizable as the original two-view geometry because it preserves the side-by-side target/reference-frame composition with two image planes, dashed projection rays, red/black points, and gray curved transformation arrows. Figure 1 compresses the scene into a mostly vertical stack with overlapping planes and only a weak left-right frame relationship, making it look much less like the textbook diagram at a glance."
+        },
+        "labels": {
+          "winner": "full-pipeline-qwen_FINAL",
+          "confidence": 0.65,
+          "rationale": "Figure 1 has somewhat larger and more readable labels, with key texts like P, P'=MP, P=zK^-1p, p'=KP, R,T, and Reference frame more legible than in Figure 2. Figure 2 includes many of the same labels but they are more compressed and tiny, with several labels crowded along the rays and near points, making them harder to read at inline size; both figures have placement issues and missing/poorly placed frame labels compared with the original, but Figure 1 is less illegible overall."
+        },
+        "concept": {
+          "winner": "no-iteration-qwen_FINAL",
+          "confidence": 0.86,
+          "rationale": "Figure 2 is conceptually more accurate because it back-projects p to a 3D point P and then projects that same P through the reference camera so C₁, p′, and P are geometrically consistent, matching the required two-view reconstruction relationship (L00010). Figure 1 shows the same high-level labels, but its computed p′ is derived from transformed target-camera coordinates and then placed on a fixed reference plane in a way that generally does not make p′ the actual projection of the displayed 3D point from C₁, so the ray/point relationship it asserts is false for the two-view geometry (L00007, L00010). Figure 2 has a minor labeling defect on the target plane label, but this is less serious than Figure 1’s incorrect projection geometry."
+        }
+      },
+      "aggregator": {
+        "winner": "no-iteration-qwen_FINAL",
+        "confidence": 0.82,
+        "explanation": "Figure 2 is stronger overall because its source-code geometry and interactions keep the reference camera, image plane, p′, P, and the C₁–p′–P ray physically consistent as pose controls change, whereas Figure 1’s fixed/abstract reference-side projection creates an incorrect kinked ray and a p′ that is not the true projection of the displayed 3D point. It also better preserves the textbook two-view layout in the rendered view, while Figure 1 is more compressed and less faithful to the original composition. Figure 1 has more readable labels and some better-updating annotation arrows, but those advantages are outweighed by Figure 2’s more accurate geometry, concept, and core interactivity."
+      },
+      "evalModel": "gpt-5.5",
+      "evaluatedAt": "2026-08-14T19:22:25.482Z"
+    }
+  },
+  "physics__orthogonal_projection": {
+    "setupA": "full-pipeline-qwen_FINAL",
+    "setupB": "no-iteration-qwen_FINAL",
+    "subject": "physics",
+    "figure": "orthogonal_projection",
+    "machineEval": {
+      "figure1Setup": "full-pipeline-qwen_FINAL",
+      "figure2Setup": "no-iteration-qwen_FINAL",
+      "mode": "3d",
+      "dimensions": {
+        "geometry": {
+          "winner": "full-pipeline-qwen_FINAL",
+          "confidence": 0.78,
+          "rationale": "Figure 1 better reconstructs the intended 3D geometry because its initial camera is deliberately placed on the side where the red stair faces, green tops, cyan end cap, projection plane, rays, and projected profile are all visible in the intended spatial relationship. Figure 2 uses a generic isometric view from the opposite side while coloring only the -X face red, so the visible staircase face is gray rather than the expected red and the key projection geometry is less aligned with the source viewpoint. Both figures share some questionable projection-plane mapping choices, but Figure 1 handles the visible face colors, camera target, and explanatory guide/highlight geometry more accurately."
+        },
+        "interactivity": {
+          "winner": "full-pipeline-qwen_FINAL",
+          "confidence": 0.72,
+          "rationale": "Figure 1 is better because its slider, depth-guide toggle, and three step buttons all produce distinct recomputed visual states, including Step 2-style highlights for the equal-depth comparison, whereas Figure 2's Step 1 button is effectively a no-op beyond returning to the same orthographic/guides state as Step 0. Both figures have major interaction-concept errors: neither provides an actual box-rotation control that recomputes the projection, and both projection/depth-guide computations map Z to the image x coordinate rather than preserving X and Y under orthographic projection, causing the advertised equal lateral measurements to be wrong or degenerate. Figure 2 is slightly worse because its explanatory popup explicitly claims the mapping is (X,Y,Z)→(X,Y,0) while the drawn interaction uses a different mapping, so the displayed explanation disagrees with the updated figure."
+        },
+        "faithfulness": {
+          "winner": "full-pipeline-qwen_FINAL",
+          "confidence": 0.88,
+          "rationale": "Figure 1 is more visually faithful because it preserves the reference’s main left-to-right composition: a translucent projection plane on the left, projected colored shape on that plane, dashed depth guides, and the colored block object to the right with red/green/cyan faces. Figure 2 reverses much of the spatial layout by putting the object on the left and the plane nearer the right, and its object includes gray faces and a less reference-like arrangement, making it less immediately recognizable as the same figure."
+        },
+        "labels": {
+          "winner": "full-pipeline-qwen_FINAL",
+          "confidence": 0.62,
+          "rationale": "Figure 1 has slightly better matching labels because it uses the correct 'Projection plane' text and places it more clearly, with the main X/Y/Z labels readable and less overlapped. Figure 2 includes similar axis labels but its 'Projection Plane' capitalization differs from the reference and the label is more cluttered/overlapped by the artwork, making it less readable; both figures also miss important original annotations such as v and have distracting invented UI text."
+        },
+        "concept": {
+          "winner": "no-iteration-qwen_FINAL",
+          "confidence": 0.68,
+          "rationale": "Both figures have the same major conceptual error: their orthographic map uses world Z as the plane x-coordinate and ignores world X, so the dashed rays are not parallel to Z/perpendicular to the Z=0 projection plane and the projection does not implement x=X, y=Y as required (L00007, L00010). Figure 2 is still slightly better because its projection-plane explanation at least states the correct subject mapping (X,Y,Z)→(X,Y,0), whereas Figure 1 explicitly says the local plane x-axis corresponds to world Z, reinforcing the wrong mapping contrary to the brief (L00007-L00010). Figure 1 also more strongly highlights the flawed depth-guide projection, while Figure 2’s errors are less explicitly emphasized."
+        }
+      },
+      "aggregator": {
+        "winner": "full-pipeline-qwen_FINAL",
+        "confidence": 0.84,
+        "explanation": "Figure 1 is the clear overall winner because it better matches the intended visible composition and 3D layout: the projection plane, projected profile, dashed guides, colored stair object, and camera orientation are arranged so the red face, green tops, cyan end cap, and guide geometry are visible in the expected relationship. Figure 2 is weaker by reversing the spatial layout, showing the staircase face as gray rather than the expected red, cluttering/overlapping labels more, and offering less distinct interactive step behavior, including a Step 1 state that is effectively redundant. Although Figure 2’s text explanation states the correct orthographic mapping more accurately, both figures share serious projection-mapping errors, and Figure 1’s stronger rendering fidelity, geometry, labeling, and interaction behavior outweigh that conceptual advantage."
+      },
+      "evalModel": "gpt-5.5",
+      "evaluatedAt": "2026-08-14T19:23:03.221Z"
+    }
+  }
+}

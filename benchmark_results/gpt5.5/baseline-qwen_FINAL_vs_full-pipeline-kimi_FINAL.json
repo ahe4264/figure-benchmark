@@ -1,0 +1,407 @@
+{
+  "math__14.2.9": {
+    "setupA": "baseline-qwen_FINAL",
+    "setupB": "full-pipeline-kimi_FINAL",
+    "subject": "math",
+    "figure": "14.2.9",
+    "machineEval": {
+      "figure1Setup": "baseline-qwen_FINAL",
+      "figure2Setup": "full-pipeline-kimi_FINAL",
+      "mode": "2d",
+      "dimensions": {
+        "geometry": {
+          "winner": "baseline-qwen_FINAL",
+          "confidence": 0.78,
+          "rationale": "Figure 1 more closely reconstructs the original triangular region split into R1 and R2 with the correct top boundary y=3, lower piecewise lines, two shaded subregions, and vertical sample strips, while keeping the canvas focused on the textbook geometry. Figure 2 has the same basic region, but it adds extra in-plot integral annotations and an alternate Type II slice mode that introduces non-original structural elements; its plotted framing is also slightly looser and more cluttered, making the reconstruction less faithful."
+        },
+        "interactivity": {
+          "winner": "baseline-qwen_FINAL",
+          "confidence": 0.82,
+          "rationale": "Figure 1's two equation inputs more completely recompute the advertised state: the edited boundary curve, its fill, red strip, displayed limits, and integral readout all update, and it even attempts to move the outer endpoint to the new intersection with y=3. Figure 2 does redraw the edited curve and fill and updates its Type-I labels, but it leaves the x-domains/top endpoints fixed at [-2,0] and [0,2] for edited equations, and its extra Type-II toggle displays hard-coded horizontal-slice limits that become wrong after boundary edits."
+        },
+        "faithfulness": {
+          "winner": "baseline-qwen_FINAL",
+          "confidence": 0.78,
+          "rationale": "Figure 1 is more visually faithful because the plotted region, axes, boundary labels, colored halves, and red vertical slices match the textbook composition without adding extra in-plot annotations. Figure 2 is also recognizable, but it introduces additional integral text along the x-axis that is not present in the original and visually clutters the diagram, making it less like the reference at a glance."
+        },
+        "labels": {
+          "winner": "baseline-qwen_FINAL",
+          "confidence": 0.86,
+          "rationale": "Figure 1 has the required labels from the original with relatively clean placement in the diagram, while Figure 2 adds extra invented integral annotations near the x-axis that are tiny, clutter the plot, and are not present in the textbook figure. Figure 1's R₁/R₂ labels are somewhat awkwardly rendered and its labels are smaller than the reference, but Figure 2 is worse because its additional annotations collide visually with the axis/tick area and reduce readability."
+        },
+        "concept": {
+          "winner": "baseline-qwen_FINAL",
+          "confidence": 0.78,
+          "rationale": "Figure 1 more accurately and directly teaches the required type-I decomposition: it shows R split at the y-axis into R1 on x∈[-2,0] with lower boundary y=-x+1 and R2 on x∈[0,2] with lower boundary y=x+1, and its readout matches the two iterated integrals in the text (L00008-L00011, L00025-L00036, L00040). Figure 2 is mostly correct for the initial drawing, but it adds an editable/generalized claim that the split “follows wherever that change occurs” while the actual displayed domains remain fixed at [-2,0] and [0,2], and its optional Type II mode introduces extra assertions beyond the authored type-I figure, making it less tightly accurate to the requested concept (L00039-L00040)."
+        }
+      },
+      "aggregator": {
+        "winner": "baseline-qwen_FINAL",
+        "confidence": 0.88,
+        "explanation": "Figure 1 is the clear overall winner because it more faithfully reconstructs the textbook Type-I decomposition with the correct triangular region, split into R₁ and R₂, clean boundary labels, vertical strips, and integral readout without adding non-original clutter. Figure 2 is recognizable, but compared with Figure 1 it adds invented in-plot integral annotations and an extra Type-II mode, and its editable behavior is less consistent because some domains and horizontal-slice limits remain fixed or hard-coded after boundary changes."
+      },
+      "evalModel": "gpt-5.5",
+      "evaluatedAt": "2026-08-14T19:01:59.724Z"
+    }
+  },
+  "math__5.2.8": {
+    "setupA": "baseline-qwen_FINAL",
+    "setupB": "full-pipeline-kimi_FINAL",
+    "subject": "math",
+    "figure": "5.2.8",
+    "machineEval": {
+      "figure1Setup": "full-pipeline-kimi_FINAL",
+      "figure2Setup": "baseline-qwen_FINAL",
+      "mode": "3d",
+      "dimensions": {
+        "geometry": {
+          "winner": "baseline-qwen_FINAL",
+          "confidence": 0.66,
+          "rationale": "Figure 2 better reconstructs the overall textbook geometry by showing all four solids and their corresponding generating regions simultaneously in a four-panel layout with axes, rotation arrows, labels, and an oblique textbook-style viewpoint. Figure 1 models each individual solid more accurately when selected, with capped cylinder/cone and better hollow-cylinder rims, but it only displays one case at a time and combines the generating region behind the solid rather than preserving the source-like spatial arrangement and element count. Figure 2 is weakened by open cylinder/cone lathe surfaces and simpler proportions, but its overall scene geometry and panel relationships match the original figure more closely."
+        },
+        "interactivity": {
+          "winner": "baseline-qwen_FINAL",
+          "confidence": 0.88,
+          "rationale": "Figure 2's panel buttons and solid-click handlers actually focus and highlight the corresponding 2D region and 3D solid, and its animation and speed controls visibly update the figure, even though the rotating profile geometry is somewhat misaligned and the first animation tick can jump if started late. Figure 1's panel buttons switch labels/visibility, but the static solid meshes are never initially built because rebuildSolid returns early when _phi already equals 2π, so the advertised 3D result is missing until animation forces a rebuild; additionally clicking a solid only opens an explanation rather than focusing the panel, and its animation sweeps the lathed surface rather than rotating the 2D profile."
+        },
+        "faithfulness": {
+          "winner": "baseline-qwen_FINAL",
+          "confidence": 0.88,
+          "rationale": "Figure 2 is more visually faithful because it reproduces the full four-part composition with the title, top generating shapes, axes of revolution, bottom solids, turquoise color scheme, and labels, so it is immediately recognizable as the original textbook figure. Figure 1 only shows the cylinder panel in a tilted 3D view and omits the side-by-side set of sphere, cone, and hollow cylinder in the screenshot; its cylinder is also more skeletal and less like the shaded solid in the reference."
+        },
+        "labels": {
+          "winner": "baseline-qwen_FINAL",
+          "confidence": 0.86,
+          "rationale": "Figure 2 includes the main title, axis label, all four solid names, and the (a)–(d) panel labels, whereas Figure 1 only shows the cylinder case and is missing the sphere, cone, and hollowed cylinder labels from the reference. Figure 2's labels are small and the cone/hollowed-cylinder text overlaps badly, but Figure 1's labels are even less complete and much of its text is tiny and sparse relative to the original."
+        },
+        "concept": {
+          "winner": "full-pipeline-kimi_FINAL",
+          "confidence": 0.82,
+          "rationale": "Figure 1 more correctly represents the key concept that a filled plane region revolved about an axis generates a solid: its rectangle, semicircle, triangle, and separated rectangle correspond to a cylinder, sphere, cone, and hollow cylinder as stated in the brief (L00007, L00010). Figure 2 labels the same mappings and shows the four panels side by side, but its 3D cylinder and cone are built from boundary-line lathe profiles and its animation sweeps profile lines, which more nearly teaches surfaces of revolution rather than solids generated by plane regions; its hollow cylinder is also not fully closed, weakening the claimed hollowed cylinder result (L00007, L00010)."
+        }
+      },
+      "aggregator": {
+        "winner": "baseline-qwen_FINAL",
+        "confidence": 0.86,
+        "explanation": "Figure 2 is the stronger overall reconstruction because it presents the full four-part textbook composition with generating regions, axes, rotation cues, labels, and corresponding solids, while Figure 1 only shows one case at a time and is much less complete in the rendered view. Figure 2 also has working panel selection, highlighting, and animation controls, whereas Figure 1’s initial solid can fail to appear and its click behavior does not focus the intended panel. Figure 1 is conceptually stronger in treating the revolved regions as filled solids, but that advantage is outweighed by Figure 2’s much better visual faithfulness, labeling completeness, geometry coverage, and functional interactivity."
+      },
+      "evalModel": "gpt-5.5",
+      "evaluatedAt": "2026-08-14T19:03:30.924Z"
+    }
+  },
+  "chemistry__CNX_Chem_10_06_CubUntCll": {
+    "setupA": "baseline-qwen_FINAL",
+    "setupB": "full-pipeline-kimi_FINAL",
+    "subject": "chemistry",
+    "figure": "CNX_Chem_10_06_CubUntCll",
+    "machineEval": {
+      "figure1Setup": "baseline-qwen_FINAL",
+      "figure2Setup": "full-pipeline-kimi_FINAL",
+      "mode": "3d",
+      "dimensions": {
+        "geometry": {
+          "winner": "full-pipeline-kimi_FINAL",
+          "confidence": 0.9,
+          "rationale": "Figure 2 better reconstructs the textbook geometry because it shows the three unit-cell types side-by-side in two rows, with the correct counts and placements of corner, body-center, and face-center sites, and it scales the lower sphere models according to the appropriate SC, BCC, and FCC contact relationships. Figure 1 uses correct cubic primitives and site positions for a selected structure, but it only displays one cell type at a time rather than the full comparative layout, so the spatial relationships and element count of the original multi-panel figure are not accurately reconstructed."
+        },
+        "interactivity": {
+          "winner": "baseline-qwen_FINAL",
+          "confidence": 0.68,
+          "rationale": "Figure 1's main type buttons correctly rebuild both the lattice-point diagram and the space-filling model for the selected cubic cell, whereas Figure 2 only attempts a spotlight/dimming mode rather than a true toggle and its dimming is technically faulty because several shared materials make selected top-row edges/dots dim or nonselected ones remain bright depending on button order. Figure 2 has a stronger atom-click readout with correct total calculations, while Figure 1 relies on the popup and also leaves stale removed atoms in the raycaster list after toggling, but Figure 1 still more reliably performs the requested simultaneous cell-type update."
+        },
+        "faithfulness": {
+          "winner": "full-pipeline-kimi_FINAL",
+          "confidence": 0.92,
+          "rationale": "Figure 2 is more visually faithful because it preserves the original’s side-by-side three-cell composition, the top row of lattice point diagrams with red points, and the lower row with gray corner atoms plus orange interior/face atoms and green unit-cell boxes. Figure 1 only shows a single selected simple-cubic case in the screenshot, lacks the three-panel comparison, omits the red lattice-point sequence, and its lower model appears as a cluster of gray spheres without the textbook-like unit-cell box, making it much less recognizable as the full original figure."
+        },
+        "labels": {
+          "winner": "full-pipeline-kimi_FINAL",
+          "confidence": 0.88,
+          "rationale": "Figure 2 has the main textbook labels for all three unit-cell types and both section headings, whereas Figure 1 only shows the simple cubic label and omits the body-centered and face-centered cubic labels/models in the main diagram. Figure 2 does have some clutter and overlapping bottom labels, plus extra UI/explanatory text not in the original, but Figure 1 is much less complete and also includes unrelated interface labels on the right."
+        },
+        "concept": {
+          "winner": "full-pipeline-kimi_FINAL",
+          "confidence": 0.87,
+          "rationale": "Figure 2 is more conceptually accurate because it presents the three cubic cells as three paired columns in two rows, with correct top-row lattice points for SC, BCC, and FCC and correct bottom-row atom placements/contact geometry and atom-count contributions: corners only for simple cubic, a body-center atom contacting corners for BCC, and face-center atoms contacting corners and neighboring face atoms for FCC (L00014, L00018-L00019). Figure 1’s individual structures are mostly correct when toggled, including its radii/contact relationships and totals, but it shows only one cell type at a time rather than the six paired diagrams needed to make the SC/BCC/FCC comparison and pairing explicit, so it teaches the overall figure concept less faithfully (L00014, L00018-L00019)."
+        }
+      },
+      "aggregator": {
+        "winner": "full-pipeline-kimi_FINAL",
+        "confidence": 0.9,
+        "explanation": "Figure 2 is clearly stronger overall because it reconstructs the intended comparative textbook layout: all three cubic unit cells appear side-by-side with paired lattice-point and space-filling models, correct labels, and generally correct SC/BCC/FCC geometry and atom-count concepts. Figure 1 has more reliable cell-type toggle behavior, but it displays only one selected structure at a time and lacks the full three-panel comparison, red lattice-point sequence, and complete labeling that make Figure 2 much more faithful to the original figure."
+      },
+      "evalModel": "gpt-5.5",
+      "evaluatedAt": "2026-08-14T19:04:32.813Z"
+    }
+  },
+  "chemistry__CNX_Chem_13_01_equilibrium": {
+    "setupA": "baseline-qwen_FINAL",
+    "setupB": "full-pipeline-kimi_FINAL",
+    "subject": "chemistry",
+    "figure": "CNX_Chem_13_01_equilibrium",
+    "machineEval": {
+      "figure1Setup": "baseline-qwen_FINAL",
+      "figure2Setup": "full-pipeline-kimi_FINAL",
+      "mode": "2d",
+      "dimensions": {
+        "geometry": {
+          "winner": "full-pipeline-kimi_FINAL",
+          "confidence": 0.86,
+          "rationale": "Figure 2 is structurally more accurate because its molecule counts, vial coloration, concentration curves, and rate curves follow the expected approach to equilibrium: N₂O₄ decreases, NO₂ increases, and the forward/reverse rates converge. Figure 1 has a more complete three-panel layout with both graphs visible, but its reaction integration has the sign wrong, causing N₂O₄ to increase, NO₂ to become negative or disappear from the plotted range, and the pre-equilibrium/equilibrium vials to show essentially the wrong species proportions and colors. Figure 2 is weaker for replacing the separate concentration and rate panels with a toggle rather than showing both simultaneously, but that is less damaging than Figure 1’s fundamentally incorrect data trends and molecular composition."
+        },
+        "interactivity": {
+          "winner": "full-pipeline-kimi_FINAL",
+          "confidence": 0.91,
+          "rationale": "Figure 2's time slider, initial-concentration slider, and graph-view toggle mostly recompute and redraw the intended state across the graph and vial mixture, whereas Figure 1 has a serious kinetic-sign error: changing time or initial concentration drives N₂O₄ upward and NO₂ negative/nonphysical, so its readouts, curves, and panel-a color/molecule updates contradict the advertised equilibrium behavior. Figure 2 is not perfect because the marker is controlled by a slider rather than dragged on the graph, its readout only shows the active graph quantity, and redraws can leave accumulating panel labels, but its handlers are far more correct than Figure 1's chemically backwards updates."
+        },
+        "faithfulness": {
+          "winner": "full-pipeline-kimi_FINAL",
+          "confidence": 0.9,
+          "rationale": "Figure 2 is more visually faithful because its top sequence preserves the colored test tubes, circular containers, molecule dots, and its concentration graph has the same basic red-increasing/blue-decreasing curves with a shaded equilibrium region and dashed marker. Figure 1 includes more panels, but its top illustration is much smaller and less recognizable, the test tubes/arrows are faint, and especially the concentration plot appears to have the wrong curve emphasis/shape compared with the reference, making the overall figure less recognizable."
+        },
+        "labels": {
+          "winner": "baseline-qwen_FINAL",
+          "confidence": 0.62,
+          "rationale": "Figure 1 includes labels for both the concentration and rate panels, including the rate expressions and panel (c), whereas Figure 2’s rendered view omits the entire rate panel and therefore misses its axis labels, curve annotations, and (c) label. Figure 1’s labels are often very small and somewhat cluttered, especially around the rate curves and time readout, but Figure 2 is less complete relative to the original despite its displayed labels being cleaner and more readable."
+        },
+        "concept": {
+          "winner": "full-pipeline-kimi_FINAL",
+          "confidence": 0.98,
+          "rationale": "Figure 2 is conceptually much more accurate: it models N₂O₄ decreasing, NO₂ increasing, and forward/reverse rates approaching equality as required for N₂O₄(g) ⇌ 2NO₂(g) (L00010-L00012, L00023). Figure 1 has the reaction dynamics sign reversed in its simulation, so [N₂O₄] increases above its initial value and [NO₂] becomes negative, which contradicts the required concentration trends and molecular snapshots of NO₂ accumulation (L00012, L00023); this also makes its rate curves and equilibrium state conceptually false rather than merely incomplete."
+        }
+      },
+      "aggregator": {
+        "winner": "full-pipeline-kimi_FINAL",
+        "confidence": 0.94,
+        "explanation": "Figure 2 is the clear overall winner because it correctly shows the equilibrium behavior: N₂O₄ decreases, NO₂ increases, vial colors/species proportions change in the right direction, and the forward and reverse rates converge. Figure 1 is more complete in visible labeling and includes both graph panels at once, but its simulation is chemically reversed, producing nonphysical concentrations and misleading molecular snapshots, which is a much more serious flaw than Figure 2’s toggle-based incompleteness and minor label/rendering issues."
+      },
+      "evalModel": "gpt-5.5",
+      "evaluatedAt": "2026-08-14T19:05:32.233Z"
+    }
+  },
+  "cs__Conv1DChannels": {
+    "setupA": "baseline-qwen_FINAL",
+    "setupB": "full-pipeline-kimi_FINAL",
+    "subject": "cs",
+    "figure": "Conv1DChannels",
+    "machineEval": {
+      "figure1Setup": "baseline-qwen_FINAL",
+      "figure2Setup": "full-pipeline-kimi_FINAL",
+      "mode": "3d",
+      "dimensions": {
+        "geometry": {
+          "winner": "full-pipeline-kimi_FINAL",
+          "confidence": 0.86,
+          "rationale": "Figure 2 better reconstructs the intended tensor geometry: it arranges width horizontally, height vertically, and channels as a receding depth dimension, uses a receptive-field box spanning all channels with kernel width, and updates the output width consistently. Figure 1 instead maps channels laterally, uses small spheres rather than the flat circle-array look, has a likely wrong height count, and its receptive-field box highlights essentially one channel over all height rather than the full-channel convolutional slice, making the spatial relationships less faithful."
+        },
+        "interactivity": {
+          "winner": "full-pipeline-kimi_FINAL",
+          "confidence": 0.82,
+          "rationale": "Figure 2 handles the requested controls more correctly: its output-channel slider consistently selects an output channel, moves the H′ highlight to that channel, and highlights the corresponding weight/filter cube, while its kernel-width slider rebuilds H′ with the correct valid-convolution width and expands the receptive field across all input channels. Figure 1’s kernel slider mostly works, but its channel slider conflates input and output channel selection, highlighting a single input-channel plane rather than showing all input-channel contributions to a selected output channel, and its kernel handler attempts to replace an arrow using a const reference so repeated changes can leave extra stale arrows in the scene."
+        },
+        "faithfulness": {
+          "winner": "full-pipeline-kimi_FINAL",
+          "confidence": 0.9,
+          "rationale": "Figure 2 is more visually faithful because the main diagram is larger and clearly preserves the original composition: stacked circular input channels on the left, a grey receptive-field band, colored weight blocks in the middle, and a circular output layer on the right with matching labels and dimensional annotations. Figure 1 contains the same basic elements, but they are rendered extremely small and compressed in the screenshot, making the circular grids, weight blocks, and annotations much less recognizable at a glance compared with the reference."
+        },
+        "labels": {
+          "winner": "full-pipeline-kimi_FINAL",
+          "confidence": 0.86,
+          "rationale": "Figure 2 has the required diagram labels (Width, Height, Channels, Input layer H, Weights Ω, Output layer H′) at a readable size with clearer placement, while Figure 1’s corresponding labels are much smaller, cramped, and some sit too close to or overlap the artwork. Figure 2 does add extra interface/explanatory text not in the original, but Figure 1 also includes UI labels and its core figure annotations are significantly less legible."
+        },
+        "concept": {
+          "winner": "full-pipeline-kimi_FINAL",
+          "confidence": 0.86,
+          "rationale": "Figure 2 is more conceptually accurate because it treats a selected output channel as being produced by its own filter applied across all input channels and the kernel-width spatial receptive field, matching the brief’s point that multi-channel 1D convolution is a weighted linear combination across channel and spatial dimensions (L00007). Figure 1 instead highlights a receptive field within only the selected input channel and links that same channel to the output highlight, which can teach an incorrect one-to-one or depthwise relationship rather than summation across all channels (L00007). Both figures simplify the weight tensor as cubes rather than the requested smaller 3D grid of circles, but Figure 2’s labels/narration about filters for output channels are less misleading than Figure 1’s claim that each cube is just weights for one input channel."
+        }
+      },
+      "aggregator": {
+        "winner": "full-pipeline-kimi_FINAL",
+        "confidence": 0.88,
+        "explanation": "Figure 2 is the clear overall winner: it better matches the intended convolution geometry, with width/height/channel directions, a receptive field spanning all input channels, and output-channel selection tied to the appropriate filter and H′ highlight. Compared with Figure 2’s readable labels and recognizable composition, Figure 1 is cramped and less legible, and it more misleadingly treats the selected channel as if convolution were one-to-one/depthwise rather than a weighted combination across channels."
+      },
+      "evalModel": "gpt-5.5",
+      "evaluatedAt": "2026-08-14T19:05:59.753Z"
+    }
+  },
+  "cs__DiffusionUNet": {
+    "setupA": "baseline-qwen_FINAL",
+    "setupB": "full-pipeline-kimi_FINAL",
+    "subject": "cs",
+    "figure": "DiffusionUNet",
+    "machineEval": {
+      "figure1Setup": "full-pipeline-kimi_FINAL",
+      "figure2Setup": "baseline-qwen_FINAL",
+      "mode": "3d",
+      "dimensions": {
+        "geometry": {
+          "winner": "full-pipeline-kimi_FINAL",
+          "confidence": 0.93,
+          "rationale": "Figure 1 reconstructs the U-Net geometry much more accurately: it uses square image/feature-map slabs whose face size decreases with spatial resolution and whose depth increases with channel count, includes paired slabs at the high-resolution stages, mirrors the encoder/decoder layout, and routes skip connections in front to decoder side faces with arrowheads. Figure 2 reduces the feature maps to thin vertical slivers with nearly constant x-width rather than square slabs, has fewer/less faithful block counts and pairings, uses overly simple horizontal skip lines, and marks self-attention at an incorrect set of resolutions, so its spatial proportions and element relationships are noticeably less accurate."
+        },
+        "interactivity": {
+          "winner": "full-pipeline-kimi_FINAL",
+          "confidence": 0.78,
+          "rationale": "Figure 1 has more reliable controls overall: its play/pause animation continuously moves through the encoder-decoder path and flashes skip connections when decoder stages are reached, its timestep slider updates both the displayed value and the noisy input at the full range, and its block-type buttons consistently dim or emphasize residual versus attention blocks. Figure 2 covers the requested controls but its animation is less correct because it highlights all blocks first and only then highlights skip connections rather than pulsing them when reused during decoding, and its reset logic leaves skip lines recolored after highlighting and can erase self-attention highlighting while the toggle remains active; its timestep slider does trace time arrows better than Figure 1, but the other interaction bugs make it less dependable."
+        },
+        "faithfulness": {
+          "winner": "baseline-qwen_FINAL",
+          "confidence": 0.88,
+          "rationale": "Figure 2 is more visually faithful because it preserves the recognizable U-Net composition: tall encoder and decoder blocks with smaller bottleneck blocks, gray input/output planes, concatenate arrows across the top, and the time-embedding baseline. Figure 1 has the orange block sequence and some labels, but its camera/view flattens the architecture into a low horizontal strip, obscuring the height hierarchy and U-shape, and it lacks the prominent gray end planes and clear overall composition of the reference."
+        },
+        "labels": {
+          "winner": "baseline-qwen_FINAL",
+          "confidence": 0.86,
+          "rationale": "Figure 2 has more of the original annotations present, including the legend-style labels for Res. block / self-attention and the t / time embedding labels, and its dimension and Concatenate labels are generally more legible. Figure 1’s labels are much more compressed and overlapping in the center, several required annotations are absent or too small to read comfortably, and the text placement is cluttered compared with Figure 2."
+        },
+        "concept": {
+          "winner": "full-pipeline-kimi_FINAL",
+          "confidence": 0.84,
+          "rationale": "Figure 1 is more conceptually accurate because it presents the U-Net as a noisy-input, noise-prediction/denoising-update backbone with the specified multiscale encoder labels and mirrored decoder plus skip concatenations, matching the brief's diffusion U-Net description (L00007). Figure 2 incorrectly describes the output as a “Denoised Output” / “predicted clean image output,” which conflicts with the brief that this backbone predicts noise or denoising updates rather than directly asserting a clean-image output (L00007); it also asserts self-attention at 32×32 in the UI/status even though the brief only supports self-attention at selected scales, not that specific extra scale (L00007). Figure 1's main weakness is that its time-embedding arrows also point at the image planes, whereas the brief says injection is into residual blocks, but Figure 2's false output semantics are more damaging to the core concept (L00007)."
+        }
+      },
+      "aggregator": {
+        "winner": "full-pipeline-kimi_FINAL",
+        "confidence": 0.72,
+        "explanation": "Figure 1 is stronger overall because it more accurately implements the U-Net structure and concept: its multiscale square slabs, mirrored encoder/decoder, paired high-resolution blocks, and decoder-side skip reuse better match the intended diffusion U-Net, and its controls behave more reliably. Figure 2 is visually cleaner and has more legible/rendered labels, but it is less faithful in the underlying geometry, has interaction bugs around animation/reset/highlighting, and makes a more serious conceptual error by presenting the output as a clean denoised image rather than a noise or denoising-update prediction."
+      },
+      "evalModel": "gpt-5.5",
+      "evaluatedAt": "2026-08-14T19:06:25.789Z"
+    }
+  },
+  "cs__ShallowHyperplanes": {
+    "setupA": "baseline-qwen_FINAL",
+    "setupB": "full-pipeline-kimi_FINAL",
+    "subject": "cs",
+    "figure": "ShallowHyperplanes",
+    "machineEval": {
+      "figure1Setup": "baseline-qwen_FINAL",
+      "figure2Setup": "full-pipeline-kimi_FINAL",
+      "mode": "3d",
+      "dimensions": {
+        "geometry": {
+          "winner": "full-pipeline-kimi_FINAL",
+          "confidence": 0.78,
+          "rationale": "Figure 2 is geometrically stronger because its 3D panel uses actual 3D axes, planes, spheres, and depth relationships that can be orbited, whereas Figure 1 fakes panel c as flat 2D ShapeGeometry/lines all lying essentially in a single z-plane. Figure 1 does preserve the side-by-side a/b/c layout better, but its supposedly 3D planes are just projected parallelograms with no real 3D geometry; Figure 2 loses some accuracy by showing panels via switching rather than all simultaneously and has some odd axis/hidden-line choices, but it better reconstructs the actual 3D spatial structure."
+        },
+        "interactivity": {
+          "winner": "full-pipeline-kimi_FINAL",
+          "confidence": 0.62,
+          "rationale": "Figure 2 better satisfies the intended 3D interaction: enabling and dragging point P moves a three-coordinate input through the 3D space and recomputes the teal/orange neuron signs consistently with the rotated planes, whereas Figure 1 only drags a 2D point in panel b and never handles x3. Figure 1’s slider and 2D classification readout are more cleanly implemented, including shaded half-plane updates and an explicit output class, while Figure 2 is weaker because its slider has no visible effect in the non-3D panel modes and it reports a sign region rather than a clear final class; nevertheless Figure 2 covers the requested 3D point-and-plane interaction more correctly overall."
+        },
+        "faithfulness": {
+          "winner": "full-pipeline-kimi_FINAL",
+          "confidence": 0.72,
+          "rationale": "Figure 2 is more visually faithful to the recognizable 3D panel: it preserves the three translucent planes, the teal/orange/gray color scheme, the central axes, labels, and dashed/solid axis structure at a readable scale. Figure 1 has the advantage of showing all three panels, but they are extremely small and panel b in particular introduces broad red/blue shaded regions that read differently from the original's simple orange horizontal and teal vertical hyperplanes, making the overall resemblance weaker at a glance."
+        },
+        "labels": {
+          "winner": "baseline-qwen_FINAL",
+          "confidence": 0.92,
+          "rationale": "Figure 1 includes all three panel labels a), b), and c) and shows the expected axis labels x1, x2, and x3 in the corresponding panels, albeit somewhat small and with some clutter from the UI. Figure 2 only shows the 3D panel, omits the required a) and b) panel annotations entirely, and its axis/panel labels are very small and less readable, while also adding substantial non-original interface text."
+        },
+        "concept": {
+          "winner": "full-pipeline-kimi_FINAL",
+          "confidence": 0.62,
+          "rationale": "Figure 2 is conceptually stronger on the core claim that a 3D input has flat 2D hyperplane planes separating regions, because its panel c uses actual differently oriented 3D PlaneGeometry and its sign readout correctly ties crossing a plane to a linear pre-activation sign (L00007), whereas Figure 1’s panel c is only a flat 2D construction with all geometry at essentially z=0 despite labeling an x3 direction, so it less truthfully represents a plane slicing 3D space (L00007). Figure 1 is closer to the requested side-by-side layout and the exact 1D/2D static panels, but Figure 2’s mathematical representation of hyperplanes as dimension-one-less boundaries is more accurate overall; Figure 2’s main weakness is that it replaces the simultaneous three-panel comparison and cube-face depiction with switchable panels and multiple intersecting planes rather than the specified gray/teal cube faces (L00007)."
+        }
+      },
+      "aggregator": {
+        "winner": "full-pipeline-kimi_FINAL",
+        "confidence": 0.73,
+        "explanation": "Figure 2 is the stronger overall because it uses actual 3D axes, translucent planes, depth relationships, and draggable 3D point behavior, so it better represents the core hyperplane-in-3D concept and is more visually faithful to the important 3D panel. Figure 1 is better labeled and preserves the simultaneous a/b/c layout, but its 3D panel is essentially a flat 2D construction and its panel b shading departs more from the intended visual appearance. Thus, despite Figure 1’s clearer panel labels, Figure 2 has the more important geometric, conceptual, interactive, and rendered fidelity advantages."
+      },
+      "evalModel": "gpt-5.5",
+      "evaluatedAt": "2026-08-14T19:07:20.729Z"
+    }
+  },
+  "cs__ShallowNet": {
+    "setupA": "baseline-qwen_FINAL",
+    "setupB": "full-pipeline-kimi_FINAL",
+    "subject": "cs",
+    "figure": "ShallowNet",
+    "machineEval": {
+      "figure1Setup": "full-pipeline-kimi_FINAL",
+      "figure2Setup": "baseline-qwen_FINAL",
+      "mode": "2d",
+      "dimensions": {
+        "geometry": {
+          "winner": "baseline-qwen_FINAL",
+          "confidence": 0.78,
+          "rationale": "Figure 2 better reconstructs the likely original two-panel structure by showing panel a and panel b side by side with separate labeled and clean network diagrams, preserving the overall multi-panel layout and repeated topology. Figure 1 draws a more polished single network and handles labels/activation glyphs well, but it only shows one panel at a time via a toggle, so the original two-panel 2D structure is not present simultaneously. Figure 2 is weaker in some details, such as non-subscripted second index in labels and omitting the activation tick in the clean panel, but its overall panel layout and duplicated network structure are more faithful structurally."
+        },
+        "interactivity": {
+          "winner": "baseline-qwen_FINAL",
+          "confidence": 0.78,
+          "rationale": "Figure 2’s controls more consistently produce the advertised interactive states: the hidden-unit slider redraws both panels with x and y fixed, the swap control updates the labeled/clean panel comparison, and clicking a hidden unit highlights its incoming and outgoing weights while the corresponding θ/φ labels remain visible in the labeled panel. Figure 1’s slider and checkbox do redraw correctly, but its panel toggle is only a single-panel replacement rather than a comparison, and clicking a hidden unit in the clean view highlights edges without making the promised θ and φ labels visible, so the click interaction is state-dependent and less correct."
+        },
+        "faithfulness": {
+          "winner": "baseline-qwen_FINAL",
+          "confidence": 0.84,
+          "rationale": "Figure 2 is more visually faithful because it preserves the original two-panel composition with both the labeled network in panel a and the clean network in panel b side by side, using similar black/orange/teal styling. Figure 1 renders panel a more legibly, but it replaces the entire panel b region with controls and explanatory text in the screenshot, making the overall figure much less recognizable as the original at a glance."
+        },
+        "labels": {
+          "winner": "baseline-qwen_FINAL",
+          "confidence": 0.72,
+          "rationale": "Figure 2 includes both required panel labels a) and b) and provides the node labels for the unlabeled network in panel b, whereas Figure 1 only shows panel a and omits the entire b) panel and its labels. Figure 2's labels are unfortunately much smaller and some parameter annotations in panel a are cramped, but Figure 1's missing panel makes its label set substantially less complete relative to the original."
+        },
+        "concept": {
+          "winner": "baseline-qwen_FINAL",
+          "confidence": 0.63,
+          "rationale": "Figure 2 is conceptually closer because it actually presents two panels of the same shallow network with x, h₁–h₃, and y, and its labeled version correctly associates θ weights with input-to-hidden affine terms and φ weights with hidden-to-output contributions (L00007-L00013). Figure 1 also uses broadly correct θ/φ labels in its labeled view, but it collapses the requested two-panel comparison into a single toggled panel and explicitly makes panel b a clean view with bias nodes and weight labels hidden, which directly contradicts the brief’s statement that panel b should contain two bias nodes and φ₀, φ₁, φ₂, φ₃ plus representative θ₁₁ labels (L00007-L00009). Figure 2 still has the same major panel-b problem in its default clean right panel and over-labels panel a with φ weights, but it preserves the two-panel shallow-network comparison more faithfully than Figure 1."
+        }
+      },
+      "aggregator": {
+        "winner": "baseline-qwen_FINAL",
+        "confidence": 0.83,
+        "explanation": "Figure 2 is stronger overall because it preserves the original two-panel comparison, showing labeled and clean versions of the shallow network side by side, whereas Figure 1 collapses the comparison into a single toggled view and replaces the missing panel area with controls/text. Figure 2 also implements the intended interactive states more consistently, including updating both panels and keeping relevant labels visible when highlighting units, while Figure 1’s interactions are more state-dependent and its clean view can hide promised parameter labels. Although Figure 2 has smaller/cramped labels and some parameter-label inaccuracies, these are less severe than Figure 1’s omission of the simultaneous panel-b structure and less faithful overall layout."
+      },
+      "evalModel": "gpt-5.5",
+      "evaluatedAt": "2026-08-14T19:07:58.018Z"
+    }
+  },
+  "physics__pinhole_names2": {
+    "setupA": "baseline-qwen_FINAL",
+    "setupB": "full-pipeline-kimi_FINAL",
+    "subject": "physics",
+    "figure": "pinhole_names2",
+    "machineEval": {
+      "figure1Setup": "baseline-qwen_FINAL",
+      "figure2Setup": "full-pipeline-kimi_FINAL",
+      "mode": "3d",
+      "dimensions": {
+        "geometry": {
+          "winner": "baseline-qwen_FINAL",
+          "confidence": 0.78,
+          "rationale": "Figure 1 better matches the likely textbook geometry of a pinhole-camera box: the pinhole is centered on the rear face, the projection plane is a separate parallel face at a clear focal distance, the red f arrow spans exactly from plane to camera center, and the oblique/orthographic construction preserves the schematic proportions and hidden-edge layout. Figure 2 uses a full semi-transparent BoxGeometry with many extra/doubled edges and dashed diagonals, shifts the box vertically so the pinhole is not actually at the face center, and uses a perspective camera/transparent volume that changes the proportions and viewpoint away from the cleaner textbook schematic, even though its coordinate handedness is more internally consistent."
+        },
+        "interactivity": {
+          "winner": "full-pipeline-kimi_FINAL",
+          "confidence": 0.82,
+          "rationale": "Figure 2 implements the handedness control with the correct right-handed default (X×Y=Z), flips the X axis for left-handed mode, updates button state, narration, and a projection-demo sign change, while Figure 1 labels its initial convention as right-handed even though its X/Y/Z directions are actually left-handed and its toggle reverses the interpretation. Figure 2 also provides inline role explanations and visual highlighting for most clickable components, whereas Figure 1 mostly only opens explanatory popups and does not visibly highlight clicked parts. Figure 2 is not perfect: the projection-plane click is registered on the whole box and does not actually highlight the plane, and the optional demo labels are likely re-shown by the label sync even when the demo is hidden, but its advertised interactions are still substantially more correct than Figure 1's backward handedness and lack of highlighting."
+        },
+        "faithfulness": {
+          "winner": "baseline-qwen_FINAL",
+          "confidence": 0.82,
+          "rationale": "Figure 1 is more visually faithful because it preserves the original's recognizable colored cuboid camera form with blue top, green projection plane, dark rear face, black pinhole, red focal-length arrow, and similarly placed Y/Z axes and labels. Figure 2 captures some geometry and dashed construction lines, but its muted gray cube, much smaller/tinier labels, altered axis layout, and extra/interface-like annotations make it read less like the textbook figure at a glance."
+        },
+        "labels": {
+          "winner": "baseline-qwen_FINAL",
+          "confidence": 0.9,
+          "rationale": "Figure 1 includes essentially all of the original labels—Pinhole camera, World coordinates, Projection plane, Optical / principal axis, Pinhole / camera center, X/Y/Z, and f—with generally readable sizing and placement, although a few labels are somewhat close to the geometry. Figure 2 has much smaller, harder-to-read labels, some appear faint or cluttered, and it introduces an extra label such as “world point” while key annotations like f are much less clear."
+        },
+        "concept": {
+          "winner": "full-pipeline-kimi_FINAL",
+          "confidence": 0.78,
+          "rationale": "Figure 2 is more conceptually accurate because its labeled X, Y, and Z axes form a genuinely right-handed coordinate frame, whereas Figure 1 labels axes whose geometry satisfies X × Y = −Z while still claiming “Right-handed,” directly contradicting the right-hand-rule convention and the brief’s requirement that X, Y, Z form a right-handed frame (L00007-L00010). Both figures put the projection plane on the opposite side from the drawn positive Z/optical-axis direction, so both are misleading about Z pointing forward along the optical axis toward the front projection plane (L00010), but Figure 1 compounds this with the incorrect handedness; Figure 2 at least teaches the coordinate-frame handedness correctly."
+        }
+      },
+      "aggregator": {
+        "winner": "baseline-qwen_FINAL",
+        "confidence": 0.65,
+        "explanation": "Figure 1 is the stronger overall reconstruction because it more closely preserves the textbook schematic: the colored camera box, centered pinhole, separate projection plane, focal-length arrow, axes, and major labels are clearer and more faithful than Figure 2’s muted transparent cube with extra edges, clutter, and smaller harder-to-read annotations. Figure 2 has a real advantage in the source-level handedness interaction and coordinate-frame concept, where Figure 1 is internally inconsistent, but Figure 2’s visual geometry and labeling depart more noticeably from the intended figure, so Figure 1 wins overall despite that conceptual/interactivity weakness."
+      },
+      "evalModel": "gpt-5.5",
+      "evaluatedAt": "2026-08-14T19:08:33.269Z"
+    }
+  }
+}

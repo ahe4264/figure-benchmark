@@ -1,0 +1,407 @@
+{
+  "math__1.6.1": {
+    "setupA": "baseline-qwen_FINAL",
+    "setupB": "full-pipeline-qwen_FINAL",
+    "subject": "math",
+    "figure": "1.6.1",
+    "machineEval": {
+      "figure1Setup": "full-pipeline-qwen_FINAL",
+      "figure2Setup": "baseline-qwen_FINAL",
+      "mode": "2d",
+      "dimensions": {
+        "geometry": {
+          "winner": "full-pipeline-qwen_FINAL",
+          "confidence": 0.84,
+          "rationale": "Figure 1 better reconstructs the apparent textbook unit-circle diagram: it has a near-square fixed layout, full axes with arrowheads, a large dashed left/back portion of the circle, a properly placed two-line caption box, and the P/Q radii, sector, angle arcs, and labels in proportions close to the original. Figure 2 includes the same general elements, but its dashed circle segment is much too short while most of the left side is drawn solid, its geometry is more responsive and less faithful in proportions, and its angle range is restricted to the first quadrant rather than preserving the full unit-circle structure."
+        },
+        "interactivity": {
+          "winner": "full-pipeline-qwen_FINAL",
+          "confidence": 0.78,
+          "rationale": "Figure 1's controls more fully and correctly implement the requested interaction: both x and c sliders redraw P, Q, radii, labels, and the shrinking sector over essentially the whole unit circle, and its animation continuously drives x toward c from below and above while keeping the displayed slider value synchronized. Figure 2's handlers generally redraw what they claim within its limited domain, but it restricts both angles to 0–90°, so the target-angle control cannot relocate Q around the unit circle or demonstrate continuity at arbitrary c, and its two-sided animation degenerates near the range endpoints; Figure 1 does have a wrap-around sector issue near 0/2π, but it still supports the intended interaction much more completely."
+        },
+        "faithfulness": {
+          "winner": "full-pipeline-qwen_FINAL",
+          "confidence": 0.98,
+          "rationale": "Figure 1 at least reproduces the main recognizable elements of the textbook diagram: coordinate axes, a blue circle arc, red and black radii, colored points, angle markings, and the shaded sector. Figure 2 fails to render the figure at all and only shows an error message, so it has essentially no visual faithfulness to the original."
+        },
+        "labels": {
+          "winner": "full-pipeline-qwen_FINAL",
+          "confidence": 0.95,
+          "rationale": "Figure 1 is better because it at least includes readable angle labels x and c and a fragment of the explanatory caption, whereas Figure 2 fails to render the diagram and only shows an error message with no relevant textbook labels. However, Figure 1 is still very poor: the important P(cos x, sin x) and Q(cos c, sin c) labels are essentially missing or reduced to stray parentheses, and the caption is clipped and incomplete."
+        },
+        "concept": {
+          "winner": "full-pipeline-qwen_FINAL",
+          "confidence": 0.94,
+          "rationale": "Figure 1 is conceptually more accurate because it treats x and c as radian angles over essentially the full 0 to 2π unit circle, matching the context that both angles are in radian measure and supporting the arbitrary-c/everywhere continuity motivation (L00007, L00013, L00016). Figure 2 instead presents x and c in degrees and restricts them to 0–90°, while still labeling points as P(cos x, sin x) and Q(cos c, sin c); this weakens or distorts the intended radian-based, arbitrary-angle continuity claim and makes the lesson look like a first-quadrant special case rather than continuity everywhere (L00007-L00013, L00016). Both figures correctly show P and Q on a unit circle with an approach arrow and the stated caption idea, but Figure 1 represents the mathematical setting more faithfully."
+        }
+      },
+      "aggregator": {
+        "winner": "full-pipeline-qwen_FINAL",
+        "confidence": 0.96,
+        "explanation": "Figure 1 is clearly stronger overall: it renders the recognizable unit-circle construction with axes, circle, P/Q radii, angle markings, sector shading, radian-style controls over essentially the full circle, and at least partial explanatory labeling. Figure 2 is worse both visually and conceptually: in the rendered view it fails to show the diagram at all, and in the underlying implementation it restricts x and c to a first-quadrant degree-based setup, undermining the intended arbitrary-angle radian continuity demonstration."
+      },
+      "evalModel": "gpt-5.5",
+      "evaluatedAt": "2026-08-14T19:02:00.617Z"
+    }
+  },
+  "math__15.2.12": {
+    "setupA": "baseline-qwen_FINAL",
+    "setupB": "full-pipeline-qwen_FINAL",
+    "subject": "math",
+    "figure": "15.2.12",
+    "machineEval": {
+      "figure1Setup": "full-pipeline-qwen_FINAL",
+      "figure2Setup": "baseline-qwen_FINAL",
+      "mode": "2d",
+      "dimensions": {
+        "geometry": {
+          "winner": "full-pipeline-qwen_FINAL",
+          "confidence": 0.84,
+          "rationale": "Figure 1 better matches the textbook-style structure: it shows the intended vertical segment and parabolic arc with the correct axes, ticks, red path orientation, black vector field, and no extra off-curve construction point. Figure 2 reconstructs the same main paths, but it adds an open draggable Bezier control point that is not part of the original figure, uses more distorted vector-field directions under unequal axis scaling, has looser axis domains/proportions, and introduces extra colored moving vectors/labels that make the structural layout less faithful."
+        },
+        "interactivity": {
+          "winner": "full-pipeline-qwen_FINAL",
+          "confidence": 0.67,
+          "rationale": "Figure 1’s controls more consistently preserve and update the interactive state: dragging endpoints redraws the curve and recomputes the displayed accumulated and total integrals, the t slider moves the point and updates the field/tangent readouts, and switching panels preserves each panel’s edited path. Figure 2’s basic handlers also work and its integral output updates during dragging, but toggling panels resets any endpoint/control-point edits, and its optional vector checkbox also removes the moving point rather than only hiding the advertised vectors, making its interactions less faithful and robust."
+        },
+        "faithfulness": {
+          "winner": "full-pipeline-qwen_FINAL",
+          "confidence": 0.78,
+          "rationale": "Figure 1 is more recognizable as the original panel (a): it preserves the pale green vector-field plot, the axes placement, the vertical red path with endpoint dots, and the nearby C label more closely. Figure 2 has a comparable background field and axes, but the path is cluttered with extra colored moving-point annotations, labels, and arrows that make it look less like the textbook figure; Figure 1 also has extra annotations, but its main red curve more closely matches the original composition."
+        },
+        "labels": {
+          "winner": "baseline-qwen_FINAL",
+          "confidence": 0.86,
+          "rationale": "Figure 2 has the main labels closer to the original: the title is centered above the plot, the axis labels, tick labels, C label, and panel label are readable and reasonably placed. Figure 1 includes the required labels but places the title off to the upper left and adds prominent extra formula/legend text inside the plotting area, creating clutter and labels not present in the original; Figure 2 also has some invented labels near the path, but they are smaller and less disruptive."
+        },
+        "concept": {
+          "winner": "baseline-qwen_FINAL",
+          "confidence": 0.82,
+          "rationale": "Figure 2 is more conceptually accurate because its readout labels and computes the line-integral integrand as F·r′(t), matching the worked formula F(r(t))·r′(t) for both paths (L00013-L00021, L00028-L00039), while Figure 1 instead emphasizes F·T and even describes it as the quantity being swept into the accumulated integral, which omits the speed factor except in special cases. Figure 1 also falsely states that F·T changes sign on the parabolic path, whereas the stated integrand cos t + 2t sin t for t from −1 to 2 is positive along the interval, so that narration would mislead students (L00033-L00039). Both figures correctly implement the vector field and the parabolic path geometry from (−1,1) to (2,4), and both share the same tension between the authored brief’s “downwards” wording for panel (a) and the textbook parametrization/solution that runs upward and gives −1 (L00007-L00021, L00042), but Figure 2 makes fewer false mathematical assertions."
+        }
+      },
+      "aggregator": {
+        "winner": "full-pipeline-qwen_FINAL",
+        "confidence": 0.62,
+        "explanation": "Figure 1 is the overall stronger match because it preserves the intended geometric structure and rendered composition more faithfully: the vertical/parabolic path layout, axes, vector field, red curve, endpoint dots, and panel appearance are closer, and its interactions maintain edited state more robustly than Figure 2. Figure 2 has clearer label placement and is conceptually better in using F·r′(t) rather than Figure 1’s misleading F·T emphasis, but it introduces extra control points, moving-vector annotations, reset-prone panel toggles, and clutter that make it less faithful to the target figure overall."
+      },
+      "evalModel": "gpt-5.5",
+      "evaluatedAt": "2026-08-14T19:03:09.190Z"
+    }
+  },
+  "chemistry__CNX_Chem_01_01_FuelCell": {
+    "setupA": "baseline-qwen_FINAL",
+    "setupB": "full-pipeline-qwen_FINAL",
+    "subject": "chemistry",
+    "figure": "CNX_Chem_01_01_FuelCell",
+    "machineEval": {
+      "figure1Setup": "full-pipeline-qwen_FINAL",
+      "figure2Setup": "baseline-qwen_FINAL",
+      "mode": "2d",
+      "dimensions": {
+        "geometry": {
+          "winner": "full-pipeline-qwen_FINAL",
+          "confidence": 0.72,
+          "rationale": "Figure 1 better preserves the textbook schematic as a static 2D fuel-cell diagram: it has the correct left/right stack layout, four gas/water ports, external circuit with resistor, explicit electron/proton/molecule populations, and most flow arrows including the unused-hydrogen outlet pointing outward. Figure 2 has a plausible housing/flow-field construction, but it changes the diagram more substantially with animated particle paths, fewer explicit membrane/charge-carrier arrows, different particle placements, and a structurally important error where the unused hydrogen outlet arrow points inward rather than out of the cell."
+        },
+        "interactivity": {
+          "winner": "baseline-qwen_FINAL",
+          "confidence": 0.78,
+          "rationale": "Figure 2 is better because its play/step controls actually recompute particle positions to show electrons moving through the external circuit and protons through the membrane, and its feed slider redraws the current wires proportionally. Figure 1 mostly substitutes static highlight boxes for the requested cycle animation, and its feed slider changes every flow arrow while not thickening the external current path itself. Figure 2 does have a significant redraw bug: its arrow helper appends new arrows to the root SVG on every update, so feed arrows accumulate and may not visually thin after being made thick, but despite that it implements the intended interactive states more correctly than Figure 1."
+        },
+        "faithfulness": {
+          "winner": "baseline-qwen_FINAL",
+          "confidence": 0.89,
+          "rationale": "Figure 2 is more visually faithful because it preserves the original's central vertical fuel-cell structure with gray side blocks, purple electrodes, blue proton exchange membrane, side gas channels, labels, molecules, arrows, and top electric-power circuit in roughly the same composition. Figure 1 contains many of the same elements, but its proportions and layout are much more distorted, with an oversized dark background, a broad purple band across the top, displaced labels, and a composition that no longer resembles the original diagram as clearly at a glance."
+        },
+        "labels": {
+          "winner": "baseline-qwen_FINAL",
+          "confidence": 0.86,
+          "rationale": "Figure 2 has the required textbook labels with mostly correct wording and more readable placement, including a correctly spaced “Electric power” label and clear bottom labels. Figure 1 includes most of the same labels, but several are much smaller, the top label appears incorrectly as “Electricpower” and overlaps/clutters the circuit area, and some labels are awkwardly placed far from or cramped against the diagram."
+        },
+        "concept": {
+          "winner": "full-pipeline-qwen_FINAL",
+          "confidence": 0.88,
+          "rationale": "Figure 1 more correctly represents the key fuel-cell relationships: hydrogen enters at the left anode, oxygen enters at the right cathode, protons move through the central proton exchange membrane, electrons go through the external circuit/load, water exits at the lower right, and unused hydrogen exits at the lower left (L00014, L00017). Figure 2 gets most of the main electrochemical idea right, but its lower-left 'Unused hydrogen' channel arrow points into the cell rather than out of it, contradicting the brief’s statement that unused hydrogen exits at the lower left (L00017), so it teaches one material-flow direction incorrectly."
+        }
+      },
+      "aggregator": {
+        "winner": "baseline-qwen_FINAL",
+        "confidence": 0.68,
+        "explanation": "Figure 2 is the overall stronger figure because it is much more visually faithful to the rendered textbook layout, has clearer and more accurate labels, and implements the intended particle/current interactions more effectively than Figure 1, whose layout is distorted and whose interactivity is mostly static highlighting. Figure 1 is conceptually and geometrically stronger in one important respect—especially the lower-left unused-hydrogen outlet arrow pointing outward correctly—whereas Figure 2 incorrectly points that flow inward, but this localized conceptual error is outweighed by Figure 2’s superior rendering fidelity, labeling, and interactive behavior."
+      },
+      "evalModel": "gpt-5.5",
+      "evaluatedAt": "2026-08-14T19:05:09.052Z"
+    }
+  },
+  "chemistry__CNX_Chem_07_06_Axeq": {
+    "setupA": "baseline-qwen_FINAL",
+    "setupB": "full-pipeline-qwen_FINAL",
+    "subject": "chemistry",
+    "figure": "CNX_Chem_07_06_Axeq",
+    "machineEval": {
+      "figure1Setup": "full-pipeline-qwen_FINAL",
+      "figure2Setup": "baseline-qwen_FINAL",
+      "mode": "3d",
+      "dimensions": {
+        "geometry": {
+          "winner": "full-pipeline-qwen_FINAL",
+          "confidence": 0.88,
+          "rationale": "Figure 1 is geometrically closer because it reconstructs the original multi-panel layout with seven trigonal-bipyramid wireframes: panel (a) plus paired lone-pair and resulting-molecular-shape diagrams for panels (b), (c), and (d), with correct separators and relative spatial organization. Figure 2 collapses panels (b)–(d) into only one bipyramid each instead of the two-diagram comparison structure, so its element count and panel geometry are substantially less faithful; it also has misplaced highlight spheres due to adding world offsets inside already translated parent groups."
+        },
+        "interactivity": {
+          "winner": "baseline-qwen_FINAL",
+          "confidence": 0.78,
+          "rationale": "Figure 2 is better because its axial/equatorial controls at least attempt to highlight positions across panels (b)–(d) and its panel-focus buttons visibly change the display by dimming nonselected panels. Figure 1’s highlight controls only affect yellow markers in panel (a), directly failing the requested cross-panel highlighting, and its (b)/(c)/(d) radio buttons mostly just change a caption/note while all arrangements remain displayed unchanged, so the advertised toggle is largely nonfunctional. Figure 2 is still flawed because its highlight spheres appear to be positioned in world coordinates and then added to translated panel groups, so the highlights are offset from the actual bond sites, but its interactions are closer to the requested behavior than Figure 1’s."
+        },
+        "faithfulness": {
+          "winner": "full-pipeline-qwen_FINAL",
+          "confidence": 0.86,
+          "rationale": "Figure 1 is more visually faithful because it preserves the original's multi-structure horizontal sequence with dashed panel dividers, green octahedral frameworks, red highlighted positions, and the repeated examples within panels (b), (c), and (d). Figure 2 captures the general chemistry theme and labels but appears to reduce the figure to fewer, more compressed structures, with more overlap in the labels and less resemblance to the original seven-structure composition."
+        },
+        "labels": {
+          "winner": "full-pipeline-qwen_FINAL",
+          "confidence": 0.82,
+          "rationale": "Figure 1 has the required diagram labels more legibly and with better placement: Equatorial, Axial, Cl, F, and panel labels are generally readable and closer to the reference. Figure 2 compresses the diagram more severely, making many F/Cl labels very small, and its Axial/Equatorial labels crowd and overlap the first structure, reducing readability and matching less well."
+        },
+        "concept": {
+          "winner": "baseline-qwen_FINAL",
+          "confidence": 0.82,
+          "rationale": "Figure 2 more truthfully represents the core VSEPR relationships: panels (b), (c), and (d) place three F atoms and two red lone-pair lines in the specified arrangements, including both lone pairs equatorial for the observed T-shaped ClF3 in (b), one axial/one equatorial in (c), and both axial in (d) (L00012-L00014, L00021). Figure 1 encodes those arrangements internally, but its HTML label synchronization overrides the intended hiding of unused F labels, so the right-hand structures in panels (b)-(d) would display F labels at all five trigonal-bipyramidal sites, falsely suggesting five fluorine atoms rather than ClF3 with three F atoms and two lone pairs (L00021). Figure 2 is not perfect—its interactive explanation for panel (c) overstates LP–BP 90° repulsions—but its main geometry and labels teach the requested concepts more correctly than Figure 1."
+        }
+      },
+      "aggregator": {
+        "winner": "full-pipeline-qwen_FINAL",
+        "confidence": 0.68,
+        "explanation": "Figure 1 is stronger overall because it preserves the original seven-structure multi-panel composition, dashed separators, relative geometry, and more legible Axial/Equatorial/F/Cl and panel labels, whereas Figure 2 collapses panels (b)–(d) into fewer structures with compressed, overlapping labels and less faithful layout. Figure 2 has better interactive behavior and avoids Figure 1’s misleading extra F-label display in the ClF3 panels, but it also has offset highlights and its structural reduction makes it less faithful to the rendered reference overall."
+      },
+      "evalModel": "gpt-5.5",
+      "evaluatedAt": "2026-08-14T19:06:06.529Z"
+    }
+  },
+  "cs__GanStyleGANArch": {
+    "setupA": "baseline-qwen_FINAL",
+    "setupB": "full-pipeline-qwen_FINAL",
+    "subject": "cs",
+    "figure": "GanStyleGANArch",
+    "machineEval": {
+      "figure1Setup": "baseline-qwen_FINAL",
+      "figure2Setup": "full-pipeline-qwen_FINAL",
+      "mode": "3d",
+      "dimensions": {
+        "geometry": {
+          "winner": "full-pipeline-qwen_FINAL",
+          "confidence": 0.82,
+          "rationale": "Figure 2 better reconstructs the architecture diagram geometry: it uses a front-on oblique projection so the main pipeline remains horizontally aligned while retaining 3D depth, includes the left-side braces separating Noise/Main/Style, uses more proportional wide synthesis blocks with larger 8×8 stages, and represents the output as an 8×8 pixel grid rather than a flat textured plane. Figure 1 has the same general element count but its isometric camera makes the horizontal pipeline appear slanted relative to the likely source layout, omits the brace geometry, uses less faithful block proportions, and its output image is just a 2D canvas texture on a plane."
+        },
+        "interactivity": {
+          "winner": "full-pipeline-qwen_FINAL",
+          "confidence": 0.74,
+          "rationale": "Figure 2 has more functional and responsive controls: its trace buttons and demo actually update highlighted states immediately and its noise slider continuously updates the displayed value, noise volumes, and channel-stripe opacity in the synthesis blocks. Figure 1's animation is more granular for the style path, but it only swaps highlights without using its narration messages or clearly showing effects on the synthesis blocks, and its noise slider is notably less correct because ψ=0 still leaves visible half-sized, semi-opaque noise and affected channels are only highlighted above an arbitrary threshold; Figure 2 also has a nonzero baseline for noise volumes at ψ=0, but its affected-channel highlighting behaves much more consistently."
+        },
+        "faithfulness": {
+          "winner": "full-pipeline-qwen_FINAL",
+          "confidence": 0.82,
+          "rationale": "Figure 2 is more recognizable as the original because it preserves the three horizontal bands with left braces, the left-to-right generative pipeline, the relative placement of noise injections above and style transforms below, and the orange/teal/gray color scheme. Figure 1 has more 3D depth, but its oblique camera angle compresses and overlaps many elements, omits the prominent bracket structure, and makes the composition read less like the clean textbook diagram."
+        },
+        "labels": {
+          "winner": "full-pipeline-qwen_FINAL",
+          "confidence": 0.82,
+          "rationale": "Figure 2 has noticeably clearer and more complete diagram labeling: the section labels with braces, noise annotations, tensor sizes, style labels, and latent/intermediate variable labels are generally placed closer to the textbook layout and are more readable. Figure 1 includes many of the same labels, but they are much smaller, heavily compressed by perspective, and several collide with the blocks or with each other, especially in the style pathway and around the per-channel scale/offset annotations."
+        },
+        "concept": {
+          "winner": "baseline-qwen_FINAL",
+          "confidence": 0.78,
+          "rationale": "Figure 1 is conceptually more accurate because it shows the style mapping direction as z feeding through the fully connected network toward w and then onward to the three linear transforms, matching the required z→w→y₁,y₂,y₃ relationship (L00007). Figure 2 includes most of the same labels and tensor sizes, but its explicit z→w arrow is drawn in the wrong direction, which falsely suggests flow back toward z rather than from z to w, a core relationship in the StyleGAN style branch (L00007). Both figures represent the noise injections and main 4×4 to 8×8 feature-map resolutions reasonably, but this directional error makes Figure 2 more misleading on a key concept (L00007)."
+        }
+      },
+      "aggregator": {
+        "winner": "full-pipeline-qwen_FINAL",
+        "confidence": 0.82,
+        "explanation": "Figure 2 is the stronger overall reconstruction: compared with Figure 1, it preserves the clean horizontal StyleGAN pipeline, left-side Noise/Main/Style braces, readable labels, proportional synthesis blocks, and more responsive controls tied to visible diagram changes. Figure 1 has an important conceptual advantage in showing the z→w→style-transform direction correctly, while Figure 2’s reversed z→w arrow is a real weakness; however, Figure 1 is less faithful visually due to its compressed oblique camera, missing brace structure, poorer label readability, and less consistent interaction behavior."
+      },
+      "evalModel": "gpt-5.5",
+      "evaluatedAt": "2026-08-14T19:06:35.879Z"
+    }
+  },
+  "cs__ResidualNormTypes": {
+    "setupA": "baseline-qwen_FINAL",
+    "setupB": "full-pipeline-qwen_FINAL",
+    "subject": "cs",
+    "figure": "ResidualNormTypes",
+    "machineEval": {
+      "figure1Setup": "full-pipeline-qwen_FINAL",
+      "figure2Setup": "baseline-qwen_FINAL",
+      "mode": "3d",
+      "dimensions": {
+        "geometry": {
+          "winner": "baseline-qwen_FINAL",
+          "confidence": 0.72,
+          "rationale": "Figure 2 is geometrically more accurate because its tensor axes and highlighted normalization scopes are internally consistent: channel is placed on the receding channel axis, batch index on the other horizontal axis, and the BatchNorm/LayerNorm/InstanceNorm selections are planes or lines perpendicular to the appropriate dimensions. Figure 1 has a more detailed per-cell wire grid, but it effectively swaps the channel and batch geometry relative to its labels, so highlighted regions such as BatchNorm and GroupNorm appear along the wrong labeled axis despite the cleaner lattice rendering."
+        },
+        "interactivity": {
+          "winner": "baseline-qwen_FINAL",
+          "confidence": 0.74,
+          "rationale": "Figure 2 has more direct and reliable controls: each normalization button switches the displayed scope, updates the active button state and descriptive text, and the animation plus speed slider behave as advertised. Figure 1’s dropdown and aggregation animation mostly work, but it covers the requested selection interaction less directly and its animation restart timing can jump after being stopped because the previous animation timestamp is not reset; it also provides less feedback about the selected scope."
+        },
+        "faithfulness": {
+          "winner": "full-pipeline-qwen_FINAL",
+          "confidence": 0.93,
+          "rationale": "Figure 1 is much more recognizable as the textbook BatchNorm panel because it preserves the voxel grid, grey/orange color scheme, and orange block spanning a substantial batch-index region. Figure 2 loses much of the original's gridded cube structure, appears as a translucent solid block, and its orange region is reduced to a thin edge/strip rather than the prominent colored slab, making it less faithful at a glance."
+        },
+        "labels": {
+          "winner": "baseline-qwen_FINAL",
+          "confidence": 0.73,
+          "rationale": "Figure 2 includes the full set of normalization names with panel letters a)–e) in its visible controls, whereas Figure 1 only labels BatchNorm and omits the other required panel labels entirely. Both figures have extra UI text not present in the original and only label a single cube rather than five panels, but Figure 2 preserves more of the required label text; Figure 1 is more incomplete despite being slightly less cluttered."
+        },
+        "concept": {
+          "winner": "baseline-qwen_FINAL",
+          "confidence": 0.78,
+          "rationale": "Figure 2 is conceptually more accurate because its batch, channel, and position mappings are largely consistent with the highlighted regions for BatchNorm, LayerNorm, GroupNorm, and InstanceNorm, matching the required aggregation axes for four of the five methods (L00007). Figure 1 also gets those internal selections mostly right in code, but its displayed/tooltip axis labeling appears to swap channel and batch relative to the highlighted geometry, so students would misread several panels' normalization axes; both figures represent GhostNorm incorrectly as a per-channel ghost-batch/spatial subset rather than a region covering all batch instances and all channels but not spatial position, but Figure 2 has fewer broader misassertions overall (L00007)."
+        }
+      },
+      "aggregator": {
+        "winner": "baseline-qwen_FINAL",
+        "confidence": 0.77,
+        "explanation": "Figure 2 is stronger overall because its source-defined axis mapping and highlighted normalization scopes are more internally consistent, its controls more directly switch and describe the selected normalization, and it includes the broader set of required normalization labels. Figure 1 is more visually faithful to the textbook-style voxel grid and orange slab, but relative to Figure 2 it appears to swap batch/channel geometry in ways that can mislead the normalization interpretation and omits most of the required panel labels."
+      },
+      "evalModel": "gpt-5.5",
+      "evaluatedAt": "2026-08-14T19:07:22.610Z"
+    }
+  },
+  "cs__TransformerDecoder": {
+    "setupA": "baseline-qwen_FINAL",
+    "setupB": "full-pipeline-qwen_FINAL",
+    "subject": "cs",
+    "figure": "TransformerDecoder",
+    "machineEval": {
+      "figure1Setup": "baseline-qwen_FINAL",
+      "figure2Setup": "full-pipeline-qwen_FINAL",
+      "mode": "2d",
+      "dimensions": {
+        "geometry": {
+          "winner": "baseline-qwen_FINAL",
+          "confidence": 0.86,
+          "rationale": "Figure 1 better preserves the original left-to-right pipeline with seven aligned token rows, embedding vectors, a dashed transformer container containing masked-attention, residual add nodes, normalization bars, feed-forward blocks, then per-row Linear+softmax and probability vectors. Figure 2 captures the broad components but distorts several structural details: it adds an embedding container not present in the same way, routes the transformer output through a simplified branching bus, and represents the feed-forward section as a central fan of blue blocks rather than the row-wise block structure, making the internal topology less faithful."
+        },
+        "interactivity": {
+          "winner": "full-pipeline-qwen_FINAL",
+          "confidence": 0.78,
+          "rationale": "Figure 2 has the more reliable controls: its K slider clears and redraws the transformer stack cleanly at each value and the trace animation runs without leaving stale elements. Figure 1 is closer to the requested expand/collapse affordance and has a richer stepwise animation, but its redraw handler creates residual Add nodes outside the cleared interior group, so changing K or toggling expansion leaves old ⊕ nodes accumulated on the figure; its animation also loses the feed-forward/second-residual highlights in expanded mode. Both miss some requested click/highlight behavior, but Figure 1's stale redraw artifacts make its interaction correctness worse."
+        },
+        "faithfulness": {
+          "winner": "baseline-qwen_FINAL",
+          "confidence": 0.74,
+          "rationale": "Figure 1 is more visually faithful overall because it preserves the original left-to-right composition, dashed embedding and transformer containers, orange masked-attention block, residual plus symbols, vertical teal sublayers, and the blue output probability rows in roughly the same arrangement. Figure 2 is recognizable but its transformer interior deviates more noticeably, especially the invented hourglass/diagonal connector structure replacing the original rectangular feed-forward stack, making the central geometry read less like the textbook figure."
+        },
+        "labels": {
+          "winner": "full-pipeline-qwen_FINAL",
+          "confidence": 0.78,
+          "rationale": "Figure 2 has the same core diagram labels as Figure 1 but renders the diagram larger, making the token labels, section headings, and output labels somewhat more readable and less cramped. Figure 1 includes the required labels, but they are noticeably smaller at inline size, with the left and bottom rotated labels especially hard to read and more cluttered."
+        },
+        "concept": {
+          "winner": "baseline-qwen_FINAL",
+          "confidence": 0.78,
+          "rationale": "Figure 1 more accurately represents the key concepts: it shows the specified input tokens and shifted target tokens, a lower-triangular causal attention pattern where each position attends only to itself and earlier positions, and per-position Linear+softmax outputs for parallel next-token prediction (L00007). Figure 2 also gets the basic token shift and causal-mask idea mostly right, but when K is varied it draws repeated decoder layers as vertical slices along the same axis used for token positions, so later layers no longer clearly span all seven sequence positions; this can falsely suggest layers process only subsets of positions rather than applying to the whole sequence in parallel (L00007). Figure 1’s expanded repeated blocks are simplified, but they preserve the full-sequence causal mask per repeated block better than Figure 2’s vertically compressed K-layer depiction."
+        }
+      },
+      "aggregator": {
+        "winner": "baseline-qwen_FINAL",
+        "confidence": 0.72,
+        "explanation": "Figure 1 is stronger overall because it more faithfully preserves the intended transformer pipeline and conceptual structure: aligned token rows, causal masked attention, residual/normalization/feed-forward stages, and per-position Linear+softmax outputs are clearer and more accurate than Figure 2’s simplified branching and vertically compressed layer depiction. Figure 2 is more readable and has cleaner interactive redraw behavior, while Figure 1 suffers from smaller labels and stale interaction artifacts, but those weaknesses are outweighed by Figure 1’s superior geometric and conceptual fidelity to the intended diagram."
+      },
+      "evalModel": "gpt-5.5",
+      "evaluatedAt": "2026-08-14T19:08:03.966Z"
+    }
+  },
+  "physics__boats": {
+    "setupA": "baseline-qwen_FINAL",
+    "setupB": "full-pipeline-qwen_FINAL",
+    "subject": "physics",
+    "figure": "boats",
+    "machineEval": {
+      "figure1Setup": "full-pipeline-qwen_FINAL",
+      "figure2Setup": "baseline-qwen_FINAL",
+      "mode": "2d",
+      "dimensions": {
+        "geometry": {
+          "winner": "full-pipeline-qwen_FINAL",
+          "confidence": 0.78,
+          "rationale": "Figure 1 better preserves the intended side-view structure: the boat remains on the water, the single-observer right triangle has the vertical height, horizontal distance, sight line, right-angle marker, and both α angle markings, and the two-observer mode still shows two sight lines intersecting at a boat on the water. Figure 2 is cleaner in some single-observer scaling details, but its two-observer construction places the triangulated boat above the water/into the sky, omits the lower α arc in the single-observer triangle, and labels distances as computed values rather than matching the original d? structure."
+        },
+        "interactivity": {
+          "winner": "baseline-qwen_FINAL",
+          "confidence": 0.86,
+          "rationale": "Figure 2’s controls more consistently recompute the advertised geometry: the height slider updates the single-observer triangle and displayed distance, the separation slider recomputes the triangulation intersection and distance, and the toggle properly switches methods while disabling irrelevant controls. Figure 1’s height slider does redraw but uses an inconsistent pixel offset so the drawn height/distance do not correspond cleanly to the slider value and at the high extreme the boat goes off-canvas; its separation slider mostly just moves one observer while keeping the boat fixed, so it does not really recompute an estimated triangulated boat location or distance."
+        },
+        "faithfulness": {
+          "winner": "full-pipeline-qwen_FINAL",
+          "confidence": 0.82,
+          "rationale": "Figure 1 is more visually faithful because it preserves the original's composition of a vertical cliff edge, turquoise water beginning at the height baseline, an observer at the edge, a long horizontal reference line, a slanted sight line to a small sailboat, and labels arranged similarly. Figure 2 has the same general concept but its cliff becomes a broad sloped mound with a long flat ledge, the boat is much closer, the geometry is more compressed, and the added numeric distance label makes it read less like the textbook figure."
+        },
+        "labels": {
+          "winner": "full-pipeline-qwen_FINAL",
+          "confidence": 0.86,
+          "rationale": "Figure 1 better matches the original labels, using the expected h, α, and d? annotations with readable placement and minimal clutter. Figure 2 replaces the original unknown-distance label with an invented numeric label like d≈46.2m, making it less faithful, and its distance/angle labels are smaller and more crowded along the lines."
+        },
+        "concept": {
+          "winner": "full-pipeline-qwen_FINAL",
+          "confidence": 0.82,
+          "rationale": "Figure 1 is more conceptually accurate because its single-observer panel represents a right-triangle distance estimate using known height h, a horizontal/horizon reference, angle α, and horizontal boat distance d, matching the brief’s first method (L00012, L00021-L00022), and its two-observer mode places two distinct observers with sight lines intersecting at a boat on the water, matching triangulation from two vantage points (L00012, L00021-L00022). Figure 2 is acceptable for the left method, but its right-method geometry is less truthful: the triangulated boat can be drawn above the water rather than as a boat at sea, and the β angle is measured against a forward extension parallel to the baseline rather than the actual line from the second observer back to the first, so the displayed triangulation relationships are geometrically misleading for the two-observer method (L00012, L00021-L00022)."
+        }
+      },
+      "aggregator": {
+        "winner": "full-pipeline-qwen_FINAL",
+        "confidence": 0.78,
+        "explanation": "Figure 1 is the stronger overall figure because it more faithfully preserves the textbook side-view composition and labeling, and its geometry/concept better represent the intended right-triangle and two-observer triangulation methods with the boat on the water. Figure 2 has better-working controls and cleaner recomputation, but it is less faithful visually and label-wise, and its two-observer construction can place the inferred boat above the water with misleading angle relationships."
+      },
+      "evalModel": "gpt-5.5",
+      "evaluatedAt": "2026-08-14T19:08:36.578Z"
+    }
+  },
+  "physics__telescope2": {
+    "setupA": "baseline-qwen_FINAL",
+    "setupB": "full-pipeline-qwen_FINAL",
+    "subject": "physics",
+    "figure": "telescope2",
+    "machineEval": {
+      "figure1Setup": "baseline-qwen_FINAL",
+      "figure2Setup": "full-pipeline-qwen_FINAL",
+      "mode": "2d",
+      "dimensions": {
+        "geometry": {
+          "winner": "full-pipeline-qwen_FINAL",
+          "confidence": 0.78,
+          "rationale": "Figure 2 better reconstructs the full 2D ray-diagram structure: it keeps the two incident bundles parallel, traces both through the convex objective and concave eyepiece to parallel exits, shows both dashed extensions to the shared focal point, and includes clear reference lines, focal dots, f₁/f₂ brackets, and angle labels in stable proportions. Figure 1 captures the same general concept, but it omits the horizontal reference construction for the input angles, only draws the dashed focal extension for one ray, adds an extra magenta drag handle not present in the textbook structure, and its plot-coordinate system is mixed with an SVG viewBox in a way that can noticeably compress or misplace the diagram depending on the container size."
+        },
+        "interactivity": {
+          "winner": "baseline-qwen_FINAL",
+          "confidence": 0.62,
+          "rationale": "Figure 1 is better overall because its focal-length sliders recompute the ray geometry and reset to the afocal spacing, its lens-2 drag actually moves the eyepiece and updates the rays while flagging that the afocal condition is broken, and its ranges keep the lens ordering mostly physical. Figure 2’s sliders do update the drawing, but its lens-offset control can drive the system into nonphysical overlap/crossed-lens states, and after offsetting lens 2 it still reports an afocal δₒ/δᵢ and δₒ value even though the drawn exit rays are no longer parallel and no single output angle exists. Figure 1 is not perfect—the input-angle drag handle uses a crude, jumpy mapping rather than the actual ray angle—but Figure 2 has more serious stale/misleading readout and degenerate-state problems."
+        },
+        "faithfulness": {
+          "winner": "full-pipeline-qwen_FINAL",
+          "confidence": 0.78,
+          "rationale": "Figure 2 is more visually faithful because it preserves the wide optical layout with a larger separation between lens 1 and lens 2, long horizontal axis, extended outgoing rays, and the f1/f2 bracket geometry closer to the reference. Figure 1 includes several correct elements, but it is much more compressed, places lens 2 too close to lens 1, and the overall proportions make the original long afocal telescope diagram less recognizable."
+        },
+        "labels": {
+          "winner": "full-pipeline-qwen_FINAL",
+          "confidence": 0.63,
+          "rationale": "Figure 2 includes the full set of textbook diagram labels—lens 1, lens 2, two δi labels, δo, d, f1, and f2—and its wider layout gives most of them more breathing room. Figure 1 also has the required labels, but the optical diagram is more compressed, making the δi labels and δo annotation feel more cramped and harder to read at inline size."
+        },
+        "concept": {
+          "winner": "baseline-qwen_FINAL",
+          "confidence": 0.62,
+          "rationale": "Figure 1 more consistently implements the Galilean afocal ray relationship: with lens 2 at f₁−f₂ the traced input rays remain parallel and exit parallel with slope ratio f₁/f₂, matching the stated angular magnification and shared focal-point geometry (L00007, L00010). Figure 2 also gets the default afocal ray geometry largely right, but it introduces more misleading assertions: its tooltip calls f₂ negative while the figure labels f₂ as a positive bracket distance and uses M=f₁/f₂, and when lens 2 is offset it still reports δₒ/δᵢ=f₁/f₂ even though the exit rays are no longer a parallel bundle and a single telescope magnification is not defined as described in the brief (L00007-L00010). Figure 1 is not perfect—it has a confusing narration referring to the shared focal point as blue rather than the off-axis point—but it warns when afocal spacing is broken and makes fewer conceptually false claims overall."
+        }
+      },
+      "aggregator": {
+        "winner": "full-pipeline-qwen_FINAL",
+        "confidence": 0.68,
+        "explanation": "Figure 2 is the stronger overall reconstruction because it more faithfully preserves the full Galilean telescope ray-diagram geometry: wider lens spacing, parallel incident and exiting bundles, both dashed extensions to the shared focal point, and clearer f1/f2, d, δi, and δo labeling. Figure 1 has better safeguards in its interactive behavior and avoids some misleading readouts when the afocal condition is broken, but relative to Figure 2 it is visually compressed, omits part of the reference construction, and is less faithful to the textbook layout."
+      },
+      "evalModel": "gpt-5.5",
+      "evaluatedAt": "2026-08-14T19:09:46.609Z"
+    }
+  }
+}

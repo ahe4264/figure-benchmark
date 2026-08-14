@@ -1,0 +1,407 @@
+{
+  "math__1.1.7": {
+    "setupA": "baseline-kimi_FINAL",
+    "setupB": "full-pipeline-kimi_FINAL",
+    "subject": "math",
+    "figure": "1.1.7",
+    "machineEval": {
+      "figure1Setup": "baseline-kimi_FINAL",
+      "figure2Setup": "full-pipeline-kimi_FINAL",
+      "mode": "2d",
+      "dimensions": {
+        "geometry": {
+          "winner": "baseline-kimi_FINAL",
+          "confidence": 0.96,
+          "rationale": "Figure 1 much more accurately reconstructs the original three-panel structure: it shows separate panels (a), (b), and (c), with the exact shaded area followed by coarse and refined inscribed rectangle approximations, matching the relative layout, axes, labels a/b, curve styling, and lower-sum rectangle concept. Figure 2 collapses the figure into a single interactive plot, omits the simultaneous three-panel comparison, uses a different curve and right-endpoint rectangles that are not reliably inscribed/lower rectangles, so its topology and proportions are substantially less faithful."
+        },
+        "interactivity": {
+          "winner": "baseline-kimi_FINAL",
+          "confidence": 0.9,
+          "rationale": "Figure 1’s n slider, readout, single-view toggle, gap toggle, animation button, and guided steps all recompute and redraw the relevant rectangles and sums consistently, including at the slider extremes. Figure 2’s slider does redraw rectangles and update a sum, but it uses right-endpoint rectangles while claiming they are inscribed, so some bars can extend above the curve and the displayed “gap” is not a true missed-area gap; it also lacks the requested three-panel-to-single-view toggle and a real n animation control."
+        },
+        "faithfulness": {
+          "winner": "full-pipeline-kimi_FINAL",
+          "confidence": 0.88,
+          "rationale": "Figure 2 is much more visually faithful to the reference's panel (a): it has the same axes style, pale blue shaded area between a and b, and a similar smooth curve with one broad peak, a valley, and a rising right end. Figure 1 includes all three panels, but the plotted curve shape looks substantially different and more oscillatory, with extra/invented blue line segments and cramped miniature panels that make the overall textbook figure less recognizable despite having rectangles."
+        },
+        "labels": {
+          "winner": "baseline-kimi_FINAL",
+          "confidence": 0.65,
+          "rationale": "Figure 1 includes the original-style labels across all three subpanels, including x, y, a, b, and the panel markers (a), (b), and (c), whereas Figure 2 only shows the first panel and omits the subfigure label and all labels for the missing rectangle panels. However, Figure 1's labels are much too small at inline size and it adds extra non-original numerical annotations that clutter the bottom, while Figure 2's few labels are clearer and better placed."
+        },
+        "concept": {
+          "winner": "baseline-kimi_FINAL",
+          "confidence": 0.95,
+          "rationale": "Figure 1 correctly represents the key idea of approximating the shaded area under a smooth curve on [a,b] by rectangles that are inscribed under the curve, with a coarse panel and a refined panel illustrating convergence toward the exact area (L00007, L00010). Figure 2 instead uses right-endpoint rectangles while explicitly calling them “inscribed,” but for its nonmonotone curve those rectangles are not always under the curve and can overestimate on increasing subintervals, so its geometry and labels teach the wrong relationship for the requested inscribed-rectangle approximation (L00007, L00010). Figure 1’s extra claims of monotone increase are somewhat stronger than the brief strictly warrants, but Figure 2’s right-endpoint/inscribed mismatch is a more serious conceptual error."
+        }
+      },
+      "aggregator": {
+        "winner": "baseline-kimi_FINAL",
+        "confidence": 0.9,
+        "explanation": "Figure 1 is overall stronger because it preserves the intended three-panel progression from exact shaded area to coarse and refined inscribed-rectangle approximations, with the relevant a/b labels, panel markers, controls, and rectangle recomputation working consistently. Figure 2 has a more visually faithful rendering of the first shaded-area panel, but it collapses the comparison into one plot and uses right-endpoint rectangles while calling them inscribed, causing bars to exceed the curve and weakening both the geometry and the mathematical concept relative to Figure 1."
+      },
+      "evalModel": "gpt-5.5",
+      "evaluatedAt": "2026-08-14T18:55:59.169Z"
+    }
+  },
+  "math__14.2.10": {
+    "setupA": "baseline-kimi_FINAL",
+    "setupB": "full-pipeline-kimi_FINAL",
+    "subject": "math",
+    "figure": "14.2.10",
+    "machineEval": {
+      "figure1Setup": "baseline-kimi_FINAL",
+      "figure2Setup": "full-pipeline-kimi_FINAL",
+      "mode": "3d",
+      "dimensions": {
+        "geometry": {
+          "winner": "full-pipeline-kimi_FINAL",
+          "confidence": 0.86,
+          "rationale": "Figure 2 reconstructs the tetrahedron with the correct intercept proportions (1, 2, 4), includes the base, slanted face, and coordinate-plane side faces, and keeps the 2D region R as a fixed screen-space inset with the correct 1-by-2 triangular proportions. Figure 1 has the main tetrahedron mostly correct, but its 2D base region is distorted by unequal scaling, is placed as a flat panel inside the 3D scene rather than as a true separate 2D diagram, and omits some solid faces, making its spatial reconstruction less faithful."
+        },
+        "interactivity": {
+          "winner": "baseline-kimi_FINAL",
+          "confidence": 0.86,
+          "rationale": "Figure 1 better matches the requested interactions: both the slider and actual dragging on the 2D strip recompute the strip height and the corresponding 3D fixed-x cross-section in real time, and its 3D/2D view toggle works. Figure 2 has several working controls, including focus buttons, demos, and a slider that updates the 2D strip and 3D lamina, but it does not implement dragging the red strip in the 2D panel at all, and its 3D slice is a finite-thickness prism that can protrude outside the tetrahedron at endpoint slider values rather than an exact fixed-x cross-section."
+        },
+        "faithfulness": {
+          "winner": "full-pipeline-kimi_FINAL",
+          "confidence": 0.88,
+          "rationale": "Figure 2 is more visually faithful because it recreates the key two-part composition of the textbook figure: a translucent 3D tetrahedral solid on the left and the 2D triangular base region on the right with matching teal shading, axes, intercept labels, and equations. Figure 1 contains many of the same mathematical elements, but it compresses them into one small combined 3D view with the 2D region overlaid rather than shown as a separate right-hand panel, making it much less recognizable at a glance as the original figure."
+        },
+        "labels": {
+          "winner": "full-pipeline-kimi_FINAL",
+          "confidence": 0.86,
+          "rationale": "Figure 2 has the main textbook labels in both the 3D solid and the 2D base-region view, including the equations, axis labels, intercept numbers, and R labels, with generally larger and more readable placement. Figure 1 includes many of the same labels but they are much smaller, more clustered around the tiny central drawing, and several labels overlap or compete with the geometry, making the annotations harder to read and less faithful to the clean layout of the original."
+        },
+        "concept": {
+          "winner": "baseline-kimi_FINAL",
+          "confidence": 0.7,
+          "rationale": "Both figures correctly show the tetrahedron with intercepts (1,0,0), (0,2,0), and (0,0,4) under the plane z = 4 − 4x − 2y, and both correctly show the triangular base R bounded by the axes and y = 2 − 2x (L00007, L00010). Figure 1 is more conceptually exact for the inner-integration slice: its red 3D cross-section is the actual fixed-x triangular slice corresponding to y from 0 to 2 − 2x and the plane height, whereas Figure 2’s optional 3D “lamina” is a finite-thickness prism whose faces use the center-x height rather than the true plane over the strip, so parts of it do not exactly lie under z = 4 − 4x − 2y despite being described as rising to that plane (L00010). Figure 2 does a good job linking the 3D solid to the 2D region and includes correct explanatory text, but this slice/lamina approximation makes its mathematical representation slightly less accurate than Figure 1’s."
+        }
+      },
+      "aggregator": {
+        "winner": "full-pipeline-kimi_FINAL",
+        "confidence": 0.76,
+        "explanation": "Figure 2 is the stronger overall reconstruction: compared with Figure 1, it more faithfully matches the textbook-style composition with a separate translucent 3D tetrahedron and 2D base-region panel, clearer labels, correct intercept proportions, and a more recognizable layout. Figure 1 has an advantage in the authored interactions and represents the fixed-x slice more exactly, but its 2D region is visually distorted and embedded into the 3D scene, its faces and labels are less clear, and it is less faithful to the intended figure at a glance."
+      },
+      "evalModel": "gpt-5.5",
+      "evaluatedAt": "2026-08-14T18:56:44.379Z"
+    }
+  },
+  "math__14.3.10": {
+    "setupA": "baseline-kimi_FINAL",
+    "setupB": "full-pipeline-kimi_FINAL",
+    "subject": "math",
+    "figure": "14.3.10",
+    "machineEval": {
+      "figure1Setup": "baseline-kimi_FINAL",
+      "figure2Setup": "full-pipeline-kimi_FINAL",
+      "mode": "2d",
+      "dimensions": {
+        "geometry": {
+          "winner": "baseline-kimi_FINAL",
+          "confidence": 0.72,
+          "rationale": "Figure 1 better reconstructs the intended polar-region structure: it shows the circle r=2 and cardioid r=2(1+cos θ) with the correct first-quadrant region between them and a representative radial line at an interior θ value. Figure 2 draws the same main curves and shaded region, but its final initialization resets θ to 0, making the red radial strip degenerate along the horizontal boundary rather than illustrating a typical interior strip; it also adds a prominent black intersection marker that may not belong to the original. Figure 1 is not perfect because the extra swept subregion and thick strokes may overstate the styling, but structurally it conveys the region and radial limits more accurately than Figure 2."
+        },
+        "interactivity": {
+          "winner": "baseline-kimi_FINAL",
+          "confidence": 0.9,
+          "rationale": "Figure 1 more correctly wires the equation input to redraw the outer polar curve, recompute the valid angular interval, update the shaded region, and move/sweep the θ strip, including reasonable handling of edited curves such as constant outer radii or curves whose valid region is not just the first detected intersection. Figure 2 updates the curve and red ray for simple cases, but its intersection/region logic is brittle and often wrong for valid edits: for example r=3 is reported as no first-quadrant region even though the region between r=2 and r=3 over the quadrant exists, and curves that cross from inside to outside can be shaded over the wrong interval; it also leaves the shaded region static as θ changes rather than showing the sweep."
+        },
+        "faithfulness": {
+          "winner": "baseline-kimi_FINAL",
+          "confidence": 0.86,
+          "rationale": "Figure 1 is more visually faithful because it reproduces the key composition of the original: the blue circle, purple cardioid, light-blue shaded region, axes, labels, and especially the diagonal red radial line through the shaded region. Figure 2 has the same general curves and shading, but its red radial segment is horizontal at θ=0 with endpoint dots, making the central highlighted geometry look noticeably different from the reference."
+        },
+        "labels": {
+          "winner": "baseline-kimi_FINAL",
+          "confidence": 0.72,
+          "rationale": "Figure 1 has the same core curve labels as Figure 2 but its added interface text is less cluttered and less distracting. Figure 2 adds a large explanatory text block and navigation/control labels that are not in the original, making the overall labeling busier; both figures also appear to render the θ = 0 label as “θ = o,” but Figure 1 is cleaner overall."
+        },
+        "concept": {
+          "winner": "baseline-kimi_FINAL",
+          "confidence": 0.86,
+          "rationale": "Figure 1 more accurately preserves the core geometry: for the default cardioid it shades the first-quadrant region between the inner circle r = 2 and outer boundary r = 2(1 + cos θ), with θ running from 0 to π/2 and radial limits matching the integral setup (L00007-L00016, L00051-L00052). Figure 2 is also mostly correct for the default drawing, but its interactive logic and narration make false assertions for suggested alternate outer curves such as r = 3 or 2*(1+sin(theta)), declaring the region empty when there is still a valid first-quadrant region outside r = 2 and inside the outer curve; this undermines the stated inequality-based meaning of R (L00007, L00052). Figure 1’s handling of the valid θ interval is more faithful to the region definition, while Figure 2 over-identifies existence of the region with finding an intersection angle."
+        }
+      },
+      "aggregator": {
+        "winner": "baseline-kimi_FINAL",
+        "confidence": 0.88,
+        "explanation": "Figure 1 is stronger because it preserves the intended first-quadrant polar region between r=2 and r=2(1+cos θ), including an interior diagonal radial strip, and its interaction logic more reliably updates the outer curve, angular interval, shading, and θ sweep. Figure 2 has the same broad curves and region, but it initializes the red strip degenerately at θ=0, adds extra clutter and markers, and its interaction/concept logic can falsely reject valid regions for edited curves such as r=3 or r=2(1+sin θ)."
+      },
+      "evalModel": "gpt-5.5",
+      "evaluatedAt": "2026-08-14T18:57:28.813Z"
+    }
+  },
+  "math__14.4.5": {
+    "setupA": "baseline-kimi_FINAL",
+    "setupB": "full-pipeline-kimi_FINAL",
+    "subject": "math",
+    "figure": "14.4.5",
+    "machineEval": {
+      "figure1Setup": "full-pipeline-kimi_FINAL",
+      "figure2Setup": "baseline-kimi_FINAL",
+      "mode": "3d",
+      "dimensions": {
+        "geometry": {
+          "winner": "baseline-kimi_FINAL",
+          "confidence": 0.74,
+          "rationale": "Figure 2 better reconstructs the likely textbook geometry because it maps the mathematical z-axis upward, keeps the uv-domain and xyz-surface as separated side-by-side objects, and uses an orthographic/isometric viewpoint with axes arranged like a printed multivariable-calculus diagram. Figure 1 has a richer mesh and a dynamically connected mapping arrow, but it directly uses Three.js y-up coordinates so the mathematical z direction becomes depth rather than vertical, making the cone/surface orientation and xyz spatial relationships noticeably less accurate; it also uses a more perspective scene-like view rather than the flatter textbook layout. Figure 2 is not perfect because its cone/domain are truncated and the mapping arrow is generic rather than tied exactly to the dot, but its core 3D coordinate geometry is closer."
+        },
+        "interactivity": {
+          "winner": "full-pipeline-kimi_FINAL",
+          "confidence": 0.9,
+          "rationale": "Figure 1’s equation handlers correctly recompile the edited component, debounce a full rebuild of the surface, grid, highlighted curves, marker, uv-panel lines, and mapping arrow, while its sliders sweep the highlighted constant-u and constant-v curves over the full intended parameter domain. Figure 2 does redraw the main surface and highlights, but its slider ranges are narrowed and its uv-panel scaling is inconsistent with the v-domain at high v values, so the dot and horizontal line can move beyond the drawn panel/axes; it also maps valid-but-nonfinite samples silently to the origin, producing misleading degenerate geometry rather than omitting or reporting bad samples, and it leaks stale interactive surface entries on rebuild."
+        },
+        "faithfulness": {
+          "winner": "baseline-kimi_FINAL",
+          "confidence": 0.72,
+          "rationale": "Figure 2 is more recognizable as the same mapping-from-parameter-domain-to-surface diagram: it clearly separates the small u-v plane, the curved arrow, and the 3D surface with highlighted orange and purple parameter curves. Figure 1 contains the same basic ingredients, but the domain is faint and partly lost behind/near the surface, the composition is cluttered by labels and UI text, and the 3D object/curves read less like the clean textbook surface patch."
+        },
+        "labels": {
+          "winner": "baseline-kimi_FINAL",
+          "confidence": 0.9,
+          "rationale": "Figure 2 has the main diagram labels much more readable and closer to the reference, including clear u/v labels on the parameter-plane axes, u constant/v constant annotations, x/y/z axes, and a visible Constant v-curve label; its orange constant-u label is incomplete but at least placed near the correct curve. Figure 1’s labels are very small and hard to read, the main artwork is dwarfed by non-original UI text and explanatory text, and important curve annotations are unclear or effectively unreadable, making its label quality substantially worse."
+        },
+        "concept": {
+          "winner": "full-pipeline-kimi_FINAL",
+          "confidence": 0.86,
+          "rationale": "Figure 1 more truthfully represents the central mapping: its uv panel has the orange vertical fixed-u line and purple horizontal fixed-v line, and these map to correctly colored curves on the surface with a shared marker point and arrow, matching the stated idea that holding u or v fixed produces a curve and that the two curve families form a grid (L00007, L00010). Figure 2 has the same basic mathematics, but its parameter-domain labels are less accurately tied to the highlighted lines, especially the static “v constant” label placed away from the actual purple horizontal line, which can mislead about which domain line maps to the purple surface curve (L00010)."
+        }
+      },
+      "aggregator": {
+        "winner": "baseline-kimi_FINAL",
+        "confidence": 0.68,
+        "explanation": "Figure 2 is the overall stronger reconstruction because it presents the parameter domain, mapping arrow, and 3D surface as a clean textbook-style side-by-side diagram, with more readable axis and curve labels and a more accurate mathematical z-up geometry than Figure 1. Figure 1 has better implemented interactions and more faithfully ties the moving domain lines, marker, arrow, and surface curves together conceptually, but its rendered result is cluttered, its labels are much harder to read, and its coordinate orientation makes the surface geometry less like the intended multivariable-calculus figure."
+      },
+      "evalModel": "gpt-5.5",
+      "evaluatedAt": "2026-08-14T18:58:07.835Z"
+    }
+  },
+  "math__5.2.17": {
+    "setupA": "baseline-kimi_FINAL",
+    "setupB": "full-pipeline-kimi_FINAL",
+    "subject": "math",
+    "figure": "5.2.17",
+    "machineEval": {
+      "figure1Setup": "baseline-kimi_FINAL",
+      "figure2Setup": "full-pipeline-kimi_FINAL",
+      "mode": "3d",
+      "dimensions": {
+        "geometry": {
+          "winner": "full-pipeline-kimi_FINAL",
+          "confidence": 0.94,
+          "rationale": "Figure 2 renders a complete 3D washer-method construction with axes, region, rotation axis, solid of revolution, and movable washer slice, whereas Figure 1 aborts during its initial rebuild by referencing labels before they are initialized, so its camera setup, labels, UI bindings, and washer highlights are not created. Although Figure 2 has some geometric shortcomings such as a face-on 2D washer orientation and an imperfect lathe/profile construction, it is still far more geometrically complete than the partially constructed Figure 1."
+        },
+        "interactivity": {
+          "winner": "full-pipeline-kimi_FINAL",
+          "confidence": 0.98,
+          "rationale": "Figure 2 is clearly better because its equation inputs, axis input, slider, and demo buttons are wired to rebuild or update the curve, region, solid, washer slice, and numeric readout. Figure 1 appears to call rebuild() before lblAxis/lblR/lblX are initialized, so it would throw a ReferenceError during startup and the intended controls would not function at all. Figure 2 is not perfect: its y = −1 label does not update when the axis changes, and it clamps radii/invalid cases in ways that can hide nonphysical inputs, but it at least remains interactive and mostly recomputes the advertised quantities for the intended default case."
+        },
+        "faithfulness": {
+          "winner": "full-pipeline-kimi_FINAL",
+          "confidence": 0.86,
+          "rationale": "Figure 2 is more visually faithful because it preserves the recognizable composition of the original: the left coordinate-region diagram with blue shaded area, a gray washer around the red rotation axis, a rotation arrow, and a larger revolved solid to the right. Figure 1 has some of these elements, but the scene is much smaller, tilted, and the resulting solid looks like an indistinct gray blob rather than the elongated washer-generated solid shown in the textbook figure."
+        },
+        "labels": {
+          "winner": "full-pipeline-kimi_FINAL",
+          "confidence": 0.83,
+          "rationale": "Figure 2 includes several labels from the reference diagram such as R, x^2, the tick value 2, and some axis/tick markings, whereas Figure 1 largely omits the original diagram labels and relies mostly on unrelated UI/control text. Figure 2's labels are small and somewhat cluttered, with extra invented annotations and control-panel text, but it still matches the textbook labeling substantially better than Figure 1, whose main diagram is missing most required annotations."
+        },
+        "concept": {
+          "winner": "baseline-kimi_FINAL",
+          "confidence": 0.72,
+          "rationale": "Figure 1 is conceptually closer because its washer radii for the stated case are R=x^2+1 and r=1 and its computed area/volume expression matches the washer method described in the brief, whereas Figure 2 explicitly labels the final volume as 206π/15 even though the required integral evaluates to 176π/15 (L00007, L00010). Figure 2 otherwise shows the correct region, axis y=-1, and washer geometry, but the incorrect final volume is a central mathematical assertion; Figure 1 has some implementation/presentation problems, but it does not make that same false final-volume claim."
+        }
+      },
+      "aggregator": {
+        "winner": "full-pipeline-kimi_FINAL",
+        "confidence": 0.91,
+        "explanation": "Figure 2 is the clear overall winner because it presents a complete and functioning washer-method scene with the region, rotation axis, solid, movable slice, labels, and working controls, while Figure 1 appears to fail during startup due to uninitialized label references, leaving its camera, UI bindings, and washer highlights incomplete. Visually, Figure 2 also more closely matches the reference composition and annotations, whereas Figure 1 is smaller, tilted, under-labeled, and its solid is much less recognizable. Figure 2 does have a significant conceptual flaw in its final volume value, but that single mathematical error is outweighed by Figure 1’s broader geometric, interactive, and visual failures."
+      },
+      "evalModel": "gpt-5.5",
+      "evaluatedAt": "2026-08-14T18:58:48.473Z"
+    }
+  },
+  "cs__6.3": {
+    "setupA": "baseline-kimi_FINAL",
+    "setupB": "full-pipeline-kimi_FINAL",
+    "subject": "cs",
+    "figure": "6.3",
+    "machineEval": {
+      "figure1Setup": "baseline-kimi_FINAL",
+      "figure2Setup": "full-pipeline-kimi_FINAL",
+      "mode": "2d",
+      "dimensions": {
+        "geometry": {
+          "winner": "baseline-kimi_FINAL",
+          "confidence": 0.74,
+          "rationale": "Figure 1 more faithfully reconstructs the textbook BUILD-MAX-HEAP structure because it explicitly provides the six panel states (a)–(f) with the correct array contents, 10-node complete binary-tree topology, solid parent-child edges, active node i, and final heap state. Figure 2 has the same basic 10-node topology and even adds an on-canvas panel letter, but it is more animation/workbench-oriented, uses only a four-step demo around many intermediate execution frames, adds extra comparison-arrow styling during runs, and is less directly organized around the original six textbook panels."
+        },
+        "interactivity": {
+          "winner": "baseline-kimi_FINAL",
+          "confidence": 0.86,
+          "rationale": "Figure 1 more correctly implements the requested interactive workbench: the run buttons execute the learner's maxHeapify in a worker with the advertised left/right/swap/value primitives, rebuild/redraw the array and tree for valid inputs, animate operations with playback controls, validate the final heap, and handle errors/timeouts visibly. Figure 2 can run BUILD-MAX-HEAP, but its default solution relies on extra compare and mark primitives not in the brief, comparison arrows only appear when the learner uses compare rather than the requested value calls, the dark current-node behavior depends on the learner calling the non-requested mark, and it is much more rigid about accepting exactly 10 inputs, so its controls are less faithful and less robust."
+        },
+        "faithfulness": {
+          "winner": "full-pipeline-kimi_FINAL",
+          "confidence": 0.78,
+          "rationale": "Figure 2 is more visually faithful because its rendered panel includes the centered “(a)” label beneath the tree and preserves the original panel composition more clearly, with the array above and the highlighted node and index labels arranged much like the textbook. Figure 1 shows the same basic tree and array, but it omits the panel label in the drawing area and its layout feels less like the original page panel, making it slightly less recognizable as the same textbook figure."
+        },
+        "labels": {
+          "winner": "full-pipeline-kimi_FINAL",
+          "confidence": 0.72,
+          "rationale": "Figure 2 includes the important subfigure label “(a)” under the tree, along with the array label A, node values, index labels, and the italic i marker, so it more completely matches the textbook annotations. Figure 1 has somewhat larger and more readable diagram labels, but it omits the visible “(a)” label from the figure itself, making its labeling less faithful overall."
+        },
+        "concept": {
+          "winner": "baseline-kimi_FINAL",
+          "confidence": 0.86,
+          "rationale": "Figure 1 represents the key BUILD-MAX-HEAP sequence more accurately: its six fixed panels show the specified array, indices i = 5,4,3,2,1, and final heap states with the correct values after each heapification, including 14 above 2 and 8 in panel (c) and final root 16 with no active i in panel (f) (L00010). Figure 2 is broadly correct about the heap array/tree mapping and final max-heap property, but its run animation attaches textbook panel letters to intermediate comparison/swap frames within a MAX-HEAPIFY call, so altered post-swap states can still be labeled as panel (b) or another pre-call panel even though the brief defines those panels as the before/after iteration states, not arbitrary internal frames (L00007, L00010)."
+        }
+      },
+      "aggregator": {
+        "winner": "baseline-kimi_FINAL",
+        "confidence": 0.78,
+        "explanation": "Figure 1 is stronger overall because it reconstructs the intended six BUILD-MAX-HEAP panel states with correct arrays, active indices, topology, and final heap, and its interactive implementation better matches the requested primitives, validation, playback, and error handling. Figure 2 is visually closer in the rendered screenshot thanks to the visible “(a)” label and textbook-like composition, but it is less faithful to the authored structure because it treats the figure more like an animation workbench, labels intermediate internal frames as textbook panels, and relies on extra/non-requested interaction primitives."
+      },
+      "evalModel": "gpt-5.5",
+      "evaluatedAt": "2026-08-14T18:59:34.310Z"
+    }
+  },
+  "chemistry__CNX_Chem_06_03_Electrnin": {
+    "setupA": "baseline-kimi_FINAL",
+    "setupB": "full-pipeline-kimi_FINAL",
+    "subject": "chemistry",
+    "figure": "CNX_Chem_06_03_Electrnin",
+    "machineEval": {
+      "figure1Setup": "baseline-kimi_FINAL",
+      "figure2Setup": "full-pipeline-kimi_FINAL",
+      "mode": "3d",
+      "dimensions": {
+        "geometry": {
+          "winner": "full-pipeline-kimi_FINAL",
+          "confidence": 0.74,
+          "rationale": "Figure 2 better matches the likely 3D geometry of the double-slit textbook figure: it uses an oblique/front-on projection with the optical axis running left-to-right, vertical plates with visible depth, semicircular wavefronts that stop at the barrier/screen, and separated buildup screens along a time direction. Figure 1 has some good elements such as actual barrier gaps and source objects, but its isometric camera skews the optical axis and wavefronts away from the printed-style geometry, its panels are vertically displaced and then one is hidden by default, and the visible layout leaves mismatched labels/empty space, making the spatial reconstruction less accurate overall."
+        },
+        "interactivity": {
+          "winner": "baseline-kimi_FINAL",
+          "confidence": 0.88,
+          "rationale": "Figure 1’s controls consistently recompute the dependent geometry: the model toggle changes panels and active states, the slit-separation slider rebuilds barriers, wave arcs, screen fringes, and particle hit distributions while preserving the current buildup time, and the time slider/animation correctly updates draw ranges through early-to-late accumulation. Figure 2’s basic toggle and play button work, and its wave fringes update with slit separation, but changing slit separation in the particle panel rebuilds the dots and then resets their draw range to zero, so the advertised change in the accumulating dot pattern is not visible unless the user replays the animation; it also lacks a direct time scrubber and has some animation-state awkwardness because non-autoplay resets do not clear an existing animation."
+        },
+        "faithfulness": {
+          "winner": "full-pipeline-kimi_FINAL",
+          "confidence": 0.78,
+          "rationale": "Figure 2 is more visually recognizable as the original wave-interference panel, with yellow circular wavefronts emerging from an electron source, a gray double-slit barrier, and a black detection screen in the same left-to-right setup. Figure 1 includes some particle-buildup elements, but the scene is very small and sparse, the top wave panel is essentially missing except for labels, and the black screens lack the distinctive dot/stripe buildup pattern that makes the original identifiable."
+        },
+        "labels": {
+          "winner": "baseline-kimi_FINAL",
+          "confidence": 0.72,
+          "rationale": "Figure 1 includes nearly all of the original figure annotations, including both Electron source labels, panel labels (a) and (b), and the Time arrow label, whereas Figure 2 only shows the wave-panel Electron source and (a) label and omits the particle-build-up annotations entirely. Figure 1 is still imperfect because it adds non-original labels such as Double-slit barrier and Detection screen and has some cramped/overlapping placement near the top, but Figure 2's missing required labels make it worse overall."
+        },
+        "concept": {
+          "winner": "full-pipeline-kimi_FINAL",
+          "confidence": 0.78,
+          "rationale": "Figure 2 is conceptually more accurate because its wave panel shows source wavefronts reaching a double slit, two slit-centered wavefront families, and screen fringes with the correct inverse dependence on slit separation, while Figure 1 conveys the same idea but its post-slit arcs run less cleanly through/past the screen and its fringe rendering is less clearly tied to the drawn wavefront overlap (L00018-L00019). For the particle buildup, Figure 2’s three screens use much more distinct sparse/intermediate/dense hit counts, so the first looks random and the last resolves the interference pattern as required, whereas Figure 1’s later screens use fewer and less differentiated detections and the middle screen is more likely to already imply a pattern rather than “still without an obvious pattern” (L00014, L00019). Both correctly assert wave–particle duality, but Figure 2 more faithfully teaches the accumulation of individual detections into the same banded interference distribution (L00007, L00010-L00012, L00019)."
+        }
+      },
+      "aggregator": {
+        "winner": "full-pipeline-kimi_FINAL",
+        "confidence": 0.68,
+        "explanation": "Figure 2 is stronger overall because it better matches the intended double-slit geometry and visual/conceptual teaching goal: its left-to-right setup, source-to-slit wavefronts, slit-centered waves, fringed detection screen, and progressive particle buildup are clearer and more recognizable than Figure 1’s skewed layout, sparse/partly missing wave panel, and less distinct buildup sequence. Figure 1 has better interaction behavior and more complete labels, but those advantages are outweighed by Figure 2’s stronger rendered fidelity, geometry, and conceptual accuracy; Figure 2’s main weaknesses are omitted particle-panel labels and a less robust accumulation control when slit separation changes."
+      },
+      "evalModel": "gpt-5.5",
+      "evaluatedAt": "2026-08-14T19:00:18.480Z"
+    }
+  },
+  "chemistry__CNX_Chem_10_02_Testtubeoi_img": {
+    "setupA": "baseline-kimi_FINAL",
+    "setupB": "full-pipeline-kimi_FINAL",
+    "subject": "chemistry",
+    "figure": "CNX_Chem_10_02_Testtubeoi_img",
+    "machineEval": {
+      "figure1Setup": "baseline-kimi_FINAL",
+      "figure2Setup": "full-pipeline-kimi_FINAL",
+      "mode": "3d",
+      "dimensions": {
+        "geometry": {
+          "winner": "full-pipeline-kimi_FINAL",
+          "confidence": 0.86,
+          "rationale": "Figure 2 better matches the likely textbook geometry by showing four tall transparent oil cylinders on a broad base with flared lips, pedestal feet, SAE labels, and spheres already at different depths to represent the viscosity comparison snapshot. Figure 1 has the correct element count and basic tube/base arrangement, but its tubes and balls are more simplified and proportionally smaller, and all spheres start at the same height, which weakens the key spatial relationship of different fall distances in different viscosities."
+        },
+        "interactivity": {
+          "winner": "full-pipeline-kimi_FINAL",
+          "confidence": 0.72,
+          "rationale": "Figure 2 has more reliable core controls: the drop button restarts a simultaneous fall with speeds recomputed from the current grades, and the SAE slider immediately changes tube 1's oil color and its subsequent falling speed. Figure 1 does implement a single-cylinder mode, but its terminal-velocity labels are effectively visible at rest even when the checkbox is off because the scaffold label sync overrides the generated display:none, and leaving single mode after changing the slider can leave tube 1 colored like a different SAE grade while its label and multi-tube speed revert to SAE 20. Figure 2 also has a terminal-label hide bug after labels have been shown, and its final post-animation snapshot ignores the slider state, but its main animation and slider behavior are less internally contradictory than Figure 1's mode and label interactions."
+        },
+        "faithfulness": {
+          "winner": "full-pipeline-kimi_FINAL",
+          "confidence": 0.86,
+          "rationale": "Figure 2 is more recognizable as the textbook figure because it preserves the four-cylinder arrangement, the left-to-right increase in sphere height, and the yellow-to-red oil color progression with a labeled base. Figure 1 has the same basic elements, but the spheres appear clustered near the upper portions rather than matching the original progression, and the added terminal-velocity text labels clutter the visual and make it less faithful to the reference."
+        },
+        "labels": {
+          "winner": "baseline-kimi_FINAL",
+          "confidence": 0.62,
+          "rationale": "Figure 1 has the required viscosity labels 20, 30, 40, 50 and the 'Oil viscosity (SAE)' label at a much more readable size than Figure 2, whose labels are extremely tiny and hard to read at inline size. However, Figure 1 is not ideal because it adds non-original terminal-velocity labels and the main axis label crowds the number labels, while Figure 2 better avoids extra invented diagram annotations but fails more seriously on readability and prominence of the textbook labels."
+        },
+        "concept": {
+          "winner": "full-pipeline-kimi_FINAL",
+          "confidence": 0.78,
+          "rationale": "Figure 2 is more conceptually accurate because its default scene already shows the intended single-time snapshot with four equal-height oil columns, SAE 20/30/40/50 left to right, and sphere height increasing with SAE grade, so shorter fall distance correctly encodes greater viscosity and drag (L00007-L00012). Figure 1 has the correct inverse ranking once the animation is run, but it initially places all spheres near the oil surface rather than at the indicated elapsed-moment positions, so the core visual comparison required by the problem is not present until the user starts and mentally samples the animation (L00007, L00012). Both figures correctly assert that higher SAE grade corresponds to greater viscosity and lower terminal velocity, but Figure 2 teaches that relationship more directly through the static snapshot, while Figure 1 makes it more procedural than the brief describes (L00012)."
+        }
+      },
+      "aggregator": {
+        "winner": "full-pipeline-kimi_FINAL",
+        "confidence": 0.84,
+        "explanation": "Figure 2 is stronger overall because it more faithfully and conceptually matches the intended textbook snapshot: four labeled SAE oil cylinders with the spheres already at different depths, clearly conveying that higher viscosity produces shorter fall distance at the same elapsed time. Figure 1 has more readable SAE labels, but it is weaker in the central visual comparison because its balls initially sit at similar heights, its added terminal-velocity annotations clutter the rendering, and its interactions have more internal inconsistencies than Figure 2's controls."
+      },
+      "evalModel": "gpt-5.5",
+      "evaluatedAt": "2026-08-14T19:01:27.087Z"
+    }
+  },
+  "cs__SupervisedOpt": {
+    "setupA": "baseline-kimi_FINAL",
+    "setupB": "full-pipeline-kimi_FINAL",
+    "subject": "cs",
+    "figure": "SupervisedOpt",
+    "machineEval": {
+      "figure1Setup": "full-pipeline-kimi_FINAL",
+      "figure2Setup": "baseline-kimi_FINAL",
+      "mode": "2d",
+      "dimensions": {
+        "geometry": {
+          "winner": "full-pipeline-kimi_FINAL",
+          "confidence": 0.96,
+          "rationale": "Figure 1 much more accurately reconstructs the original two-panel structure: panel a uses the expected φ₀ range 0–2 and φ₁ range about −1 to 1 with dense ticks, heatmap contours, and a numbered 0→4 descent trajectory with arrows; panel b includes the matching scatter data plus five colored fitted lines and numbered labels. Figure 2 uses a different loss-surface domain with φ₀ from −1 to 2 and φ₁ from 0 to 4, omits the numbered descent path and corresponding family of lines, adds least-squares guides/crosshairs not central to the original structure, and therefore changes the topology and proportions of the figure substantially."
+        },
+        "interactivity": {
+          "winner": "baseline-kimi_FINAL",
+          "confidence": 0.78,
+          "rationale": "Figure 2 implements the requested intercept and slope ranges and keeps the drag, sliders, marker, loss readout, and fitted line synchronized in normal use, while Figure 1 uses the wrong parameter domain/ranges, especially a slope slider of -1 to 1 instead of 0 to 4 and an intercept slider that cannot reach -1. Figure 2 is not perfect because at some extreme parameter settings where the fitted line has no visible intersection with the data panel it leaves a stale previous line on screen, but Figure 1’s controls are fundamentally narrowed/misaligned relative to the intended interaction space."
+        },
+        "faithfulness": {
+          "winner": "full-pipeline-kimi_FINAL",
+          "confidence": 0.86,
+          "rationale": "Figure 1 is more recognizable as the textbook figure because it preserves the two-panel layout, the loss-surface panel with the correct intercept/slope ranges, reddish contour background, and the numbered descent path with connected markers. Figure 2 changes the slope-axis range and orientation substantially, omits the numbered descent path on the loss surface, and shows only a single regression line rather than the family of numbered lines, so it reads more like a related interactive demo than the same figure."
+        },
+        "labels": {
+          "winner": "full-pipeline-kimi_FINAL",
+          "confidence": 0.83,
+          "rationale": "Figure 1 better matches the original label set because it includes the panel labels, axis/title labels, and the numbered 0–4 annotations in both panels, albeit at very small and sometimes cluttered sizes. Figure 2 has more readable basic axis labels, but it omits the important 0–4 annotations from the descent path/line family, adds a cluttering invented 'current fit' label inside panel a, and appears to have less faithful labeling overall."
+        },
+        "concept": {
+          "winner": "baseline-kimi_FINAL",
+          "confidence": 0.9,
+          "rationale": "Figure 2 is more conceptually accurate because its loss landscape uses slope φ₁ over 0 to 4 and shows a pale minimum with darker higher loss, matching the intended parameter-space relationship and low-loss region more closely (L00007). Figure 1 computes a valid squared-residual loss, but it plots slope only from -1 to 1 instead of 0 to 4 and explicitly reverses the brief’s color semantics by making low loss dark and high loss light/warm, so a student would learn the wrong axis range and visual encoding (L00007). Figure 2 still has errors, notably extending the intercept axis to -1 rather than 0 and using a warm rather than teal colormap, but these are less damaging than Figure 1’s wrong slope range and reversed loss-color meaning."
+        }
+      },
+      "aggregator": {
+        "winner": "full-pipeline-kimi_FINAL",
+        "confidence": 0.72,
+        "explanation": "Figure 1 is the stronger overall reconstruction because it preserves the recognizable two-panel textbook structure, including the loss-surface contours, numbered descent trajectory, corresponding numbered fitted-line family, and more faithful labeling. Figure 2 better matches the intended interactive slope range and some conceptual encoding choices, but relative to Figure 1 it omits major visual/structural elements of the figure and reads more like a simplified interactive demo than the original figure."
+      },
+      "evalModel": "gpt-5.5",
+      "evaluatedAt": "2026-08-14T19:02:17.751Z"
+    }
+  }
+}

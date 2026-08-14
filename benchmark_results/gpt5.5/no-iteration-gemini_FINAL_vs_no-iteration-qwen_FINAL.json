@@ -1,0 +1,407 @@
+{
+  "math__1.1.7": {
+    "setupA": "no-iteration-gemini_FINAL",
+    "setupB": "no-iteration-qwen_FINAL",
+    "subject": "math",
+    "figure": "1.1.7",
+    "machineEval": {
+      "figure1Setup": "no-iteration-qwen_FINAL",
+      "figure2Setup": "no-iteration-gemini_FINAL",
+      "mode": "2d",
+      "dimensions": {
+        "geometry": {
+          "winner": "no-iteration-qwen_FINAL",
+          "confidence": 0.95,
+          "rationale": "Figure 1 better reconstructs the textbook structure by presenting the three side-by-side panels labeled (a), (b), and (c), with the same axes, a/b ticks, exact shaded region, coarse rectangles, and refined rectangles in their relative layouts. Figure 2 collapses the structure into a single interactive chart with a mode selector, omitting the simultaneous three-panel comparison and panel labels, so its topology and layout are substantially less faithful even though it includes the basic curve, axes, shading, and rectangles."
+        },
+        "interactivity": {
+          "winner": "no-iteration-qwen_FINAL",
+          "confidence": 0.72,
+          "rationale": "Figure 1 implements both requested controls: the n slider rebuilds the rectangle view and updates the displayed Riemann sum, and the checkbox actually toggles between the three-panel comparison and a single animated view. Figure 2's slider and exact/approximation mode work coherently when in approximation mode, but it does not provide the requested three-panel-to-single-view toggle at all; it replaces the three-panel comparison with a single chart mode selector, so it covers less of the intended interaction despite having a cleaner disabled-slider behavior in exact-area mode."
+        },
+        "faithfulness": {
+          "winner": "no-iteration-qwen_FINAL",
+          "confidence": 0.78,
+          "rationale": "Figure 1 is more visually faithful because it reproduces the original three-panel composition with the exact-area shading, coarse rectangles, fine rectangles, similar blue curve, pale blue fill, axes, and panel labels. Figure 2 is a cleaner and larger rendering of panel (a), but it only shows the exact-area view in the screenshot and its proportions/curve placement differ somewhat, making it less immediately recognizable as the full textbook figure."
+        },
+        "labels": {
+          "winner": "no-iteration-qwen_FINAL",
+          "confidence": 0.86,
+          "rationale": "Figure 1 better matches the original label set because it includes the x and y axis labels, a and b interval labels, and the three panel captions (a), (b), and (c), whereas Figure 2 only shows the single exact-area panel and therefore omits the labels/captions for panels (b) and (c). Figure 1's diagram labels are quite small at inline size, but Figure 2 also adds non-original interface text such as display mode and exact area, making it less faithful overall."
+        },
+        "concept": {
+          "winner": "no-iteration-qwen_FINAL",
+          "confidence": 0.82,
+          "rationale": "Figure 1 is more conceptually accurate because it actually presents the three coordinated panels with exact shaded area, coarse rectangles, and many narrower rectangles approaching the area as required (L00010) and reflects the limiting-area idea from the context (L00007). Figure 2 teaches the general convergence idea, but it replaces the three-panel comparison with a single toggle view and its narration explicitly discusses 'overestimations,' while the brief/text specify inscribed rectangles under the curve (L00007, L00010). Both figures use left-endpoint rectangles that can protrude above portions of their nonmonotone curves, so neither is fully faithful to 'inscribed under it,' but Figure 1 otherwise matches the stated conceptual structure much better than Figure 2."
+        }
+      },
+      "aggregator": {
+        "winner": "no-iteration-qwen_FINAL",
+        "confidence": 0.91,
+        "explanation": "Figure 1 is the clear overall winner because it preserves the intended three-panel textbook structure with panels (a), (b), and (c), showing exact shaded area, coarse rectangles, and refined rectangles side by side, while Figure 2 collapses this into a single chart with a mode selector. Figure 1 also retains the key labels and implements the requested three-panel/single-view toggle, whereas Figure 2 omits the simultaneous comparison and panel captions and only partially covers the intended interaction. Although Figure 2 is cleaner in some single-view rendering details, it is less faithful geometrically, visually, and conceptually to the authored figure."
+      },
+      "evalModel": "gpt-5.5",
+      "evaluatedAt": "2026-08-14T19:20:00.106Z"
+    }
+  },
+  "math__14.2.10": {
+    "setupA": "no-iteration-gemini_FINAL",
+    "setupB": "no-iteration-qwen_FINAL",
+    "subject": "math",
+    "figure": "14.2.10",
+    "machineEval": {
+      "figure1Setup": "no-iteration-qwen_FINAL",
+      "figure2Setup": "no-iteration-gemini_FINAL",
+      "mode": "3d",
+      "dimensions": {
+        "geometry": {
+          "winner": "no-iteration-gemini_FINAL",
+          "confidence": 0.82,
+          "rationale": "Figure 2 better reconstructs the underlying 3D geometry because it maps the textbook z-axis vertically and places the triangular base R in the horizontal xy-plane with the slanted plane as the upper surface, preserving the spatial meaning of the volume and cross-section. Figure 1 includes more tetrahedron faces and labels, but it effectively makes the y-axis vertical and the z-axis a depth axis, so the base region lies in a vertical plane and the plane z = 4 − 4x − 2y is not geometrically shown as a ceiling over R; this is a more serious geometric error than Figure 2's missing side faces and slightly less textbook-like perspective camera."
+        },
+        "interactivity": {
+          "winner": "no-iteration-gemini_FINAL",
+          "confidence": 0.86,
+          "rationale": "Figure 2’s controls more reliably perform the advertised interactions: the strip slider recomputes both the 2D strip and the 3D cross-section, the 3D/2D mode buttons actually swap between separate 3D and 2D panels with correct camera framing, and the stepper animates the slice. Figure 1’s strip slider mostly works, but its 2D toggle is functionally weak and likely incorrect because it just reorients/fades the same 3D scene rather than showing a true 2D base panel, and its “Sweep strip” step merely jumps to x=0.1 rather than sweeping. Figure 2 has a minor endpoint flaw where x=1 is silently clamped to 0.999 for the 3D cross-section while displaying 1.00, but overall its interactions are substantially more correct."
+        },
+        "faithfulness": {
+          "winner": "no-iteration-gemini_FINAL",
+          "confidence": 0.72,
+          "rationale": "Figure 2 is more visually faithful at a glance because it preserves the original 3D composition with the z-axis vertical, the z=4 intercept at the top, and the x and y intercepts forming the triangular base in a similar orientation. Figure 1 includes more annotations such as y = 2 - 2x, but its rotated view makes the y-axis vertical and places the z=4 intercept off to the lower left, which makes the geometry read less like the textbook figure’s main 3D diagram."
+        },
+        "labels": {
+          "winner": "no-iteration-qwen_FINAL",
+          "confidence": 0.86,
+          "rationale": "Figure 1 has more of the original annotations present and readable, including the axis labels, intercept numbers, R, z = 4 − 4x − 2y, y = 2 − 2x, and 0, with placements that generally correspond to the diagram. Figure 2 is missing important original labels such as y = 2 − 2x and 0, its diagram labels are noticeably smaller and harder to read, and it adds explanatory UI text not present in the textbook figure."
+        },
+        "concept": {
+          "winner": "no-iteration-gemini_FINAL",
+          "confidence": 0.78,
+          "rationale": "Figure 2 more accurately teaches the intended setup: it represents the tetrahedron with the correct intercepts and plane, maps the mathematical z-direction as the vertical height of the solid, and separately shows the xy-base triangle with the line y = 2 − 2x and a fixed-x strip from y = 0 to y = 2 − 2x, matching the integral region described in the context and brief (L00007, L00010). Figure 1 has the same numerical vertices and formulas, but its 3D coordinate orientation makes the labeled y-axis visually vertical while z is not the visual height, which can obscure the “above the xy-plane by z = 4 − 4x − 2y” relationship; it also collapses the requested 2D base diagram into a view mode rather than clearly asserting the separate base-region correspondence as Figure 2 does (L00010)."
+        }
+      },
+      "aggregator": {
+        "winner": "no-iteration-gemini_FINAL",
+        "confidence": 0.84,
+        "explanation": "Figure 2 is stronger overall because it preserves the intended mathematical geometry: the z-axis reads as vertical height, the triangular base lies in the xy-plane, and the plane is shown as the ceiling over that base, whereas Figure 1’s orientation makes the y-axis appear vertical and obscures the “above the xy-plane” relationship. Figure 2 also has more reliable interaction behavior, with separate 3D/2D views and a responsive strip/cross-section control, while Figure 1’s 2D mode and sweep behavior are weaker. Figure 1 does have more complete and readable textbook-style labels, but that advantage is outweighed by Figure 2’s better geometry, conceptual correctness, visual faithfulness, and control behavior."
+      },
+      "evalModel": "gpt-5.5",
+      "evaluatedAt": "2026-08-14T19:20:34.915Z"
+    }
+  },
+  "math__14.3.10": {
+    "setupA": "no-iteration-gemini_FINAL",
+    "setupB": "no-iteration-qwen_FINAL",
+    "subject": "math",
+    "figure": "14.3.10",
+    "machineEval": {
+      "figure1Setup": "no-iteration-qwen_FINAL",
+      "figure2Setup": "no-iteration-gemini_FINAL",
+      "mode": "2d",
+      "dimensions": {
+        "geometry": {
+          "winner": "no-iteration-qwen_FINAL",
+          "confidence": 0.95,
+          "rationale": "Figure 1 more accurately reconstructs the polar-region structure: it draws the red representative radial strip only from the inner circle r = 2 to the cardioid, correctly shades the region between those boundaries over 0 ≤ θ ≤ π/2, and includes the intersection point. Figure 2 gets the main circle/cardioid/region broadly right, but its red radial slice incorrectly runs from the origin to the outer curve, visually implying an inner limit of r = 0 rather than r = 2, which is a significant structural error for this figure."
+        },
+        "interactivity": {
+          "winner": "no-iteration-qwen_FINAL",
+          "confidence": 0.97,
+          "rationale": "Figure 1's equation field and θ slider are actually wired to recompute and redraw the purple curve, shaded region, swept subregion, red strip, and intersection behavior, with parse errors shown rather than silently ignored. Figure 2 appears to fail before rendering because resizePlots() references currentOuterFn before its later let initialization, so none of its controls would work; even ignoring that fatal error, its θ slider only moves a line from the origin to the outer curve rather than the advertised radial strip from r=2 to f(θ), and it does not update swept shading."
+        },
+        "faithfulness": {
+          "winner": "no-iteration-qwen_FINAL",
+          "confidence": 0.99,
+          "rationale": "Figure 1 is recognizable as the original polar-region diagram, with the blue circle, purple cardioid, shaded region, axes, labels, and red radial segment all roughly matching the textbook composition. Figure 2 does not render the figure at all and instead shows an error message, so it has essentially no visual resemblance to the reference."
+        },
+        "labels": {
+          "winner": "no-iteration-qwen_FINAL",
+          "confidence": 0.98,
+          "rationale": "Figure 1 includes the main mathematical labels from the reference, including θ = π/2, r = 2, r = 2(1+cos θ), and θ = 0, though some are small, the top formula overlaps/comes close to the curve, and the control-panel text adds extra clutter not present in the original. Figure 2 fails to render the diagram and shows only an error message and reload button, so it has none of the required textbook labels."
+        },
+        "concept": {
+          "winner": "no-iteration-qwen_FINAL",
+          "confidence": 0.91,
+          "rationale": "Figure 1 is more conceptually accurate because its red representative radial strip is drawn only from the inner circle r = 2 to the cardioid r = 2(1+cos θ), matching the stated inner limits r=2 to r=2(1+cos θ) and the brief's description of the strip between the boundaries (L00014-L00016, L00052). Figure 2 correctly draws the circle, cardioid, and shaded first-quadrant region in the default case, but its red radial line runs from the origin to the outer cardioid rather than from r=2 to the cardioid, visually contradicting the “outside the circle” condition and the lower radial limit r=2 (L00007, L00014-L00016, L00052)."
+        }
+      },
+      "aggregator": {
+        "winner": "no-iteration-qwen_FINAL",
+        "confidence": 0.99,
+        "explanation": "Figure 1 is clearly superior: it renders the intended polar-region diagram with the circle, cardioid, shaded first-quadrant region, labels, intersection, and a red radial strip drawn from r=2 to the cardioid. Figure 2 is much weaker because it reportedly fails to render visually at all, and even in its source-level construction its red strip runs from the origin to the outer curve, incorrectly implying r=0 rather than the intended inner boundary r=2."
+      },
+      "evalModel": "gpt-5.5",
+      "evaluatedAt": "2026-08-14T19:21:01.110Z"
+    }
+  },
+  "math__14.4.5": {
+    "setupA": "no-iteration-gemini_FINAL",
+    "setupB": "no-iteration-qwen_FINAL",
+    "subject": "math",
+    "figure": "14.4.5",
+    "machineEval": {
+      "figure1Setup": "no-iteration-gemini_FINAL",
+      "figure2Setup": "no-iteration-qwen_FINAL",
+      "mode": "3d",
+      "dimensions": {
+        "geometry": {
+          "winner": "no-iteration-gemini_FINAL",
+          "confidence": 0.72,
+          "rationale": "Figure 1 better preserves the expected 3D geometry of a parametric surface diagram: the surface is mapped with the mathematical z-coordinate vertical, the constant-u and constant-v curves correspond directly to lines in the uv-domain, and the domain/surface relationship is spatially clear. Figure 2 has a cleaner orthographic/isometric presentation, but its coordinate mapping is geometrically worse because it treats the y-coordinate as vertical and sends z into depth, so the default surface becomes a vertically oriented sheet rather than the standard z-up surface; its 3D axes labels therefore misrepresent the geometry."
+        },
+        "interactivity": {
+          "winner": "no-iteration-gemini_FINAL",
+          "confidence": 0.78,
+          "rationale": "Figure 1's requested equation inputs and u/v sliders consistently recompute the surface, grid, highlighted curves, and domain lines, and it also guards degenerate highlighted curves with point sanitization. Figure 2 also handles the main sliders and equation redraws, but its extra interactions are less correct: the Show uv-domain control hides only the domain geometry and arrow while leaving domain labels visible, its step buttons labeled as sweeps merely jump to presets, and its registered hover/click objects become stale after slider or equation rebuilds because the meshes are replaced without re-registering them."
+        },
+        "faithfulness": {
+          "winner": "no-iteration-qwen_FINAL",
+          "confidence": 0.72,
+          "rationale": "Figure 2 is more recognizable overall because it clearly shows the gray gridded parametric surface with orange and purple constant-coordinate curves, labeled axes, the u/v domain cue, and a sweep arrow in a composition similar to the reference. Figure 1 has some of the same ingredients, but the whole figure is much smaller and harder to read, the surface/labels are less legible, and the spatial layout makes the relationship between the 2D domain and 3D surface less immediately recognizable."
+        },
+        "labels": {
+          "winner": "no-iteration-qwen_FINAL",
+          "confidence": 0.92,
+          "rationale": "Figure 2 has substantially better label quality: it includes the key annotations from the reference such as the u/v constant labels, x/y/z axis labels, and Constant u-curve/Constant v-curve labels, and most are readable at inline size. Figure 1’s diagram labels are extremely small and largely illegible, with important labels on the surface hard to read or missing visually, while the large readable text is mostly UI controls rather than figure annotations."
+        },
+        "concept": {
+          "winner": "no-iteration-gemini_FINAL",
+          "confidence": 0.82,
+          "rationale": "Both figures correctly show a uv-domain with a constant-u line mapping to an orange curve and a constant-v line mapping to a purple curve on a gridded parametric surface, matching the idea that holding one parameter fixed produces a curve and families form a surface grid (L00007, L00010). Figure 1 keeps those assertions general and accurate, while Figure 2 weakens concept accuracy by explicitly claiming in its surface popup that each surface point corresponds to a unique (u,v) pair, which is not true for general parametric surfaces and is not established by the brief or textbook context (L00007-L00010)."
+        }
+      },
+      "aggregator": {
+        "winner": "no-iteration-gemini_FINAL",
+        "confidence": 0.68,
+        "explanation": "Figure 1 is stronger overall because it preserves the intended z-up parametric surface geometry, keeps the uv-domain lines and mapped surface curves consistent, and its equation/sliders update the surface and highlighted curves more reliably. Figure 2 is visually clearer and has much more readable labels, but relative to Figure 1 it misrepresents the 3D coordinate mapping, has interaction defects such as stale registered objects and incomplete domain hiding, and introduces a conceptually false uniqueness claim for general parametric surfaces."
+      },
+      "evalModel": "gpt-5.5",
+      "evaluatedAt": "2026-08-14T19:21:41.725Z"
+    }
+  },
+  "math__5.2.17": {
+    "setupA": "no-iteration-gemini_FINAL",
+    "setupB": "no-iteration-qwen_FINAL",
+    "subject": "math",
+    "figure": "5.2.17",
+    "machineEval": {
+      "figure1Setup": "no-iteration-qwen_FINAL",
+      "figure2Setup": "no-iteration-gemini_FINAL",
+      "mode": "3d",
+      "dimensions": {
+        "geometry": {
+          "winner": "no-iteration-gemini_FINAL",
+          "confidence": 0.86,
+          "rationale": "Figure 2 reconstructs the solid of revolution more geometrically faithfully: the outer and inner surfaces, end caps, and washer slices are built in true 3D around the axis y = -1 with correct radii and slice planes perpendicular to the x-axis. Figure 1 has a cleaner textbook-style left/right layout, but its representative washer on the left is incorrectly oriented and scaled, and its right-hand solid is detached, radially rescaled, and centered around y = 0 rather than the actual rotation axis, so the spatial relationships and proportions are less accurate."
+        },
+        "interactivity": {
+          "winner": "no-iteration-qwen_FINAL",
+          "confidence": 0.91,
+          "rationale": "Figure 1 is better because its f(x) input and x-slider actually rebuild the 2D region, washer, 3D solid, and numerical readout consistently, whereas Figure 2's f(x) handler updates its plotted curves but calls updateGeometries before assigning the new state, leaving the region and solid stale and inconsistent with the edited curve. Both figures have a serious axis-input bug from reusing id=\"c\" for both the canvas and the axis field, so the y=c control is effectively not bound; however Figure 1 still delivers the main curve-and-slider interactions much more correctly, while Figure 2 has both the dead axis control and a broken curve-update pipeline."
+        },
+        "faithfulness": {
+          "winner": "no-iteration-qwen_FINAL",
+          "confidence": 0.92,
+          "rationale": "Figure 1 is more visually faithful because it preserves the main textbook composition: a blue parabolic region on axes, a red rotation axis, a washer cross-section, and a separate gray solid of revolution. Figure 2 is dominated by an oversized dark gray disk that obscures the construction and loses the recognizable left-to-right explanatory layout and light blue/gray visual balance of the original."
+        },
+        "labels": {
+          "winner": "no-iteration-qwen_FINAL",
+          "confidence": 0.78,
+          "rationale": "Figure 1 has more of the original diagram labels/annotations visible in the scene, including axis markings and labels around the 2D region, whereas Figure 2 largely loses the textbook labels in the rendered figure because the large solid obscures the plot and the few in-scene labels are tiny or unreadable. Both add non-original UI text, but Figure 1 at least preserves more relevant labels from the reference while Figure 2 relies mostly on sidebar text rather than proper diagram annotations."
+        },
+        "concept": {
+          "winner": "no-iteration-qwen_FINAL",
+          "confidence": 0.82,
+          "rationale": "Figure 1 more truthfully represents the worked example: it labels the axis as y = −1, shades the region under y = x^2 above the x-axis on 0 ≤ x ≤ 2, and its readout uses outer radius f(x)−c = x^2+1 and inner radius 0−c = 1, matching the washer formula in the brief (L00007, L00010). Figure 2’s geometry largely encodes the correct washer radii for the default case, but its visible axis label is updated from the duplicate canvas id and becomes “y = undefined,” which directly mislabels the axis of revolution that should be y = −1 (L00007, L00010). Figure 1 is not perfect in the left washer sketch orientation, but Figure 2’s false axis label is a more conceptually damaging assertion."
+        }
+      },
+      "aggregator": {
+        "winner": "no-iteration-qwen_FINAL",
+        "confidence": 0.84,
+        "explanation": "Figure 1 is stronger overall because it better preserves the intended textbook composition and labels, correctly presents the region, axis y = −1, washer radii/readout, and its main curve and slider interactions update the construction consistently. Figure 2 has more faithful 3D washer geometry, but relative to Figure 1 it is visually dominated by an obscuring solid, loses many diagram annotations, mislabels the axis as undefined, and has a broken curve-update pipeline that leaves the solid inconsistent with edits."
+      },
+      "evalModel": "gpt-5.5",
+      "evaluatedAt": "2026-08-14T19:22:28.696Z"
+    }
+  },
+  "cs__6.3": {
+    "setupA": "no-iteration-gemini_FINAL",
+    "setupB": "no-iteration-qwen_FINAL",
+    "subject": "cs",
+    "figure": "6.3",
+    "machineEval": {
+      "figure1Setup": "no-iteration-qwen_FINAL",
+      "figure2Setup": "no-iteration-gemini_FINAL",
+      "mode": "2d",
+      "dimensions": {
+        "geometry": {
+          "winner": "no-iteration-qwen_FINAL",
+          "confidence": 0.82,
+          "rationale": "Figure 1 better preserves the heap figure’s structure: it lays out the 10-node complete binary tree with correct parent-child topology, a corresponding indexed array row, node/index labels, current-node shading, and directed comparison arrows during heapify. Figure 2 has the same basic node count and array row, but its reconstruction is more simplified: it omits comparison arrows, uses less textbook-like node/index placement and styling, and provides fewer structural cues about the heapify process beyond simple color highlights."
+        },
+        "interactivity": {
+          "winner": "no-iteration-qwen_FINAL",
+          "confidence": 0.86,
+          "rationale": "Figure 1 implements the requested interaction more correctly: the Run BUILD-MAX-HEAP control actually invokes the learner's maxHeapify bottom-up, redraws array/tree frames, shows comparison arrows, updates the dark current-i node even during recursive calls, supports playback/speed, and reports wrong/error/timeout states with corresponding frames. Figure 2 can run edited JavaScript and replay reads/swaps, but it omits comparison arrows, keeps the highlighted i fixed at the top-level BUILD-MAX-HEAP node during recursive maxHeapify calls, hard-codes exactly 10 inputs, and on timeout produces only a status error while leaving the old/stale visual state."
+        },
+        "faithfulness": {
+          "winner": "no-iteration-qwen_FINAL",
+          "confidence": 0.68,
+          "rationale": "Figure 1 is more visually recognizable as the textbook heap/tree figure because its array and binary tree are larger, clearer, and closer in composition and proportions to the original panel layout. Figure 2 contains the same basic elements, but they are much smaller and paler, making the tree and labels less legible and less immediately similar to the reference; both omit the original multi-panel presentation and highlighting in the screenshot, but Figure 1 preserves the recognizable visual structure better."
+        },
+        "labels": {
+          "winner": "no-iteration-qwen_FINAL",
+          "confidence": 0.78,
+          "rationale": "Figure 1 has noticeably more readable diagram labels: the array entries, node values, and heap index annotations are larger and clearer than in Figure 2, where the tree is scaled smaller and many labels are faint or hard to read at inline size. Both figures omit much of the original textbook annotation set such as the subfigure labels and later-step i markers, and Figure 1 adds a non-original caption/status text, but Figure 2 does worse on basic label legibility and comfort of reading."
+        },
+        "concept": {
+          "winner": "no-iteration-gemini_FINAL",
+          "confidence": 0.68,
+          "rationale": "Figure 2 more accurately reaches and displays the completed max-heap as a distinct final state with no highlighted dark node and root 16, matching the required panel (f), whereas Figure 1's correct run ends on the last swap/read frame with a node still marked as the current i rather than a completed no-dark-node heap (L00010). Both figures correctly use the given 10-element array and bottom-up calls from floor(n/2)=5 down to 1 (L00010), but Figure 1 also initially says/depicts the start without marking i=5 even though panel (a) should show i=5 before the first call (L00010). Figure 2 is not perfect because during recursive MAX-HEAPIFY activity it tends to keep the top-level loop node highlighted rather than the recursive subtree root, but its top-level BUILD-MAX-HEAP states and final assertion are closer to the textbook concept than Figure 1's missing completed final state (L00007-L00010)."
+        }
+      },
+      "aggregator": {
+        "winner": "no-iteration-qwen_FINAL",
+        "confidence": 0.82,
+        "explanation": "Figure 1 is the stronger overall figure because it more clearly preserves the heap/tree and array structure, has more legible node and index labels, and implements the interactive BUILD-MAX-HEAP behavior with comparison arrows, recursive current-node highlighting, playback, and error/timeout states. Figure 2 has a conceptual advantage in showing a cleaner completed max-heap final state, but relative to Figure 1 it is visually smaller and harder to read, omits important comparison cues, keeps highlighting less accurately during recursive heapify, and can leave stale visuals after timeout."
+      },
+      "evalModel": "gpt-5.5",
+      "evaluatedAt": "2026-08-14T19:23:20.761Z"
+    }
+  },
+  "chemistry__CNX_Chem_06_03_Electrnin": {
+    "setupA": "no-iteration-gemini_FINAL",
+    "setupB": "no-iteration-qwen_FINAL",
+    "subject": "chemistry",
+    "figure": "CNX_Chem_06_03_Electrnin",
+    "machineEval": {
+      "figure1Setup": "no-iteration-qwen_FINAL",
+      "figure2Setup": "no-iteration-gemini_FINAL",
+      "mode": "3d",
+      "dimensions": {
+        "geometry": {
+          "winner": "no-iteration-qwen_FINAL",
+          "confidence": 0.84,
+          "rationale": "Figure 1 better reconstructs the textbook double-slit geometry: it has a source, barrier, two slit positions, incident and diffracted wavefront arcs, a detection screen with fringes, and in particle mode three successive screens with a time arrow to show buildup. Figure 2 has some stronger true 3D construction for the slit barrier, but it replaces the wavefront arcs with large translucent shader planes, uses only one particle screen instead of a sequence, has a bulkier box-like source, and its perspective/camera and proportions feel less like the schematic original."
+        },
+        "interactivity": {
+          "winner": "no-iteration-qwen_FINAL",
+          "confidence": 0.72,
+          "rationale": "Figure 1 is better on interaction correctness because its model buttons, play/pause accumulation, slit-separation slider, and demo-step controls all actively recompute or reveal the appropriate wave fringes and particle-dot buildup, including updating both the screen texture and accumulated-dot distribution when slit separation changes. Figure 2's model and slit sliders mostly work, and its time slider correctly changes the number of displayed impacts, but it does not actually animate the time-lapse as requested and starts the particle accumulation at the maximum count, so the accumulation interaction is less direct; Figure 1 does have a flaw where the initial active Wave state does not hide the particle group until a mode button is clicked, but its interactive behavior after use is more complete and faithful."
+        },
+        "faithfulness": {
+          "winner": "no-iteration-gemini_FINAL",
+          "confidence": 0.98,
+          "rationale": "Figure 2 is clearly more visually faithful because it shows the recognizable wave double-slit setup with yellow wavefronts, a gray slit barrier, and a black/yellow interference screen, matching panel (a) of the reference at a glance. Figure 1 shows only the UI controls and an otherwise blank scene, so it does not visually resemble the textbook figure at all."
+        },
+        "labels": {
+          "winner": "no-iteration-gemini_FINAL",
+          "confidence": 0.65,
+          "rationale": "Figure 2 is better only marginally because it at least includes a visible model selection label indicating “Wave (a)” and has less extraneous instructional UI text, while Figure 1 lacks all textbook annotations in the rendered diagram area and adds several unrelated UI/demo labels. Both figures fail to reproduce the important original labels such as “Electron source,” the panel labels, and the “Time” annotation, but Figure 1 is worse because its screenshot contains essentially no diagram labels at all beyond cluttered controls."
+        },
+        "concept": {
+          "winner": "no-iteration-qwen_FINAL",
+          "confidence": 0.67,
+          "rationale": "Figure 1 is conceptually closer because its wave view explicitly shows source wavefronts, secondary wavefronts from two slits, and banded bright/dark interference on a screen, and its particle view at least represents three successive detection screens along a Time axis as requested (L00014, L00019). Figure 2 also conveys interference and particle accumulation in a generally truthful way, but it replaces the specified three-screen time sequence with a single screen plus a slider, so a student does not directly see the sparse-to-resolved buildup across successive panels/screens described in the brief (L00014, L00019). Figure 1 is not perfect because its animated dot accumulation can make the earlier screens fill too much rather than remaining sparse, but it still better preserves the core duality structure than Figure 2 (L00007, L00010, L00019)."
+        }
+      },
+      "aggregator": {
+        "winner": "no-iteration-qwen_FINAL",
+        "confidence": 0.62,
+        "explanation": "Figure 1 is stronger overall because its source implements the intended double-slit structure, controls, wave/particle modes, slit-separation behavior, and three-stage particle buildup more completely than Figure 2. Figure 2 is clearly more visually faithful in the rendered screenshot, while Figure 1’s render appears largely blank with cluttered controls, but Figure 2 is weaker in the authored geometry and concept by using shader planes and a single particle screen rather than the intended successive time-sequence buildup."
+      },
+      "evalModel": "gpt-5.5",
+      "evaluatedAt": "2026-08-14T19:24:15.931Z"
+    }
+  },
+  "chemistry__CNX_Chem_10_02_Testtubeoi_img": {
+    "setupA": "no-iteration-gemini_FINAL",
+    "setupB": "no-iteration-qwen_FINAL",
+    "subject": "chemistry",
+    "figure": "CNX_Chem_10_02_Testtubeoi_img",
+    "machineEval": {
+      "figure1Setup": "no-iteration-qwen_FINAL",
+      "figure2Setup": "no-iteration-gemini_FINAL",
+      "mode": "3d",
+      "dimensions": {
+        "geometry": {
+          "winner": "no-iteration-qwen_FINAL",
+          "confidence": 0.86,
+          "rationale": "Figure 1 is geometrically closer: it reconstructs four SAE oil cylinders on a compact slab with appropriate cylinder heights/radii, separate glass/oil columns, meniscus disks, pedestal/lip details, metallic spheres at different descent positions, and an orthographic isometric view that reads like a textbook diagram. Figure 2 uses much exaggerated proportions, a low perspective/front view, lacks the red front face and several small structural details, keeps all spheres initially at the same height except during animation, and even includes a fifth custom cylinder in the scene logic, making its element count and spatial relationships less faithful."
+        },
+        "interactivity": {
+          "winner": "no-iteration-qwen_FINAL",
+          "confidence": 0.9,
+          "rationale": "Figure 1 has significant interaction flaws—the SAE slider only moves a static probe to an interpolated/final position rather than animating a continuously slowing drop, and its terminal-velocity labels are effectively always re-shown because it hides them with display:none that the label sync loop overwrites. However, its drop animation and sphere-position updates generally keep running and show the intended viscosity speed ranking. Figure 2 is worse because its reassigned animation loop attempts to write sys.sphere.userData.info even though registerInteractive never creates that field, causing a runtime TypeError on the first updated frame; after that the render/update loop is broken, so the drop button, slider-driven custom cylinder, and velocity-label updates do not reliably work at all."
+        },
+        "faithfulness": {
+          "winner": "no-iteration-qwen_FINAL",
+          "confidence": 0.98,
+          "rationale": "Figure 1 is clearly recognizable as the oil viscosity setup with four graduated cylinders on a base, SAE labels, colored liquids, and descending spheres, even though the perspective and added velocity labels differ from the textbook image. Figure 2 is essentially blank in the rendered area with only tiny artifacts visible, so it fails to convey the original figure's composition or subject."
+        },
+        "labels": {
+          "winner": "no-iteration-qwen_FINAL",
+          "confidence": 0.92,
+          "rationale": "Figure 1 includes the key original diagram labels 20, 30, 40, 50 and \"Oil viscosity (SAE)\" in roughly appropriate positions and readable size, whereas Figure 2’s actual scene labels are essentially absent or too tiny to read. Figure 1 is penalized for adding non-original terminal velocity callouts that clutter the diagram, but Figure 2 fails much more severely by not presenting the required textbook labels in the rendered figure."
+        },
+        "concept": {
+          "winner": "no-iteration-qwen_FINAL",
+          "confidence": 0.93,
+          "rationale": "Figure 1 more accurately encodes the central concept: four SAE grades 20, 30, 40, and 50 are arranged left to right with colors darkening and sphere heights ordered so higher SAE spheres have descended less, matching the fixed-time viscosity comparison and drag/terminal-velocity relationship in the brief (L00012). Figure 2 is worse conceptually because its default state places all spheres near the top rather than at the indicated single elapsed moment, its drop animation eventually puts all spheres at the same bottom height which undermines the rank-order message, and it even includes a fifth custom cylinder despite the figure being defined as four cylinders (L00012)."
+        }
+      },
+      "aggregator": {
+        "winner": "no-iteration-qwen_FINAL",
+        "confidence": 0.96,
+        "explanation": "Figure 1 is the clear overall winner: it shows the intended four SAE oil cylinders with readable SAE 20/30/40/50 labels, appropriate relative sphere positions, and a recognizable textbook-style viscosity comparison, whereas Figure 2’s rendered scene is nearly blank or unreadable and its geometry adds/omits important elements. Although Figure 1 has interaction issues and some extra velocity callouts, Figure 2 is substantially worse because its animation/update logic can break at runtime, its spheres do not preserve the intended fixed-time viscosity ranking, and it even introduces an inappropriate fifth custom cylinder."
+      },
+      "evalModel": "gpt-5.5",
+      "evaluatedAt": "2026-08-14T19:24:52.453Z"
+    }
+  },
+  "cs__SupervisedOpt": {
+    "setupA": "no-iteration-gemini_FINAL",
+    "setupB": "no-iteration-qwen_FINAL",
+    "subject": "cs",
+    "figure": "SupervisedOpt",
+    "machineEval": {
+      "figure1Setup": "no-iteration-gemini_FINAL",
+      "figure2Setup": "no-iteration-qwen_FINAL",
+      "mode": "2d",
+      "dimensions": {
+        "geometry": {
+          "winner": "no-iteration-qwen_FINAL",
+          "confidence": 0.68,
+          "rationale": "Figure 2 better reconstructs the core 2D structure because its loss heatmap and contour ellipses are derived consistently from the plotted data, the trajectory ends near the corresponding least-squares minimum, and the fitted-line sequence in panel b) is coherent with the parameter-space path. Figure 1 has a visually similar two-panel layout, but its loss surface is an arbitrary set of ellipses, its trajectory/final line are less consistent with the scatter, it uses fewer/different data points, and the prominent extra magenta dashed line/marker makes the structural reconstruction less faithful."
+        },
+        "interactivity": {
+          "winner": "no-iteration-gemini_FINAL",
+          "confidence": 0.62,
+          "rationale": "Figure 1 has the same major range shortcomings as Figure 2—the intercept slider is 0–2 instead of –1–2 and the slope slider/drag range is –1–1 instead of 0–4—but its core handlers for dragging, sliders, demo steps, marker position, displayed values, and fitted line remain internally consistent. Figure 2’s core slider and drag behavior also mostly works, but it adds broken hover handlers for trajectory and scatter points due to var-loop closure bugs that can index past the arrays and throw errors, so its interaction layer is less robust."
+        },
+        "faithfulness": {
+          "winner": "no-iteration-gemini_FINAL",
+          "confidence": 0.97,
+          "rationale": "Figure 1 is much more recognizable as the original because it preserves the two-panel layout, the loss contour/heatmap in panel a, the gradient-step markers, and the fitted lines with data points in panel b. Figure 2 has the same rough two-panel arrangement but omits the key visual elements in the screenshot—especially the loss surface contours and the regression lines—so it reads as a sparse placeholder rather than the textbook figure."
+        },
+        "labels": {
+          "winner": "no-iteration-gemini_FINAL",
+          "confidence": 0.97,
+          "rationale": "Figure 1 has the main textbook labels present and reasonably readable, including panel labels, the loss title, axis labels with φ notation, step numbers 0–4 in panel a, and line/step labels in panel b. Figure 2’s plot labels are much smaller and harder to read, includes a stray/garbled vertical text artifact, and panel b is missing the important line labels/annotations from the original, making its labeling much less complete."
+        },
+        "concept": {
+          "winner": "no-iteration-qwen_FINAL",
+          "confidence": 0.78,
+          "rationale": "Figure 2 is more conceptually accurate because its panel a loss surface is actually computed from the plotted supervised data and the linear model y=φ₀+φ₁x, so the marker in parameter space and the line in panel b correspond consistently to the same parameters and loss landscape, better supporting the intended lesson that training loss varies over model-parameter space (L00007). Figure 1 instead draws an arbitrary elliptical heatmap not derived from its panel b data, so it asserts a loss landscape without the underlying supervised-loss relationship being truthful. Both figures are conceptually wrong on important brief details: they use a slope range of -1 to 1 rather than 0 to 4 and show/describe a dark minimum with lighter high-loss regions instead of a near-white low-loss minimum and deeper teal higher-loss regions (L00007), but Figure 2 is less misleading overall because its geometry is internally tied to the supervised learning problem."
+        }
+      },
+      "aggregator": {
+        "winner": "no-iteration-gemini_FINAL",
+        "confidence": 0.74,
+        "explanation": "Figure 1 is the stronger overall reconstruction because it much more closely preserves the rendered textbook figure: the two-panel layout, loss heatmap/contours, gradient-step markers, fitted lines, data points, and readable φ/step/line labels are all present, whereas Figure 2 appears sparse and omits or weakens several of those key visible elements. Although Figure 2 is more internally consistent in its source-derived loss geometry and better ties the regression line to the parameter-space minimum, it has poorer rendered faithfulness and labeling, plus less robust interaction code due to broken hover handlers; Figure 1’s loss landscape is less mathematically truthful but its visible and interactive presentation better matches the intended figure."
+      },
+      "evalModel": "gpt-5.5",
+      "evaluatedAt": "2026-08-14T19:25:51.026Z"
+    }
+  }
+}

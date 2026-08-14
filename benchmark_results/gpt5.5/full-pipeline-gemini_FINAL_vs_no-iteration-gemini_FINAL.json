@@ -1,0 +1,407 @@
+{
+  "math__1.6.4": {
+    "setupA": "full-pipeline-gemini_FINAL",
+    "setupB": "no-iteration-gemini_FINAL",
+    "subject": "math",
+    "figure": "1.6.4",
+    "machineEval": {
+      "figure1Setup": "full-pipeline-gemini_FINAL",
+      "figure2Setup": "no-iteration-gemini_FINAL",
+      "mode": "2d",
+      "dimensions": {
+        "geometry": {
+          "winner": "full-pipeline-gemini_FINAL",
+          "confidence": 0.84,
+          "rationale": "Figure 1 better matches the standard squeeze-theorem unit-circle structure because it includes the chord from (cos x, sin x) to (1, 0) that forms the small triangle and uses the vertical tangent segment to (1, tan x) as a solid boundary of the large triangle. Figure 2 instead draws a dashed vertical drop from (cos x, sin x) to the base and omits the chord, so the main small-triangle topology is wrong; it also makes the tangent height dashed rather than a solid triangle edge and places the side-by-side area labels less accurately under the extracted shapes."
+        },
+        "interactivity": {
+          "winner": "full-pipeline-gemini_FINAL",
+          "confidence": 0.62,
+          "rationale": "Figure 1 is slightly better because its angle slider and overlay toggle recompute the same geometry as Figure 2 but the overlay handler also hides and restores redundant dashed arc artifacts, so the advertised overlaid comparison remains clearer and more coherent. Figure 2’s basic controls also work, but its overlay leaves extra dashed geometry/annotation clutter and its panel labels are less consistently aligned with the regions they control; both figures share the same limitation that the angle slider is narrowed to 0.1–1.4 rather than the requested 0 to π/2 and becomes unwieldy near the upper end."
+        },
+        "faithfulness": {
+          "winner": "full-pipeline-gemini_FINAL",
+          "confidence": 0.99,
+          "rationale": "Figure 1 is recognizable as the original unit-circle and sector/triangle inequality diagram, with the same blue circle/arcs, red triangle outlines, labels, and three comparison panels, while Figure 2 does not render the figure at all and only shows an error message."
+        },
+        "labels": {
+          "winner": "full-pipeline-gemini_FINAL",
+          "confidence": 0.98,
+          "rationale": "Figure 1 includes most of the original mathematical labels and annotations, such as the point labels, x angle labels, area captions, inequalities, and fraction formulas, though many are quite small at inline size and some annotations are less readable than the reference. Figure 2 fails to render the figure at all and only shows an error message and reload button, so it has none of the required textbook labels."
+        },
+        "concept": {
+          "winner": "full-pipeline-gemini_FINAL",
+          "confidence": 0.82,
+          "rationale": "Figure 1 more accurately represents the proof geometry because its left unit-circle diagram includes the chord from (cos x, sin x) to (1, 0), so the inner triangle with base 1 and altitude sin x corresponds to the stated area sin x/2 and the inequality tan x/2 >= x/2 >= sin x/2 (L00010). Figure 2 instead draws a vertical drop from (cos x, sin x) to the x-axis and omits the chord on the left, visually suggesting a different right triangle of area sin x cos x/2 rather than the triangle used for the sandwiching argument, even though its right-side extracted triangle and labels are mostly correct (L00010)."
+        }
+      },
+      "aggregator": {
+        "winner": "full-pipeline-gemini_FINAL",
+        "confidence": 0.97,
+        "explanation": "Figure 1 is clearly stronger: it renders the intended unit-circle squeeze-theorem diagram with the chord from (cos x, sin x) to (1, 0), solid tangent-triangle boundary, comparison panels, and most mathematical labels intact. Figure 2 is much weaker because in the rendered view it only shows an error message, and even at the source-code level it omits the key chord and substitutes a misleading vertical drop that suggests the wrong inner triangle area. Figure 1 also has slightly cleaner interactive overlay behavior, whereas Figure 2 leaves extra dashed clutter and less well-aligned panel annotations."
+      },
+      "evalModel": "gpt-5.5",
+      "evaluatedAt": "2026-08-14T19:07:09.727Z"
+    }
+  },
+  "math__14.7.5": {
+    "setupA": "full-pipeline-gemini_FINAL",
+    "setupB": "no-iteration-gemini_FINAL",
+    "subject": "math",
+    "figure": "14.7.5",
+    "machineEval": {
+      "figure1Setup": "full-pipeline-gemini_FINAL",
+      "figure2Setup": "no-iteration-gemini_FINAL",
+      "mode": "2d",
+      "dimensions": {
+        "geometry": {
+          "winner": "full-pipeline-gemini_FINAL",
+          "confidence": 0.72,
+          "rationale": "Figure 1 better preserves the intended two-plane transformation structure: its axes have properly centered arrowheads, the mapped boundary curves are explicitly drawn as unfilled stroked paths, and labels are anchored more consistently to the corresponding curves and axes. Figure 2 has the same basic topology, but its arrowheads are less accurately constructed, its text styling/positioning is less reliable, and its mapped extended curves are drawn as polylines without an explicit fill suppression, which risks unintended filled shapes and weaker structural fidelity."
+        },
+        "interactivity": {
+          "winner": "full-pipeline-gemini_FINAL",
+          "confidence": 0.78,
+          "rationale": "Both figures correctly bind the x(u,v) and y(u,v) equation fields so valid edits recompute and redraw the mapped region while invalid expressions show errors and keep the last valid drawing, but Figure 1 handles the corner-drag interaction more correctly: dragging the (u₀,v₀) corner moves the rectangle with fixed side lengths as its tooltip/description indicates, while Figure 2 instead resizes the rectangle from that corner despite advertising it as a move control. Figure 1 also keeps the dragged rectangle consistently constrained within the intended uv-panel area, whereas Figure 2 permits more awkward placements relative to the drawn axes."
+        },
+        "faithfulness": {
+          "winner": "full-pipeline-gemini_FINAL",
+          "confidence": 0.92,
+          "rationale": "Figure 1 is more visually faithful because it preserves the two-panel composition, cyan rectangle in the uv-plane, beige transformation arrow, and a recognizable curved quadrilateral image region with blue boundary curves and labels. Figure 2 has a somewhat similar left rectangle, but the mapped region is rendered as dark black distorted shapes rather than the light-blue curved patch of the original, making the right half read as a different figure."
+        },
+        "labels": {
+          "winner": "full-pipeline-gemini_FINAL",
+          "confidence": 0.82,
+          "rationale": "Figure 1 has more of the required textbook labels, including S, R, both u-boundary image labels, and attempts at both v-image labels, whereas Figure 2 omits or effectively loses important labels such as R and the image of v = v0 + Δv. Figure 1's labels are small and some are clipped or truncated on the right, but Figure 2 has worse overlap and illegibility around the top image label and fewer matching annotations overall."
+        },
+        "concept": {
+          "winner": "full-pipeline-gemini_FINAL",
+          "confidence": 0.62,
+          "rationale": "Figure 1 is more conceptually accurate because its default rectangle has a smaller Δv and produces an image that better matches the intended “slightly distorted parallelogram”/curved quadrilateral for a not-too-large parameter rectangle (L00007, L00010), while Figure 2’s larger default parameter region under the same polar-type map gives a more strongly curved annular sector that is less faithful to the local-change-of-variables picture. Both correctly show S bounded by constant u and v lines with Δu, Δv labels and map the four sides to labeled image curves (L00010), but Figure 1 better supports the small-region Jacobian motivation than Figure 2."
+        }
+      },
+      "aggregator": {
+        "winner": "full-pipeline-gemini_FINAL",
+        "confidence": 0.88,
+        "explanation": "Figure 1 is stronger across all dimensions: it preserves the intended two-panel transformation with a cyan uv-rectangle, beige mapping arrow, labeled source/image regions, and a light-blue curved quadrilateral image, while Figure 2’s right-hand image appears as darker distorted shapes with missing or illegible labels. In the source-level behavior, Figure 1 also implements the advertised corner-drag movement and panel constraints more correctly, whereas Figure 2 resizes from the corner despite describing a move control and has less reliable arrowhead, curve, and label construction. Conceptually, Figure 1’s smaller default region better supports the local change-of-variables/Jacobian picture, while Figure 2’s larger mapped sector looks less like the intended slightly distorted parallelogram."
+      },
+      "evalModel": "gpt-5.5",
+      "evaluatedAt": "2026-08-14T19:07:50.474Z"
+    }
+  },
+  "math__15.2.2": {
+    "setupA": "full-pipeline-gemini_FINAL",
+    "setupB": "no-iteration-gemini_FINAL",
+    "subject": "math",
+    "figure": "15.2.2",
+    "machineEval": {
+      "figure1Setup": "full-pipeline-gemini_FINAL",
+      "figure2Setup": "no-iteration-gemini_FINAL",
+      "mode": "2d",
+      "dimensions": {
+        "geometry": {
+          "winner": "full-pipeline-gemini_FINAL",
+          "confidence": 0.68,
+          "rationale": "Figure 1 better preserves the textbook-style structure: the main curve is partitioned cleanly, the selected sub-arc is highlighted with proper endpoint labels, the Δs_k dimension arcs include arrowheads and perpendicular boundary extension lines, and the inset segment/formula layout is clearer. Figure 2 has the same overall components, but its small partition labels are malformed for early points, its dimension annotations are less structurally complete, and the magnified inset/zoom arrow are less cleanly laid out relative to the selected segment."
+        },
+        "interactivity": {
+          "winner": "no-iteration-gemini_FINAL",
+          "confidence": 0.72,
+          "rationale": "Figure 2’s handlers more coherently recompute the zoom inset from the currently highlighted kth segment and place the sample point by transforming the corresponding point on that segment, so changing n and the sample position keeps the inset, highlighted arc, and red sample point tied together. Figure 1’s sliders do redraw and its Riemann-sum value updates, but the zoom inset is a fixed generic curve independent of the selected partition segment, so the n control changes the highlighted arc on the main curve while the isolated kth arc does not actually update to match it; both also use a slider rather than true dragging and neither shows sample points multiplying along every segment."
+        },
+        "faithfulness": {
+          "winner": "full-pipeline-gemini_FINAL",
+          "confidence": 0.98,
+          "rationale": "Figure 1 is much more recognizable as the reference: it preserves the main left curve with loop, the beige arrow pointing to the smaller arc on the right, the boxed formula near the bottom, and the overall composition and blue/cream color scheme. Figure 2 has the same general elements but rearranges and distorts them substantially—the formula box is moved to the top, the beige arrow becomes a broad wavy band across the center, the curve geometry and labels are much less faithful, and the overall layout no longer matches the textbook figure at a glance."
+        },
+        "labels": {
+          "winner": "full-pipeline-gemini_FINAL",
+          "confidence": 0.93,
+          "rationale": "Figure 1 has substantially better label quality: it includes most of the original labels such as P=P0, P1, P2, P3, Pk-1, Pk, Pn-1, Q=Pn, Δsk, Mass ΔMk, the boxed formula, and the inset labels in approximately sensible positions. Figure 2 has many labels misplaced, tiny, garbled, or colliding with the artwork, including confusing labels like “PP2,” an incorrect-looking formula placement, and a large invented Riemann Sum label overlapping the lower curve; overall it omits or distorts more of the original annotation structure."
+        },
+        "concept": {
+          "winner": "no-iteration-gemini_FINAL",
+          "confidence": 0.66,
+          "rationale": "Figure 2 is conceptually more accurate because its right-hand inset is computed from the highlighted kth subarc on the left, so it more truthfully represents the isolated arc from P_{k-1} to P_k with the sample point on that same arc, as required by the construction (L00011-L00015, L00047). Figure 1 correctly labels the formula and sample point, but its right-hand arc is a generic separately drawn curve rather than the actual highlighted subarc, so the zoom relationship asserts a less faithful version of the kth-arc isolation (L00047). Figure 2 does have minor notation/label-rendering weaknesses, such as some non-k partition labels and baseline asterisks, but these are less damaging than Figure 1’s mismatch between the highlighted arc and the isolated arc."
+        }
+      },
+      "aggregator": {
+        "winner": "full-pipeline-gemini_FINAL",
+        "confidence": 0.78,
+        "explanation": "Figure 1 is the stronger overall choice because it much more faithfully matches the reference composition, curve shape, color scheme, label structure, endpoint annotations, Δs_k markings, and formula placement, whereas Figure 2 distorts the layout with misplaced or garbled labels, a broad wavy arrow, and less complete dimension annotation. Figure 2 has an advantage in tying its inset more directly to the highlighted kth segment in the code, but that conceptual/interactivity strength is outweighed by Figure 1’s clearer geometry and much higher rendered faithfulness and label quality."
+      },
+      "evalModel": "gpt-5.5",
+      "evaluatedAt": "2026-08-14T19:08:37.476Z"
+    }
+  },
+  "math__15.6.9": {
+    "setupA": "full-pipeline-gemini_FINAL",
+    "setupB": "no-iteration-gemini_FINAL",
+    "subject": "math",
+    "figure": "15.6.9",
+    "machineEval": {
+      "figure1Setup": "full-pipeline-gemini_FINAL",
+      "figure2Setup": "no-iteration-gemini_FINAL",
+      "mode": "3d",
+      "dimensions": {
+        "geometry": {
+          "winner": "full-pipeline-gemini_FINAL",
+          "confidence": 0.66,
+          "rationale": "Figure 1 better matches the likely textbook geometry of a localized surface patch with a translated fluid volume, visible/hidden boundary edges, leader arrows, and a callout integrated into the scene. Figure 2 has some mathematically useful features such as a tilted normal on a larger surface, but it adds a full wireframe hill, extra corner flow arrows, sliders/demo states, and a floating HTML callout box, which changes the element counts, proportions, and spatial relationships away from the original figure."
+        },
+        "interactivity": {
+          "winner": "no-iteration-gemini_FINAL",
+          "confidence": 0.86,
+          "rationale": "Figure 2 implements a working patch-position control that recomputes the patch geometry on the full surface, moves the labels/leaders, and reorients the normal consistently as the patch moves, while Figure 1 has no patch-location interaction at all and its normal never reorients. Both figures have a flow-velocity slider that redraws an extruded volume and arrows proportionally, but Figure 2's slider is integrated with the movable patch, whereas Figure 1 only changes the height of a fixed patch and even accumulates stale interactive registrations on each redraw. Figure 2 is not perfect because the patch is moved by a one-dimensional slider rather than true dragging and it does not numerically update ΔS_k, but its controls much more closely match the intended interactions."
+        },
+        "faithfulness": {
+          "winner": "full-pipeline-gemini_FINAL",
+          "confidence": 0.92,
+          "rationale": "Figure 1 is more recognizable as the textbook figure because it preserves the main turquoise curved surface patch, the upward normal arrow, surface/area labels, and a beige callout/arrow element in roughly the same conceptual composition. Figure 2 replaces the original localized curved patch with a large wireframe dome and a small upright patch, making the geometry and overall composition read as a different visualization despite retaining some tiny labels and a callout."
+        },
+        "labels": {
+          "winner": "full-pipeline-gemini_FINAL",
+          "confidence": 0.78,
+          "rationale": "Figure 1 has the main labels 'Area ΔS_k' and 'Surface σ_k' more legible and better connected to the depicted patch than Figure 2, whose labels are extremely small and hard to read at inline size. Both figures miss or poorly render the prominent 'n' label and both reduce the large explanatory callout far too much, but Figure 1's annotations are generally larger and less lost in the scene, while Figure 2's text is tiny, distant, and cluttered by additional UI text and buttons."
+        },
+        "concept": {
+          "winner": "no-iteration-gemini_FINAL",
+          "confidence": 0.78,
+          "rationale": "Figure 2 is conceptually more accurate because it keeps the normal vector independent of flow speed and makes it perpendicular to the curved surface patch, which better represents the unit normal used in the flux factor F(x*_k,y*_k,z*_k)·n(x*_k,y*_k,z*_k)ΔS_k (L00021-L00027, L00057). Figure 1 does show a teal patch, upward normal, flow arrows, and the caption idea, but it incorrectly scales the displayed normal length with the flow-velocity slider even though n is a unit normal, which can teach a false dependence of n on |v| (L00014-L00019, L00057). Figure 2 also better preserves the distinction between vertical flow and the normal component through a sloped patch, whereas Figure 1 effectively collapses the example to the special case where flow and the central normal are aligned, making the dot-product idea less generally truthful (L00015-L00027, L00053-L00057)."
+        }
+      },
+      "aggregator": {
+        "winner": "full-pipeline-gemini_FINAL",
+        "confidence": 0.68,
+        "explanation": "Figure 1 is the stronger overall match because it more faithfully preserves the localized turquoise surface patch, upward normal, area/surface labels, leader arrows, and callout composition, with annotations that remain more legible and better connected to the depicted geometry. Figure 2 has better implemented controls and a more conceptually correct reorienting normal, but it departs more from the intended/textbook figure by adding a large wireframe dome, extra arrows and UI clutter, tiny labels, and a floating callout that changes the visual structure substantially."
+      },
+      "evalModel": "gpt-5.5",
+      "evaluatedAt": "2026-08-14T19:09:39.347Z"
+    }
+  },
+  "chemistry__CNX_Chem_12_07_HetCats-230a": {
+    "setupA": "full-pipeline-gemini_FINAL",
+    "setupB": "no-iteration-gemini_FINAL",
+    "subject": "chemistry",
+    "figure": "CNX_Chem_12_07_HetCats-230a",
+    "machineEval": {
+      "figure1Setup": "no-iteration-gemini_FINAL",
+      "figure2Setup": "full-pipeline-gemini_FINAL",
+      "mode": "3d",
+      "dimensions": {
+        "geometry": {
+          "winner": "tie",
+          "confidence": 1,
+          "rationale": "Both figures use the same Three.js source code, with identical Ni surface grid, atom and bond primitives, animation states, labels, spatial relationships, and camera setup, so neither is geometrically more accurate than the other."
+        },
+        "interactivity": {
+          "winner": "tie",
+          "confidence": 1,
+          "rationale": "The two implementations are indistinguishable: both use the same reaction-phase selector, the same easing toward target_t, the same Ni atom click/tooltip-popup registration, and the same behavior at all four selected steps. They also share the same interaction limitations, such as lacking a separate play/pause cycle control and having step (a) show an intact H2 molecule rather than only dissociated adsorbed H, so neither is better on interaction correctness."
+        },
+        "faithfulness": {
+          "winner": "tie",
+          "confidence": 1,
+          "rationale": "Figure 1 and Figure 2 appear visually indistinguishable: both show the same single-panel H2 adsorption view with the same green Ni surface, white hydrogen atoms, labels, camera angle, scale, and side reaction-phase control, so neither is more faithful than the other."
+        },
+        "labels": {
+          "winner": "tie",
+          "confidence": 0.99,
+          "rationale": "Both figures appear indistinguishable in label quality: each includes the same small labels for Ni surface, Hydrogen, and Ethylene, while both omit many original annotations such as arrows, panel labels, and the longer ethylene adsorption caption. Both also have similarly modest readability and include the same non-original UI text on the right."
+        },
+        "concept": {
+          "winner": "tie",
+          "confidence": 1,
+          "rationale": "Figure 1 and Figure 2 are indistinguishable in source and therefore equally accurate: both depict the same Ni-surface hydrogenation sequence with H adsorption/H–H cleavage, ethylene adsorption with π-bond loss/Ni–C interaction, H migration to form C–H bonds, and ethane desorption, matching the core mechanism described in the caption and authored brief (L00007, L00012, L00018-L00019). They also share the same limitations, such as representing Ni–H bonding only implicitly through surface H atoms rather than explicitly, so neither is conceptually better than the other (L00018)."
+        }
+      },
+      "aggregator": {
+        "winner": "tie",
+        "confidence": 1,
+        "explanation": "Figure 1 and Figure 2 are indistinguishable across rendered appearance and source-code behavior: they share the same Ni surface geometry, atoms, bonds, labels, camera, reaction-phase selector, easing animation, and tooltip interactions. Neither has a comparative advantage, and they also share the same shortcomings, including omitted original annotations, modest label readability, limited interaction coverage, and implicit rather than explicit Ni–H bonding."
+      },
+      "evalModel": "gpt-5.5",
+      "evaluatedAt": "2026-08-14T19:10:03.364Z"
+    }
+  },
+  "cs__GanDCGANArch": {
+    "setupA": "full-pipeline-gemini_FINAL",
+    "setupB": "no-iteration-gemini_FINAL",
+    "subject": "cs",
+    "figure": "GanDCGANArch",
+    "machineEval": {
+      "figure1Setup": "no-iteration-gemini_FINAL",
+      "figure2Setup": "full-pipeline-gemini_FINAL",
+      "mode": "3d",
+      "dimensions": {
+        "geometry": {
+          "winner": "no-iteration-gemini_FINAL",
+          "confidence": 0.72,
+          "rationale": "Figure 1 better matches the likely textbook-style 3D block geometry by using an oblique projection with rectangular front faces and consistent sheared depth, while Figure 2 switches to an isometric orthographic view that changes the apparent proportions and face geometry of the cuboids. Figure 1 also represents the latent vector as two slim blocks with a vertical ellipsis, whereas Figure 2 replaces it with an extruded hourglass-like shape that is geometrically less faithful to a 100×1 vector schematic. Figure 2 has more elaborate curly braces and angled annotation arrows, but its camera/projection and latent primitive make the overall 3D reconstruction less accurate."
+        },
+        "interactivity": {
+          "winner": "full-pipeline-gemini_FINAL",
+          "confidence": 0.58,
+          "rationale": "Both figures implement the two requested animation buttons with essentially the same working logic, tracing the generator and discriminator paths and resetting the active state at the end. Figure 2 is slightly better because it keeps the interaction set limited and robust, whereas Figure 1 adds an oblique/3D projection toggle and drag-to-reveal behavior whose advertised effect is less reliable and whose oblique raycasting is explicitly approximate; the core animations are otherwise comparable in both."
+        },
+        "faithfulness": {
+          "winner": "no-iteration-gemini_FINAL",
+          "confidence": 0.82,
+          "rationale": "Figure 1 is more visually faithful overall because it preserves the original’s flat left-to-right composition, separated Generator and Discriminator sections, block ordering, labels, central image, and arrow flow in a way that is immediately recognizable. Figure 2 includes the latent vector that Figure 1 mostly omits, but its angled perspective compresses and overlaps the elements, makes the braces and labels awkward, and distorts the clean textbook layout enough that the resemblance is weaker at a glance."
+        },
+        "labels": {
+          "winner": "no-iteration-gemini_FINAL",
+          "confidence": 0.72,
+          "rationale": "Figure 1 has fewer of the original labels, notably omitting the latent-variable and project/reshape annotations, but its remaining labels are generally more readable and better separated. Figure 2 includes more of the required label text, including the latent vector and probability output, but many labels are badly cluttered, overlapping the blocks and each other—especially around the generator middle and discriminator output—making the annotations harder to read and less faithful in placement."
+        },
+        "concept": {
+          "winner": "no-iteration-gemini_FINAL",
+          "confidence": 0.72,
+          "rationale": "Figure 1 is more conceptually accurate because it includes the arctan activation annotation associated with the generator's fractional convolution pipeline, whereas Figure 2 omits arctan entirely despite the brief specifying fractional/transposed convolutions with arctan activations (L00007). Both figures correctly show the main tensor-size progression for the generator and discriminator and the final sigmoid to Pr(real), but Figure 2 therefore teaches one fewer required operation in the generator path (L00007)."
+        }
+      },
+      "aggregator": {
+        "winner": "no-iteration-gemini_FINAL",
+        "confidence": 0.78,
+        "explanation": "Figure 1 is the stronger overall match: compared with Figure 2, it preserves the flat left-to-right textbook layout, clearer section separation, more faithful cuboid geometry, and readable label placement, while also retaining the generator arctan activation that Figure 2 omits. Figure 2 has a slight interactivity advantage and includes some extra annotations such as the latent vector and probability output, but its angled/isometric projection, cluttered overlapping labels, distorted latent-vector shape, and missing arctan operation make it less faithful and less conceptually complete than Figure 1."
+      },
+      "evalModel": "gpt-5.5",
+      "evaluatedAt": "2026-08-14T19:10:41.112Z"
+    }
+  },
+  "cs__ResidualResnet2": {
+    "setupA": "full-pipeline-gemini_FINAL",
+    "setupB": "no-iteration-gemini_FINAL",
+    "subject": "cs",
+    "figure": "ResidualResnet2",
+    "machineEval": {
+      "figure1Setup": "full-pipeline-gemini_FINAL",
+      "figure2Setup": "no-iteration-gemini_FINAL",
+      "mode": "3d",
+      "dimensions": {
+        "geometry": {
+          "winner": "full-pipeline-gemini_FINAL",
+          "confidence": 0.86,
+          "rationale": "Figure 1 better reconstructs the original network diagram geometry: it includes the full macro sequence with distinct input, Conv 7x7, MaxPool, four residual stages, ellipsis/dot repetitions, output layers, and decreasing spatial-size/increasing-depth proportions that match a CNN architecture block diagram. Figure 2 has more severe geometric inaccuracies, including an oversized square input slab, no actual separate MaxPool block despite the label, very tiny and distorted later-stage blocks, incomplete macro arrows, and a less faithful representation of repeated stages; although its inset uses 3D boxes, the overall spatial relationships and proportions are noticeably worse than Figure 1."
+        },
+        "interactivity": {
+          "winner": "full-pipeline-gemini_FINAL",
+          "confidence": 0.96,
+          "rationale": "Figure 1's implemented controls at least run: the forward-pass button animates tokens along the main and skip paths, and stage click hitboxes update the inset channel labels, though it omits the requested depth slider and has some questionable stage input-channel values. Figure 2 would fail to execute at all because its generated code redeclares `const canvas` in the same module scope as the scaffold's existing `const canvas`, causing a syntax error before any interaction handlers can be installed; therefore none of its otherwise more complete slider/click/animation controls actually work."
+        },
+        "faithfulness": {
+          "winner": "full-pipeline-gemini_FINAL",
+          "confidence": 0.99,
+          "rationale": "Figure 1 at least renders a recognizable ResNet-style architecture diagram with the input image, staged blocks, residual block inset, labels, arrows, and final classifier columns, whereas Figure 2 fails to render the figure at all and only shows a JavaScript syntax error. Although Figure 1 is cramped and less visually faithful than the reference in proportions and readability, it is clearly much closer to the original than the blank/error state of Figure 2."
+        },
+        "labels": {
+          "winner": "full-pipeline-gemini_FINAL",
+          "confidence": 0.98,
+          "rationale": "Figure 1 at least renders many of the intended architecture labels such as ResBlock, Subsample, block counts, dimensions, AvgPool + FC, Softmax, and inset operation labels, although they are very small, cluttered, and some overlap. Figure 2 fails to render the figure at all and only shows a JavaScript error message and reload button, so it has none of the required textbook labels or annotations."
+        },
+        "concept": {
+          "winner": "full-pipeline-gemini_FINAL",
+          "confidence": 0.72,
+          "rationale": "Figure 1 is more conceptually accurate overall because its main network flow more faithfully asserts the requested staged tensor dimensions, separate MaxPool, subsampling transitions, and simultaneous repeated-block annotations such as 24 and 36 blocks total (L00007). Figure 2 has the same serious inset error as Figure 1—both show a BN/ReLU/Conv pre-activation order rather than the specified Conv 1x1, BN, ReLU, Conv 3x3, BN, ReLU, Conv 1x1 sequence (L00007)—but Figure 2 additionally misrepresents the macro architecture by not clearly drawing the MaxPool between the 7x7 convolution and residual stages and by making the 24/36 block count a Stage 3 slider rather than showing the fixed repeated-stage annotations described in the brief (L00007). Figure 2 is somewhat better than Figure 1 in keeping clicked inset channel counts compatible with an identity skip connection, whereas Figure 1 can display direct skips from unequal input/output channel counts, but Figure 1’s macro architecture is more faithful to the stated ResNet figure."
+        }
+      },
+      "aggregator": {
+        "winner": "full-pipeline-gemini_FINAL",
+        "confidence": 0.97,
+        "explanation": "Figure 1 is the clear winner because it renders and functions, showing a recognizable ResNet-style architecture with input, convolution, max-pooling, residual stages, repeated-block annotations, output layers, labels, arrows, and working basic interactions. Figure 2 is decisively worse because it fails to render due to a JavaScript syntax error, leaving no usable labels or interactions, and even at the source level it has weaker macro-geometry with a missing/unclear MaxPool and distorted stage proportions. Although Figure 1 has cramped labels and some conceptual issues in the residual inset and channel counts, these are minor relative to Figure 2’s nonfunctional error state and less faithful architecture reconstruction."
+      },
+      "evalModel": "gpt-5.5",
+      "evaluatedAt": "2026-08-14T19:11:19.262Z"
+    }
+  },
+  "physics__sampling_reconstruction2": {
+    "setupA": "full-pipeline-gemini_FINAL",
+    "setupB": "no-iteration-gemini_FINAL",
+    "subject": "physics",
+    "figure": "sampling_reconstruction2",
+    "machineEval": {
+      "figure1Setup": "full-pipeline-gemini_FINAL",
+      "figure2Setup": "no-iteration-gemini_FINAL",
+      "mode": "2d",
+      "dimensions": {
+        "geometry": {
+          "winner": "tie",
+          "confidence": 1,
+          "rationale": "Both figures use the same source code and therefore reconstruct the same axes, ticks, sinc curves, sample stems, reconstruction curve, legend, layout, and line styling; neither is structurally more accurate than the other."
+        },
+        "interactivity": {
+          "winner": "tie",
+          "confidence": 0.99,
+          "rationale": "Figure 1 and Figure 2 are identical in their interaction code: the Ts slider recomputes samples, kernels, and the red sum; the build button runs the same left-to-right sweep; and both use hover highlighting of sinc copies rather than a true on/off toggle for individual copies. Since they have the same controls, same behavior at extremes, and the same omissions, neither is better on interaction correctness."
+        },
+        "faithfulness": {
+          "winner": "tie",
+          "confidence": 0.99,
+          "rationale": "Both figures appear visually indistinguishable in the screenshots: they use the same three-part composition of blue sample arrows, green interpolation kernel, and red reconstructed curve, with the same layout, controls, colors, and proportions. Neither is more faithful than the other on visual resemblance to the reference."
+        },
+        "labels": {
+          "winner": "tie",
+          "confidence": 0.99,
+          "rationale": "Both figures appear indistinguishable in label quality: each includes the same small axis/tick labels and legend text, with the same placements and readability issues compared with the reference. Neither has an advantage in presence, correctness, placement, or clutter of labels."
+        },
+        "concept": {
+          "winner": "tie",
+          "confidence": 1,
+          "rationale": "Figure 1 and Figure 2 are code-identical and therefore conceptually indistinguishable: both show discrete blue sample impulses, a sinc-like green interpolation kernel with peak 1, shifted/scaled green sinc copies, and a red summed reconstruction that interpolates the samples, matching the brief’s core ideas of convolution-based sinc reconstruction and linear superposition (L00007-L00012). Any minor extras, such as the gray 'Original signal' and aliasing narration, are the same in both and do not make either figure more accurate than the other."
+        }
+      },
+      "aggregator": {
+        "winner": "tie",
+        "confidence": 1,
+        "explanation": "Figure 1 and Figure 2 are indistinguishable across the rendered view and the source code: they have the same geometry, labels, visual styling, sinc reconstruction curves, sample stems, controls, and interaction behavior. Because every noted strength and weakness is shared by both figures, neither has a comparative advantage over the other."
+      },
+      "evalModel": "gpt-5.5",
+      "evaluatedAt": "2026-08-14T19:11:34.262Z"
+    }
+  },
+  "physics__snellcropped": {
+    "setupA": "full-pipeline-gemini_FINAL",
+    "setupB": "no-iteration-gemini_FINAL",
+    "subject": "physics",
+    "figure": "snellcropped",
+    "machineEval": {
+      "figure1Setup": "no-iteration-gemini_FINAL",
+      "figure2Setup": "full-pipeline-gemini_FINAL",
+      "mode": "2d",
+      "dimensions": {
+        "geometry": {
+          "winner": "tie",
+          "confidence": 1,
+          "rationale": "Figure 1 and Figure 2 are structurally identical: they use the same canvas dimensions, interface and normal lines, ray geometry, angle arcs, labels, stroke widths, colors, and interactive update logic, so neither reconstructs the 2D structure better than the other."
+        },
+        "interactivity": {
+          "winner": "tie",
+          "confidence": 1,
+          "rationale": "Both figures use identical source code, so their controls behave indistinguishably: the θ₁ and refractive-index sliders recompute Snell's-law geometry, update labels, and trigger the same total-internal-reflection behavior, while both also share the same limitation of offering a θ₁ slider rather than actual drag interaction."
+        },
+        "faithfulness": {
+          "winner": "tie",
+          "confidence": 1,
+          "rationale": "Figure 1 and Figure 2 are visually indistinguishable: both show the same refraction diagram layout, colors, labels, angles, interface, normal line, and identical control panel, with no apparent difference in resemblance to the reference."
+        },
+        "labels": {
+          "winner": "tie",
+          "confidence": 0.99,
+          "rationale": "Both figures appear indistinguishable in label quality: they include the same labels for ray direction, surface normal, θ₁, θ₂, n₁ and n₂ with identical placement, readability, and the same deviations from the reference such as adding numeric refractive-index values and including extra UI text outside the diagram."
+        },
+        "concept": {
+          "winner": "tie",
+          "confidence": 1,
+          "rationale": "Figure 1 and Figure 2 are identical and therefore equally accurate: both place a horizontal interface between labeled upper n₁ and lower n₂ regions, a vertical surface normal with a right-angle marker, θ₁ and θ₂ measured from the normal, and compute the refracted direction from n₁ sin θ₁ = n₂ sin θ₂ so the ray bends toward or away from the normal according to the relative indices (L00007, L00010). Neither is conceptually better or worse on this dimension."
+        }
+      },
+      "aggregator": {
+        "winner": "tie",
+        "confidence": 1,
+        "explanation": "Figure 1 and Figure 2 are effectively indistinguishable: the rendered diagrams have the same ray geometry, labels, colors, interface, normal, angle markings, and control panel. Their source code and interaction behavior are also identical, including the same Snell's-law updates and the same limitation of slider-based rather than direct drag interaction, so neither has a comparative strength or weakness over the other."
+      },
+      "evalModel": "gpt-5.5",
+      "evaluatedAt": "2026-08-14T19:11:42.212Z"
+    }
+  }
+}

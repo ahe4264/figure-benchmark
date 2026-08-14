@@ -1,0 +1,407 @@
+{
+  "math__14.6.7": {
+    "setupA": "baseline-qwen_FINAL",
+    "setupB": "full-pipeline-gemini_FINAL",
+    "subject": "math",
+    "figure": "14.6.7",
+    "machineEval": {
+      "figure1Setup": "baseline-qwen_FINAL",
+      "figure2Setup": "full-pipeline-gemini_FINAL",
+      "mode": "3d",
+      "dimensions": {
+        "geometry": {
+          "winner": "full-pipeline-gemini_FINAL",
+          "confidence": 0.88,
+          "rationale": "Figure 2 better reconstructs the spherical-coordinate geometry because it maps the textbook vertical z-axis to the scene's vertical axis, builds the wedge from the correct spherical bounds with inner/outer spherical faces, theta side faces, phi conical faces, edge lines, arcs, and dimension guides. Figure 1 does create a bounded spherical wedge, but it treats the mathematical z-axis as Three.js world z while the camera/view scaffold treats world y as vertical, so the polar axis and rho indicators are spatially misoriented relative to the expected textbook spherical-coordinate figure; its construction is also more cluttered with duplicated transparent and colored boundary faces."
+        },
+        "interactivity": {
+          "winner": "full-pipeline-gemini_FINAL",
+          "confidence": 0.86,
+          "rationale": "Figure 2's sliders and demo-step buttons consistently recompute the wedge geometry, auxiliary arcs/lines, and label positions in place, with disjoint slider ranges preventing inverted or degenerate bounds. Figure 1 also redraws the wedge for all requested sliders, but every redraw creates new HTML labels without removing or updating the old ones, so after interaction stale duplicate θ/φ/ρ labels remain on screen and can disagree with the current drawing; it also silently changes paired slider values behind the user's back to preserve inequalities."
+        },
+        "faithfulness": {
+          "winner": "full-pipeline-gemini_FINAL",
+          "confidence": 0.92,
+          "rationale": "Figure 2 is much more recognizable as the textbook spherical-coordinate wedge: it preserves the z-up/y-right/x-diagonal axes, the translucent grey spherical sector, and the surrounding rho/theta/phi bound annotations. Figure 1 has some colored boundary patches and labels, but the camera orientation is quite different, the main translucent spherical volume is largely missing, the annotations are cramped, and the overall composition reads less like the original figure."
+        },
+        "labels": {
+          "winner": "full-pipeline-gemini_FINAL",
+          "confidence": 0.78,
+          "rationale": "Figure 2 has the required diagram labels for x, y, z, ρ1, ρ2, θ1, θ2, φ1, and φ2 placed more clearly and in positions closer to the reference, while Figure 1’s labels are very small, cramped around the wedge, and the axis labeling/orientation is less faithful. Figure 2 does include extra side-panel UI text not in the original, but Figure 1 also has slider labels, and its in-diagram annotations are less readable and more cluttered."
+        },
+        "concept": {
+          "winner": "baseline-qwen_FINAL",
+          "confidence": 0.72,
+          "rationale": "Figure 1 more directly and correctly encodes the spherical-coordinate definitions: its six wedge faces are exactly the surfaces ρ=ρ₁, ρ=ρ₂, θ=θ₁, θ=θ₂, φ=φ₁, and φ=φ₂, with θ arcs in the xy-plane and φ arcs measured from the z-axis as specified (L00009-L00011, L00015). Figure 2 also constructs the main wedge mostly correctly, but its transparent surrounding shell is not the same six bounding surfaces and can imply extra boundaries such as φ=0, φ=π/2, and ρ=0; its demo text also describes the radial bounds as “two radii” rather than the two spherical shells stated in the brief, which is less conceptually precise (L00009, L00015)."
+        }
+      },
+      "aggregator": {
+        "winner": "full-pipeline-gemini_FINAL",
+        "confidence": 0.89,
+        "explanation": "Figure 2 is the clear overall winner because it more faithfully renders the textbook-style spherical-coordinate wedge with correct vertical z-axis orientation, clearer x/y/z and ρ/θ/φ bound labels, and interactive controls that update the geometry and annotations consistently. Figure 1 has a conceptually cleaner interpretation of the six mathematical bounding surfaces, but relative to Figure 2 it is visually less faithful, spatially misoriented in the rendered scene, more cluttered, and its label handling breaks after interaction by leaving stale duplicate annotations."
+      },
+      "evalModel": "gpt-5.5",
+      "evaluatedAt": "2026-08-14T19:01:40.798Z"
+    }
+  },
+  "chemistry__CNX_Chem_02_06_IonCharges": {
+    "setupA": "baseline-qwen_FINAL",
+    "setupB": "full-pipeline-gemini_FINAL",
+    "subject": "chemistry",
+    "figure": "CNX_Chem_02_06_IonCharges",
+    "machineEval": {
+      "figure1Setup": "full-pipeline-gemini_FINAL",
+      "figure2Setup": "baseline-qwen_FINAL",
+      "mode": "2d",
+      "dimensions": {
+        "geometry": {
+          "winner": "full-pipeline-gemini_FINAL",
+          "confidence": 0.88,
+          "rationale": "Figure 1 better reconstructs the periodic-table structure: it preserves the characteristic gaps in periods 1–3, uses the group-3 placeholders with a red outline and arrow to the separated f-block, and keeps the f-block as a separate lower block with more plausible proportions. Figure 2 incorrectly draws a full rectangular 18-column grid with many nonexistent cells in the upper table gaps, uses an oversized 15-cell f-block, and changes the f-block arrow styling to a thick gray arrow, making its topology and layout noticeably less faithful."
+        },
+        "interactivity": {
+          "winner": "baseline-qwen_FINAL",
+          "confidence": 0.86,
+          "rationale": "Figure 2 implements the requested controls much more correctly: its group slider spans 1–18, redraws column highlights, and updates a typical-ion text, and clicking a cell visibly selects it while showing ion, electron configuration, and a group-rule popup. Figure 1’s slider and color toggle do update the drawing, but the slider does not show the typical ion for the selected group, and cell clicks only show a generic tooltip/popup message with no persistent highlight and usually no electron configuration. Figure 2 is not perfect because its charge-color mode misclassifies variable positive transition-metal ions as ordinary cations rather than the advertised variable category, and it includes clickable blank table positions, but Figure 1 misses more of the requested interaction behavior."
+        },
+        "faithfulness": {
+          "winner": "full-pipeline-gemini_FINAL",
+          "confidence": 0.93,
+          "rationale": "Figure 1 is much more recognizable as the reference periodic-table figure: it preserves the original block layout, pastel color scheme, group/period labels, charge annotations, red highlighted f-block placeholders, and red arrow/asterisk cue. Figure 2 has the same general subject but is less faithful at a glance, with a more generic continuous grid appearance, altered proportions, a blue group highlight that dominates the left side, a gray rather than red arrow, and many labels/colors appearing misplaced or diminished compared with the original."
+        },
+        "labels": {
+          "winner": "full-pipeline-gemini_FINAL",
+          "confidence": 0.86,
+          "rationale": "Figure 1 has substantially more readable and accurately placed table labels: the title, group/period labels, group numbers, and most ion charge annotations are legible and positioned near the intended cells. Figure 2 makes the table labels much smaller and harder to read, with several element/charge labels appearing cramped, displaced, or nearly illegible at inline size, and it also adds more non-original instructional text that distracts from the textbook labeling."
+        },
+        "concept": {
+          "winner": "full-pipeline-gemini_FINAL",
+          "confidence": 0.78,
+          "rationale": "Figure 1 is more conceptually accurate because it largely shows the requested common ion-charge labels for Groups 1, 2, selected transition metals, Groups 15–17, and noble gases without charge labels, matching the specified charge pattern and examples (L00014, L00018-L00019). Figure 2 includes many of the same correct ion labels, but it draws clickable cells across periodic-table positions that should be empty and then assigns them generic “no common ion” or group-rule explanations, which weakens the core teaching that ion-charge trends are tied to actual element positions in the periodic table (L00010, L00018-L00019). Figure 1 still has some overstatement in narration/charge-color mode, but Figure 2 more seriously misrepresents the periodic-table geometry and overgeneralizes rules to cells/elements beyond those supported by the brief."
+        }
+      },
+      "aggregator": {
+        "winner": "full-pipeline-gemini_FINAL",
+        "confidence": 0.84,
+        "explanation": "Figure 1 is overall stronger because it more faithfully preserves the periodic-table topology, gaps, f-block placement, red placeholder/arrow cue, readable labels, and intended common-ion charge pattern. Figure 2 has better implemented interactive controls and richer click feedback, but it is substantially weaker visually and structurally: it uses a misleading continuous grid with nonexistent cells, cramped labels, altered arrow styling, and overgeneralized explanations for invalid table positions."
+      },
+      "evalModel": "gpt-5.5",
+      "evaluatedAt": "2026-08-14T19:03:12.098Z"
+    }
+  },
+  "chemistry__CNX_Chem_08_04_Gouy": {
+    "setupA": "baseline-qwen_FINAL",
+    "setupB": "full-pipeline-gemini_FINAL",
+    "subject": "chemistry",
+    "figure": "CNX_Chem_08_04_Gouy",
+    "machineEval": {
+      "figure1Setup": "full-pipeline-gemini_FINAL",
+      "figure2Setup": "baseline-qwen_FINAL",
+      "mode": "3d",
+      "dimensions": {
+        "geometry": {
+          "winner": "full-pipeline-gemini_FINAL",
+          "confidence": 0.93,
+          "rationale": "Figure 1 is geometrically more accurate because the sample tube is actually suspended from the balance arm into the gap between the two electromagnets, with the magnetic field centered on the sample and the pan on the opposite arm. Figure 2 has a major spatial error: the sample tube hangs on the left side of the beam while the electromagnets and field are centered near the middle and lower down, so the sample is not placed in the magnetic field as the original apparatus requires; its compact proportions are cleaner, but this core relationship is wrong."
+        },
+        "interactivity": {
+          "winner": "full-pipeline-gemini_FINAL",
+          "confidence": 0.78,
+          "rationale": "Figure 1's sample-type and field-strength controls at least drive the balance in the correct qualitative direction: paramagnetic lowers the sample side toward the magnet and diamagnetic raises it, with deflection scaling with field. Figure 2 has more UI readouts and updates them, but its beam rotation is mathematically reversed, so the paramagnetic sample side rises while the diamagnetic side falls, contradicting the advertised interaction and core Gouy-balance behavior; its weighing animation also mainly scales field lines and tips the beam rather than showing the tube being drawn in or repelled. Figure 1 is weaker because it omits a susceptibility readout and its energize animation is also limited, but its primary interactive physics is less wrong."
+        },
+        "faithfulness": {
+          "winner": "full-pipeline-gemini_FINAL",
+          "confidence": 0.78,
+          "rationale": "Figure 1 is more recognizable as the original because it keeps the sample tube positioned between the two electromagnets on the left side of the balance, with the weight pan on the right and a similar overall balance layout. Figure 2 includes useful labels and field lines, but its sample hangs far away from the electromagnets and the magnet assembly is displaced near the base, making the central experimental setup look substantially different from the textbook figure."
+        },
+        "labels": {
+          "winner": "baseline-qwen_FINAL",
+          "confidence": 0.88,
+          "rationale": "Figure 2 includes all three key original labels—Sample, Magnetic field, and Electromagnets—in readable text placed near the relevant objects, whereas Figure 1’s corresponding labels are extremely small, faint, and difficult to read, with some effectively lost in the artwork. Figure 2 does add extra interface text not present in the original, but Figure 1 also has UI labels and performs much worse on the actual diagram annotations."
+        },
+        "concept": {
+          "winner": "full-pipeline-gemini_FINAL",
+          "confidence": 0.96,
+          "rationale": "Figure 1 more accurately teaches the Gouy balance: its sample tube is actually suspended into the gap between electromagnets and counterbalanced by weights, matching the apparatus described (L00014, L00019), and its paramagnetic setting tips the sample side downward/heavier while the diamagnetic setting tips it upward/lighter, consistent with attraction/repulsion in the applied field (L00010, L00016, L00019). Figure 2 is conceptually worse because its sample tube is placed far to the left of the magnet gap rather than between the poles, and its beam rotation makes a paramagnetic sample side rise and the pan side fall, the opposite of the stated apparent-weight increase; it also displays susceptibility χ as changing with field strength, which falsely suggests χ is not a material property being measured by the balance (L00010-L00012, L00019)."
+        }
+      },
+      "aggregator": {
+        "winner": "full-pipeline-gemini_FINAL",
+        "confidence": 0.91,
+        "explanation": "Figure 1 is clearly stronger overall because it places the sample tube in the electromagnet gap and makes the balance respond in the correct qualitative direction for paramagnetic versus diamagnetic samples, whereas Figure 2 separates the sample from the field region and reverses the apparent-weight behavior. Figure 2 has more readable labels and UI readouts, but those advantages are outweighed by its core spatial and conceptual errors, including the misplaced magnet/sample relationship and misleading susceptibility behavior."
+      },
+      "evalModel": "gpt-5.5",
+      "evaluatedAt": "2026-08-14T19:04:04.599Z"
+    }
+  },
+  "chemistry__CNX_Chem_11_02_electrolyt": {
+    "setupA": "baseline-qwen_FINAL",
+    "setupB": "full-pipeline-gemini_FINAL",
+    "subject": "chemistry",
+    "figure": "CNX_Chem_11_02_electrolyt",
+    "machineEval": {
+      "figure1Setup": "baseline-qwen_FINAL",
+      "figure2Setup": "full-pipeline-gemini_FINAL",
+      "mode": "3d",
+      "dimensions": {
+        "geometry": {
+          "winner": "baseline-qwen_FINAL",
+          "confidence": 0.82,
+          "rationale": "Figure 1 better matches the likely textbook geometry because it reconstructs the three side-by-side conductivity setups for ethanol, KCl, and acetic acid with separate beakers, electrodes, bulbs, wires, particles, and labels. Figure 2 has more polished individual 3D primitives and tube wires, but geometrically it collapses the comparison into one selectable apparatus, giving the wrong element count and spatial relationship for a multi-solution textbook figure."
+        },
+        "interactivity": {
+          "winner": "full-pipeline-gemini_FINAL",
+          "confidence": 0.88,
+          "rationale": "Figure 2 has controls that consistently recompute the chosen solution, particle counts, label text, bulb brightness, and particle motion for each change, and its motion toggle and demo buttons actually update the same state as the drawing. Figure 1’s buttons only light the selected panel while leaving all three labeled panels visible, so unselected KCl or acetic acid panels can be labeled high/low conductivity with dark bulbs; its acetic-acid animation also applies directed migration to neutral molecule spheres, and its ion motion is not separately controllable."
+        },
+        "faithfulness": {
+          "winner": "full-pipeline-gemini_FINAL",
+          "confidence": 0.73,
+          "rationale": "Figure 2 is more visually faithful because it preserves the key recognizable circuit setup from the textbook figure: a beaker with electrodes connected by black wires to a wall plug and light bulb. Figure 1 shows the three labeled solutions side by side, which helps match the overall subject, but it omits or greatly minimizes the bulb and plug apparatus that dominates the original, making the circuit-conductivity concept less recognizable at a glance."
+        },
+        "labels": {
+          "winner": "baseline-qwen_FINAL",
+          "confidence": 0.93,
+          "rationale": "Figure 1 includes the three required solution/conductivity labels from the reference—ethanol/No conductivity, KCl/High conductivity, and acetic acid solution/Low conductivity—placed under the corresponding beakers and mostly readable, though smaller than ideal and accompanied by some extra UI text. Figure 2 only shows the ethanol label in the diagram, it is very tiny and hard to read, and the KCl and acetic acid labels from the original are absent from the rendered figure while many unrelated interface labels are added."
+        },
+        "concept": {
+          "winner": "full-pipeline-gemini_FINAL",
+          "confidence": 0.82,
+          "rationale": "Figure 2 more correctly links microscopic ion presence to conductivity: ethanol shows only neutral molecules with a dark bulb, KCl shows labeled +/− ions migrating to opposite electrodes with a bright bulb, and acetic acid shows mostly neutral clusters plus a few ions with dimmer conductivity, matching the nonelectrolyte/strong/weak electrolyte distinctions (L00007, L00012, L00016-L00017). Figure 1 has the required three panels, but its bulb logic makes the KCl and acetic-acid bulbs dark unless their UI button is selected, so panels labeled “High conductivity” and “Low conductivity” can visually assert no conductivity, contradicting the required bright/dim indicators across all three setups (L00016-L00017); it also lacks visible +/− ion labels and arrows for the ions described in the brief (L00014, L00016)."
+        }
+      },
+      "aggregator": {
+        "winner": "full-pipeline-gemini_FINAL",
+        "confidence": 0.72,
+        "explanation": "Figure 2 is stronger overall because it more accurately represents the conductivity concept and interactive behavior: the selected solution updates particles, bulb brightness, labels, and motion coherently, while Figure 1 can show KCl or acetic acid panels labeled high/low conductivity with dark bulbs and applies misleading motion to neutral species. Figure 1 does better at showing all three textbook solutions side by side with the required labels, but it is less faithful to the recognizable circuit apparatus and less conceptually consistent than Figure 2."
+      },
+      "evalModel": "gpt-5.5",
+      "evaluatedAt": "2026-08-14T19:04:32.547Z"
+    }
+  },
+  "chemistry__CNX_Chem_12_07_Enzyme": {
+    "setupA": "baseline-qwen_FINAL",
+    "setupB": "full-pipeline-gemini_FINAL",
+    "subject": "chemistry",
+    "figure": "CNX_Chem_12_07_Enzyme",
+    "machineEval": {
+      "figure1Setup": "baseline-qwen_FINAL",
+      "figure2Setup": "full-pipeline-gemini_FINAL",
+      "mode": "2d",
+      "dimensions": {
+        "geometry": {
+          "winner": "baseline-qwen_FINAL",
+          "confidence": 0.93,
+          "rationale": "Figure 1 better reconstructs the textbook structure because it shows the two labeled panels, (a) lock-and-key and (b) induced fit, with separate unbound and substrate-complex states for each model laid out side by side, including arrows, substrate labels, enzyme labels, and the distinct active-site captions. Figure 2 collapses the comparison into a single toggleable enzyme diagram, so it omits the simultaneous four-state layout and panel topology of the original; its structural organization is therefore much less faithful even though some individual shapes and colors are plausible."
+        },
+        "interactivity": {
+          "winner": "full-pipeline-gemini_FINAL",
+          "confidence": 0.64,
+          "rationale": "Figure 2 has more direct, coherent controls: the model radio buttons update the displayed model, the Dock/Release button consistently moves the substrates and morphs the enzyme only for induced fit, and the guided steps keep the radio state and dock button label synchronized. Figure 1’s animate and reset controls mostly work, but its model toggle only dims parts of each panel because many labels/arrows are not in the panel groups, and several advertised interactive affordances such as hovering/clicking molecules or panels are only partially wired, making its interactions less consistently correct."
+        },
+        "faithfulness": {
+          "winner": "baseline-qwen_FINAL",
+          "confidence": 0.88,
+          "rationale": "Figure 1 is more visually faithful because it reproduces the original’s overall four-part composition with both lock-and-key and induced-fit models, matching labels, arrows, pastel substrate/enzyme colors, and complex-formed stages, even though it is scaled down. Figure 2 only shows a simplified single lock-and-key starting state in the screenshot, with blockier substrate shapes, a less accurate enzyme outline, and much of the original two-model side-by-side composition absent, making it less recognizable as the full textbook figure."
+        },
+        "labels": {
+          "winner": "baseline-qwen_FINAL",
+          "confidence": 0.66,
+          "rationale": "Figure 1 includes essentially all of the original textbook labels and captions for both lock-and-key and induced-fit models, including the substrate-complex labels and model captions, whereas Figure 2 only shows the initial lock-and-key state and omits many original labels such as the induced-fit annotations, substrate complex formed, and the panel captions. Figure 2's labels are much larger and easier to read, but its labeling is incomplete relative to the original, while Figure 1's main weakness is that the labels are very small and less readable at inline size."
+        },
+        "concept": {
+          "winner": "baseline-qwen_FINAL",
+          "confidence": 0.82,
+          "rationale": "Figure 1 more accurately teaches the requested comparison because it shows separate lock-and-key and induced-fit panels with pre-binding and complex-formed states, preserving the lock-and-key active site as geometrically unchanged after binding and showing the induced-fit enzyme changing from an open/flexible shape to a tighter bound shape, matching the brief's distinction between a rigid pre-formed pocket and adaptive conformational change (L00007, L00010, L00017). Figure 2 is broadly correct, but it collapses the comparison into a single toggled diagram and uses the same final enzyme shape for the induced-fit bound state as for the lock-and-key pocket, which can imply the induced-fit complex simply becomes the lock-and-key geometry rather than distinctly illustrating an enzyme reshaping to wrap around the substrate (L00012, L00017)."
+        }
+      },
+      "aggregator": {
+        "winner": "baseline-qwen_FINAL",
+        "confidence": 0.86,
+        "explanation": "Figure 1 is the clear overall winner because it preserves the original four-state, two-panel comparison of lock-and-key versus induced fit, with the relevant labels, arrows, substrates, enzymes, and complex-formed stages visible together; Figure 2 collapses this into a single toggleable diagram and omits much of the textbook composition and labeling in its default rendered view. Figure 2 has stronger, more coherent interactivity, but that advantage is outweighed by Figure 1's superior structural, visual, labeling, and conceptual fidelity, while Figure 2's simplified shared final geometry weakens the induced-fit distinction relative to Figure 1."
+      },
+      "evalModel": "gpt-5.5",
+      "evaluatedAt": "2026-08-14T19:05:18.365Z"
+    }
+  },
+  "cs__GraphAdjoint": {
+    "setupA": "baseline-qwen_FINAL",
+    "setupB": "full-pipeline-gemini_FINAL",
+    "subject": "cs",
+    "figure": "GraphAdjoint",
+    "machineEval": {
+      "figure1Setup": "full-pipeline-gemini_FINAL",
+      "figure2Setup": "baseline-qwen_FINAL",
+      "mode": "2d",
+      "dimensions": {
+        "geometry": {
+          "winner": "baseline-qwen_FINAL",
+          "confidence": 0.88,
+          "rationale": "Figure 2 better matches the likely textbook structure because it reconstructs the multi-panel layout with labeled panels a), b), c), arrows between construction stages, the original graph, intermediate graph with edge-nodes, and a separately laid-out final edge graph. Figure 1 has the correct basic node/edge counts and line-graph topology, but it collapses the construction into a single overlaid/morphed drawing and leaves the final edge graph vertices at original-edge midpoints, which loses the original figure’s panel structure and relative layout."
+        },
+        "interactivity": {
+          "winner": "baseline-qwen_FINAL",
+          "confidence": 0.78,
+          "rationale": "Figure 2 implements the requested controls more directly: its view buttons switch among all/original/edge views, its animate button automatically steps through the construction, and clicking an original edge in the all-panels final state highlights the corresponding edge-graph node and incident line-graph edges. Figure 1's step and phase controls generally redraw correctly, but it lacks a true all-panels comparison and its original-edge click only shows the corresponding edge-graph node/connections in later construction phases; in the pure Original graph phase the advertised mapping is selected but the edge-graph node and connections remain hidden."
+        },
+        "faithfulness": {
+          "winner": "baseline-qwen_FINAL",
+          "confidence": 0.82,
+          "rationale": "Figure 2 is more visually faithful because it reproduces the full three-panel composition with the original graph, intermediate edge-node construction, and final edge graph in the same left-to-right layout and color scheme. Figure 1 accurately draws the original graph panel, but the screenshot only resembles panel a and lacks the broader composition, captions, arrows, and final edge-graph structure that make the reference recognizable as a whole."
+        },
+        "labels": {
+          "winner": "baseline-qwen_FINAL",
+          "confidence": 0.78,
+          "rationale": "Figure 2 includes the original panel labels/titles and the key node/edge labels across all three panels, while Figure 1 only shows the original graph state and omits the b/c panel labels, edge-node labels, transformation annotations, and most original figure text. Figure 2's labels are much too small at inline size, but Figure 1 also adds many non-original UI/control labels and explanatory text, making it less faithful to the textbook figure overall."
+        },
+        "concept": {
+          "winner": "baseline-qwen_FINAL",
+          "confidence": 0.87,
+          "rationale": "Figure 2 more truthfully represents the intended construction because it shows the original graph, midpoint edge-nodes, and final line/edge graph in three labeled panels and correctly computes edges between new nodes exactly when the corresponding original edges share an endpoint (L00007). Figure 1 also uses the correct line-graph rule and mapping, but it collapses the requested three-panel construction into a single phased drawing, so the final edge graph remains geometrically tied to original-edge midpoints rather than being clearly presented as the resulting graph in its own labeled panel; this makes the conceptual separation between original graph, intermediate construction, and edge graph less accurate to the brief (L00007)."
+        }
+      },
+      "aggregator": {
+        "winner": "baseline-qwen_FINAL",
+        "confidence": 0.86,
+        "explanation": "Figure 2 is the clear overall winner because it recreates the intended three-panel construction with original graph, intermediate edge-node stage, final edge graph, arrows, panel labels, and the correct line-graph adjacency rule. Figure 1 gets the basic mapping and topology mostly right, but it collapses the construction into a single phased/overlaid view, lacks the all-panels comparison, hides mapped edge-graph elements in some states, and omits much of the reference labeling and composition."
+      },
+      "evalModel": "gpt-5.5",
+      "evaluatedAt": "2026-08-14T19:05:43.035Z"
+    }
+  },
+  "physics__brdf": {
+    "setupA": "baseline-qwen_FINAL",
+    "setupB": "full-pipeline-gemini_FINAL",
+    "subject": "physics",
+    "figure": "brdf",
+    "machineEval": {
+      "figure1Setup": "full-pipeline-gemini_FINAL",
+      "figure2Setup": "baseline-qwen_FINAL",
+      "mode": "3d",
+      "dimensions": {
+        "geometry": {
+          "winner": "full-pipeline-gemini_FINAL",
+          "confidence": 0.78,
+          "rationale": "Figure 1 better reconstructs the full 3D BRDF geometry: it uses a proper thick incoming arrow with a cone tip at the surface, a larger and denser hemispherical set of outgoing rays, three local basis vectors with multiple right-angle markers, and dynamically places the outgoing label near the peak direction. Figure 2 captures the same basic arrangement but simplifies the incoming ray to a line with no arrowhead, includes only one right-angle marker, uses fewer and less volumetric outgoing arrows, and reverses the p tangent direction relative to Figure 1, making the local frame and spatial relationships less faithful."
+        },
+        "interactivity": {
+          "winner": "full-pipeline-gemini_FINAL",
+          "confidence": 0.62,
+          "rationale": "Figure 1 better satisfies the requested live BRDF interaction: changing incoming direction and material recomputes the outgoing lobe, and both the incoming and outgoing equation labels move with the updated ray/lobe. Figure 2’s sliders generally recompute the ray and lobe correctly and its elevation control is more accurately named, but its labels are static and do not track the incoming ray or peak outgoing direction, and its outgoing arrows are clamped to a minimum length so very low radiance is not faithfully represented. Figure 1 is not perfect because its “Light Elevation” slider is effectively a polar angle from the normal, so increasing it makes the ray more grazing, but overall its interactive state updates more completely match the intended figure."
+        },
+        "faithfulness": {
+          "winner": "baseline-qwen_FINAL",
+          "confidence": 0.78,
+          "rationale": "Figure 2 is more recognizable because it includes the green plane, central labeled vectors p/q/n, the incoming label ℓ_in(λ), the outgoing formula label, and faint green scattered/reflection arrows near the point, matching more of the textbook composition. Figure 1 has the plane and some axes, but the key labels are tiny, the outgoing/diffuse arrow structure is largely absent, and the scene reads more like a simplified control demo than the original diagram."
+        },
+        "labels": {
+          "winner": "baseline-qwen_FINAL",
+          "confidence": 0.84,
+          "rationale": "Figure 2 has the key labels from the original—ℓ_in(λ), ℓ_out=F(ℓ_in,n,λ,p,q), p, n, and q—at a noticeably larger and more readable size, whereas Figure 1’s labels are extremely tiny and mostly unreadable at inline size. Figure 2 still has clutter around the central formula and labels, but Figure 1’s annotations are so small and compressed that they fail much more severely as labels."
+        },
+        "concept": {
+          "winner": "baseline-qwen_FINAL",
+          "confidence": 0.72,
+          "rationale": "Figure 2 is conceptually better because its displayed scattering model actually varies with both the incoming direction and outgoing/view directions, matching the BRDF idea that reflected power depends on incident light, surface normal, wavelength, p, and q (L00009-L00017) and that outgoing rays span many directions (L00033-L00034). Figure 1 also shows a hemisphere of scattered rays and the right general equation, but its diffuse mode makes the outgoing distribution independent of the incident angle, which conflicts with the Lambertian dependence on n·p described in the context (L00024-L00030), and its 'Light Elevation' control is effectively an angle from the normal rather than elevation above the surface. Both figures incorrectly tend to depict p and q as tangent/local-frame axes rather than the incident and outgoing ray directions specified in the textbook (L00009-L00016), but Figure 2's lobe behavior is closer to the intended BRDF relationship overall."
+        }
+      },
+      "aggregator": {
+        "winner": "baseline-qwen_FINAL",
+        "confidence": 0.72,
+        "explanation": "Figure 2 is overall stronger because it more clearly preserves the textbook composition and readable annotations: the green plane, p/q/n vectors, ℓ_in(λ), and outgoing BRDF formula are visible, whereas Figure 1’s labels are tiny and its rendered scene reads more like a simplified control demo. It also better matches the conceptual BRDF behavior by varying the scattering with incoming and outgoing directions, while Figure 1’s diffuse mode is less faithful to the intended dependence on incident angle. Figure 1 has better reconstructed 3D geometry and more complete dynamic label updates, but those advantages are outweighed by Figure 2’s clearer labeling, recognizable rendering, and closer conceptual match."
+      },
+      "evalModel": "gpt-5.5",
+      "evaluatedAt": "2026-08-14T19:06:32.013Z"
+    }
+  },
+  "physics__geometry_reconstruction_12": {
+    "setupA": "baseline-qwen_FINAL",
+    "setupB": "full-pipeline-gemini_FINAL",
+    "subject": "physics",
+    "figure": "geometry_reconstruction_12",
+    "machineEval": {
+      "figure1Setup": "baseline-qwen_FINAL",
+      "figure2Setup": "full-pipeline-gemini_FINAL",
+      "mode": "3d",
+      "dimensions": {
+        "geometry": {
+          "winner": "full-pipeline-gemini_FINAL",
+          "confidence": 0.9,
+          "rationale": "Figure 2 reconstructs the actual two-view geometry much more accurately: it keeps a fixed target image plane with p on it, places P along the back-projection ray, positions and rotates the reference camera/plane, projects p' by ray-plane intersection, and explicitly computes/clips the epipolar lines on both image planes. Figure 1 has the right rough element types but makes each image plane face P so the projections collapse toward plane centers, omits real epipolar line geometry despite labeling l1/l2, and even removes/replaces some curved arrows incorrectly, making the spatial relationships less faithful."
+        },
+        "interactivity": {
+          "winner": "full-pipeline-gemini_FINAL",
+          "confidence": 0.88,
+          "rationale": "Figure 2 has controls that substantially match the intended interactions: the depth slider moves P along the fixed target ray through a fixed p, and translation/rotation recompute the reference camera, p', rays, epipolar lines, arrows, and displayed values. Figure 1's handlers fire, but they implement the geometry incorrectly: the image planes are continually re-aimed at P so p and p' effectively stay centered in their moving planes rather than showing reprojection motion in fixed frames, the rotation slider moves the second camera center rather than cleanly controlling relative orientation, and its back-projection/reprojection arrow groups are removed from the scene during updates and not re-added."
+        },
+        "faithfulness": {
+          "winner": "full-pipeline-gemini_FINAL",
+          "confidence": 0.86,
+          "rationale": "Figure 2 is more recognizable as the original because it preserves the key side-by-side target/reference frame composition, separated image planes, camera centers, dashed projection rays, and point P/P′ relationships. Figure 1 includes some of the same labels and points, but its planes are stacked and cluttered near the center, the geometry is much less like the reference, and the overall layout no longer reads as the same two-frame epipolar-style diagram."
+        },
+        "labels": {
+          "winner": "baseline-qwen_FINAL",
+          "confidence": 0.57,
+          "rationale": "Figure 1 has larger, more legible diagram labels such as Target frame, R,T, p, p', p'=KP, and the line labels, whereas Figure 2 includes more of the original label set but renders nearly all diagram text extremely small and hard to read at inline size. Figure 1 is still flawed because the top labels P, P'=MP, and P=zK^-1p collide badly and it appears to omit or underemphasize the Reference frame label, but Figure 2's labels are generally too tiny despite being less cluttered."
+        },
+        "concept": {
+          "winner": "full-pipeline-gemini_FINAL",
+          "confidence": 0.86,
+          "rationale": "Figure 2 is conceptually more accurate because it keeps the target image point p fixed on the target image plane and places P along the corresponding depth ray as z changes, which matches the back-projection idea P = zK⁻¹p, then projects that same 3D point into a distinct reference camera/image plane with translation and rotation (L00010). Figure 1 labels the same pipeline, but it repeatedly reorients both image planes to face P, making the image point essentially a constructed central intersection rather than a projection under fixed camera frames/intrinsics; this weakens the asserted relation between p, depth z, K, and the camera frames (L00007, L00010). Figure 2 also better represents two camera frames related by R,T and a reference projection p', whereas Figure 1’s rotation/translation mostly moves the second center and does not clearly preserve a rigid camera frame transformation in the way the brief describes (L00010)."
+        }
+      },
+      "aggregator": {
+        "winner": "full-pipeline-gemini_FINAL",
+        "confidence": 0.9,
+        "explanation": "Figure 2 is the stronger overall figure because it preserves the intended two-view geometry: a fixed target image point p, P moving along its back-projection ray, a distinct reference camera/plane, recomputed p′, and explicit epipolar lines, whereas Figure 1 reorients planes toward P and collapses the projection relationships. Figure 2 also better matches the intended interactions, with depth, translation, and rotation updating the camera geometry and projections coherently, while Figure 1’s controls implement the wrong spatial behavior and even lose some arrow elements during updates. Figure 1 has somewhat more legible labels at inline size, but that advantage is outweighed by Figure 2’s much greater geometric, conceptual, interactive, and rendered faithfulness."
+      },
+      "evalModel": "gpt-5.5",
+      "evaluatedAt": "2026-08-14T19:07:14.799Z"
+    }
+  },
+  "physics__orthogonal_projection": {
+    "setupA": "baseline-qwen_FINAL",
+    "setupB": "full-pipeline-gemini_FINAL",
+    "subject": "physics",
+    "figure": "orthogonal_projection",
+    "machineEval": {
+      "figure1Setup": "baseline-qwen_FINAL",
+      "figure2Setup": "full-pipeline-gemini_FINAL",
+      "mode": "3d",
+      "dimensions": {
+        "geometry": {
+          "winner": "baseline-qwen_FINAL",
+          "confidence": 0.68,
+          "rationale": "Figure 1 better reconstructs the projection geometry: it builds a single stepped prism with explicit faces and edges, places a projection plane, computes the projected L-shaped outline from the solid’s vertices, and draws matching dashed projection rays to the plane. Figure 2 captures the general idea but its coordinate mapping is less consistent, with the labelled axes and projection plane orientation not aligning as cleanly, and the solid is approximated as two overlapping boxes with fixed projected rectangles rather than a true vertex-derived projection."
+        },
+        "interactivity": {
+          "winner": "baseline-qwen_FINAL",
+          "confidence": 0.87,
+          "rationale": "Figure 1 implements all three intended controls and its rotation and perspective-blend handlers at least recompute the box projection, dashed rays, and guide visibility dynamically, whereas Figure 2 only provides a single object-position slider and omits the requested rotation, orthographic-to-perspective blend, and depth-guide toggle. Figure 1 has correctness issues, especially the depth guide projected indicators scaling in the wrong direction and the perspective mode being only an interpolated projection rather than a complete perspective demonstration with object motion, but Figure 2’s lone slider is mislabeled as distance from the plane, uses an offset coordinate rather than true plane distance, leaves the projection trivially unchanged, and does not support the main advertised interactions."
+        },
+        "faithfulness": {
+          "winner": "full-pipeline-gemini_FINAL",
+          "confidence": 0.95,
+          "rationale": "Figure 2 is much more recognizable as the reference because it preserves the left projection plane, right-side two-part colored object, red/green/cyan face scheme, and dashed projection lines connecting the object to the plane. Figure 1 includes a plane and axes but reduces the object to a single block-like form with different coloring and far fewer projection guides, so the overall composition reads less like the textbook figure."
+        },
+        "labels": {
+          "winner": "full-pipeline-gemini_FINAL",
+          "confidence": 0.84,
+          "rationale": "Figure 2 has the required X, Y, Z, x, y, and “Projection plane” labels more readable and more cleanly placed, with the plane label clearly below the artwork and less collision with diagram elements. Figure 1 includes the same main labels but they are smaller, the “Projection plane” text is cramped/overlapping near the plane and axis lines, and the screenshot contains more extraneous UI text that distracts from the intended annotations."
+        },
+        "concept": {
+          "winner": "full-pipeline-gemini_FINAL",
+          "confidence": 0.82,
+          "rationale": "Figure 2 more truthfully represents the key orthographic-projection ideas: the object is displaced along the labeled depth/projection axis, the dashed rays are parallel and perpendicular to the plane, and moving the object's distance leaves the projected L/stair profile unchanged, matching distance-independent preservation of in-plane dimensions (L00007, L00010). Figure 1 has correct-looking labeled axes and parallel rays in places, but its computed projected shape is based on vertices with constant lateral coordinate at the default setting, making the main red projection degenerate rather than an exact preserved 2D staircase layout; its separate cyan accent is not an exact face-layout projection, so it teaches the preservation claim less correctly (L00010)."
+        }
+      },
+      "aggregator": {
+        "winner": "full-pipeline-gemini_FINAL",
+        "confidence": 0.72,
+        "explanation": "Figure 2 is the better overall match to the intended orthographic projection figure: it more faithfully preserves the textbook composition, readable axis/projection-plane labels, parallel projection rays, and the key concept that changing object distance does not change the projected profile. Figure 1 has stronger source-code geometry and much more complete interactivity, but relative to Figure 2 its rendered result is less recognizable, its labels are more cramped, and its default projected shape/conceptual presentation is less accurate."
+      },
+      "evalModel": "gpt-5.5",
+      "evaluatedAt": "2026-08-14T19:08:23.792Z"
+    }
+  }
+}

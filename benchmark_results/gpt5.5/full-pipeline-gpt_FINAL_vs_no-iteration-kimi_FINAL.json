@@ -1,0 +1,407 @@
+{
+  "math__1.1.4": {
+    "setupA": "full-pipeline-gpt_FINAL",
+    "setupB": "no-iteration-kimi_FINAL",
+    "subject": "math",
+    "figure": "1.1.4",
+    "machineEval": {
+      "figure1Setup": "full-pipeline-gpt_FINAL",
+      "figure2Setup": "no-iteration-kimi_FINAL",
+      "mode": "2d",
+      "dimensions": {
+        "geometry": {
+          "winner": "full-pipeline-gpt_FINAL",
+          "confidence": 0.74,
+          "rationale": "Figure 1 more faithfully reconstructs the textbook-style structure: the smooth-curve panel has simple arrowed axes, a blue curve, P and Q, a fan of secants through P, a distinct limiting tangent/secant configuration, shaded angular region, curved arrows, and panel labels with proportions that resemble the intended diagram. Figure 2 captures the same general idea but is structurally less faithful because it uses a more generic sine-like curve, adds prominent numerical slope readouts that are not part of the original figure, uses a triangular rather than sector-like wedge, has fewer/less accurate rotation-arrow details, and its line colors/weights and label placement feel less like the source diagram."
+        },
+        "interactivity": {
+          "winner": "full-pipeline-gpt_FINAL",
+          "confidence": 0.86,
+          "rationale": "Figure 1 has the more correct and robust interactions: toggling panels, step controls, dragging P and Q, redrawing the secant/tangent geometry, and updating both secant and tangent slope readouts all work consistently, with constraints that avoid most degenerate states. Figure 2 also provides working panel buttons and draggable points, but its circle interaction is less robust because dragging P to a vertical-tangent position can produce infinite/NaN tangent direction calculations, breaking the drawn line/wedge/readouts; it also resets point positions on panel/step changes and has a less explicit slope-control/readout implementation than Figure 1."
+        },
+        "faithfulness": {
+          "winner": "full-pipeline-gpt_FINAL",
+          "confidence": 0.93,
+          "rationale": "Figure 1 is much more recognizable as the original panel (a): it preserves the steep tangent line, blue curve shape, multiple purple secant positions, gray curved arrows, pink wedge, and label placement in roughly the same composition. Figure 2 uses the same general idea but the geometry is noticeably altered, with a much flatter/wider layout, extra slope text clutter not in the original, fainter invented guide lines, and a less faithful tangent/secant arrangement."
+        },
+        "labels": {
+          "winner": "full-pipeline-gpt_FINAL",
+          "confidence": 0.9,
+          "rationale": "Figure 1 better matches the original labels: it includes the key labels x, y, P, Q, Tangent line, Secant line, and (a) with generally readable placement and little clutter within the diagram. Figure 2 includes those core labels but adds non-original slope annotations inside the figure, which are small and clutter the shaded wedge area; its tangent/secant labels are also less cleanly placed relative to the artwork."
+        },
+        "concept": {
+          "winner": "full-pipeline-gpt_FINAL",
+          "confidence": 0.82,
+          "rationale": "Figure 1 more accurately represents the core ideas that a secant is the line through fixed P and another curve point Q, and that the tangent is the limiting position as Q approaches P, including for a circle where this agrees with the classical tangent (L00007, L00010). Figure 2 mostly conveys the same idea, but its circle tangent is computed via a slope vector unit([1,mTan]); at vertical tangencies this becomes infinite/NaN and can fail to draw the correct tangent, so it is less generally truthful for the circle construction that should work at P on the circle (L00007, L00010)."
+        }
+      },
+      "aggregator": {
+        "winner": "full-pipeline-gpt_FINAL",
+        "confidence": 0.9,
+        "explanation": "Figure 1 is the clear winner across all dimensions: it more faithfully matches the intended textbook-style diagram with the blue curve, P and Q, multiple secants approaching a limiting tangent, shaded angular region, curved arrows, and cleaner label placement. Compared with Figure 1, Figure 2 is less faithful and more cluttered, adding non-original slope readouts, altering the geometry and wedge shape, and placing labels less cleanly. Figure 1 also has more robust interactions, while Figure 2 can fail near vertical tangencies on the circle due to infinite/NaN tangent calculations."
+      },
+      "evalModel": "gpt-5.5",
+      "evaluatedAt": "2026-08-14T19:11:06.257Z"
+    }
+  },
+  "math__15.4.5": {
+    "setupA": "full-pipeline-gpt_FINAL",
+    "setupB": "no-iteration-kimi_FINAL",
+    "subject": "math",
+    "figure": "15.4.5",
+    "machineEval": {
+      "figure1Setup": "full-pipeline-gpt_FINAL",
+      "figure2Setup": "no-iteration-kimi_FINAL",
+      "mode": "2d",
+      "dimensions": {
+        "geometry": {
+          "winner": "full-pipeline-gpt_FINAL",
+          "confidence": 0.88,
+          "rationale": "Figure 1 better preserves the textbook structure by showing both subfigures simultaneously with separate (a) and (b) labels, the same multiply connected region repeated, clear C₁/C₂/R/R′/R″ labels, thick blue boundary strokes, filled region with a white hole, boundary arrowheads, and the artificial cut segments in the second panel. Figure 2 captures the general topology but collapses the two-panel figure into a single toggleable view, omits visible subfigure labels in the drawing, uses a much more simplified and smaller outline with thinner strokes, and therefore loses important layout and proportional structure of the original."
+        },
+        "interactivity": {
+          "winner": "no-iteration-kimi_FINAL",
+          "confidence": 0.78,
+          "rationale": "Figure 2 better implements the requested interactions: its view selector and step buttons actually switch between the multiply connected view and the cut view, and dragging or wheel-resizing the hole recomputes the region, arrows, labels, and cut endpoints. Figure 1's hole drag and size slider work and update both panels, but its supposed cut/panel interaction is weaker because panel (b) and the cuts are always visible; the checkbox/steps only highlight the already-present cuts rather than toggling or introducing the cut construction as advertised."
+        },
+        "faithfulness": {
+          "winner": "full-pipeline-gpt_FINAL",
+          "confidence": 0.95,
+          "rationale": "Figure 1 is much more visually faithful because it reproduces the two stacked panels, the light-blue multiply connected region, the boundary arrows, labels, and the cut construction in panel (b) in a composition closely resembling the textbook figure. Figure 2 captures the general idea of a blue region with a hole, but its outer and inner shapes are noticeably less like the original, the arrows are reduced or misplaced, and it only shows one simplified panel in the screenshot, making it less recognizable overall."
+        },
+        "labels": {
+          "winner": "full-pipeline-gpt_FINAL",
+          "confidence": 0.96,
+          "rationale": "Figure 1 includes the required labels for both panels, including C1, C2, R, R′, R″, and the panel markers (a) and (b), with placements that broadly match the textbook figure and are readable despite being somewhat small. Figure 2 only shows the first configuration and omits the second panel entirely, so it lacks R′, R″, the cut-related annotations, and the panel labels, making its label coverage much worse."
+        },
+        "concept": {
+          "winner": "full-pipeline-gpt_FINAL",
+          "confidence": 0.78,
+          "rationale": "Figure 1 more accurately conveys the requested mathematical relationships: it shows the positive orientation convention with outer C1 counterclockwise and inner C2 clockwise, then shows the same region cut into R′ and R″ with right/left opposing cut orientations that cancel, matching the key ideas in the brief and context (L00007-L00014, L00056-L00069, L00072-L00073). Figure 2 states mostly correct ideas, but it replaces the two-panel before/after comparison with a single switchable view and its cut/orientation geometry is more schematic and less clearly tied to the two simply connected subregions and cancellation mechanism, so it teaches the construction less faithfully."
+        }
+      },
+      "aggregator": {
+        "winner": "full-pipeline-gpt_FINAL",
+        "confidence": 0.89,
+        "explanation": "Figure 1 is stronger overall because it preserves the textbook-like two-panel structure with separate (a)/(b) views, complete C₁/C₂/R/R′/R″ labeling, visible cut construction, boundary arrows, and clearer orientation/cancellation relationships. Figure 2 has better dynamic controls, since its selector and steps actually switch the construction and recompute geometry during interaction, but it is visually and conceptually more simplified: it shows only one view at a time, omits key panel and cut labels in the rendered view, and loses much of the original layout and proportional structure."
+      },
+      "evalModel": "gpt-5.5",
+      "evaluatedAt": "2026-08-14T19:12:33.370Z"
+    }
+  },
+  "math__5.3.4": {
+    "setupA": "full-pipeline-gpt_FINAL",
+    "setupB": "no-iteration-kimi_FINAL",
+    "subject": "math",
+    "figure": "5.3.4",
+    "machineEval": {
+      "figure1Setup": "no-iteration-kimi_FINAL",
+      "figure2Setup": "full-pipeline-gpt_FINAL",
+      "mode": "3d",
+      "dimensions": {
+        "geometry": {
+          "winner": "full-pipeline-gpt_FINAL",
+          "confidence": 0.86,
+          "rationale": "Figure 2 better reconstructs the likely textbook geometry because it presents the two-panel comparison with panel (a) as a vertical rectangle under the curve and panel (b) as the corresponding hollow cylindrical shell, including x/y axes, labels, captions, shell thickness, inner/outer radii, and annular faces. Figure 1 has generally correct shell-method primitives, but it separates the views behind a toggle instead of showing the side-by-side spatial relationship, includes many extra strips and a full lathed solid that may not belong to the source figure, and its revolved-view labeling/axis setup is less faithful and less geometrically explanatory."
+        },
+        "interactivity": {
+          "winner": "full-pipeline-gpt_FINAL",
+          "confidence": 0.74,
+          "rationale": "Figure 2 better satisfies the intended linked interactions: changing k in the linked comparison rebuilds and highlights the corresponding rectangle and shell together and updates radius, height, shell volume, total sum, and error, while Figure 1 only shows either the rectangle or the shell via a mode toggle rather than simultaneous panels. Figure 1 handles the n/k slider bounds more cleanly and shows all shells thinning, but it has label-visibility issues and the main linked highlight interaction is less faithful; Figure 2’s main weakness is that k can be dragged beyond n and silently clamped, and 3D rotation is disabled in the linked comparison view, though it works in the shell-only view."
+        },
+        "faithfulness": {
+          "winner": "full-pipeline-gpt_FINAL",
+          "confidence": 0.86,
+          "rationale": "Figure 2 is more visually faithful because it presents the two-panel comparison with a rectangle on the left and a cylindrical shell on the right, including the teal shell/strip coloring, axes, labels, and captions that make it recognizable as the textbook figure. Figure 1 only shows the flat-strip view in the screenshot, adds several extra partition rectangles and UI emphasis, and lacks the visible cylindrical shell panel, making the overall composition much less like the reference at a glance."
+        },
+        "labels": {
+          "winner": "full-pipeline-gpt_FINAL",
+          "confidence": 0.78,
+          "rationale": "Figure 2 includes most of the original labels and annotations in the rendered figure itself, including x/y axes, R_k, S_k, x_{k-1}, x_k, panel labels, and both descriptive captions, although the captions and panel letters are badly crowded and overlap the artwork. Figure 1’s actual diagram labels are much too small to read comfortably, it largely omits the side-by-side labeled panel/caption structure of the original, and many readable labels are UI controls or extra explanatory text rather than textbook annotations."
+        },
+        "concept": {
+          "winner": "full-pipeline-gpt_FINAL",
+          "confidence": 0.78,
+          "rationale": "Figure 2 more accurately teaches the intended one-to-one relationship: panel (a) shows a single selected vertical rectangle R_k between x_{k−1} and x_k under a decreasing curve and panel (b) shows that same rectangle as a hollow cylindrical shell S_k with appropriate inner radius, outer radius, height, and shell-volume readout, matching the shell-method concept (L00007, L00010). Figure 1 is mostly mathematically truthful, but it shows many strips/shells and an added revolved solid rather than focusing on the single kth strip and its generated shell, which makes the core concept less cleanly aligned with the brief’s single-rectangle/single-shell assertion (L00010). Figure 2’s gray reference cylinder inside the shell is mildly misleading because the generated shell should be hollow, but its teal annular shell is still conceptually clearer than Figure 1’s more cluttered all-shells presentation."
+        }
+      },
+      "aggregator": {
+        "winner": "full-pipeline-gpt_FINAL",
+        "confidence": 0.86,
+        "explanation": "Figure 2 is the clear overall winner because it matches the intended side-by-side textbook comparison: a single rectangle under the curve is directly paired with its corresponding cylindrical shell, with relevant axes, labels, captions, radii, thickness, and volume information visible. Figure 1 is mathematically related and has some cleaner slider behavior, but it hides the rectangle/shell comparison behind a toggle, adds extra strips and a full revolved solid that distract from the single R_k-to-S_k relationship, and is less faithful visually and conceptually to the reference."
+      },
+      "evalModel": "gpt-5.5",
+      "evaluatedAt": "2026-08-14T19:13:23.023Z"
+    }
+  },
+  "cs__LossLogisticSigmoid": {
+    "setupA": "full-pipeline-gpt_FINAL",
+    "setupB": "no-iteration-kimi_FINAL",
+    "subject": "cs",
+    "figure": "LossLogisticSigmoid",
+    "machineEval": {
+      "figure1Setup": "full-pipeline-gpt_FINAL",
+      "figure2Setup": "no-iteration-kimi_FINAL",
+      "mode": "2d",
+      "dimensions": {
+        "geometry": {
+          "winner": "full-pipeline-gpt_FINAL",
+          "confidence": 0.82,
+          "rationale": "Figure 1 more accurately reconstructs the likely textbook sigmoid plot: it uses the exact x range [-5,5] and y range [0,1], draws the full rectangular plot frame, shows the orange sigmoid with the correct sampled shape, includes the midpoint dashed guides, and places a prominent fraction formula inside the axes. Figure 2 has the same basic curve and tick labels, but its y-axis extends beyond 0 and 1, it lacks the full enclosing frame/top-right borders, uses a smoothed line interpolation, and adds a persistent blue point and coordinate label that alter the original static structure more noticeably."
+        },
+        "interactivity": {
+          "winner": "full-pipeline-gpt_FINAL",
+          "confidence": 0.82,
+          "rationale": "Figure 1’s threshold slider correctly recomputes the logit intercept and redraws the horizontal threshold line and marker across a wider, still valid probability range, whereas Figure 2 suppresses the threshold overlay entirely at the valid default p = 0.50 and if the user returns the slider there. Figure 2 has a more obvious draggable point initially, but Figure 1 still supports dragging from the curve/point and updates the coordinate readout and marker correctly, so its interactions are overall more faithful and robust."
+        },
+        "faithfulness": {
+          "winner": "full-pipeline-gpt_FINAL",
+          "confidence": 0.93,
+          "rationale": "Figure 1 is much more visually faithful to the reference: it preserves the boxed axes, the orange sigmoid shape, the central formula placement, the main tick labels, and the dotted threshold guides in a composition that closely resembles the textbook figure. Figure 2 loses the full rectangular frame, changes the formula styling and placement substantially, adds an invented blue point and coordinate label, and has less accurate axis/tick presentation, making it noticeably less recognizable as the original."
+        },
+        "labels": {
+          "winner": "full-pipeline-gpt_FINAL",
+          "confidence": 0.94,
+          "rationale": "Figure 1 much more closely matches the reference labels: the axis labels, tick labels, and large centered sigmoid formula are present, readable, and placed similarly to the original. Figure 2 has a much smaller and misplaced formula, an invented coordinate annotation at the midpoint, and an incorrect bottom y-axis label shown as “-0.0,” making its labeling less faithful and more cluttered."
+        },
+        "concept": {
+          "winner": "full-pipeline-gpt_FINAL",
+          "confidence": 0.78,
+          "rationale": "Both figures correctly plot an increasing logistic sigmoid over z ∈ [−5,5] with appropriate axis labels/ticks and the midpoint sig[0]=0.5 (L00007), but Figure 1’s explanatory threshold statements use the correct logit relationship qualitatively, whereas Figure 2 falsely says a higher probability threshold demands a “proportionally larger z,” even though the intercept is logit(p), not proportional to p (L00007). Both figures also miss or replace the requested gray dashed horizontal asymptote at sig[z]=1.0 with a midpoint line at sig[z]=0.5, so neither is perfect on the asymptote concept (L00007), but Figure 2 adds the more explicit mathematical misstatement while Figure 1 does not."
+        }
+      },
+      "aggregator": {
+        "winner": "full-pipeline-gpt_FINAL",
+        "confidence": 0.91,
+        "explanation": "Figure 1 is stronger across all dimensions: it more faithfully preserves the boxed axes, correct [-5,5] and [0,1] ranges, orange sigmoid, central formula, tick/axis labels, and dashed midpoint guides, while Figure 2 alters the frame, y-range, formula placement, and adds an invented blue coordinate annotation. Figure 1 also handles the threshold interaction and logit relationship more robustly, whereas Figure 2 can suppress the threshold overlay at the default and makes a misleading proportional-threshold claim."
+      },
+      "evalModel": "gpt-5.5",
+      "evaluatedAt": "2026-08-14T19:13:48.269Z"
+    }
+  },
+  "cs__PerfSmoothness": {
+    "setupA": "full-pipeline-gpt_FINAL",
+    "setupB": "no-iteration-kimi_FINAL",
+    "subject": "cs",
+    "figure": "PerfSmoothness",
+    "machineEval": {
+      "figure1Setup": "no-iteration-kimi_FINAL",
+      "figure2Setup": "full-pipeline-gpt_FINAL",
+      "mode": "2d",
+      "dimensions": {
+        "geometry": {
+          "winner": "full-pipeline-gpt_FINAL",
+          "confidence": 0.78,
+          "rationale": "Figure 2 better reconstructs the small-multiple structure with a proper 3×2 grid, boxed axes, visible tick marks, outer axis labeling, large panel letters/titles, and fitted-curve shapes/proportions that resemble the textbook panels. Figure 1 has the same six-panel concept and includes more orange points, but its default state dims most panels and adds a highlight border, its Chart.js axes lack the strong boxed/ticked styling, and its target/fitted curves and proportions look less faithful to the original layout."
+        },
+        "interactivity": {
+          "winner": "full-pipeline-gpt_FINAL",
+          "confidence": 0.82,
+          "rationale": "Figure 2 has more correct and functional interactions: its hidden-unit slider recomputes/redraws a focused fit for the selected capacity, clicking a panel genuinely zooms/enlarges that panel, and reset/step controls update the displayed state consistently. Figure 1’s slider mostly just highlights/dims pre-rendered panels rather than animating or redrawing the fitted curve, and panel clicks only open a popup and change the highlight rather than zooming in; its 6-vs-50 checkbox does switch extremes more directly than Figure 2’s comparison checkbox, but overall Figure 2 satisfies the intended interactive behavior much better."
+        },
+        "faithfulness": {
+          "winner": "full-pipeline-gpt_FINAL",
+          "confidence": 0.95,
+          "rationale": "Figure 2 is much more visually faithful because it preserves the clear 2×3 panel layout, panel labels, titles, black target curve, cyan model fits, and orange data points in a composition that closely resembles the reference. Figure 1 includes the same general elements, but most panels are faded/greyed out, one panel is highlighted with a border, the axes and labels are much less clear, and the overall composition reads more like an interactive inspection view than the original textbook figure."
+        },
+        "labels": {
+          "winner": "full-pipeline-gpt_FINAL",
+          "confidence": 0.88,
+          "rationale": "Figure 2 includes all panel letters a)–f), the hidden-unit titles, and the main axis labels in readable form, whereas Figure 1 has several panel letters that are tiny, faint, partially missing or reduced to just a parenthesis, and many labels are low-contrast because nonselected panels are faded. Figure 1 also adds prominent explanatory/control text beside the plot and a selection border that distract from the original labeling, while Figure 2 is more consistently legible and closer to the textbook label set despite some crowding and small tick labels."
+        },
+        "concept": {
+          "winner": "no-iteration-kimi_FINAL",
+          "confidence": 0.84,
+          "rationale": "Figure 1 is more conceptually accurate because its plotted sequence and narration consistently teach the brief’s intended trend: lower hidden-unit counts have larger oscillations/overshoots and higher counts become smoother and closer to a simple function, matching the stated relationship between hidden units and smoothness/expressiveness (L00007-L00014). Figure 2 shows a similar panel set, but its text repeatedly frames low hidden-unit models as merely using broad limited-flexibility segments and says more hidden units add shape complexity/local adaptation, which undercuts the specific smoothness trend the figure is supposed to convey (L00013-L00014); it also fabricates intermediate integer hidden-unit curves by interpolation while labeling them as hidden-unit counts, which is less faithful to the specified trained configurations (L00007-L00010). Both figures make panel (a) a reference/target rather than clearly another trained network configuration, but Figure 1’s main conceptual message is closer to the brief."
+        }
+      },
+      "aggregator": {
+        "winner": "full-pipeline-gpt_FINAL",
+        "confidence": 0.88,
+        "explanation": "Figure 2 is the clear overall winner because it much more faithfully reconstructs the 2×3/3×2 small-multiple layout with readable panel letters, hidden-unit titles, boxed axes, visible ticks, orange data points, black target curves, and cyan fitted curves, while Figure 1’s faded panels, highlight border, weaker axes, and low-contrast labels make it look more like an inspection interface than the textbook figure. Figure 2 also implements the intended interactions more effectively, with a slider that redraws the fit and panel clicks that genuinely zoom, whereas Figure 1 mostly highlights or dims pre-rendered panels and uses popups instead of zooming. Figure 1 has a stronger conceptual narration about the intended smoothness trend, but that single advantage is outweighed by Figure 2’s substantially better visual fidelity, labeling, geometry, and interaction behavior."
+      },
+      "evalModel": "gpt-5.5",
+      "evaluatedAt": "2026-08-14T19:14:37.786Z"
+    }
+  },
+  "cs__ReinforceMDPLoop": {
+    "setupA": "full-pipeline-gpt_FINAL",
+    "setupB": "no-iteration-kimi_FINAL",
+    "subject": "cs",
+    "figure": "ReinforceMDPLoop",
+    "machineEval": {
+      "figure1Setup": "full-pipeline-gpt_FINAL",
+      "figure2Setup": "no-iteration-kimi_FINAL",
+      "mode": "2d",
+      "dimensions": {
+        "geometry": {
+          "winner": "full-pipeline-gpt_FINAL",
+          "confidence": 0.92,
+          "rationale": "Figure 1 better reconstructs the original MDP loop structure: it has the full set of directed orange elbow arrows with arrowheads, correctly placed state/reward/action labels, and next-state/next-reward labels aligned with their outgoing paths. Figure 2 is structurally weaker because the right-side state path lacks an arrowhead, several labels are noticeably misaligned or displaced—especially r_{t+1}—and the arrow routing/line weights and dashed divider are less faithful to the textbook layout."
+        },
+        "interactivity": {
+          "winner": "full-pipeline-gpt_FINAL",
+          "confidence": 0.72,
+          "rationale": "Figure 1 is better because its animation at least includes separate pulses for both the next state and reward returning from the environment, and its Agent and Environment click handlers correctly highlight the advertised policy/action and transition/reward labels. Figure 2’s click interactions work cleanly and its animation is a true one-shot, but the animated MDP time step omits the next-state return entirely, showing only current state, action, and a reward path, so it fails a central advertised part of the interaction."
+        },
+        "faithfulness": {
+          "winner": "full-pipeline-gpt_FINAL",
+          "confidence": 0.93,
+          "rationale": "Figure 1 is more visually faithful because it preserves the original composition with prominent Agent and Environment boxes, external Reward/State/Action labels, similar orange flow arrows, and recognizable mathematical labels. Figure 2 keeps the two-box layout and some arrows, but it omits the large side labels, uses smaller and less accurate typography, has less clear arrowheads, and overall looks more sparse and less immediately recognizable as the textbook figure."
+        },
+        "labels": {
+          "winner": "full-pipeline-gpt_FINAL",
+          "confidence": 0.95,
+          "rationale": "Figure 1 includes nearly all of the key labels from the reference, including Reward, State, Action, r_t, s_t, s_{t+1}, and r_{t+1}, and its box labels are larger and more readable. Figure 2 omits the important outer labels for Reward/State/Action and the time-indexed variables around the loop, and its environment annotations are smaller and more cramped, with some text crowded near the box edges."
+        },
+        "concept": {
+          "winner": "full-pipeline-gpt_FINAL",
+          "confidence": 0.86,
+          "rationale": "Figure 1 more faithfully represents the MDP loop: it correctly labels the agent policy π[a_t|s_t], the environment transition Pr(s_{t+1}|s_t,a_t), and reward Pr(r_{t+1}|s_t,a_t), and its annotations describe s_t and r_t as current inputs with s_{t+1} and r_{t+1} becoming the next inputs in the closed loop (L00007). Figure 2 has the same core labels mostly right, but is less conceptually accurate because one state-return route is drawn without a directed arrowhead, making the directed state flow less clear, and its narration/popup overstates the agent as “nothing more than a state-to-action mapping” and calls both transition and reward dependence “exactly the Markov property,” which is less precise than the brief’s statement that the agent selects actions according to a policy and the environment supplies next state and reward distributions (L00007)."
+        }
+      },
+      "aggregator": {
+        "winner": "full-pipeline-gpt_FINAL",
+        "confidence": 0.94,
+        "explanation": "Figure 1 is the clear overall winner because it more faithfully reconstructs the MDP loop with the full directed orange arrow structure, readable Agent/Environment boxes, and the key Reward, State, Action, s_t, r_t, s_{t+1}, and r_{t+1} labels in the expected places. Compared with Figure 1, Figure 2 is sparser and less faithful: it omits important outer/time-indexed labels, has weaker or missing arrowheads and less accurate routing, and its interaction/animation fails to show the next-state return path that Figure 1 includes."
+      },
+      "evalModel": "gpt-5.5",
+      "evaluatedAt": "2026-08-14T19:15:12.440Z"
+    }
+  },
+  "physics__basic_motion_point": {
+    "setupA": "full-pipeline-gpt_FINAL",
+    "setupB": "no-iteration-kimi_FINAL",
+    "subject": "physics",
+    "figure": "basic_motion_point",
+    "machineEval": {
+      "figure1Setup": "no-iteration-kimi_FINAL",
+      "figure2Setup": "full-pipeline-gpt_FINAL",
+      "mode": "3d",
+      "dimensions": {
+        "geometry": {
+          "winner": "no-iteration-kimi_FINAL",
+          "confidence": 0.73,
+          "rationale": "Figure 1 better preserves the core 3D construction: the image plane is an actual transparent rectangle at z=f, p is computed as the exact ray-plane intersection, the solid and dashed rays connect O to P and the displaced point, and the image-plane velocity arrow terminates at the projected displaced point. Figure 2 is more polished visually, but geometrically it omits the plane surface, uses a rotated stylized coordinate group with orthographic rendering, and its scaled image-flow arrow no longer coincides with the dashed ray’s intersection point, weakening the key spatial relationship."
+        },
+        "interactivity": {
+          "winner": "full-pipeline-gpt_FINAL",
+          "confidence": 0.86,
+          "rationale": "Figure 2 has the more correct interactions: its velocity sliders recompute the projection, analytic optical-flow vector, dashed displaced ray, labels, and numeric readout, and dragging P moves it along the current 3D velocity direction with depth changes reflected in p. Figure 1’s sliders and demo buttons do update the drawing, but its drag handler only moves P on a fixed-Z plane rather than along the trajectory/velocity direction, so the main drag interaction cannot demonstrate depth variation of the projection; it also uses a clamped projected displaced point in some cases that can disagree with the dashed ray. Figure 2 has minor edge-case compromises near the enforced minimum depth, but overall its controls match the advertised effects much better."
+        },
+        "faithfulness": {
+          "winner": "full-pipeline-gpt_FINAL",
+          "confidence": 0.78,
+          "rationale": "Figure 2 is more recognizable as the textbook diagram because it preserves the prominent black labels, two red displacement arrows, green solid and dashed projection lines, black points, and central image-plane composition at a readable scale. Figure 1 has some of the same geometry, but the actual diagram is extremely small in the canvas, the labels and arrows are barely legible, and the composition no longer resembles the large schematic layout of the reference at a glance."
+        },
+        "labels": {
+          "winner": "full-pipeline-gpt_FINAL",
+          "confidence": 0.93,
+          "rationale": "Figure 2 has the required diagram labels O, p, ṗ, P, and Ṗ in large, readable text with generally clear placement near the corresponding points/arrows, while Figure 1’s diagram labels are extremely small and barely legible at inline size, with important labels such as O effectively missing or not visible. Both figures include extra interface text not in the original, but Figure 2’s actual figure annotations match the textbook much better."
+        },
+        "concept": {
+          "winner": "full-pipeline-gpt_FINAL",
+          "confidence": 0.82,
+          "rationale": "Figure 2 is more conceptually accurate because it explicitly computes the image point with p=(fX/Z,fY/Z) and the image velocity from the time derivatives ẋ=f(ẊZ-XŻ)/Z² and ẏ=f(ẎZ-YŻ)/Z², matching the required perspective-projection link between P, Ṗ, p, and ṗ (L00007-L00014, L00019). Figure 1 correctly places p on the ray-plane intersection, but its red image arrow labelled ṗ is based on a finite projected displacement from P+SṖ, with a depth clamp, rather than the instantaneous derivative; that preserves direction in many cases but can misrepresent the actual instantaneous optical-flow magnitude asserted by the label and brief (L00012-L00014, L00019). Figure 2 also labels the camera center as O as specified, whereas Figure 1 labels it lowercase o despite the brief using O (L00019)."
+        }
+      },
+      "aggregator": {
+        "winner": "full-pipeline-gpt_FINAL",
+        "confidence": 0.86,
+        "explanation": "Figure 2 is the stronger overall choice because it has much more readable and faithful textbook-style labels and composition, and its controls recompute the perspective projection, optical-flow vector, dashed displaced ray, and numeric readout more correctly than Figure 1. Figure 1 preserves the 3D ray-plane construction better, with an actual transparent image plane and exact ray-plane intersection, but it is visually tiny, poorly legible, uses a fixed-Z drag behavior, and represents ṗ via a finite displaced projection rather than the instantaneous derivative. Figure 2 has some geometric stylization and a minor mismatch between its scaled flow arrow and dashed-ray intersection, but its conceptual, interactive, and rendered-label advantages outweigh those weaknesses."
+      },
+      "evalModel": "gpt-5.5",
+      "evaluatedAt": "2026-08-14T19:15:49.613Z"
+    }
+  },
+  "physics__cross_ratio_description2": {
+    "setupA": "full-pipeline-gpt_FINAL",
+    "setupB": "no-iteration-kimi_FINAL",
+    "subject": "physics",
+    "figure": "cross_ratio_description2",
+    "machineEval": {
+      "figure1Setup": "no-iteration-kimi_FINAL",
+      "figure2Setup": "full-pipeline-gpt_FINAL",
+      "mode": "2d",
+      "dimensions": {
+        "geometry": {
+          "winner": "full-pipeline-gpt_FINAL",
+          "confidence": 0.92,
+          "rationale": "Figure 2 better reconstructs the projective-geometry structure: it shows four rays from O meeting two finite transversals with four P and four Q points, a third transversal parallel to the first ray with three visible finite R points, and an explicit arrow/label for R₁ at infinity. Figure 1 has the same intended topology but its R-line geometry places most finite R intersections off the visible viewbox, so the visible node count and layout are wrong; its infinity annotation is also less structurally accurate, appearing as a simple line near the ray rather than a clear point-at-infinity marker on the R-line direction."
+        },
+        "interactivity": {
+          "winner": "full-pipeline-gpt_FINAL",
+          "confidence": 0.98,
+          "rationale": "Figure 2 is clearly better because its drag handlers are attached to created SVG elements and dragging O or finite P/Q/R points recomputes the projection geometry and cross-ratio readouts. Figure 1 attempts to attach an O pointer handler before build() creates oEl, causing a runtime error before rendering, so its controls and redraw logic effectively do not work at all."
+        },
+        "faithfulness": {
+          "winner": "full-pipeline-gpt_FINAL",
+          "confidence": 0.99,
+          "rationale": "Figure 2 is clearly recognizable as the original configuration with black rays from O, magenta transversal lines, labeled points P/Q/R, and the point at infinity, whereas Figure 1 fails to render and only shows an error message, making it visually unrelated to the textbook figure."
+        },
+        "labels": {
+          "winner": "full-pipeline-gpt_FINAL",
+          "confidence": 0.98,
+          "rationale": "Figure 2 is clearly better because it includes the main labels O, P1–P4, Q1–Q4, and R1–R4 in readable form near the corresponding points, whereas Figure 1 renders only an error message and has none of the required diagram labels. Figure 2 does have drawbacks, including extra instructional/UI text not in the original and some cramped or altered placement such as the R1 area, but Figure 1 completely fails the labeling task."
+        },
+        "concept": {
+          "winner": "full-pipeline-gpt_FINAL",
+          "confidence": 0.76,
+          "rationale": "Figure 2 more correctly teaches the projective invariant by explicitly showing the ordered collinear quadruples on three transversals, the central projection rays from O, a correct cross-ratio formula/readout, and the limiting R₁-at-infinity case caused by the R-line being parallel to the OP₁Q₁ ray (L00007, L00010). Figure 1 is largely conceptually correct too, but it is less precise pedagogically: its R₁→∞ annotation is separated from the R-line construction and it asserts the equality mainly through numeric readouts without clearly presenting the ordered-point cross-ratio relation that the brief emphasizes (L00010)."
+        }
+      },
+      "aggregator": {
+        "winner": "full-pipeline-gpt_FINAL",
+        "confidence": 0.97,
+        "explanation": "Figure 2 is the clear overall winner: it renders the intended projective configuration with rays from O, three transversals, labeled P/Q/R points, an explicit R₁-at-infinity indication, and working drag/recompute behavior. Figure 1 is much weaker by comparison because it fails to render in the screenshot, lacks the required visible labels, and its source-level geometry/interactivity are flawed, including a runtime error and an R-line construction that pushes key finite intersections out of view."
+      },
+      "evalModel": "gpt-5.5",
+      "evaluatedAt": "2026-08-14T19:16:53.153Z"
+    }
+  },
+  "physics__no_picture_on_a_wall_aina": {
+    "setupA": "full-pipeline-gpt_FINAL",
+    "setupB": "no-iteration-kimi_FINAL",
+    "subject": "physics",
+    "figure": "no_picture_on_a_wall_aina",
+    "machineEval": {
+      "figure1Setup": "full-pipeline-gpt_FINAL",
+      "figure2Setup": "no-iteration-kimi_FINAL",
+      "mode": "3d",
+      "dimensions": {
+        "geometry": {
+          "winner": "full-pipeline-gpt_FINAL",
+          "confidence": 0.86,
+          "rationale": "Figure 1 better matches the textbook pinhole-camera geometry: it reconstructs the side-by-side no-aperture and pinhole panels, uses the correct wall/barrier/tree spatial layout, sends multiple rays from many tree points to the same wall points in the no-aperture case, routes pinhole rays through a single aperture, and shows an inverted projected image on the wall. Figure 2 uses more volumetric 3D primitives, but its perspective single-scene/toggled layout does not match the likely source view, its no-aperture fan only sends each sample to one of two targets rather than showing many directions mixing at each wall point, and its projected image is reduced to loose sprites rather than a geometrically recognizable inverted tree."
+        },
+        "interactivity": {
+          "winner": "full-pipeline-gpt_FINAL",
+          "confidence": 0.82,
+          "rationale": "Figure 1 implements the requested interaction set more correctly: its controls rebuild the diagram, switch between no-aperture and pinhole views, provide a side-by-side comparison mode, and make the pinhole diameter visibly affect the hole, ray spread, and projected blur. Figure 2's mode buttons and size slider basically work, and its wall-click highlight is useful, but it lacks the requested side-by-side comparison toggle and its pinhole-size slider mainly scales projected sprites rather than recomputing a true finite-aperture ray bundle; its comparison highlight is also only shown in one mode at a time and is cleared when toggling."
+        },
+        "faithfulness": {
+          "winner": "full-pipeline-gpt_FINAL",
+          "confidence": 0.92,
+          "rationale": "Figure 1 is much more recognizable as the textbook figure because it preserves the two-panel side-by-side composition, the wall/tree/ray layout, the black pinhole screen in panel (b), and the labels and captions in roughly the same visual arrangement. Figure 2 captures the general idea of a tree, wall, and rays, but its single angled 3D scene, tiny/misplaced labels, missing visible pinhole panel in the screenshot, and altered composition make it look less like the original at a glance."
+        },
+        "labels": {
+          "winner": "full-pipeline-gpt_FINAL",
+          "confidence": 0.88,
+          "rationale": "Figure 1 has the key diagram labels much more legible and closer to the reference, including clear Wall labels, a Pinhole label, and panel captions, whereas Figure 2’s in-scene labels are extremely small and hard to read at inline size and the panel marker is tiny and misplaced. Figure 1 does add extra caption words and has some mild crowding around the right Wall/Pinhole area, but Figure 2 is far worse for readability and faithful label placement."
+        },
+        "concept": {
+          "winner": "full-pipeline-gpt_FINAL",
+          "confidence": 0.86,
+          "rationale": "Figure 1 is more conceptually accurate because it directly shows the required two-panel contrast: in (a) many rays from several tree points converge onto the same bare-wall points, and in (b) rays pass through a single pinhole to form an inverted, spatially separated wall projection, matching the pinhole-camera mechanism and one-to-one scene-direction mapping (L00010-L00014). Figure 2 gets the broad physics mostly right, including ray mixing without an aperture and inversion through a pinhole, but it presents the cases mainly as a toggle rather than the specified two-panel contrast and its pinhole image is represented as sparse glowing sample spots rather than a coherent inverted tree projection, so it teaches the stated image-formation relationship less completely (L00010-L00014)."
+        }
+      },
+      "aggregator": {
+        "winner": "full-pipeline-gpt_FINAL",
+        "confidence": 0.9,
+        "explanation": "Figure 1 is the clear winner because it more faithfully recreates the textbook two-panel pinhole-camera comparison, with readable labels, correct wall/barrier/tree geometry, no-aperture ray mixing, and pinhole rays forming an inverted wall image. Figure 2 conveys the broad idea, but its single angled/toggled 3D scene, much smaller labels, weaker no-aperture ray mixing, lack of side-by-side comparison, and sparse sprite-like projection make it less faithful, less legible, and less conceptually complete than Figure 1."
+      },
+      "evalModel": "gpt-5.5",
+      "evaluatedAt": "2026-08-14T19:17:36.065Z"
+    }
+  }
+}

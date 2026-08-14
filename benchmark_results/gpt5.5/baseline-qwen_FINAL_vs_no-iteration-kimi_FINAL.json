@@ -1,0 +1,407 @@
+{
+  "cs__11.3": {
+    "setupA": "baseline-qwen_FINAL",
+    "setupB": "no-iteration-kimi_FINAL",
+    "subject": "cs",
+    "figure": "11.3",
+    "machineEval": {
+      "figure1Setup": "baseline-qwen_FINAL",
+      "figure2Setup": "no-iteration-kimi_FINAL",
+      "mode": "2d",
+      "dimensions": {
+        "geometry": {
+          "winner": "baseline-qwen_FINAL",
+          "confidence": 0.84,
+          "rationale": "Figure 1 better reconstructs the textbook hash-table chaining topology: the key-to-slot arrows match the expected mapping, with k1/k4 in slot 1, k5/k2/k7 in slot 5, k3 in slot 7, and k8/k6 in slot 8, and the chains are drawn with appropriate multi-cell linked-list nodes and bidirectional links. Figure 2 has the correct nine-slot table count, but it structurally misplaces k3 into slot 3 under its default h(k)=k%9 setup and orders the slot-5 chain as k5,k7,k2 rather than the textbook ordering, so its node-and-edge topology is less faithful despite avoiding Figure 1's extra empty slot."
+        },
+        "interactivity": {
+          "winner": "baseline-qwen_FINAL",
+          "confidence": 0.88,
+          "rationale": "Figure 1 more correctly implements the requested live hash-function editor: it accepts actual JavaScript expressions, validates that every key maps to an integer slot in range, then recomputes the key arrows, table occupancy, chains, and status readout consistently, while showing an explicit error instead of silently changing the user's meaning. Figure 2 does redraw on valid edits, but it uses an expression parser rather than one-line JS, silently floors and modulo-wraps out-of-range or non-integer results and even maps NaN to slot 0, so bad or nonphysical hash functions produce misleading chains instead of clear errors; both figures can run chains off the canvas for very poor hashes, but Figure 1's core interaction is substantially more faithful and robust."
+        },
+        "faithfulness": {
+          "winner": "no-iteration-kimi_FINAL",
+          "confidence": 0.72,
+          "rationale": "Figure 2 is more recognizable at a glance because the main diagram is larger and preserves the left oval, central hash table, and right-side chained lists in roughly the same spatial relationship as the reference. Figure 1 appears to follow the same structure, but the rendered figure is much smaller and more compressed, making the labels, arrows, and linked-list geometry harder to recognize and less visually faithful overall."
+        },
+        "labels": {
+          "winner": "no-iteration-kimi_FINAL",
+          "confidence": 0.78,
+          "rationale": "Figure 2 has noticeably more readable diagram labels at inline size and includes the key labels, T, U, and K annotations with less severe miniaturization. Figure 1 appears to reproduce the textbook labels more accurately in some chain ordering, but its labels are extremely small and hard to read, and the surrounding UI contains more extra non-original text that clutters the screenshot."
+        },
+        "concept": {
+          "winner": "baseline-qwen_FINAL",
+          "confidence": 0.91,
+          "rationale": "Figure 1 more accurately teaches the specified chaining example: its default mapping groups k1 with k4, k5 with k2 with k7, k3 alone, and k8 with k6, matching the required four chains and collision partition (L00007, L00010). Figure 2 gets the collision groups mostly right but orders the second chain as k5, k7, k2 rather than k5, k2, k7, and it introduces unsupported hidden numeric key values with a displayed default h(k)=k % 9, so the visible formula does not straightforwardly match the labeled keys k1–k8 described in the brief (L00010); this is more likely to leave students with a confused or false understanding of what h is mapping."
+        }
+      },
+      "aggregator": {
+        "winner": "baseline-qwen_FINAL",
+        "confidence": 0.83,
+        "explanation": "Figure 1 is stronger overall because it more accurately reconstructs the intended chaining example: the key-to-slot mappings and collision groups match the textbook topology, and its live hash-function editor validates and recomputes the structure more correctly. Figure 2 is visually larger and more readable in the rendered screenshot, with clearer labels at a glance, but it misplaces or reorders important chain elements and its displayed/default hash behavior can produce misleading mappings. Thus Figure 1’s structural and conceptual correctness outweighs Figure 2’s presentation advantage."
+      },
+      "evalModel": "gpt-5.5",
+      "evaluatedAt": "2026-08-14T19:03:33.631Z"
+    }
+  },
+  "math__5.2.6": {
+    "setupA": "baseline-qwen_FINAL",
+    "setupB": "no-iteration-kimi_FINAL",
+    "subject": "math",
+    "figure": "5.2.6",
+    "machineEval": {
+      "figure1Setup": "no-iteration-kimi_FINAL",
+      "figure2Setup": "baseline-qwen_FINAL",
+      "mode": "3d",
+      "dimensions": {
+        "geometry": {
+          "winner": "baseline-qwen_FINAL",
+          "confidence": 0.78,
+          "rationale": "Figure 2 better matches the likely textbook geometry because it shows the continuous solid, partition lines, highlighted representative slab, enlarged side slab, connecting arrow, and oblique projection all in the initial scene. Figure 1 has detailed 3D slab meshes, but its initial view only shows the partitioned solid and hides the zoomed slab behind a toggle, uses a more arbitrary sinusoidal solid and perspective view, and therefore loses the original side-by-side spatial relationship and camera style."
+        },
+        "interactivity": {
+          "winner": "no-iteration-kimi_FINAL",
+          "confidence": 0.72,
+          "rationale": "Figure 1’s slab-number slider and slab selection recompute the geometry, selected slice, Δx, A(x*k), slab volume term, full Riemann sum, exact volume, and error consistently, and its zoom prism width changes with n as Δx should. Figure 2’s n and k sliders do rebuild the partition, highlight, and sum, but the zoomed/right-panel slab uses a fixed width and fixed Δx bracket regardless of n, so the inset contradicts the advertised Δx behavior, and it does not update/display the selected cross-sectional area or slab volume numerically the way the intended slice interaction calls for."
+        },
+        "faithfulness": {
+          "winner": "baseline-qwen_FINAL",
+          "confidence": 0.92,
+          "rationale": "Figure 2 is much more recognizable as the textbook figure because it reproduces the overall composition with the partitioned solid on the left, a curved arrow/callout, and a zoomed blue slab on the right with similar labels and coloring. Figure 1 captures only the partitioned solid in a 3D view and omits the distinctive right-hand cross-section diagram, callout, and much of the textbook-like annotation, so it reads as a related model rather than the same figure."
+        },
+        "labels": {
+          "winner": "baseline-qwen_FINAL",
+          "confidence": 0.96,
+          "rationale": "Figure 2 includes most of the original textbook annotations on the diagram itself, such as S, slab labels, a, x_i, b, the cross-section callout text, S_k/S_3, x_k^*, Δx_k, and x, though some are small and slightly cluttered. Figure 1 largely omits the required textbook labels from the figure area and instead shows mostly UI/readout text and numeric tick labels that do not match the original annotations."
+        },
+        "concept": {
+          "winner": "no-iteration-kimi_FINAL",
+          "confidence": 0.82,
+          "rationale": "Figure 1 is more conceptually accurate because it distinguishes the actual sliced solid in the partition view from the isolated right-prism approximation of the selected kth slab, with width Δx_k along the x-axis and cross-sectional area labeled A(x*_k), matching the slicing/Riemann-sum setup (L00007-L00013, L00016). Figure 2 correctly uses a midpoint sample and displays the Riemann sum/integral idea, but its highlighted slab in the left solid is already drawn as a flat rectangular box that is not the actual curved slice of S, so it can misrepresent the slab obtained by partitioning the solid before approximation (L00007-L00013, L00016). Figure 1 also updates and labels the partition points and sum consistently, whereas Figure 2’s zoom-slab width is fixed visually rather than changing with Δx_k, weakening the asserted relationship that the prism width is Δx_k (L00010-L00013, L00016)."
+        }
+      },
+      "aggregator": {
+        "winner": "baseline-qwen_FINAL",
+        "confidence": 0.78,
+        "explanation": "Figure 2 is the stronger overall match because it preserves the textbook-like composition that Figure 1 largely lacks: the partitioned solid, callout/arrow, enlarged slab, oblique projection, and the key in-figure labels such as S, a, b, x_i, x_k^*, and Δx_k. Figure 1 is more internally consistent in its interactive calculations and better distinguishes the actual slice from the approximating prism, but it hides the zoomed slab behind controls and omits much of the visible annotation and side-by-side spatial relationship that make Figure 2 more faithful to the intended figure. Figure 2’s main weakness relative to Figure 1 is that its zoom slab has a fixed visual width and can misrepresent the curved slice as a rectangular box, but those issues are outweighed by its much closer rendered and geometric correspondence."
+      },
+      "evalModel": "gpt-5.5",
+      "evaluatedAt": "2026-08-14T19:04:34.202Z"
+    }
+  },
+  "math__5.2.9": {
+    "setupA": "baseline-qwen_FINAL",
+    "setupB": "no-iteration-kimi_FINAL",
+    "subject": "math",
+    "figure": "5.2.9",
+    "machineEval": {
+      "figure1Setup": "no-iteration-kimi_FINAL",
+      "figure2Setup": "baseline-qwen_FINAL",
+      "mode": "3d",
+      "dimensions": {
+        "geometry": {
+          "winner": "no-iteration-kimi_FINAL",
+          "confidence": 0.66,
+          "rationale": "Figure 1 more accurately reconstructs the actual 3D solid of revolution: it uses the correct-looking interval a=1 to b=4, produces a properly lathed surface about the x-axis, and places the perpendicular disk, radius line, end rings, and silhouette curves in coherent proportions. Figure 2 does include both a 2D region and a 3D solid side-by-side, which is useful if the source has two panels, but its default b=3 changes the solid length and terminal radius, its panels are cramped/overlapping in one perspective scene, and the 2D panel is viewed obliquely rather than as a clean planar textbook diagram."
+        },
+        "interactivity": {
+          "winner": "no-iteration-kimi_FINAL",
+          "confidence": 0.96,
+          "rationale": "Figure 1 is better because its function, bounds, view, and x-slider handlers generally rebuild the region, solid, disk, and numerical readout for valid inputs, whereas Figure 2 appears to throw during initialization by calling the nonexistent Quaternion.setFromUnitVector method, so its controls would not work at all. Even aside from that fatal issue, Figure 2 silently ignores invalid bounds and clamps invalid or negative function values to zero, while Figure 1 at least reports invalid bounds and mostly keeps the display consistent, though it does have a flaw where semantic function-domain errors can be cleared by the equation binding."
+        },
+        "faithfulness": {
+          "winner": "no-iteration-kimi_FINAL",
+          "confidence": 0.97,
+          "rationale": "Figure 1 is much more recognizable as the original disk-method solid: it shows a 3D solid of revolution with circular end faces, an axis, and a highlighted blue disk slice corresponding to panel (b). Figure 2 shows essentially only a diagonal line with no visible revolved body, disk, shaded region, or textbook-like composition, so it fails to resemble the reference at a glance."
+        },
+        "labels": {
+          "winner": "no-iteration-kimi_FINAL",
+          "confidence": 0.93,
+          "rationale": "Figure 1 has substantially better label quality because it at least includes diagram labels corresponding to the original such as y=f(x), a, b, and axis markings, though they are very small and partly hard to read in the rendered 3D view. Figure 2 largely lacks the textbook diagram annotations altogether, showing only interface text and a line, so the important labels from the original figure are missing."
+        },
+        "concept": {
+          "winner": "no-iteration-kimi_FINAL",
+          "confidence": 0.84,
+          "rationale": "Figure 1 more completely and truthfully teaches the disk method: it represents R under y=f(x) between a and b, the revolution about the x-axis, a perpendicular circular disk of radius f(x), and explicitly displays A(x)=π[f(x)]² and V=∫_a^b π[f(x)]² dx, matching the stated cross-section and integration logic (L00007-L00019, L00022). Figure 2 correctly shows side-by-side 2D and 3D geometry with a disk radius and area, but it does not actually derive or display the volume integral required by the brief, and its evalFn silently replaces negative/nonfinite f values by 0 while still labeling the curve and radius as f(x), which can make the asserted radius/area false rather than enforcing the nonnegative hypothesis (L00007-L00010, L00012-L00017, L00022)."
+        }
+      },
+      "aggregator": {
+        "winner": "no-iteration-kimi_FINAL",
+        "confidence": 0.95,
+        "explanation": "Figure 1 is clearly stronger: it renders a recognizable disk-method solid of revolution over the intended interval with coherent end rings, axis, disk slice, radius/function labels, and the relevant area/volume formulas. Figure 2 is weaker both visually and functionally, with little recognizable revolved body or textbook labeling in the screenshot, a likely initialization failure that would break controls, altered/default bounds, cramped geometry, and missing or potentially misleading disk-method assertions such as the volume integral."
+      },
+      "evalModel": "gpt-5.5",
+      "evaluatedAt": "2026-08-14T19:05:34.922Z"
+    }
+  },
+  "chemistry__CNX_Chem_02_02_GoldFoil3": {
+    "setupA": "baseline-qwen_FINAL",
+    "setupB": "no-iteration-kimi_FINAL",
+    "subject": "chemistry",
+    "figure": "CNX_Chem_02_02_GoldFoil3",
+    "machineEval": {
+      "figure1Setup": "no-iteration-kimi_FINAL",
+      "figure2Setup": "baseline-qwen_FINAL",
+      "mode": "3d",
+      "dimensions": {
+        "geometry": {
+          "winner": "baseline-qwen_FINAL",
+          "confidence": 0.72,
+          "rationale": "Figure 2 better reconstructs the likely full Rutherford scattering geometry because it includes both the macroscopic gold-foil panel and the enlarged atomic cross-section, with a tilted foil slab, selection box, incoming/outgoing beams, atom lattice, nuclei, and multiple scattering trajectories. Figure 1 only models the enlarged cross-section as a flat coplanar array of disks with rays, omitting the separate foil/beam overview and using essentially 2D circular primitives rather than a more complete 3D reconstruction."
+        },
+        "interactivity": {
+          "winner": "no-iteration-kimi_FINAL",
+          "confidence": 0.72,
+          "rationale": "Figure 1 is still flawed, especially because the dragged highlighted trajectory bends toward the nucleus and never convincingly backscatters at near-head-on impact, but its controls at least recompute the readout and visibly scale nuclei while increasing scattering in the background rays. Figure 2 has more controls, but its computed interactive trajectory is substantially backwards: distant passes are drawn exiting back to the left while near-direct passes are drawn continuing forward, so the drawn path often contradicts the deflection readout and the advertised Rutherford behavior; its drag also recreates registered handles repeatedly, leaving stale interactive objects."
+        },
+        "faithfulness": {
+          "winner": "baseline-qwen_FINAL",
+          "confidence": 0.92,
+          "rationale": "Figure 2 is more visually faithful because it preserves the original's two-part composition with the gold foil overview on the left and the enlarged atomic cross-section on the right, including green alpha-particle paths, atom grid, borders, and labels. Figure 1 only shows the enlarged cross-section portion, omits the left gold-foil setup and zoom relationship, and its labels and trajectories are more cluttered and distorted, making it less recognizable as the full textbook figure."
+        },
+        "labels": {
+          "winner": "baseline-qwen_FINAL",
+          "confidence": 0.78,
+          "rationale": "Figure 2 has a more complete set of original labels, including the missing 'Gold foil' label and a readable 'Enlarged cross-section' caption, while Figure 1 omits the gold foil label entirely and its top annotations are more crowded and overlapping. Both figures suffer from very small, cluttered top text and include non-original UI labels, but Figure 2 better matches the required textbook annotations overall."
+        },
+        "concept": {
+          "winner": "baseline-qwen_FINAL",
+          "confidence": 0.68,
+          "rationale": "Figure 2 more accurately teaches the intended Rutherford-scattering concepts because it includes both the macroscopic foil/beam panel and the enlarged atomic cross-section, and it shows most particles passing straight while rare paths are deflected or backscattered near tiny red nuclei, matching the brief’s two-panel mechanism and frequency hierarchy (L00007, L00012, L00014, L00018-L00019). Figure 1 captures the enlarged cross-section and tiny nuclei, but it omits the macroscopic foil context and its computed curved paths often bend toward rather than away from the nearby positive nucleus, which conflicts with deflection by repulsion from a positively charged nucleus (L00007, L00012, L00019). Figure 2 is not perfect—its interactive trajectory formula can also imply overly backward motion for some settings—but its static representation and labels convey the core concepts more truthfully than Figure 1."
+        }
+      },
+      "aggregator": {
+        "winner": "baseline-qwen_FINAL",
+        "confidence": 0.82,
+        "explanation": "Figure 2 is overall stronger because it recreates the full Rutherford-scattering textbook composition, including the gold-foil overview, zoomed atomic cross-section, green paths, atom grid, nuclei, borders, and key labels that Figure 1 omits or crowds into only the enlarged view. Conceptually and geometrically, Figure 2 better conveys the foil-to-atom scale relationship and the intended mix of mostly straight trajectories with rare deflections/backscatter, whereas Figure 1 lacks the macroscopic setup and its paths can bend toward the positive nucleus. Figure 1 has more reliable interactive behavior, while Figure 2’s interactive trajectory can contradict the readout, but that weakness is outweighed by Figure 2’s much better visual faithfulness, labeling, and static conceptual reconstruction."
+      },
+      "evalModel": "gpt-5.5",
+      "evaluatedAt": "2026-08-14T19:06:38.414Z"
+    }
+  },
+  "chemistry__CNX_Chem_02_02_Rutherford": {
+    "setupA": "baseline-qwen_FINAL",
+    "setupB": "no-iteration-kimi_FINAL",
+    "subject": "chemistry",
+    "figure": "CNX_Chem_02_02_Rutherford",
+    "machineEval": {
+      "figure1Setup": "baseline-qwen_FINAL",
+      "figure2Setup": "no-iteration-kimi_FINAL",
+      "mode": "3d",
+      "dimensions": {
+        "geometry": {
+          "winner": "no-iteration-kimi_FINAL",
+          "confidence": 0.72,
+          "rationale": "Figure 2 reconstructs the apparatus geometry more convincingly: the source/lead box is proportioned as a shielding block with an internal cavity and collimator, the beam is a real 3D cylinder, the gold foil is represented as a stack of thin plates, and the detector is a larger encircling screen with depth rather than just a single small torus. Figure 1 captures the same basic parts but is much more compressed and schematic, with a flat torus-like screen, simple line rays, and less accurate scale relationships between the source, foil, and detector. Figure 2 still has some imperfect trajectory-to-screen intersections, but its overall 3D spatial reconstruction is stronger."
+        },
+        "interactivity": {
+          "winner": "no-iteration-kimi_FINAL",
+          "confidence": 0.9,
+          "rationale": "Figure 2’s main controls work more correctly: the beam toggle continuously fires and stops particles, the foil slider rebuilds the foil and changes small/medium deflection probabilities while keeping the backscatter probability fixed, and the label checkbox hides labels using visibility so the render-loop label synchronizer does not undo it. Figure 1’s fire animation basically works and its thickness slider updates the foil and probabilities, but it also increases the number of particles per firing so rare backscatter counts rise with thickness, and its label toggle is effectively broken because _syncLabels resets each label’s display style every frame after the button sets display:none."
+        },
+        "faithfulness": {
+          "winner": "baseline-qwen_FINAL",
+          "confidence": 0.82,
+          "rationale": "Figure 1 is more visually faithful because it preserves the key textbook composition: a grey source box on the left, a bright green beam reaching a yellow gold foil, scattered green paths, and a partial circular luminescent screen with labels in roughly the expected locations. Figure 2 includes the same conceptual elements, but its large vertical transparent ring, dark block-like source and foil, diagonal layout, and tiny labels make it read much less like the original horizontal textbook schematic at a glance."
+        },
+        "labels": {
+          "winner": "baseline-qwen_FINAL",
+          "confidence": 0.78,
+          "rationale": "Figure 1 includes essentially all of the required textbook labels at a readable size, whereas Figure 2's labels are much too small to read comfortably at inline size. Figure 1 is still cluttered, with several labels overlapping near the foil and beam region, but Figure 2 performs worse overall because many annotations are tiny, poorly legible, and visually disconnected from the diagram."
+        },
+        "concept": {
+          "winner": "baseline-qwen_FINAL",
+          "confidence": 0.64,
+          "rationale": "Figure 1 more truthfully preserves the core experimental claims: a radium α source sends a collimated beam to thin gold foil, with most particles straight, fewer slightly deflected, and a very small number at large/backward angles (L00007, L00012, L00014, L00018). Figure 2 also shows the apparatus, but it adds a misleading lesson that thickening the foil makes small-angle flashes more common while large-angle backscatter remains just as rare; that relationship is not stated in the brief and is not generally correct for scattering probability, so it can distort Rutherford’s evidence (L00016-L00018). Figure 2’s open cylindrical screen/trajectory endpoints also fail to make the straight-through particles actually hit a screen directly behind the foil, whereas Figure 1 is imperfect but less conceptually misleading on the main outcomes (L00014)."
+        }
+      },
+      "aggregator": {
+        "winner": "baseline-qwen_FINAL",
+        "confidence": 0.62,
+        "explanation": "Figure 1 is the better overall reconstruction because it more faithfully matches the textbook schematic at a glance, has substantially more readable and complete labels, and preserves the core Rutherford-scattering claims more accurately than Figure 2. Figure 2 has stronger 3D apparatus geometry and more reliable controls, but compared with Figure 1 it is visually less faithful, its annotations are too small, and its thickness/backscatter behavior risks implying a misleading scattering relationship."
+      },
+      "evalModel": "gpt-5.5",
+      "evaluatedAt": "2026-08-14T19:07:31.559Z"
+    }
+  },
+  "chemistry__CNX_Chem_18_10_FrachMine": {
+    "setupA": "baseline-qwen_FINAL",
+    "setupB": "no-iteration-kimi_FINAL",
+    "subject": "chemistry",
+    "figure": "CNX_Chem_18_10_FrachMine",
+    "machineEval": {
+      "figure1Setup": "baseline-qwen_FINAL",
+      "figure2Setup": "no-iteration-kimi_FINAL",
+      "mode": "2d",
+      "dimensions": {
+        "geometry": {
+          "winner": "baseline-qwen_FINAL",
+          "confidence": 0.88,
+          "rationale": "Figure 1 more accurately reconstructs the original Frasch-process structure: it preserves the tall narrow proportions, concentric pipe topology, surface head chamber, horizontal inlet/outlet pipes, multiple correctly placed black directional arrows, soil/sulfur strata, and bottom liquid-sulfur/manifold details. Figure 2 captures the general idea but is more schematic, with less faithful proportions, simplified/altered head and bottom geometry, a diagonal outlet arrow instead of the horizontal outlet, prominent phase-highlight paths that change the original line styling, and fewer/more approximate bottom-flow details."
+        },
+        "interactivity": {
+          "winner": "baseline-qwen_FINAL",
+          "confidence": 0.82,
+          "rationale": "Figure 1’s controls more directly and correctly animate the requested Frasch process: Play shows water descending, air descending, and the sulfur-water-air/liquid sulfur stream rising simultaneously, while its speed slider and stream checkboxes update the visible particles as advertised. Figure 2’s play and phase/step controls function, but the interaction is framed as sequential phases and de-emphasizes non-selected streams, so the default played animation does not present the simultaneous full-process flow as clearly; its extra phase buttons work but make the requested interaction less direct."
+        },
+        "faithfulness": {
+          "winner": "baseline-qwen_FINAL",
+          "confidence": 0.88,
+          "rationale": "Figure 1 is more visually faithful because it preserves the original’s tall, narrow pipe geometry, the stepped side outlets, the layered soil/solid sulfur background, label placement, and the overall arrangement of flow arrows more closely. Figure 2 is recognizable as the same process, but its proportions are wider and shorter, the upper outlet and pipe shapes are altered, the bottom sulfur region includes an invented orange pool/shape, and the composition departs more noticeably from the reference."
+        },
+        "labels": {
+          "winner": "no-iteration-kimi_FINAL",
+          "confidence": 0.86,
+          "rationale": "Figure 2 has the required diagram labels in larger, more readable text and places them closer to the corresponding features without being as tiny as Figure 1. Figure 1 includes the same main labels, but several are extremely small at inline size—especially “Compressed air,” “Superheated water,” “Solid sulfur deposit,” and “Liquid sulfur”—making them harder to read. Figure 2 does have a slightly crowded/clipped-looking bottom “Liquid sulfur” label and extra control text, but its core textbook labels are still much clearer overall than Figure 1’s."
+        },
+        "concept": {
+          "winner": "baseline-qwen_FINAL",
+          "confidence": 0.78,
+          "rationale": "Figure 1 more accurately teaches the Frasch process because it shows all three concentric pathways operating together: superheated water down the outer annulus, compressed air down the inner pipe, and the sulfur-water-air mixture up the middle pipe to the surface, matching the simultaneous extraction description (L00010, L00019). Figure 2 is broadly correct but is less conceptually accurate because its phase/step framing presents melting, aerating, and lifting as separate stages, which can undercut the brief’s simultaneous-process concept, and its highlighted water path runs partly along/outside the outer wall rather than cleanly down the outermost pipe and outward at the bottom (L00019). Both show soil, solid sulfur deposit, and liquid sulfur, but Figure 1’s pipe geometry and flow labels are closer to the specified relationships (L00014, L00019)."
+        }
+      },
+      "aggregator": {
+        "winner": "baseline-qwen_FINAL",
+        "confidence": 0.87,
+        "explanation": "Figure 1 is stronger overall because it more faithfully preserves the Frasch-process geometry and visual structure: tall concentric pipes, surface head, horizontal inlet/outlet pipes, strata, bottom sulfur details, and simultaneous downward water/air plus upward sulfur flow. Figure 2 has clearer, larger labels, but it is more schematic and less faithful, with altered proportions, simplified head and bottom geometry, an invented-looking sulfur pool, and phase-based interaction that makes the simultaneous process less direct than Figure 1."
+      },
+      "evalModel": "gpt-5.5",
+      "evaluatedAt": "2026-08-14T19:08:03.513Z"
+    }
+  },
+  "physics__endpoint_error": {
+    "setupA": "baseline-qwen_FINAL",
+    "setupB": "no-iteration-kimi_FINAL",
+    "subject": "physics",
+    "figure": "endpoint_error",
+    "machineEval": {
+      "figure1Setup": "no-iteration-kimi_FINAL",
+      "figure2Setup": "baseline-qwen_FINAL",
+      "mode": "2d",
+      "dimensions": {
+        "geometry": {
+          "winner": "baseline-qwen_FINAL",
+          "confidence": 0.62,
+          "rationale": "Figure 2 better preserves the core vector-diagram structure with two solid black arrows from a shared origin, a red endpoint-error segment between their tips, appropriate labels, and less intrusive line weights and endpoint handles. Figure 1 has the same basic topology, but its very heavy strokes, large black drag dots over the arrow tips, and prominent extra on-canvas numeric readouts make the reconstructed structure less like a clean textbook schematic."
+        },
+        "interactivity": {
+          "winner": "baseline-qwen_FINAL",
+          "confidence": 0.82,
+          "rationale": "Figure 2's controls more reliably recompute and redraw the advertised quantities: both vector-tip drags update the endpoint segment, labels, readout, and angular arc, and its angular-error toggle uses a wrapped shortest-angle construction that holds up when vectors cross the ±180° boundary. Figure 1's dragging and endpoint toggle mostly work, but its angular-highlight wedge is built from the raw min/max angles rather than the shortest angular separation, so at some extreme vector orientations it can highlight the large complementary sector while displaying the smaller angular-error value, making the control's visual effect inconsistent with the metric."
+        },
+        "faithfulness": {
+          "winner": "no-iteration-kimi_FINAL",
+          "confidence": 0.78,
+          "rationale": "Figure 1 is more visually faithful overall: it preserves the thick black vectors, thick red endpoint-error segment, serif labels, and general placement of the two arrows and labels much closer to the textbook figure. Figure 2 has the same basic geometry, but its lines are much thinner, the arrowheads and endpoint markers look less like the original, it adds an angle marker at the origin, and the diagram reads more like a reconstructed interactive sketch than the original textbook graphic."
+        },
+        "labels": {
+          "winner": "baseline-qwen_FINAL",
+          "confidence": 0.72,
+          "rationale": "Figure 2 better matches the original figure labels: it includes the key labels (u, v), endpoint error, and (û, v̂) in reasonably appropriate positions without adding large extra annotations inside the main drawing. Figure 1 has readable main labels, but it adds prominent invented text such as “Endpoint error = 202 px” and “Angular error = 21.7°” in the diagram area, which is not present in the original and creates unnecessary clutter; its lower vector label is also a bit less cleanly typeset."
+        },
+        "concept": {
+          "winner": "no-iteration-kimi_FINAL",
+          "confidence": 0.78,
+          "rationale": "Both figures correctly show two vectors from a shared origin labeled as ground truth (u,v) and prediction (û,v̂), with a red tip-to-tip segment labeled endpoint error, matching the core definition that endpoint error is the Euclidean distance between vector endpoints and is sensitive to direction and magnitude (L00010). Figure 1 keeps this as a direct vector-space diagram and its popup/readout formula matches the Euclidean endpoint distance; Figure 2 also states the right formula, but its internal world-to-screen mapping uses unequal x and y scales, so the drawn segment and angular comparison are geometrically distorted relative to the Euclidean metric it claims to illustrate, making it slightly less conceptually accurate (L00010)."
+        }
+      },
+      "aggregator": {
+        "winner": "baseline-qwen_FINAL",
+        "confidence": 0.64,
+        "explanation": "Figure 2 is stronger overall because it has cleaner labels, less intrusive annotations, and more reliable interactive behavior, especially for the angular-error display across boundary cases. Figure 1 is visually closer to the original textbook styling and slightly more direct conceptually, but relative to Figure 2 it is cluttered by invented numeric readouts and has an angular-highlight inconsistency that can misrepresent the displayed metric."
+      },
+      "evalModel": "gpt-5.5",
+      "evaluatedAt": "2026-08-14T19:08:45.104Z"
+    }
+  },
+  "physics__epipolar_geometry": {
+    "setupA": "baseline-qwen_FINAL",
+    "setupB": "no-iteration-kimi_FINAL",
+    "subject": "physics",
+    "figure": "epipolar_geometry",
+    "machineEval": {
+      "figure1Setup": "baseline-qwen_FINAL",
+      "figure2Setup": "no-iteration-kimi_FINAL",
+      "mode": "3d",
+      "dimensions": {
+        "geometry": {
+          "winner": "baseline-qwen_FINAL",
+          "confidence": 0.86,
+          "rationale": "Figure 1 better reconstructs the actual epipolar geometry: the two camera centers, inward-facing image planes, projections p1/p2, epipoles, baseline, rays to P, and the triangular epipolar plane are computed consistently in the same 3D coordinate system. Figure 2 has some refinements such as clipping epipolar lines to the image rectangles, but its camera rigs appear geometrically inconsistent because the image planes are placed on the local +Z side after lookAt, effectively behind the cameras relative to the viewed scene, and its red rays stop at the image planes rather than continuing through P, weakening the true spatial relationships."
+        },
+        "interactivity": {
+          "winner": "baseline-qwen_FINAL",
+          "confidence": 0.66,
+          "rationale": "Figure 1’s advertised controls are more direct and reliable: the baseline, camera-2 yaw, height slider, and point drag all call a single recomputation that updates P, projections, epipoles, epipolar plane, and epipolar lines consistently. Figure 2’s sliders generally work, but its baseline control also re-aims both cameras via lookAt rather than changing only the advertised distance, and its extra step buttons can leave misleading narratives after P has been dragged and can override slider input during an active tween. Figure 2 has nice value readouts and line clipping, but its interaction semantics are less clean than Figure 1’s."
+        },
+        "faithfulness": {
+          "winner": "no-iteration-kimi_FINAL",
+          "confidence": 0.68,
+          "rationale": "Figure 2 is more recognizable as the original epipolar-geometry diagram because it preserves the main labeled structure more completely: O1/O2 camera centers, P at the apex, two image planes, red epipolar rays/lines, and the large yellow epipolar plane spanning between the cameras. Figure 1 has the same general idea, but it is more compressed and simplified, with less faithful labeling and proportions, making the original composition harder to recognize at a glance."
+        },
+        "labels": {
+          "winner": "baseline-qwen_FINAL",
+          "confidence": 0.68,
+          "rationale": "Figure 1 has larger, more readable core diagram labels such as Camera 1/2, p1/p2, e1/e2, Epipolar plane, and Epipolar line, whereas Figure 2 includes more of the required labels such as P but renders many diagram labels extremely small and harder to read at inline size. Figure 1 is worse for missing the P label and having some clutter/overlap near Camera 2/O2, but Figure 2’s labels are generally too tiny and less usable despite being more complete."
+        },
+        "concept": {
+          "winner": "baseline-qwen_FINAL",
+          "confidence": 0.78,
+          "rationale": "Figure 1 more truthfully represents the stated epipolar geometry: its image points are actual intersections of the rays O1P and O2P with the image planes, its epipoles are the baseline/image-plane intersections, and its epipolar lines are drawn through both the epipoles and p1/p2 as required (L00018). Figure 2 also encodes many of these projective relationships, but its camera rigs place the image planes on the opposite side of the camera center relative to the look direction, so the displayed red projection segments run from the centers to image points behind the cameras rather than visibly through P, weakening the intended teaching that P projects along O1P and O2P (L00018). Figure 2 also uses a misleading arbitrary diagonal camera-axis arrow, whereas Figure 1’s axes and no-vertical-displacement/yaw setup better support the context that epipoles lie on the camera x axes in this example (L00009-L00012)."
+        }
+      },
+      "aggregator": {
+        "winner": "baseline-qwen_FINAL",
+        "confidence": 0.82,
+        "explanation": "Figure 1 is the stronger overall result because its source-level geometry and concept are more consistent: projections, epipoles, epipolar lines, baseline, rays, and epipolar plane are recomputed coherently in one 3D setup, and its controls update those relationships more reliably. Figure 2 is more visually faithful to the original rendered composition and includes more complete visible labels such as P, but compared with Figure 1 its camera/image-plane placement and projection rays are geometrically misleading, its interaction semantics are less clean, and many labels are too small to be practically readable."
+      },
+      "evalModel": "gpt-5.5",
+      "evaluatedAt": "2026-08-14T19:10:14.185Z"
+    }
+  },
+  "physics__homogeneousAndHeteregeneous_VS3": {
+    "setupA": "baseline-qwen_FINAL",
+    "setupB": "no-iteration-kimi_FINAL",
+    "subject": "physics",
+    "figure": "homogeneousAndHeteregeneous_VS3",
+    "machineEval": {
+      "figure1Setup": "no-iteration-kimi_FINAL",
+      "figure2Setup": "baseline-qwen_FINAL",
+      "mode": "3d",
+      "dimensions": {
+        "geometry": {
+          "winner": "baseline-qwen_FINAL",
+          "confidence": 0.86,
+          "rationale": "Figure 2 is geometrically more accurate because its heterogeneous w=0 plane is correctly rotated into the YZ plane and is parallel to the w=1 homogeneous plane, with the canonical and scaled homogeneous points lying consistently on the connector/ray. Figure 1 gets many point and ray relationships right, but its filled heterogeneous plane is an unrotated PlaneGeometry in the wrong world plane, so the displayed blue plane does not actually contain the w=0 point or align parallel to the w=1 plane, which is a significant reconstruction error."
+        },
+        "interactivity": {
+          "winner": "no-iteration-kimi_FINAL",
+          "confidence": 0.86,
+          "rationale": "Figure 1 implements the requested interactions more correctly: dragging the left point recomputes the canonical point, scaled representative, connector, dashed ray, labels, and readout, and it uses window-level move/up handling so the drag is less likely to get stuck. Its λ slider consistently moves the representative along the same ray and updates the displayed recovered coordinates, and its equivalence toggle highlights the actual left point, canonical point, selected representative, and extra scaled points. Figure 2’s drag and slider mostly work, but its drag release is only handled on the canvas so leaving the canvas can leave controls disabled, and its linked-view toggle mainly adds orange homogeneous dots/ray without clearly highlighting the left 2D point or canonical point as part of the same equivalence class."
+        },
+        "faithfulness": {
+          "winner": "no-iteration-kimi_FINAL",
+          "confidence": 0.84,
+          "rationale": "Figure 1 is more recognizable as the textbook figure: it preserves the left/right Heterogeneous versus Homogeneous composition, shows the two planes, axes, red points, connecting/dashed construction, and side labels in roughly the same roles. Figure 2 includes many of the same elements but compresses them into a small clustered 3D view, places the Heterogeneous/Homogeneous labels inside the geometry rather than as large side regions, and loses more of the original wide explanatory layout."
+        },
+        "labels": {
+          "winner": "no-iteration-kimi_FINAL",
+          "confidence": 0.87,
+          "rationale": "Figure 1 has the key labels closer to the reference: Heterogeneous and Homogeneous are placed on opposite sides of the diagram, the point labels and axis labels are present and mostly readable, and there is less overlap with the geometry. Figure 2 includes many of the same labels, but the Heterogeneous/Homogeneous labels are incorrectly placed inside the diagram, crowd the planes and axes, and the point labels are smaller and more cluttered; it also loses the reference’s clear side annotations."
+        },
+        "concept": {
+          "winner": "baseline-qwen_FINAL",
+          "confidence": 0.88,
+          "rationale": "Figure 2 more accurately realizes the required coordinate geometry: its heterogeneous point lies on the x-y plane at w=0, the canonical point lies on the w=1 plane, and the dashed ray goes through (x,y,1) to (λx,λy,λ), correctly supporting the scale-equivalence idea (L00007, L00010). Figure 1 gets the ray and homogeneous labels largely right, but its displayed heterogeneous plane is misoriented relative to its own coordinate mapping, so the red (x,y) point is generally not actually on the shown Euclidean x-y plane, weakening or falsifying the left-plane relationship the brief asks it to teach (L00010)."
+        }
+      },
+      "aggregator": {
+        "winner": "no-iteration-kimi_FINAL",
+        "confidence": 0.62,
+        "explanation": "Figure 1 is the better overall match because it more closely preserves the intended left/right heterogeneous-versus-homogeneous layout, has clearer side and point labels, and implements the drag/slider/equivalence interactions more robustly than Figure 2. Figure 2 is stronger in the underlying coordinate geometry, with correctly aligned planes and homogeneous rays, while Figure 1 has a significant plane-orientation error; however, Figure 2’s clustered rendering, misplaced labels, and weaker interaction feedback make it less successful overall."
+      },
+      "evalModel": "gpt-5.5",
+      "evaluatedAt": "2026-08-14T19:10:56.567Z"
+    }
+  }
+}

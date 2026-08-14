@@ -1,0 +1,1262 @@
+{
+  "math__14.6.7": {
+    "setupA": "baseline-kimi_FINAL",
+    "setupB": "full-pipeline-gpt_FINAL",
+    "subject": "math",
+    "figure": "14.6.7",
+    "machineEval": {
+      "figure1Setup": "full-pipeline-gpt_FINAL",
+      "figure2Setup": "baseline-kimi_FINAL",
+      "mode": "3d",
+      "dimensions": {
+        "geometry": {
+          "winner": "full-pipeline-gpt_FINAL",
+          "confidence": 0.95,
+          "rationale": "Figure 1 uses an oblique projection that perfectly matches the typical textbook presentation of spherical volume elements, keeping the y-z plane undistorted. It also features much more complete geometric detailing, including the radial construction lines extending to the origin, tangent markers for the polar angle arcs, and properly oriented arrowheads on the measurement arcs, which Figure 2 lacks."
+        },
+        "interactivity": {
+          "winner": "full-pipeline-gpt_FINAL",
+          "confidence": 1,
+          "rationale": "Figure 1 properly writes its bounds constraints back to the slider inputs, keeping the visible UI in sync with the drawn geometry. Figure 2 clamps the internal variables but leaves the slider handles detached at invalid positions, causing the UI to desynchronize from the figure. Additionally, Figure 1 implements a push-behavior where dragging a minimum bound past the maximum pushes the maximum forward, which is a much smoother interaction than Figure 2's rigid clipping."
+        },
+        "faithfulness": {
+          "winner": "baseline-kimi_FINAL",
+          "confidence": 0.9,
+          "rationale": "Figure 2 includes the translucent spherical sector boundary, which is crucial for contextualizing the volume element and matching the original composition, whereas Figure 1 omits this geometry entirely. Additionally, Figure 1's labels are severely overlapped and unreadable, while Figure 2's annotations are much clearer despite minor placement deviations."
+        },
+        "labels": {
+          "winner": "baseline-kimi_FINAL",
+          "confidence": 0.9,
+          "rationale": "Figure 2 has readable, distinct labels, whereas Figure 1 suffers from severe label collisions, making the angular labels for phi and theta completely illegible. Although Figure 2 places the rho labels directly on the wedge rather than using dimension lines like the reference, its overall legibility makes it far superior to Figure 1's cluttered mess."
+        },
+        "concept": {
+          "winner": "full-pipeline-gpt_FINAL",
+          "confidence": 1,
+          "rationale": "Figure 1 accurately dynamically renders the extended bounding surfaces (the full cones and spherical sectors that define the wedge) based on the current slider values, perfectly illustrating how the wedge is constructed from these boundaries. Figure 2 uses static dimensions for its bounding shells, meaning the interactive wedge disconnects from them and floats arbitrarily if the sliders are moved."
+        }
+      },
+      "aggregator": {
+        "winner": "full-pipeline-gpt_FINAL",
+        "confidence": 0.85,
+        "explanation": "Figure 1 provides robust interactivity and conceptual accuracy by properly syncing its UI controls and dynamically updating its bounding surfaces to match the wedge, whereas Figure 2 suffers from broken constraints that detach slider handles and static bounding shells that misalign when manipulated. Although Figure 2 presents much clearer, collision-free labels and a better initial visual composition, Figure 1's functional superiority and rigorous geometric details, such as an undistorted oblique projection, make it the overall stronger interactive figure."
+      },
+      "evalModel": "gemini-3.1-pro",
+      "evaluatedAt": "2026-08-14T07:11:39.165Z"
+    }
+  },
+  "chemistry__CNX_Chem_02_06_IonCharges": {
+    "setupA": "baseline-kimi_FINAL",
+    "setupB": "full-pipeline-gpt_FINAL",
+    "subject": "chemistry",
+    "figure": "CNX_Chem_02_06_IonCharges",
+    "machineEval": {
+      "figure1Setup": "baseline-kimi_FINAL",
+      "figure2Setup": "full-pipeline-gpt_FINAL",
+      "mode": "2d",
+      "dimensions": {
+        "geometry": {
+          "winner": "full-pipeline-gpt_FINAL",
+          "confidence": 0.95,
+          "rationale": "Figure 2 maintains a consistent cell size across the entire table, elegantly aligning the 15-column f-block with groups 4–18. It also structurally links the f-block to the main table by accurately color-coding the group 3 placeholders to match the separated rows and drawing a precise indicating arrow. Figure 1 improperly squishes the width of the f-block cells to fit the layout and fails to establish a color correspondence for the placeholders."
+        },
+        "interactivity": {
+          "winner": "baseline-kimi_FINAL",
+          "confidence": 0.95,
+          "rationale": "Figure 1 ensures its controls perfectly match the initial visual state by starting the slider at 0 (meaning no highlight), whereas Figure 2 loads with the slider displaying '1' but intentionally suppressing the highlight, violating the principle that controls must agree with what is drawn. Figure 1 also provides a clean Reset button to return to this empty state, which Figure 2 lacks once a highlight is activated."
+        },
+        "faithfulness": {
+          "winner": "full-pipeline-gpt_FINAL",
+          "confidence": 0.9,
+          "rationale": "Figure 2 accurately reproduces the 90-degree rotated 'Period' label, the curved red arrow with an arrowhead, and the asterisks for the bottom rows, whereas Figure 1 leaves the 'Period' label horizontal and simplifies the arrow to a straight line."
+        },
+        "labels": {
+          "winner": "baseline-kimi_FINAL",
+          "confidence": 0.95,
+          "rationale": "Figure 1 maintains the correct ionic charge labels (e.g., Li+, Be2+), whereas Figure 2 incorrectly applies negative charges to all cations (e.g., Li-, Be2-). Although Figure 1's labels are smaller, the critical chemical inaccuracy in Figure 2 makes Figure 1 the clear winner."
+        },
+        "concept": {
+          "winner": "baseline-kimi_FINAL",
+          "confidence": 0.95,
+          "rationale": "Figure 1 correctly and explicitly shows the process of ion formation in its electron configurations (e.g., '1s² 2s¹ → loses 1e⁻ → [He]'), which perfectly reinforces the subject matter. In contrast, Figure 2 displays the neutral atom's electron configuration (e.g., '[He]2s1') for cells labeled with the ion (Li⁺), which asserts a false configuration for the ion and is misleading to students. Furthermore, Figure 2 entirely omits the electron configurations for the period 5 and 6 transition metals, whereas Figure 1 includes complete and accurate data for all highlighted elements. Although Figure 1 incorrectly shades Aluminum as a transition metal, Figure 2's systematic errors regarding the ions' electron configurations make Figure 1 much stronger on concept accuracy."
+        }
+      },
+      "aggregator": {
+        "winner": "baseline-kimi_FINAL",
+        "confidence": 0.95,
+        "explanation": "Figure 1 provides chemically accurate ionic charges and explicitly shows the correct electron configurations for ion formation, whereas Figure 2 suffers from severe conceptual errors by applying incorrect negative charges to cations and displaying neutral configurations for ions. Additionally, Figure 1 correctly synchronizes its interactive controls with the initial visual state, which outweighs Figure 2's superior cell alignment and more faithful reproduction of original arrows and text orientation."
+      },
+      "evalModel": "gemini-3.1-pro",
+      "evaluatedAt": "2026-08-14T07:13:05.578Z"
+    }
+  },
+  "chemistry__CNX_Chem_08_04_Gouy": {
+    "setupA": "baseline-kimi_FINAL",
+    "setupB": "full-pipeline-gpt_FINAL",
+    "subject": "chemistry",
+    "figure": "CNX_Chem_08_04_Gouy",
+    "machineEval": {
+      "figure1Setup": "baseline-kimi_FINAL",
+      "figure2Setup": "full-pipeline-gpt_FINAL",
+      "mode": "3d",
+      "dimensions": {
+        "geometry": {
+          "winner": "full-pipeline-gpt_FINAL",
+          "confidence": 0.95,
+          "rationale": "Figure 2 features significantly more accurate 3D modeling of the apparatus. It correctly depicts the magnetic field lines spanning between the flat pole faces, whereas Figure 1 incorrectly draws concentric circular arcs. Figure 2 also uses much more detailed and realistic primitives for the balance beam, sample tube meniscus, and calibrated weights."
+        },
+        "interactivity": {
+          "winner": "full-pipeline-gpt_FINAL",
+          "confidence": 1,
+          "rationale": "Figure 2 correctly updates the suspension strings and keeps the weighing pan horizontal as the balance beam tips. In Figure 1, the string geometry is static in the animation loop, causing the sample tube to visually detach from its string as it drops, and the rigidly attached right pan tilts non-physically along with the beam."
+        },
+        "faithfulness": {
+          "winner": "full-pipeline-gpt_FINAL",
+          "confidence": 0.9,
+          "rationale": "Figure 2 closely replicates the prominent purple magnetic field lines, the blue liquid in the sample tube, and the specific shape of the weights on the scale pan. Figure 1 features faint field lines, lacks color in the sample, and uses a simplified block for the weights, making it less recognizable as the original."
+        },
+        "labels": {
+          "winner": "baseline-kimi_FINAL",
+          "confidence": 0.9,
+          "rationale": "Figure 1 has clear, well-placed labels with appropriate leader lines, whereas Figure 2 suffers from severe label clutter, with text overlapping the artwork (e.g., 'Magnetic field' covering the field lines) and includes an invented 'level' label not found in the original."
+        },
+        "concept": {
+          "winner": "full-pipeline-gpt_FINAL",
+          "confidence": 1,
+          "rationale": "Figure 2 accurately maintains the vertical orientation of the hanging sample and pan while the balance beam rotates, keeping the suspension strings connected. In Figure 1, the pan rigidly tilts with the beam, and the sample tube physically detaches from its suspension string as it translates downward. Furthermore, Figure 2 correctly models the field lines as loops bridging the poles and correctly applies a B^2 dependence for the magnetic force, whereas Figure 1 erroneously draws field lines radiating from the center of the gap like a point source and uses a linear force relation."
+        }
+      },
+      "aggregator": {
+        "winner": "full-pipeline-gpt_FINAL",
+        "confidence": 0.95,
+        "explanation": "Figure 2 excels over Figure 1 by featuring significantly more accurate 3D modeling and physics animation, correctly maintaining the vertical orientation of the sample and pan as the beam tips, whereas Figure 1 suffers from non-physical rigid tilting and visually detaching strings. Furthermore, Figure 2 correctly models magnetic field lines spanning the poles and applies a proper B^2 force dependence, while Figure 1 erroneously draws field lines radiating from the gap's center and uses an incorrect linear force relation. Figure 1's only notable advantage is its clearer, non-overlapping labels, but Figure 2's overwhelming physics, interactivity, and visual fidelity advantages make it the clear winner."
+      },
+      "evalModel": "gemini-3.1-pro",
+      "evaluatedAt": "2026-08-14T07:13:44.033Z"
+    }
+  },
+  "chemistry__CNX_Chem_11_02_electrolyt": {
+    "setupA": "baseline-kimi_FINAL",
+    "setupB": "full-pipeline-gpt_FINAL",
+    "subject": "chemistry",
+    "figure": "CNX_Chem_11_02_electrolyt",
+    "machineEval": {
+      "figure1Setup": "full-pipeline-gpt_FINAL",
+      "figure2Setup": "baseline-kimi_FINAL",
+      "mode": "3d",
+      "dimensions": {
+        "geometry": {
+          "winner": "full-pipeline-gpt_FINAL",
+          "confidence": 0.9,
+          "rationale": "Figure 1 correctly implements the side-by-side comparison layout of the three solutions as typically shown in textbook diagrams, whereas Figure 2 uses a single beaker and relies on UI toggles to switch states, entirely missing the simultaneous visual comparison aspect of the original geometry."
+        },
+        "interactivity": {
+          "winner": "full-pipeline-gpt_FINAL",
+          "confidence": 0.95,
+          "rationale": "Figure 1 correctly scales the density of neutral molecules alongside ions when the concentration slider is moved. Figure 2 hardcodes the molecule count, causing the concentration slider to do absolutely nothing in the ethanol view and to only increase ions in the acetic acid view, which contradicts the subject matter."
+        },
+        "faithfulness": {
+          "winner": "full-pipeline-gpt_FINAL",
+          "confidence": 0.95,
+          "rationale": "Figure 1 successfully replicates the three-panel layout, beaker shapes, thin plate electrodes, and wire routing of the original illustration. Figure 2 uses thick blocky electrodes, awkward overlapping wires, and a rudimentary light bulb model that diverges significantly from the source image."
+        },
+        "labels": {
+          "winner": "baseline-kimi_FINAL",
+          "confidence": 0.9,
+          "rationale": "Figure 1 contains severe text collisions at the bottom where the labels for each beaker overlap and become difficult to read. Figure 2 avoids this by cleanly displaying the label for the currently selected state without any clutter or overlapping text."
+        },
+        "concept": {
+          "winner": "full-pipeline-gpt_FINAL",
+          "confidence": 1,
+          "rationale": "Figure 1 correctly displays the three setups side-by-side for simultaneous comparison (L00014, L00017) and includes the requested migration arrows on the ions (L00014). Figure 2 replaces the side-by-side layout with a UI toggle to show only one beaker at a time, preventing direct visual comparison, and omits the migration arrows entirely."
+        }
+      },
+      "aggregator": {
+        "winner": "full-pipeline-gpt_FINAL",
+        "confidence": 0.95,
+        "explanation": "Figure 1 excels by correctly implementing the necessary side-by-side layout for simultaneous comparison and properly scaling molecule density with the concentration slider. In contrast, Figure 2 relies on a flawed UI toggle system that prevents direct visual comparison, features broken concentration controls that fail to update neutral molecules, and diverges significantly in visual details like its blocky electrodes and missing migration arrows, though Figure 2 does avoid the severe label overlapping issues present in Figure 1."
+      },
+      "evalModel": "gemini-3.1-pro",
+      "evaluatedAt": "2026-08-14T07:14:28.533Z"
+    }
+  },
+  "chemistry__CNX_Chem_12_07_Enzyme": {
+    "setupA": "baseline-kimi_FINAL",
+    "setupB": "full-pipeline-gpt_FINAL",
+    "subject": "chemistry",
+    "figure": "CNX_Chem_12_07_Enzyme",
+    "machineEval": {
+      "figure1Setup": "full-pipeline-gpt_FINAL",
+      "figure2Setup": "baseline-kimi_FINAL",
+      "mode": "2d",
+      "dimensions": {
+        "geometry": {
+          "winner": "full-pipeline-gpt_FINAL",
+          "confidence": 0.95,
+          "rationale": "Figure 1 builds geometrically matching complementary shapes for the enzyme pocket and substrates, accurately recreating the 'lock and key' physical fit. It also physically morphs the active site path for the induced fit animation, whereas Figure 2 uses generic simplified blobs and just crossfades between two static enzyme drawings."
+        },
+        "interactivity": {
+          "winner": "full-pipeline-gpt_FINAL",
+          "confidence": 1,
+          "rationale": "Figure 1 implements the binding animation flawlessly by parametrically redrawing the entire scene at each frame, keeping the visual state perfectly in sync with the interaction. Figure 2 applies an absolute easing value to a relative translation function (`.dy()`) on every frame of its animation loop, causing the substrate to accelerate infinitely and fly completely off the screen. Furthermore, Figure 2's reset button uses `.dy(0)`, which applies a relative movement of zero and fails to bring the missing substrate back."
+        },
+        "faithfulness": {
+          "winner": "full-pipeline-gpt_FINAL",
+          "confidence": 0.9,
+          "rationale": "Figure 1 much more accurately replicates the organic, curved shapes of the enzymes and substrates from the original figure, whereas Figure 2 uses overly blocky, simplified geometry."
+        },
+        "labels": {
+          "winner": "full-pipeline-gpt_FINAL",
+          "confidence": 0.9,
+          "rationale": "Figure 1 maintains readable text by centering the active site annotations and using a background box, whereas Figure 2 places the text directly over the substrate shapes, causing severe clipping and rendering it unreadable. Additionally, Figure 2 omits the word 'is' from the first annotation."
+        },
+        "concept": {
+          "winner": "full-pipeline-gpt_FINAL",
+          "confidence": 1,
+          "rationale": "Figure 1 correctly maintains a rigid, pre-formed active site for the lock-and-key model (the pocket parameters never change) while showing conformational adjustment for the induced fit model. Figure 2 contains a flaw in its animation logic where it incorrectly overlays a different enzyme shape (enzAclosed, which has a shallower cleft) on top of the lock-and-key enzyme when it binds, contradicting the rigid pocket concept defined in the brief (L00016)."
+        }
+      },
+      "aggregator": {
+        "winner": "full-pipeline-gpt_FINAL",
+        "confidence": 1,
+        "explanation": "Figure 1 provides a flawlessly animated, geometrically accurate representation of both enzyme binding models, correctly maintaining a rigid active site for the lock-and-key model while smoothly morphing for the induced fit. In contrast, Figure 2 suffers from severe bugs, including infinitely accelerating substrates that fly off-screen and a broken reset button, alongside conceptual errors like incorrectly changing the lock-and-key enzyme's shape and featuring unreadable labels on oversimplified visuals."
+      },
+      "evalModel": "gemini-3.1-pro",
+      "evaluatedAt": "2026-08-14T07:15:05.833Z"
+    }
+  },
+  "cs__GraphAdjoint": {
+    "setupA": "baseline-kimi_FINAL",
+    "setupB": "full-pipeline-gpt_FINAL",
+    "subject": "cs",
+    "figure": "GraphAdjoint",
+    "machineEval": {
+      "figure1Setup": "baseline-kimi_FINAL",
+      "figure2Setup": "full-pipeline-gpt_FINAL",
+      "mode": "2d",
+      "dimensions": {
+        "geometry": {
+          "winner": "full-pipeline-gpt_FINAL",
+          "confidence": 1,
+          "rationale": "Figure 2 structurally reconstructs a standard multi-panel textbook diagram (a, b, c), clearly separating the original graph, the intermediate construction step, and the final isolated edge graph into distinct regions. Figure 1 overlaps all steps in a single coordinate space, making the final edge graph cluttered and difficult to read."
+        },
+        "interactivity": {
+          "winner": "baseline-kimi_FINAL",
+          "confidence": 0.9,
+          "rationale": "Figure 1 correctly implements the step-by-step construction, allowing the user to explicitly advance from the node placement step to the edge drawing step. Figure 2 ties its step-by-step controls to a single continuous time-based animation; advancing to the node placement step triggers the full animation, which proceeds to draw the edges automatically and renders the next step redundant. Additionally, Figure 1's state management is more robust against rapid interaction."
+        },
+        "faithfulness": {
+          "winner": "full-pipeline-gpt_FINAL",
+          "confidence": 1,
+          "rationale": "Figure 2 accurately reproduces the full three-panel composition, exact geometry, and text of the original figure. Figure 1 only displays the first panel and alters the geometric proportions of the graph."
+        },
+        "labels": {
+          "winner": "full-pipeline-gpt_FINAL",
+          "confidence": 1,
+          "rationale": "Figure 2 successfully replicates all panel labels (a, b, c), titles, and the explanatory text below the arrows from the original figure, whereas Figure 1 omits these annotations entirely."
+        },
+        "concept": {
+          "winner": "full-pipeline-gpt_FINAL",
+          "confidence": 1,
+          "rationale": "Figure 2 correctly implements the three distinct spatial sub-panels (a, b, and c) and places the explicit intermediate annotations precisely as described in the brief. Figure 1 collapses all three panels into a single overlapping view that relies entirely on interactive steps, failing to convey the side-by-side progression described."
+        }
+      },
+      "aggregator": {
+        "winner": "full-pipeline-gpt_FINAL",
+        "confidence": 0.95,
+        "explanation": "Figure 2 accurately reproduces the multi-panel layout, exact geometry, and text annotations of the original textbook figure, whereas Figure 1 collapses the progression into a single overlapping view that omits all labels. Although Figure 1 offers more robust step-by-step interactive controls compared to Figure 2's automated continuous animation, Figure 2's overwhelming superiority in structural clarity, faithfulness, and conveying the intended concept makes it the much stronger choice."
+      },
+      "evalModel": "gemini-3.1-pro",
+      "evaluatedAt": "2026-08-14T07:15:39.136Z"
+    }
+  },
+  "physics__brdf": {
+    "setupA": "baseline-kimi_FINAL",
+    "setupB": "full-pipeline-gpt_FINAL",
+    "subject": "physics",
+    "figure": "brdf",
+    "machineEval": {
+      "figure1Setup": "baseline-kimi_FINAL",
+      "figure2Setup": "full-pipeline-gpt_FINAL",
+      "mode": "3d",
+      "dimensions": {
+        "geometry": {
+          "winner": "baseline-kimi_FINAL",
+          "confidence": 0.95,
+          "rationale": "Figure 1 correctly constructs the local tangent frame (p, q) to be orthogonal to the normal and lie flat on the surface plane (y=0). Figure 2 incorrectly angles the p and q vectors upwards into the hemisphere (y≈1.0), breaking the fundamental geometric definition of a surface tangent frame."
+        },
+        "interactivity": {
+          "winner": "baseline-kimi_FINAL",
+          "confidence": 0.95,
+          "rationale": "Figure 1's drag interaction is implemented robustly using 3D raycasting against the handle, whereas Figure 2 relies on a hardcoded screen-space pixel distance threshold that breaks if the user zooms. Additionally, Figure 2 features a prominent 'main outgoing radiance' arrow that remains entirely static while the incoming ray is dragged, visually contradicting the dynamically updating radiance lobe."
+        },
+        "faithfulness": {
+          "winner": "full-pipeline-gpt_FINAL",
+          "confidence": 0.95,
+          "rationale": "Figure 2 accurately reproduces the composition, specific colored vectors (black normal/tangents, red incoming, fading green outgoing), and black-bordered plane of the original. Figure 1 introduces distracting, invented elements like a wireframe hemisphere and a disorganized cluster of shapes at the origin, failing to capture the clear geometry of the reference."
+        },
+        "labels": {
+          "winner": "baseline-kimi_FINAL",
+          "confidence": 1,
+          "rationale": "Figure 1 places the complex equation label clearly off to the side, maintaining readability and matching the original. Figure 2 completely clutters the center of the diagram by placing the equation directly over the arrows and plane."
+        },
+        "concept": {
+          "winner": "baseline-kimi_FINAL",
+          "confidence": 0.99,
+          "rationale": "Figure 1 correctly implements the vectors 'p' and 'q' as tangent vectors lying flat on the surface to define the local coordinate frame, as requested by the brief. Figure 2 erroneously gives its 'p' and 'q' arrows large upward Y-components, causing them to point into the air alongside the incoming/outgoing rays and normal, which fundamentally misrepresents the concept of a local surface tangent frame."
+        }
+      },
+      "aggregator": {
+        "winner": "baseline-kimi_FINAL",
+        "confidence": 0.97,
+        "explanation": "Figure 1 accurately represents the underlying mathematical concepts by keeping the tangent vectors flat on the surface plane, whereas Figure 2 erroneously angles them upwards, breaking the definition of a local tangent frame. Additionally, Figure 1 features robust 3D raycasting for interaction and clear label placement, whereas Figure 2 relies on brittle screen-space thresholds, has a static outgoing arrow that contradicts the dynamic lobe, and clutters the center with overlapping text. Although Figure 2 is more faithful to the original visual composition by avoiding invented wireframes, Figure 1's superior geometry, interactivity, and readability make it the clear winner."
+      },
+      "evalModel": "gemini-3.1-pro",
+      "evaluatedAt": "2026-08-14T07:16:18.039Z"
+    }
+  },
+  "physics__geometry_reconstruction_12": {
+    "setupA": "baseline-kimi_FINAL",
+    "setupB": "full-pipeline-gpt_FINAL",
+    "subject": "physics",
+    "figure": "geometry_reconstruction_12",
+    "machineEval": {
+      "figure1Setup": "full-pipeline-gpt_FINAL",
+      "figure2Setup": "baseline-kimi_FINAL",
+      "mode": "3d",
+      "dimensions": {
+        "geometry": {
+          "winner": "full-pipeline-gpt_FINAL",
+          "confidence": 0.95,
+          "rationale": "Figure 1 accurately reconstructs the requested 3D geometry, notably using cylinders for the thick image plane edges and rimmed spheres for the points as specified. Figure 2 falls back to thin 1px LineSegments for the planes and simple red spheres, failing to match the geometric thickness and visual style of the textbook's spatial elements."
+        },
+        "interactivity": {
+          "winner": "baseline-kimi_FINAL",
+          "confidence": 1,
+          "rationale": "Figure 2 correctly alters the physical pose of the second camera in the 3D scene when the R and T controls are changed, maintaining the true geometric intersection of the projection ray and the image plane. Figure 1 leaves the second camera physically static and attempts to fudge the projection by linearly interpolating between the true geometric intersection and the mathematically transformed point, which causes the point p' to detach from the projection ray entirely."
+        },
+        "faithfulness": {
+          "winner": "baseline-kimi_FINAL",
+          "confidence": 0.95,
+          "rationale": "Figure 2 accurately reproduces the spatial separation of the image planes, the correct red/black coloring for the points, and readable label sizing. Figure 1 suffers from severe scaling issues, causing overlapping text and squashed geometry that destroys the composition."
+        },
+        "labels": {
+          "winner": "baseline-kimi_FINAL",
+          "confidence": 0.9,
+          "rationale": "Figure 1 uses excessively large fonts that cause severe overlapping and clipping (e.g., 'Reference frame' is cut off by the UI panel). Figure 2 uses a much better font size, resulting in significantly fewer collisions and better overall readability despite some minor clustering."
+        },
+        "concept": {
+          "winner": "baseline-kimi_FINAL",
+          "confidence": 1,
+          "rationale": "Figure 2 correctly conveys the geometric relationships by physically moving the reference camera in the 3D scene when the rotation (R) and translation (T) sliders change, ensuring that the projection ray C1→P mathematically and visually intersects the reference image plane exactly at p' (L00010). Figure 1 completely breaks this geometry: it leaves both camera frames fixed in 3D space regardless of the controls, and mathematically fakes the position of p' by interpolating between the true geometric intersection and the slider's computed image coordinates, resulting in a projection ray that does not actually pass through the drawn image point."
+        }
+      },
+      "aggregator": {
+        "winner": "baseline-kimi_FINAL",
+        "confidence": 0.95,
+        "explanation": "Figure 2 correctly implements the physical camera transformations and maintains precise geometric intersections for projection rays, whereas Figure 1 relies on mathematical fudging that causes projection rays to detach from points. Additionally, Figure 2 features properly scaled text and readable labels, avoiding the severe clipping and overlapping issues that plague Figure 1. These functional and compositional strengths heavily outweigh Figure 1's strictly cosmetic advantage of rendering thick edges and rimmed spheres."
+      },
+      "evalModel": "gemini-3.1-pro",
+      "evaluatedAt": "2026-08-14T07:16:50.680Z"
+    }
+  },
+  "physics__orthogonal_projection": {
+    "setupA": "baseline-kimi_FINAL",
+    "setupB": "full-pipeline-gpt_FINAL",
+    "subject": "physics",
+    "figure": "orthogonal_projection",
+    "machineEval": {
+      "figure1Setup": "full-pipeline-gpt_FINAL",
+      "figure2Setup": "baseline-kimi_FINAL",
+      "mode": "3d",
+      "dimensions": {
+        "geometry": {
+          "winner": "full-pipeline-gpt_FINAL",
+          "confidence": 0.95,
+          "rationale": "Figure 1 constructs the projected 2D image cleanly using layered shapes with precise Z-biases, completely avoiding Z-fighting. Figure 2 flattens a 3D BoxGeometry directly onto a single plane without disabling depth-write, resulting in severe Z-fighting as the front, back, and side faces all compete for the exact same depth."
+        },
+        "interactivity": {
+          "winner": "baseline-kimi_FINAL",
+          "confidence": 0.95,
+          "rationale": "Figure 2 correctly computes and updates its projection rays per-vertex, ensuring they remain valid projection paths regardless of the object's rotation or the projection blend. Figure 1 fails under rotation: its guides connect the projected front corners to the 3D back corners, resulting in diagonal lines that break the defining 'parallel to Z' property of orthographic rays. Additionally, Figure 2 updates its geometry efficiently in-place, whereas Figure 1 repeatedly destroys and recreates the scene graph."
+        },
+        "faithfulness": {
+          "winner": "full-pipeline-gpt_FINAL",
+          "confidence": 1,
+          "rationale": "Figure 1 successfully reproduces the composition, geometry, and color scheme of the original diagram, whereas Figure 2 fails to render entirely due to a syntax error."
+        },
+        "labels": {
+          "winner": "full-pipeline-gpt_FINAL",
+          "confidence": 1,
+          "rationale": "Figure 1 includes the required labels, whereas Figure 2 failed to render. Note that Figure 1 suffers from severe label clutter and poor placement, but still wins by default."
+        },
+        "concept": {
+          "winner": "baseline-kimi_FINAL",
+          "confidence": 1,
+          "rationale": "Figure 2 correctly implements the projection rays by connecting each 3D corner to its own projected point, ensuring the rays remain strictly parallel to the Z-axis even when the solid is rotated (L00007, L00010). Figure 1 computes its rays by connecting the projected points of the solid's near face to the 3D points of its far face; when the object is rotated, these points have different X coordinates, causing the rays to skew diagonally and falsely contradicting the core principle that orthographic projection rays are perpendicular to the projection plane (L00010)."
+        }
+      },
+      "aggregator": {
+        "winner": "full-pipeline-gpt_FINAL",
+        "confidence": 1,
+        "explanation": "Figure 1 successfully renders the diagram and cleanly layers its shapes to prevent Z-fighting, whereas Figure 2 fails to render entirely due to a syntax error. Although Figure 2's source code implements more mathematically accurate projection rays during rotation, Figure 1 is the only functional visualization and avoids the flawed, Z-fighting-prone geometry structure found in Figure 2's code."
+      },
+      "evalModel": "gemini-3.1-pro",
+      "evaluatedAt": "2026-08-14T07:17:49.952Z"
+    }
+  },
+  "math__14.2.9": {
+    "setupA": "baseline-kimi_FINAL",
+    "setupB": "full-pipeline-gpt_FINAL",
+    "subject": "math",
+    "figure": "14.2.9",
+    "machineEval": {
+      "figure1Setup": "baseline-kimi_FINAL",
+      "figure2Setup": "full-pipeline-gpt_FINAL",
+      "mode": "2d",
+      "dimensions": {
+        "geometry": {
+          "winner": "baseline-kimi_FINAL",
+          "confidence": 0.95,
+          "rationale": "Figure 1 maintains accurate relative proportions and layout, using reasonable font sizes (14-17px) that fit the graphical scale. Figure 2 uses disproportionately massive text elements (30-35px) for its labels and tick marks, which breaks the visual hierarchy and layout of standard mathematical diagrams."
+        },
+        "interactivity": {
+          "winner": "full-pipeline-gpt_FINAL",
+          "confidence": 0.95,
+          "rationale": "Figure 2 safely updates its limits display using textContent, whereas Figure 1 injects the user's raw math input into innerHTML, which breaks the layout if the user types an expression with a '<' symbol (e.g., 'x < 0'). Additionally, if the user's lower boundary exceeds the upper boundary, Figure 1 clamps the vertical slice and makes it disappear, whereas Figure 2 correctly draws it spanning the now-inverted filled region."
+        },
+        "faithfulness": {
+          "winner": "full-pipeline-gpt_FINAL",
+          "confidence": 0.95,
+          "rationale": "Figure 2 accurately reproduces the thick blue border, italicized math typography, and bold red vertical lines of the original. Figure 1 uses plain text for equations, lacks the distinct blue outline, and features faint, hard-to-read region labels."
+        },
+        "labels": {
+          "winner": "full-pipeline-gpt_FINAL",
+          "confidence": 1,
+          "rationale": "Figure 2 has highly readable, accurately sized serif labels that closely match the original, whereas Figure 1's R1 and R2 labels are so faint they are barely visible against the background colors, and its other labels are smaller and sans-serif."
+        },
+        "concept": {
+          "winner": "baseline-kimi_FINAL",
+          "confidence": 0.85,
+          "rationale": "Both figures accurately depict the geometric decomposition of the region and provide the correct bounds for the sub-regions. However, Figure 1 is conceptually more complete: it explicitly displays the resulting decomposed double integrals with the correct integrand (2x - y²) and differentials (dy dx) as specified in the brief's textbook context, whereas Figure 2 only displays the bounds as algebraic inequalities and loses the calculus context of the integration."
+        }
+      },
+      "aggregator": {
+        "winner": "full-pipeline-gpt_FINAL",
+        "confidence": 0.75,
+        "explanation": "Figure 2 is significantly more readable and faithful to the original, featuring distinct blue borders, bold red lines, and legible serif labels, whereas Figure 1 has faint, barely visible region labels. While Figure 1 provides a more complete conceptual presentation by showing the explicit double integrals and uses better-proportioned font sizes, Figure 2's robust interactivity—avoiding Figure 1's innerHTML injection vulnerability and correctly handling inverted boundaries—makes it the superior version overall."
+      },
+      "evalModel": "gemini-3.1-pro",
+      "evaluatedAt": "2026-08-14T12:24:15.770Z"
+    }
+  },
+  "math__5.2.8": {
+    "setupA": "baseline-kimi_FINAL",
+    "setupB": "full-pipeline-gpt_FINAL",
+    "subject": "math",
+    "figure": "5.2.8",
+    "machineEval": {
+      "figure1Setup": "full-pipeline-gpt_FINAL",
+      "figure2Setup": "baseline-kimi_FINAL",
+      "mode": "3d",
+      "dimensions": {
+        "geometry": {
+          "winner": "baseline-kimi_FINAL",
+          "confidence": 0.95,
+          "rationale": "Figure 2 geometrically matches the dimensions of the 2D generating profiles directly to their corresponding 3D solids, whereas Figure 1 uses mismatched radii and lengths between its 2D and 3D shapes. Additionally, Figure 2 sets up a proper isometric view and dynamically rotates the 2D shapes around the axis in 3D space to sweep out the solids."
+        },
+        "interactivity": {
+          "winner": "baseline-kimi_FINAL",
+          "confidence": 1,
+          "rationale": "Figure 2 correctly implements the focus requirement by updating the camera target to the selected panel and dimming the others. Crucially, updating the camera target means that dragging to orbit rotates the specific solid being inspected, whereas Figure 1 leaves the camera target at the origin so orbiting swings all solids in a wide arc. Figure 2 also provides a clear, progressive animation of the revolution rather than just continuously spinning a ghosted shape."
+        },
+        "faithfulness": {
+          "winner": "full-pipeline-gpt_FINAL",
+          "confidence": 0.8,
+          "rationale": "Figure 1 preserves the original's two-row orthographic layout and light cyan color scheme, making it more recognizable at a glance despite severe text overlapping. Figure 2 completely abandons the grid composition for a staggered diagonal arrangement and uses darker colors, reducing its visual resemblance."
+        },
+        "labels": {
+          "winner": "baseline-kimi_FINAL",
+          "confidence": 0.7,
+          "rationale": "Both figures suffer from severe placement issues and overlapping, but Figure 2 is slightly better because it uses opaque bounding boxes for the shape names (matching the original), which keeps them readable despite the chaotic layout. Figure 1 lacks these boxes, resulting in an illegible collision of text in the bottom row, and completely clips the 'Axis of revolution' label off the left edge."
+        },
+        "concept": {
+          "winner": "baseline-kimi_FINAL",
+          "confidence": 0.95,
+          "rationale": "Figure 2 correctly constructs the 3D geometry with the axes of revolution passing exactly through the centers of the generated solids, using depth-testing to ensure they are visible. Figure 1 mathematically displaces the solid axes in the Z-direction (by 0.52 units) to prevent them being occluded from its initial viewing angle; if the student orbits the view, the axis visibly floats entirely outside the solid, falsifying the core mathematical relationship of a solid of revolution."
+        }
+      },
+      "aggregator": {
+        "winner": "baseline-kimi_FINAL",
+        "confidence": 0.95,
+        "explanation": "Figure 2 is significantly superior due to its correct 3D geometry and interactive focus, maintaining axes of revolution precisely through the centers of the generated solids and properly orbiting the specifically selected shape. In contrast, Figure 1 suffers from severe mathematical inaccuracies, with mismatched 2D/3D dimensions and artificially displaced axes that visibly float outside the solids upon rotation. While Figure 1 better mimics the original layout and color scheme, Figure 2 provides vastly better legibility, conceptual accuracy, and progressive animation."
+      },
+      "evalModel": "gemini-3.1-pro",
+      "evaluatedAt": "2026-08-14T12:26:18.711Z"
+    }
+  },
+  "chemistry__CNX_Chem_10_06_CubUntCll": {
+    "setupA": "baseline-kimi_FINAL",
+    "setupB": "full-pipeline-gpt_FINAL",
+    "subject": "chemistry",
+    "figure": "CNX_Chem_10_06_CubUntCll",
+    "machineEval": {
+      "figure1Setup": "baseline-kimi_FINAL",
+      "figure2Setup": "full-pipeline-gpt_FINAL",
+      "mode": "3d",
+      "dimensions": {
+        "geometry": {
+          "winner": "full-pipeline-gpt_FINAL",
+          "confidence": 1,
+          "rationale": "Figure 2 accurately reconstructs the full 3x2 comparative layout (lattice points and unit cells for SC, BCC, and FCC) simultaneously, whereas Figure 1 hides them behind a UI toggle. Additionally, Figure 2 uses local clipping planes to geometrically demonstrate the exact fractional portion of an atom inside the cell when clicked, providing a far superior 3D geometric representation of the concept."
+        },
+        "interactivity": {
+          "winner": "full-pipeline-gpt_FINAL",
+          "confidence": 1,
+          "rationale": "Figure 2 geometrically highlights the fractional contribution using clipping planes (displaying exactly a 1/8 corner or 1/2 face slice), which perfectly satisfies the prompt's interaction request. Furthermore, Figure 1 contains a ReferenceError in one of its click handlers by attempting to access an undefined `_firstInteractiveHitLast` variable."
+        },
+        "faithfulness": {
+          "winner": "baseline-kimi_FINAL",
+          "confidence": 0.85,
+          "rationale": "Figure 1 uses a legitimate toggle approach to display the panels cleanly, maintaining the structural clarity of the original. Figure 2 attempts to show all panels at once but fails due to overlapping geometry and mashed text labels in the bottom row, severely obscuring the information."
+        },
+        "labels": {
+          "winner": "baseline-kimi_FINAL",
+          "confidence": 0.7,
+          "rationale": "Figure 1 is marginally better because its labels remain readable despite inappropriately overlapping the 3D models. Figure 2 suffers from severe text collision at the bottom, rendering the structure names completely illegible, even though its top headings are better positioned."
+        },
+        "concept": {
+          "winner": "full-pipeline-gpt_FINAL",
+          "confidence": 1,
+          "rationale": "Figure 2 correctly implements the brief's requirement to present all six diagrams simultaneously in two rows of three, enabling direct visual comparison between the unit cell types as intended by the text. Figure 1 violates this by forcing the user to toggle between modes, hiding the comparison. Furthermore, Figure 2's interactive feature actively clips the selected atoms to visually prove their 1/8 or 1/2 fractional contributions, providing a superb and accurate pedagogical aid for the atom-counting framework."
+        }
+      },
+      "aggregator": {
+        "winner": "full-pipeline-gpt_FINAL",
+        "confidence": 0.9,
+        "explanation": "Figure 2 is the superior educational tool because it correctly implements the requested simultaneous 3x2 comparative layout and uses interactive clipping planes to mathematically demonstrate fractional atom contributions. In contrast, Figure 1 hinders direct comparison by hiding the models behind a UI toggle and suffers from a broken click handler due to a ReferenceError, despite having visually cleaner text labels."
+      },
+      "evalModel": "gemini-3.1-pro",
+      "evaluatedAt": "2026-08-14T12:26:52.451Z"
+    }
+  },
+  "chemistry__CNX_Chem_13_01_equilibrium": {
+    "setupA": "baseline-kimi_FINAL",
+    "setupB": "full-pipeline-gpt_FINAL",
+    "subject": "chemistry",
+    "figure": "CNX_Chem_13_01_equilibrium",
+    "machineEval": {
+      "figure1Setup": "baseline-kimi_FINAL",
+      "figure2Setup": "full-pipeline-gpt_FINAL",
+      "mode": "2d",
+      "dimensions": {
+        "geometry": {
+          "winner": "full-pipeline-gpt_FINAL",
+          "confidence": 0.9,
+          "rationale": "Figure 2 accurately reconstructs the full multi-panel structure of the typical textbook figure, displaying all three static time snapshots (test tubes, curved arrows, and molecular magnifications) side-by-side in panel (a) along with both stacked graphs (b and c). Figure 1 replaces the three static snapshots and dual graphs with a single interactive time-slice, which fundamentally alters the 2D structure and layout of the original figure."
+        },
+        "interactivity": {
+          "winner": "baseline-kimi_FINAL",
+          "confidence": 1,
+          "rationale": "Figure 1 implements all requested interactions, including the draggable time marker and the slider for initial concentration, seamlessly updating the mathematical models and visual state. Figure 2 completely ignores the requested time marker and concentration slider, opting instead for a pre-scripted slideshow with no dynamic simulation."
+        },
+        "faithfulness": {
+          "winner": "full-pipeline-gpt_FINAL",
+          "confidence": 1,
+          "rationale": "Figure 2 perfectly replicates the three-panel layout and all molecular snapshots of the original. Figure 1 changes the composition by showing only one snapshot at a time and hiding the third panel behind a toggle."
+        },
+        "labels": {
+          "winner": "full-pipeline-gpt_FINAL",
+          "confidence": 0.8,
+          "rationale": "Figure 2 reproduces all labels from the original across all three panels, whereas Figure 1 has a severe text collision on the y-axis ('Concentration') and misses many labels in its default state. Figure 2 has minor formatting issues with subscripts in panel (c) and a slightly clipped label at the bottom, but remains vastly superior in completeness and placement."
+        },
+        "concept": {
+          "winner": "baseline-kimi_FINAL",
+          "confidence": 0.95,
+          "rationale": "Figure 1 numerically integrates the actual differential equations for the reaction, strictly enforcing stoichiometry (conservation of mass) and the rate laws exactly as labelled. Figure 2 uses arbitrary easing functions to draw its curves, which breaks conservation of mass (the change in NO2 is not twice the change in N2O4) and contradicts the rate law labels (the drawn forward rate is not proportional to the drawn N2O4 concentration)."
+        }
+      },
+      "aggregator": {
+        "winner": "baseline-kimi_FINAL",
+        "confidence": 0.85,
+        "explanation": "While Figure 2 more faithfully recreates the static multi-panel layout and complete labels of the original textbook image, it completely ignores the requested interactive controls and relies on arbitrary easing functions that violate conservation of mass. Figure 1 is the superior interactive graphic because it successfully implements the requested time and concentration sliders, backing its dynamic visualizations with accurate numerical integration of the underlying differential equations."
+      },
+      "evalModel": "gemini-3.1-pro",
+      "evaluatedAt": "2026-08-14T12:27:36.994Z"
+    }
+  },
+  "cs__Conv1DChannels": {
+    "setupA": "baseline-kimi_FINAL",
+    "setupB": "full-pipeline-gpt_FINAL",
+    "subject": "cs",
+    "figure": "Conv1DChannels",
+    "machineEval": {
+      "figure1Setup": "baseline-kimi_FINAL",
+      "figure2Setup": "full-pipeline-gpt_FINAL",
+      "mode": "3d",
+      "dimensions": {
+        "geometry": {
+          "winner": "baseline-kimi_FINAL",
+          "confidence": 0.95,
+          "rationale": "Figure 1 constructs the tensor volumes using genuine 3D primitives (spheres with backface-culling outlines), accurately representing the 3D geometry from any angle. Figure 2 relies on billboarded flat circles to fake the spheres, which ruins the 3D structure when the camera orbits and flattens the volumetric representation."
+        },
+        "interactivity": {
+          "winner": "full-pipeline-gpt_FINAL",
+          "confidence": 1,
+          "rationale": "Figure 2 correctly updates the weight tensor's appearance when the output channel slider is moved, displaying the corresponding filter slice as requested. Figure 1 fails to do this because it hardcodes the weight tensor as a simple 1D vector of length K, completely omitting the input and output channel dimensions, rendering the channel slider's requested effect on the weights impossible."
+        },
+        "faithfulness": {
+          "winner": "full-pipeline-gpt_FINAL",
+          "confidence": 0.9,
+          "rationale": "Figure 2 accurately reproduces the gray selection box in the input tensor, the 1D strip of weights, and the single highlighted output unit, alongside clear labeling. Figure 1 incorrectly uses brown spheres for the input highlight, renders the weights as a dense block rather than a strip, and suffers from severely overlapping text."
+        },
+        "labels": {
+          "winner": "full-pipeline-gpt_FINAL",
+          "confidence": 0.9,
+          "rationale": "Figure 2 has significantly better label placement and readability, avoiding the severe overlap and clutter seen in Figure 1 where labels like 'Width', 'Height', and 'Weights' clash directly with the 3D geometry."
+        },
+        "concept": {
+          "winner": "full-pipeline-gpt_FINAL",
+          "confidence": 0.95,
+          "rationale": "Figure 2 correctly illustrates the conceptual mechanics of a multi-channel convolution: it portrays the weight tensor slice for one output channel as a 2D grid spanning both the spatial kernel width and all input channels (L00007), which accurately reflects the 'weighted linear combination across channel and spatial dimensions'. Figure 1 draws only a 1D row of weights, completely missing the input channel dimension of the filter. Furthermore, Figure 2 includes the requested dark slate arrows showing the flow of computation from the input to the weights and then the output (L00007), which Figure 1 omits entirely."
+        }
+      },
+      "aggregator": {
+        "winner": "full-pipeline-gpt_FINAL",
+        "confidence": 0.95,
+        "explanation": "Figure 2 correctly implements the conceptual mechanics of the convolution by modeling the weight tensor slice as a 2D grid that spans both the spatial kernel width and input channels, enabling correct interactive updates. In contrast, Figure 1 incorrectly hardcodes the weights as a 1D vector and suffers from severe text overlap and omitted flow arrows, although it does benefit from using genuine 3D spheres rather than Figure 2's billboarded flat circles."
+      },
+      "evalModel": "gemini-3.1-pro",
+      "evaluatedAt": "2026-08-14T12:29:25.909Z"
+    }
+  },
+  "cs__DiffusionUNet": {
+    "setupA": "baseline-kimi_FINAL",
+    "setupB": "full-pipeline-gpt_FINAL",
+    "subject": "cs",
+    "figure": "DiffusionUNet",
+    "machineEval": {
+      "figure1Setup": "full-pipeline-gpt_FINAL",
+      "figure2Setup": "baseline-kimi_FINAL",
+      "mode": "3d",
+      "dimensions": {
+        "geometry": {
+          "winner": "full-pipeline-gpt_FINAL",
+          "confidence": 0.95,
+          "rationale": "Figure 1 accurately represents the 3D tensor geometry of the architecture by increasing the depth (thickness) of the blocks as the spatial resolution decreases to reflect the expanding channel dimensions (e.g., 128 to 256 to 512). Figure 2 uses a fixed depth for all feature maps, failing to reconstruct this crucial geometric aspect of the neural network's spatial relationships."
+        },
+        "interactivity": {
+          "winner": "full-pipeline-gpt_FINAL",
+          "confidence": 1,
+          "rationale": "Figure 1 perfectly satisfies the block highlighting instruction by updating the forward-processing arrows to match the legend's styles, whereas Figure 2 ignores this and simply turns the blocks themselves a different color. Figure 1 also provides a much smoother and more coherent animation pass that effectively pulses the skip connections as requested."
+        },
+        "faithfulness": {
+          "winner": "full-pipeline-gpt_FINAL",
+          "confidence": 0.9,
+          "rationale": "Figure 1 accurately reproduces the varying geometric proportions of the blocks (downsampling and upsampling) seen in the original, whereas Figure 2 uses identical uniform shapes for all layers. Additionally, Figure 1's text placement and connecting lines are much closer to the source's layout."
+        },
+        "labels": {
+          "winner": "full-pipeline-gpt_FINAL",
+          "confidence": 0.8,
+          "rationale": "Both figures suffer from severe label collisions and poor formatting. However, Figure 1 is slightly better as it attempts to position dimension labels and 'Concatenate' labels near their respective blocks and connections as in the original, whereas Figure 2 groups all dimension labels into an illegible horizontal blob and stacks the 'Concatenate' labels in a single vertical column."
+        },
+        "concept": {
+          "winner": "full-pipeline-gpt_FINAL",
+          "confidence": 1,
+          "rationale": "Figure 1 accurately maps the changing tensor dimensions to its 3D geometry: height correctly decreases to represent spatial downsampling, while depth increases to represent the expanding channel dimension (128 -> 256 -> 512). Figure 2 uses a constant depth for all feature maps, completely failing to visually communicate the expanding channel capacity which is a core concept of the U-Net architecture."
+        }
+      },
+      "aggregator": {
+        "winner": "full-pipeline-gpt_FINAL",
+        "confidence": 0.98,
+        "explanation": "Figure 1 significantly outperforms Figure 2 by correctly visualizing the expanding channel dimensions through varying block depth, whereas Figure 2 incorrectly uses a constant depth for all feature maps. Additionally, Figure 1 accurately implements the interactive highlighting of arrows and pulsing of skip connections, whereas Figure 2 incorrectly changes block colors and groups its text labels into illegible clusters."
+      },
+      "evalModel": "gemini-3.1-pro",
+      "evaluatedAt": "2026-08-14T12:30:03.521Z"
+    }
+  },
+  "cs__ShallowHyperplanes": {
+    "setupA": "baseline-kimi_FINAL",
+    "setupB": "full-pipeline-gpt_FINAL",
+    "subject": "cs",
+    "figure": "ShallowHyperplanes",
+    "machineEval": {
+      "figure1Setup": "baseline-kimi_FINAL",
+      "figure2Setup": "full-pipeline-gpt_FINAL",
+      "mode": "3d",
+      "dimensions": {
+        "geometry": {
+          "winner": "baseline-kimi_FINAL",
+          "confidence": 0.95,
+          "rationale": "Figure 1 constructs the geometry correctly with planes intersecting at the origin and includes a functional half-space overlay in panel b, whereas Figure 2 uses strange, seemingly arbitrary offsets for its 3D planes rather than centering them correctly on the axes."
+        },
+        "interactivity": {
+          "winner": "baseline-kimi_FINAL",
+          "confidence": 1,
+          "rationale": "Figure 1 implements the requested draggable input point and correctly computes the combined classification across all hyperplanes. Figure 2 entirely omits the interactive input point and classification output."
+        },
+        "faithfulness": {
+          "winner": "full-pipeline-gpt_FINAL",
+          "confidence": 0.9,
+          "rationale": "Figure 2 accurately reflects the geometric dimensionality of the original panels (a bar in 1D, lines in 2D, planes in 3D), whereas Figure 1 incorrectly renders the 2D panel with a translucent plane. Furthermore, Figure 1 clutters the visual with invented points and plus/minus symbols not present in the source."
+        },
+        "labels": {
+          "winner": "full-pipeline-gpt_FINAL",
+          "confidence": 0.9,
+          "rationale": "Figure 2 features larger, more readable labels that match the original figure perfectly. Figure 1 is penalized for having text that is too small and for inventing additional '+' and '-' annotations not present in the reference."
+        },
+        "concept": {
+          "winner": "full-pipeline-gpt_FINAL",
+          "confidence": 0.9,
+          "rationale": "Figure 2 correctly maintains conceptual consistency across dimensions: when tilting a hyperplane, it applies the same equation (e.g., modifying the x1 and x2 weights) in both 2D and 3D, keeping the boundary invariant along the newly added x3 axis in Panel c. Figure 1 incorrectly tilts the 3D plane around the Y-axis (adding an x3 weight) while tilting the 2D line around the Z-axis (adding an x2 weight), breaking the core concept that the same neuron's decision boundary simply extends along the new dimension."
+        }
+      },
+      "aggregator": {
+        "winner": "full-pipeline-gpt_FINAL",
+        "confidence": 0.75,
+        "explanation": "Although Figure 1 successfully implements the requested interactive elements and correctly centers its 3D planes, Figure 2 is the overall stronger figure because it correctly maintains the conceptual invariance of the decision boundary across dimensions, a core concept that Figure 1 breaks. Furthermore, Figure 2 accurately replicates the reference's geometric dimensionality and typography across all panels, whereas Figure 1 inaccurately renders the 2D panel as a 3D plane and adds unnecessary visual clutter."
+      },
+      "evalModel": "gemini-3.1-pro",
+      "evaluatedAt": "2026-08-14T12:30:42.709Z"
+    }
+  },
+  "cs__ShallowNet": {
+    "setupA": "baseline-kimi_FINAL",
+    "setupB": "full-pipeline-gpt_FINAL",
+    "subject": "cs",
+    "figure": "ShallowNet",
+    "machineEval": {
+      "figure1Setup": "full-pipeline-gpt_FINAL",
+      "figure2Setup": "baseline-kimi_FINAL",
+      "mode": "2d",
+      "dimensions": {
+        "geometry": {
+          "winner": "full-pipeline-gpt_FINAL",
+          "confidence": 1,
+          "rationale": "Figure 1 correctly renders both panels side-by-side to match the typical textbook layout, whereas Figure 2 forces a toggle. Figure 1 also correctly splits the bias inputs into two separate nodes to avoid overlapping connections, and it applies proper unicode subscripts to its parameter labels, which Figure 2 fails to do."
+        },
+        "interactivity": {
+          "winner": "baseline-kimi_FINAL",
+          "confidence": 1,
+          "rationale": "Figure 2 correctly implements all requested interactions, including the slider to dynamically change the number of hidden units and the toggle to switch between panels. Figure 1 completely omits the hidden unit slider and statically draws both panels side-by-side instead of providing a toggle."
+        },
+        "faithfulness": {
+          "winner": "full-pipeline-gpt_FINAL",
+          "confidence": 0.95,
+          "rationale": "Figure 1 accurately reproduces the layout and elements of both panels, including the two distinct bias nodes in panel a. Figure 2 deviates significantly by combining the two bias nodes into a single node and omitting arrowheads on the connection lines."
+        },
+        "labels": {
+          "winner": "full-pipeline-gpt_FINAL",
+          "confidence": 0.9,
+          "rationale": "Figure 1 correctly uses subscripts for mathematical labels (e.g., h_1, \\theta_{10}), whereas Figure 2 completely fails to format subscripts (h1, \\theta10). Furthermore, Figure 2 is missing the second bias unit entirely, along with its '1' label."
+        },
+        "concept": {
+          "winner": "full-pipeline-gpt_FINAL",
+          "confidence": 0.9,
+          "rationale": "Figure 1 correctly implements the two distinct bias nodes (one feeding the hidden layer, one feeding the output) as requested in the brief (L00007-L00008), whereas Figure 2 incorrectly merges them into a single bias node that feeds both layers. Figure 1 also literally provides two panels on screen at once, matching the brief's structural description, while Figure 2 hides one behind a toggle."
+        }
+      },
+      "aggregator": {
+        "winner": "full-pipeline-gpt_FINAL",
+        "confidence": 0.9,
+        "explanation": "Figure 1 is the superior choice because it accurately represents the network structure with two distinct bias nodes, includes connection arrowheads, and correctly formats mathematical labels with subscripts. While Figure 2 successfully implements the interactive slider for hidden units that Figure 1 misses, its incorrect merging of the bias nodes and complete lack of subscript formatting significantly undermine its conceptual accuracy and visual fidelity."
+      },
+      "evalModel": "gemini-3.1-pro",
+      "evaluatedAt": "2026-08-14T12:31:32.267Z"
+    }
+  },
+  "physics__pinhole_names2": {
+    "setupA": "baseline-kimi_FINAL",
+    "setupB": "full-pipeline-gpt_FINAL",
+    "subject": "physics",
+    "figure": "pinhole_names2",
+    "machineEval": {
+      "figure1Setup": "baseline-kimi_FINAL",
+      "figure2Setup": "full-pipeline-gpt_FINAL",
+      "mode": "3d",
+      "dimensions": {
+        "geometry": {
+          "winner": "baseline-kimi_FINAL",
+          "confidence": 0.95,
+          "rationale": "Figure 1 correctly builds the camera model with orthogonal 3D axes and uses the camera's projection to achieve the viewing angle, whereas Figure 2 physically angles the X-axis in 3D space (giving it a Y-component) to fake the oblique look, which destroys the orthogonal coordinate frame when the user rotates the camera."
+        },
+        "interactivity": {
+          "winner": "baseline-kimi_FINAL",
+          "confidence": 0.95,
+          "rationale": "Figure 1 correctly implements a true 3D orthogonal coordinate frame that behaves properly when the student rotates the camera, whereas Figure 2 manually bakes a 2D diagonal into the 3D geometry of the X-axis, resulting in a skewed non-orthogonal frame that looks completely wrong when rotated. Figure 1's interactive component highlighting and axis-flipping toggle also work reliably, even though its labels for left- and right-handedness are mathematically reversed."
+        },
+        "faithfulness": {
+          "winner": "baseline-kimi_FINAL",
+          "confidence": 0.9,
+          "rationale": "Figure 1 is much more recognizable overall; it maintains clean, well-positioned labels and clear geometry. Figure 2 suffers from severe label overlapping that obscures the main elements, despite its X-axis matching the original's direction."
+        },
+        "labels": {
+          "winner": "baseline-kimi_FINAL",
+          "confidence": 1,
+          "rationale": "Figure 1 has correctly sized, legible labels that are well placed without overlapping the geometry or each other. Figure 2 suffers from massive label sizes that cause severe overlap, clutter, and clipping at the screen edges."
+        },
+        "concept": {
+          "winner": "baseline-kimi_FINAL",
+          "confidence": 0.95,
+          "rationale": "Figure 1 correctly implements the projection equations for a virtual image plane located in front of the pinhole (x = f·X/Z), matching the described geometry (L00010), whereas Figure 2 applies the negative signs of a physical rear image plane while keeping the virtual front-plane geometry. Crucially, Figure 2 models the lateral X-axis as physically diagonal in 3D space to 'fake' an oblique projection, meaning its axes are not orthogonal and fail to form a valid Cartesian coordinate frame when rotated; Figure 1 correctly uses orthogonal 3D geometry."
+        }
+      },
+      "aggregator": {
+        "winner": "baseline-kimi_FINAL",
+        "confidence": 0.97,
+        "explanation": "Figure 1 constructs a mathematically correct 3D orthogonal coordinate system and implements the correct projection equations, whereas Figure 2 relies on a physically skewed X-axis to fake an oblique perspective, resulting in a broken coordinate frame when rotated. Furthermore, Figure 1 maintains clean and properly sized text labels, avoiding the massive overlapping and visual clutter issues present in Figure 2."
+      },
+      "evalModel": "gemini-3.1-pro",
+      "evaluatedAt": "2026-08-14T12:34:01.972Z"
+    }
+  },
+  "math__15.2.7": {
+    "setupA": "baseline-kimi_FINAL",
+    "setupB": "full-pipeline-gpt_FINAL",
+    "subject": "math",
+    "figure": "15.2.7",
+    "machineEval": {
+      "figure1Setup": "baseline-kimi_FINAL",
+      "figure2Setup": "full-pipeline-gpt_FINAL",
+      "mode": "3d",
+      "dimensions": {
+        "geometry": {
+          "winner": "baseline-kimi_FINAL",
+          "confidence": 0.95,
+          "rationale": "Figure 1 constructs the true, mathematically accurate 3D geometry by mapping the math coordinates directly to standard world coordinates (XZ as the horizontal plane, Y as height). Figure 2 manually negates the X and Y axes and applies an arbitrary 0.9 scaling factor to the Z (height) axis, warping the true 3D shape and geometry to force a perspective rather than relying on the camera."
+        },
+        "interactivity": {
+          "winner": "baseline-kimi_FINAL",
+          "confidence": 0.95,
+          "rationale": "Figure 1 correctly maps and preserves the geometric proportions of the helix, meaning the drag-to-rotate interaction accurately reveals the true shape of the curve. Figure 2 applies an arbitrary scaling factor (0.9) to the Z-axis and negates X and Y internally, distorting the 3D space so the rotated object does not physically match the displayed coordinate readout."
+        },
+        "faithfulness": {
+          "winner": "baseline-kimi_FINAL",
+          "confidence": 0.8,
+          "rationale": "Figure 1 is more visually faithful due to its cleaner and more accurately positioned text labels that better match the original's layout. Figure 2 suffers from oversized, poorly placed, and overlapping labels that distract from the core geometry."
+        },
+        "labels": {
+          "winner": "baseline-kimi_FINAL",
+          "confidence": 0.8,
+          "rationale": "Figure 1 features cleaner, more readable labels with minimal overlap, though they are somewhat small and miss the '0' annotations at the endpoints. Figure 2 is heavily penalized for severe text-on-text collision (particularly the start coordinate and '0') and for incorrectly placing annotations inside the bounding box."
+        },
+        "concept": {
+          "winner": "full-pipeline-gpt_FINAL",
+          "confidence": 0.95,
+          "rationale": "Both figures unfortunately construct a left-handed coordinate system by mapping 2D mathematical axes into 3D space incorrectly. However, Figure 2 anchors its coordinate labels ' (1,0,0)' and ' (-1,0,π)' exactly to the 3D points on the helix they describe. Figure 1 incorrectly anchors these labels to the empty corners of the bounding box (e.g., anchoring the (1,0,0) label at (1,-1,0)); when the user rotates the camera, Figure 1's labels track the box corners rather than the actual endpoints of the curve."
+        }
+      },
+      "aggregator": {
+        "winner": "baseline-kimi_FINAL",
+        "confidence": 0.85,
+        "explanation": "Figure 1 accurately constructs the true 3D geometry of the helix without arbitrary scaling, and renders much cleaner, readable labels. Although Figure 2 correctly anchors its coordinate labels to the curve's endpoints rather than the bounding box corners like Figure 1 does, Figure 2 is heavily penalized for manually distorting the geometric space and for severe text collisions that degrade the visual layout."
+      },
+      "evalModel": "gemini-3.1-pro",
+      "evaluatedAt": "2026-08-14T17:53:25.062Z"
+    }
+  },
+  "math__15.8.6": {
+    "setupA": "baseline-kimi_FINAL",
+    "setupB": "full-pipeline-gpt_FINAL",
+    "subject": "math",
+    "figure": "15.8.6",
+    "machineEval": {
+      "figure1Setup": "baseline-kimi_FINAL",
+      "figure2Setup": "full-pipeline-gpt_FINAL",
+      "mode": "3d",
+      "dimensions": {
+        "geometry": {
+          "winner": "baseline-kimi_FINAL",
+          "confidence": 0.95,
+          "rationale": "Figure 1 correctly separates the static fluid flow field from the paddle wheel, allowing the user to drag the paddle wheel *through* the flow. Figure 2 incorrectly groups the flow field streamlines with the paddle assembly, so dragging the point moves the entire fluid flow along with it, breaking the geometric and conceptual relationship of sampling a static field."
+        },
+        "interactivity": {
+          "winner": "full-pipeline-gpt_FINAL",
+          "confidence": 1,
+          "rationale": "Figure 2's controls all work perfectly, whereas Figure 1 includes an 'Animate spin' checkbox that is completely unhooked in the code and does nothing. Additionally, Figure 2 correctly allows negative rotation rates which physically reverse the flow and curl vectors, and correctly makes the curl magnitude dependent on P_0's location, whereas Figure 1 hardcodes a constant curl magnitude across the field."
+        },
+        "faithfulness": {
+          "winner": "full-pipeline-gpt_FINAL",
+          "confidence": 0.9,
+          "rationale": "Figure 2 captures the proportions between the paddlewheel and the concentric circles much better, uses solid arcs for the flow lines resembling the original, and features better label placement and formatting. Figure 1's paddlewheel is too small and its flow lines are rendered as dashed circles."
+        },
+        "labels": {
+          "winner": "baseline-kimi_FINAL",
+          "confidence": 0.9,
+          "rationale": "Figure 1 places its labels cleanly without overlapping the geometry, whereas Figure 2 suffers from severe label collisions, with 'Curl F(P_0)' heavily obscured by the 3D objects. Although Figure 1 invents a 'fluid flow' label not present in the original, its far superior readability makes it the winner."
+        },
+        "concept": {
+          "winner": "full-pipeline-gpt_FINAL",
+          "confidence": 0.95,
+          "rationale": "Figure 2 accurately keeps the curl vector aligned with the paddle wheel's spindle, preserving the core physical analogy from the textbook (L00007, L00010). Figure 1 artificially tilts the curl vector away from the spindle when the paddle is moved, which not only breaks the visual alignment requested in the brief but is mathematically false for the uniform-curl solid-body rotation flow its comments and fixed concentric flow lines describe."
+        }
+      },
+      "aggregator": {
+        "winner": "full-pipeline-gpt_FINAL",
+        "confidence": 0.85,
+        "explanation": "Figure 2 is the stronger figure because it maintains the mathematically accurate alignment of the curl vector with the paddle's spindle, correctly updates the curl magnitude based on the paddle's position, and features fully functional controls. Although Figure 1 correctly separates the static flow field from the paddle during dragging and has better label readability, it suffers from a broken animation checkbox, an erroneously hardcoded curl magnitude, and a physically incorrect tilted curl vector."
+      },
+      "evalModel": "gemini-3.1-pro",
+      "evaluatedAt": "2026-08-14T17:53:59.795Z"
+    }
+  },
+  "cs__19.2": {
+    "setupA": "baseline-kimi_FINAL",
+    "setupB": "full-pipeline-gpt_FINAL",
+    "subject": "cs",
+    "figure": "19.2",
+    "machineEval": {
+      "figure1Setup": "baseline-kimi_FINAL",
+      "figure2Setup": "full-pipeline-gpt_FINAL",
+      "mode": "2d",
+      "dimensions": {
+        "geometry": {
+          "winner": "full-pipeline-gpt_FINAL",
+          "confidence": 0.95,
+          "rationale": "Figure 2 correctly displays both panels (a) and (b) simultaneously, preserving the macro-structure of the original textbook figure. It also handles the single-node circular lists (degree-0 children) much more accurately by rendering two distinct self-looping arrows (for the left and right pointers), whereas Figure 1 just draws an un-directed ellipse. Figure 2's interactive inspection is also visually integrated directly into the diagram with clear pointer overlays."
+        },
+        "interactivity": {
+          "winner": "baseline-kimi_FINAL",
+          "confidence": 1,
+          "rationale": "Figure 1 implements actual graph data structures, allowing it to correctly compute pointer inspections for any node and dynamically animate insertions for any user-provided key. Figure 2 hardcodes the insertion to a specific key (2) and uses static dictionaries for pointer inspection, meaning it cannot properly update or reflect the state after an insertion."
+        },
+        "faithfulness": {
+          "winner": "baseline-kimi_FINAL",
+          "confidence": 0.9,
+          "rationale": "Figure 1 faithfully reproduces the clean composition and geometry of the original's panel (a), utilizing an permitted toggle for panel (b). Figure 2 attempts both panels simultaneously but significantly alters the pointer structures in panel (b), omitting the distinctive capsules around child lists in favor of cluttered, curled arrows."
+        },
+        "labels": {
+          "winner": "full-pipeline-gpt_FINAL",
+          "confidence": 1,
+          "rationale": "Figure 2 correctly includes all labels for both panels (a) and (b) present in the reference. Figure 1 only renders panel (a), completely missing the labels for panel (b)."
+        },
+        "concept": {
+          "winner": "full-pipeline-gpt_FINAL",
+          "confidence": 1,
+          "rationale": "Figure 2 correctly illustrates the circular doubly linked lists by drawing long wrap-around backward and forward arrows connecting the ends of the sibling lists, and uses directed self-loop arrows for singleton lists. In contrast, Figure 1's geometry for circular lists is fundamentally broken: it merely draws disconnected U-turn arcs at the extreme nodes without connecting them across the list, and uses an undirected ellipse for singletons, failing to assert the true pointer structure. Figure 2 also correctly presents both panels simultaneously as specified in the brief."
+        }
+      },
+      "aggregator": {
+        "winner": "full-pipeline-gpt_FINAL",
+        "confidence": 0.8,
+        "explanation": "Figure 2 correctly displays the conceptual structure of the circular doubly linked lists using appropriate wrap-around arrows, and it accurately presents both panels simultaneously with all required labels. While Figure 1 implements a more robust underlying data structure for dynamic interaction, its visual representation of the circular lists is fundamentally flawed with disconnected arcs, and it fails to display the second panel and its labels by default."
+      },
+      "evalModel": "gemini-3.1-pro",
+      "evaluatedAt": "2026-08-14T17:55:19.822Z"
+    }
+  },
+  "math__5.7.13": {
+    "setupA": "baseline-kimi_FINAL",
+    "setupB": "full-pipeline-gpt_FINAL",
+    "subject": "math",
+    "figure": "5.7.13",
+    "machineEval": {
+      "figure1Setup": "baseline-kimi_FINAL",
+      "figure2Setup": "full-pipeline-gpt_FINAL",
+      "mode": "3d",
+      "dimensions": {
+        "geometry": {
+          "winner": "baseline-kimi_FINAL",
+          "confidence": 1,
+          "rationale": "Figure 1 correctly relies on HTML labels and proper 3D geometry, whereas Figure 2 automatically loses by building a fake 2D callout box out of 3D ShapeGeometry attached directly to the camera."
+        },
+        "interactivity": {
+          "winner": "full-pipeline-gpt_FINAL",
+          "confidence": 0.99,
+          "rationale": "Figure 2 correctly synchronizes the animation of the generating circle with the directional arrows on its path. In Figure 1, the rotation applied to the group revolves the circle clockwise while the static arrows on the path point counter-clockwise, meaning the interaction effect runs backwards."
+        },
+        "faithfulness": {
+          "winner": "full-pipeline-gpt_FINAL",
+          "confidence": 1,
+          "rationale": "Figure 2 is significantly more faithful, capturing the yellow generating circle, the dashed red centroid path, and the stylized text label with the arrow, whereas Figure 1 only renders a plain, unannotated torus."
+        },
+        "labels": {
+          "winner": "full-pipeline-gpt_FINAL",
+          "confidence": 0.9,
+          "rationale": "Figure 2 successfully includes the large text annotation box and attempts to place the 'a' and 'b' labels on the 3D model, matching the reference. Figure 1 completely omits all in-scene labels, relegating the information to the side UI panel instead."
+        },
+        "concept": {
+          "winner": "full-pipeline-gpt_FINAL",
+          "confidence": 1,
+          "rationale": "Figure 2 correctly sets the camera projection to perspective as requested by the brief, whereas Figure 1 uses an orthographic projection. Furthermore, Figure 2 correctly animates the generating disk revolving in the same counter-clockwise direction indicated by the red path arrows. Figure 1 animates the disk revolving clockwise, contradicting the counter-clockwise direction of its own path arrows."
+        }
+      },
+      "aggregator": {
+        "winner": "full-pipeline-gpt_FINAL",
+        "confidence": 0.95,
+        "explanation": "Figure 2 is the better model due to its comprehensive visual fidelity and correct animation direction, rendering the generating circle, path arrows, and in-scene annotations that Figure 1 completely omits. Although Figure 1 properly uses HTML labels rather than Figure 2's artificial 3D-geometry callout attached to the camera, Figure 1 is severely compromised by an incorrect orthographic projection and an animation that runs backward relative to its static path arrows."
+      },
+      "evalModel": "gemini-3.1-pro",
+      "evaluatedAt": "2026-08-14T17:56:13.991Z"
+    }
+  },
+  "chemistry__CNX_Chem_07_06_Dipolfield": {
+    "setupA": "baseline-kimi_FINAL",
+    "setupB": "full-pipeline-gpt_FINAL",
+    "subject": "chemistry",
+    "figure": "CNX_Chem_07_06_Dipolfield",
+    "machineEval": {
+      "figure1Setup": "full-pipeline-gpt_FINAL",
+      "figure2Setup": "baseline-kimi_FINAL",
+      "mode": "3d",
+      "dimensions": {
+        "geometry": {
+          "winner": "full-pipeline-gpt_FINAL",
+          "confidence": 0.95,
+          "rationale": "Figure 1 restricts the dipole orientations to the XY plane, which ensures that both atoms of every molecule remain visible instead of pointing into or away from the camera and occluding themselves (as happens with Figure 2's fully random 3D rotations). Figure 1 also reconstructs the diagrammatic styling much better, including a colored field region, black outlines on the plates, and precise planar label positioning."
+        },
+        "interactivity": {
+          "winner": "tie",
+          "confidence": 0.95,
+          "rationale": "Both figures implement robust, flawless interaction logic. Figure 1 explicitly provides the requested separate 'snap' dropdown and 'animate' buttons, choreographing the transitions perfectly while preventing interaction conflicts during the tweens. Figure 2 utilizes an elegant, continuous state-driven animation loop that smoothly slerps the 3D quaternions to the target alignment whenever the controls change. Both handles the slider correctly for partial alignment and correctly update all labels in sync with the geometry."
+        },
+        "faithfulness": {
+          "winner": "full-pipeline-gpt_FINAL",
+          "confidence": 0.9,
+          "rationale": "Figure 1 is more faithful to the original by positioning the delta labels floating near the molecules, whereas Figure 2 places them directly on the sphere surfaces causing visual clutter. Additionally, Figure 1's thinner, lighter grey plates better match the original illustration."
+        },
+        "labels": {
+          "winner": "full-pipeline-gpt_FINAL",
+          "confidence": 0.9,
+          "rationale": "Figure 1's labels are larger, more readable, and placed better relative to the atoms. Figure 2's labels are too small and frequently intersect or clip deeply into the spheres, making them difficult to read."
+        },
+        "concept": {
+          "winner": "baseline-kimi_FINAL",
+          "confidence": 0.9,
+          "rationale": "Figure 2 correctly models the random thermal state by distributing the molecules' orientations in full 3D space rather than artificially restricting them to the 2D plane as Figure 1 does. Additionally, Figure 2 provides a physically meaningful vector arrow correctly pointing from the positive to the negative plate to indicate the electric field direction, whereas Figure 1 just displays an unexplained diagonal cylinder."
+        }
+      },
+      "aggregator": {
+        "winner": "full-pipeline-gpt_FINAL",
+        "confidence": 0.85,
+        "explanation": "Figure 1 is the stronger visualization because it ensures the atoms and their labels remain clearly visible by restricting dipoles to the XY plane, whereas Figure 2's fully 3D orientations cause self-occlusion and severe label clipping. Although Figure 2 is slightly more conceptually accurate in its thermal distribution and electric field arrow, Figure 1's superior legibility, better diagrammatic styling, and uncompromised interactive animations make it significantly more effective overall."
+      },
+      "evalModel": "gemini-3.1-pro",
+      "evaluatedAt": "2026-08-14T17:57:19.827Z"
+    }
+  },
+  "chemistry__CNX_Chem_09_04_Diffusion": {
+    "setupA": "baseline-kimi_FINAL",
+    "setupB": "full-pipeline-gpt_FINAL",
+    "subject": "chemistry",
+    "figure": "CNX_Chem_09_04_Diffusion",
+    "machineEval": {
+      "figure1Setup": "baseline-kimi_FINAL",
+      "figure2Setup": "full-pipeline-gpt_FINAL",
+      "mode": "2d",
+      "dimensions": {
+        "geometry": {
+          "winner": "full-pipeline-gpt_FINAL",
+          "confidence": 0.95,
+          "rationale": "Figure 2 accurately reconstructs the structural layout of the original textbook figure by rendering all three states side-by-side as distinct panels (a, b, and c). Figure 1 condenses these panels into a single animated view, which loses the static, comparative layout of the original. Furthermore, Figure 2 features a much more detailed and structurally accurate glass stopcock and tube assembly."
+        },
+        "interactivity": {
+          "winner": "baseline-kimi_FINAL",
+          "confidence": 1,
+          "rationale": "Figure 1 fully implements the requested interactions, providing a working slider for elapsed time, an animate button that drives the diffusion smoothly, and a functional toggle for color-coding by molecular mass. Figure 2 completely ignores the requested controls, providing only a dropdown to highlight static panels instead of a dynamic simulation."
+        },
+        "faithfulness": {
+          "winner": "baseline-kimi_FINAL",
+          "confidence": 0.8,
+          "rationale": "Figure 1 features cleaner geometry with a properly opaque stopcock and correct chemical labels (H2, O2). Figure 2 matches the multi-panel layout but suffers from transparent, overlapping lines in the stopcock drawing and incorrect labels (H:, O:)."
+        },
+        "labels": {
+          "winner": "baseline-kimi_FINAL",
+          "confidence": 0.95,
+          "rationale": "Figure 1 correctly formats the chemical formulas with subscripts (H₂ and O₂) and maintains excellent readability. Figure 2 replaces the subscripts with colons (H: and O:) and features bottom labels that are too small to read comfortably."
+        },
+        "concept": {
+          "winner": "full-pipeline-gpt_FINAL",
+          "confidence": 1,
+          "rationale": "Figure 2 correctly illustrates diffusion resulting in a mixed, uniform distribution of both gases across the two bulbs in the final state. Figure 1 contains a severe conceptual error in its animation logic: instead of mixing, every single particle travels to the opposite bulb and stops, meaning the two gases completely swap sides and remain unmixed at equilibrium."
+        }
+      },
+      "aggregator": {
+        "winner": "full-pipeline-gpt_FINAL",
+        "confidence": 0.85,
+        "explanation": "Although Figure 1 successfully implements the requested interactive controls and features cleanly formatted chemical labels, it suffers from a fatal conceptual error by animating the gases to completely swap sides rather than mixing. Figure 2 is chosen as the winner because it correctly illustrates the fundamental physics of diffusion resulting in a uniform mixture and accurately reconstructs the textbook's structural layout, making it a better educational tool despite its lack of dynamic interactivity and poor label formatting."
+      },
+      "evalModel": "gemini-3.1-pro",
+      "evaluatedAt": "2026-08-14T17:57:51.351Z"
+    }
+  },
+  "chemistry__CNX_Chem_18_02_DownsCell": {
+    "setupA": "baseline-kimi_FINAL",
+    "setupB": "full-pipeline-gpt_FINAL",
+    "subject": "chemistry",
+    "figure": "CNX_Chem_18_02_DownsCell",
+    "machineEval": {
+      "figure1Setup": "full-pipeline-gpt_FINAL",
+      "figure2Setup": "baseline-kimi_FINAL",
+      "mode": "2d",
+      "dimensions": {
+        "geometry": {
+          "winner": "full-pipeline-gpt_FINAL",
+          "confidence": 1,
+          "rationale": "Figure 1 constructs the intricate geometry of the Downs cell with high-fidelity, custom-drawn paths that accurately mimic the standard textbook representation (such as the stepped vessel walls, the curved chlorine collector, and the distinct sodium collection chamber). Figure 2 relies on highly simplified, blocky geometric primitives that fail to capture the detailed structure and proportions of the apparatus."
+        },
+        "interactivity": {
+          "winner": "full-pipeline-gpt_FINAL",
+          "confidence": 1,
+          "rationale": "Figure 1 fully implements the animation requirement by showing liquid sodium migrating to and collecting at the Na outlet, whereas Figure 2 simply deletes the sodium ions once they reach the cathode. Figure 1 also displays the balanced half-equations directly on the figure as requested, whereas Figure 2 hides them inside a popup."
+        },
+        "faithfulness": {
+          "winner": "full-pipeline-gpt_FINAL",
+          "confidence": 1,
+          "rationale": "Figure 1 accurately reproduces the complex geometry, composition, and color scheme of the original Downs cell diagram, whereas Figure 2 fails to render the illustration entirely, displaying only a solid gray box with scattered text labels."
+        },
+        "labels": {
+          "winner": "full-pipeline-gpt_FINAL",
+          "confidence": 1,
+          "rationale": "Figure 1 successfully replicates all labels from the reference diagram with excellent readability and placement. Figure 2 is missing the underlying diagram and omits almost all required annotations."
+        },
+        "concept": {
+          "winner": "full-pipeline-gpt_FINAL",
+          "confidence": 1,
+          "rationale": "Figure 1 accurately represents the geometry of the Downs cell and demonstrates how liquid sodium, being less dense than the molten salt, floats up from the cathode and physically flows into the right-hand collector as described in the brief. Figure 2 uses a disconnected abstract geometry where the cathode does not funnel the floating sodium into the side reservoir, failing to convey the physical collection mechanism."
+        }
+      },
+      "aggregator": {
+        "winner": "full-pipeline-gpt_FINAL",
+        "confidence": 1,
+        "explanation": "Figure 1 is unanimously preferred for accurately capturing the complex geometry of the Downs cell and faithfully implementing the intended animation of liquid sodium collection. In contrast, Figure 2 fails to render the illustration properly, producing only an abstract solid gray box with scattered text, and simply deletes sodium ions instead of animating their migration."
+      },
+      "evalModel": "gemini-3.1-pro",
+      "evaluatedAt": "2026-08-14T17:58:39.498Z"
+    }
+  },
+  "chemistry__CNX_Chem_21_04_CritMass": {
+    "setupA": "baseline-kimi_FINAL",
+    "setupB": "full-pipeline-gpt_FINAL",
+    "subject": "chemistry",
+    "figure": "CNX_Chem_21_04_CritMass",
+    "machineEval": {
+      "figure1Setup": "baseline-kimi_FINAL",
+      "figure2Setup": "full-pipeline-gpt_FINAL",
+      "mode": "2d",
+      "dimensions": {
+        "geometry": {
+          "winner": "full-pipeline-gpt_FINAL",
+          "confidence": 0.95,
+          "rationale": "Figure 2 constructs a much stronger visual representation of the concept. Its chain reaction animation explicitly labels the '1 -> 2 -> 4 -> 8' exponential fission cascade, making the topology clear, whereas Figure 1 just flashes circles. Figure 2 also uses better node styling (polygon starbursts with cores instead of simple lines) and gradient fills for neutrons."
+        },
+        "interactivity": {
+          "winner": "baseline-kimi_FINAL",
+          "confidence": 0.95,
+          "rationale": "Figure 1 executes the requested 1 -> 2 -> 4 -> 8 chain reaction animation perfectly, flashing the exact number of fissions per generation. Figure 2's animation is broken: its array of burst coordinates is missing the first generation entirely, so when the '2 fissions' label appears, nothing is drawn, and it skips straight to 4. Figure 1 also natively handles the requested panel toggling and annotates the states clearly without relying on a rigid step-through sequencer."
+        },
+        "faithfulness": {
+          "winner": "full-pipeline-gpt_FINAL",
+          "confidence": 0.9,
+          "rationale": "Figure 2 accurately replicates the branching, tree-like progression of the chain reaction seen in the original, while Figure 1 replaces this with a chaotic, randomly crossing jumble of arrows."
+        },
+        "labels": {
+          "winner": "full-pipeline-gpt_FINAL",
+          "confidence": 0.9,
+          "rationale": "Figure 2 places titles cleanly above the diagrams without overlapping the graphics, whereas Figure 1's 'Critical mass' label overlaps the blue circle. Figure 1 also invents an unnecessary 'n' label next to the incident neutrons that is not present in the original."
+        },
+        "concept": {
+          "winner": "baseline-kimi_FINAL",
+          "confidence": 0.9,
+          "rationale": "Figure 1 accurately reproduces the schematic nature of the original figure while successfully animating the 1 → 2 → 4 → 8 cascade by highlighting the generations. Figure 2 is overly ambitious and introduces severe conceptual flaws: its tutorial explicitly instructs the user to drag the mass slider and watch 'fewer neutrons escape', but the geometry scales strictly linearly so the visual escape fraction remains identical, directly contradicting the text. Furthermore, Figure 2's cascade animation has an indexing error that causes the '2 fissions' generation to display zero fissions on screen."
+        }
+      },
+      "aggregator": {
+        "winner": "baseline-kimi_FINAL",
+        "confidence": 0.85,
+        "explanation": "Although Figure 2 offers cleaner static branching topology and superior node styling, its interactive execution is fundamentally flawed compared to Figure 1. Figure 1 correctly animates the entire exponential fission cascade and provides accurate interactive panel toggling, despite having visually chaotic arrows and minor label overlaps. In contrast, Figure 2 suffers from a broken animation array that skips a generation entirely, and its mass slider fails to visually demonstrate the decreasing escape fraction described in its own text."
+      },
+      "evalModel": "gemini-3.1-pro",
+      "evaluatedAt": "2026-08-14T18:00:06.666Z"
+    }
+  },
+  "chemistry__CNX_Chem_21_04_Fission1": {
+    "setupA": "baseline-kimi_FINAL",
+    "setupB": "full-pipeline-gpt_FINAL",
+    "subject": "chemistry",
+    "figure": "CNX_Chem_21_04_Fission1",
+    "machineEval": {
+      "figure1Setup": "full-pipeline-gpt_FINAL",
+      "figure2Setup": "baseline-kimi_FINAL",
+      "mode": "2d",
+      "dimensions": {
+        "geometry": {
+          "winner": "full-pipeline-gpt_FINAL",
+          "confidence": 0.95,
+          "rationale": "Figure 1 correctly implements isotopic symbol formatting by absolutely positioning the mass number directly above the atomic number to the left of the elemental symbol, whereas Figure 2 uses sequential `tspan` elements that erroneously place them horizontally in a row. Figure 1 also properly depicts the intermediate U-236 as a single deformed, elongated compound nucleus, whereas Figure 2 draws it as two entirely detached clusters separated by a gap."
+        },
+        "interactivity": {
+          "winner": "full-pipeline-gpt_FINAL",
+          "confidence": 0.95,
+          "rationale": "Figure 1's interactive sequence provides a guided, narrated step-through with coordinated highlighting that perfectly explains the left-to-right progression without awkward spatial discontinuities. Its chain-reaction slider implements a clever visual preview (showing the next generation at low opacity) and overlays cleanly on a solid background, whereas Figure 2's overlay clashes with the main figure. Additionally, Figure 2 draws the intermediate U-236 nucleus as two completely detached clusters before it has even split, contradicting the concept of a single deformed nucleus."
+        },
+        "faithfulness": {
+          "winner": "full-pipeline-gpt_FINAL",
+          "confidence": 0.95,
+          "rationale": "Figure 1 accurately reproduces the dumbbell-shaped unstable U-236 nucleus with a continuous outline, closely matching the original. Figure 2 inaccurately depicts this intermediate state as two separate, overlapping circles, losing the visual representation of a single elongating nucleus."
+        },
+        "labels": {
+          "winner": "full-pipeline-gpt_FINAL",
+          "confidence": 0.95,
+          "rationale": "Figure 1 features much larger, more readable text for the isotopes and the reaction equation. Figure 2's labels are excessively small and it contains a typo, mislabeling Krypton-92 as Krypton-52."
+        },
+        "concept": {
+          "winner": "full-pipeline-gpt_FINAL",
+          "confidence": 1,
+          "rationale": "Figure 1 correctly depicts the unstable U-236 intermediate as a single, elongated, pinched nucleus with a cohesive red outline, perfectly matching the physics of the compound nucleus and the figure brief (L00019). Figure 2 inaccurately depicts the intermediate U-236 as two physically separated clusters with two separate outlines, which fails to convey that U-236 is a single nucleus prior to splitting."
+        }
+      },
+      "aggregator": {
+        "winner": "full-pipeline-gpt_FINAL",
+        "confidence": 0.98,
+        "explanation": "Figure 1 accurately depicts the intermediate U-236 as a single deformed compound nucleus, whereas Figure 2 incorrectly draws it as two detached clusters. Furthermore, Figure 1 correctly formats isotopic symbols vertically and uses clear, readable labels, while Figure 2 places them horizontally in a row and contains a significant typo mislabeling Krypton-92. Finally, Figure 1 offers a superior interactive experience with coordinated highlighting and a clean visual preview, solidifying its position as the clear winner."
+      },
+      "evalModel": "gemini-3.1-pro",
+      "evaluatedAt": "2026-08-14T18:01:15.625Z"
+    }
+  },
+  "physics__ames_room_description": {
+    "setupA": "baseline-kimi_FINAL",
+    "setupB": "full-pipeline-gpt_FINAL",
+    "subject": "physics",
+    "figure": "ames_room_description",
+    "machineEval": {
+      "figure1Setup": "full-pipeline-gpt_FINAL",
+      "figure2Setup": "baseline-kimi_FINAL",
+      "mode": "2d",
+      "dimensions": {
+        "geometry": {
+          "winner": "full-pipeline-gpt_FINAL",
+          "confidence": 0.95,
+          "rationale": "Figure 1 constructs the geometry of the Ames room more accurately, explicitly aligning the perceived rectangular back wall with the actual near corner's depth (a key structural element of the illusion). Figure 2 places the perceived back wall at an arbitrary offset from the corner and the 'near' object floating far from the actual corner."
+        },
+        "interactivity": {
+          "winner": "baseline-kimi_FINAL",
+          "confidence": 0.95,
+          "rationale": "Figure 2 implements a much more rigorous geometric model: it correctly projects the perceived object onto the walls of the assumed rectangular room and strictly bounds the red sight lines against the actual room's boundaries. In contrast, Figure 1 uses an arbitrary fixed-X constraint for the perceived object and draws fixed-length rays that ignore the walls. Additionally, Figure 2's skew slider produces a dramatic, mathematically sound change in the perceived object's size, clearly demonstrating the prompt's intent, whereas Figure 1's slider barely alters the object's radius and is overwritten by unrequested step-by-step tutorial buttons."
+        },
+        "faithfulness": {
+          "winner": "full-pipeline-gpt_FINAL",
+          "confidence": 0.85,
+          "rationale": "Figure 1 closely matches the tall aspect ratio, steep skew, and white background of the original. Figure 2's landscape orientation, wider proportions, and added grey background make it look significantly different at a glance, despite better label placement."
+        },
+        "labels": {
+          "winner": "baseline-kimi_FINAL",
+          "confidence": 1,
+          "rationale": "Figure 2 places all labels cleanly without overlap, matching the original perfectly. Figure 1 suffers from lines striking directly through text ('Actual-room-floor-plan' and 'Pinhole'), incorrectly adds hyphens to the top label, and has overlapping text."
+        },
+        "concept": {
+          "winner": "full-pipeline-gpt_FINAL",
+          "confidence": 0.95,
+          "rationale": "Figure 1 correctly constructs the geometry so the rays from the pinhole to the actual trapezoidal room's corners align with the perceived rectangular room, demonstrating the homography accurately. Furthermore, Figure 1 correctly explains that the far actual object and the nearer perceived object subtend the same visual angle; Figure 2 repeats a physical contradiction from the brief, incorrectly claiming that the two identically-sized objects at different distances subtend the same angle."
+        }
+      },
+      "aggregator": {
+        "winner": "full-pipeline-gpt_FINAL",
+        "confidence": 0.85,
+        "explanation": "Although Figure 2 offers cleaner label placement and a more dramatic interactive slider, Figure 1 wins due to its superior geometrical and conceptual accuracy. Figure 1 correctly aligns the perceived rectangular room with the actual near corner's depth to accurately demonstrate the Ames room homography, whereas Figure 2 places the perceived back wall at an arbitrary offset and fails to correctly align the objects. Furthermore, Figure 1 successfully resolves a physical contradiction from the brief regarding visual angles, and its aspect ratio and styling more closely match the original figure."
+      },
+      "evalModel": "gemini-3.1-pro",
+      "evaluatedAt": "2026-08-14T18:02:31.275Z"
+    }
+  }
+}

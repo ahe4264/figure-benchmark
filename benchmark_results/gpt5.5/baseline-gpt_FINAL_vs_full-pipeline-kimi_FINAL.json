@@ -1,0 +1,407 @@
+{
+  "math__14.6.7": {
+    "setupA": "baseline-gpt_FINAL",
+    "setupB": "full-pipeline-kimi_FINAL",
+    "subject": "math",
+    "figure": "14.6.7",
+    "machineEval": {
+      "figure1Setup": "full-pipeline-kimi_FINAL",
+      "figure2Setup": "baseline-gpt_FINAL",
+      "mode": "3d",
+      "dimensions": {
+        "geometry": {
+          "winner": "full-pipeline-kimi_FINAL",
+          "confidence": 0.86,
+          "rationale": "Figure 1 better reconstructs the textbook spherical-coordinate wedge: it uses the full six bounding surfaces with clear inner/outer spherical faces, two θ half-planes, two φ cones, a larger translucent construction sector, and an initial low axonometric camera/axis orientation that more closely matches the standard z-up, y-right, x-down-left diagram. Figure 2 also builds a real 3D spherical wedge, but its default proportions and isometric viewpoint are less source-like, its auxiliary translucent surfaces are incomplete/less coherent, and its axes/labels and allowed angular ranges are more generic and can drift away from the intended first-octant textbook geometry."
+        },
+        "interactivity": {
+          "winner": "full-pipeline-kimi_FINAL",
+          "confidence": 0.86,
+          "rationale": "Figure 1’s sliders consistently recompute and redraw the wedge, labels, arcs, and dimension markers, and its constraint enforcement keeps the displayed slider values synchronized with the actual geometry. Figure 2 also redraws geometry on input, but at crossed or near-degenerate bounds it silently sorts or expands values internally without updating the actual slider knobs, so a control labeled ρ₁, θ₁, or φ₁ can end up controlling the upper bound while the displayed value and drawn figure disagree with the slider’s position."
+        },
+        "faithfulness": {
+          "winner": "baseline-gpt_FINAL",
+          "confidence": 0.82,
+          "rationale": "Figure 2 is more visually faithful because it presents a recognizable spherical-coordinate wedge with translucent bounding cones/planes, radial bounds, and labels arranged around axes much like the reference. Figure 1 reduces the volume to a mostly orange, flat-looking slab and lacks the translucent spherical sector context and clear conical/radial geometry, making it less recognizable as the same textbook figure."
+        },
+        "labels": {
+          "winner": "baseline-gpt_FINAL",
+          "confidence": 0.86,
+          "rationale": "Figure 2 has all the main labels from the reference with larger, more readable text and generally closer placement, especially the clear x, y, z axes and the ρ1/ρ2 annotations on the left. Figure 1 includes many of the labels but they are much smaller and more cluttered near the z-axis, with ρ and φ labels crowded/overlapping and φ2 placed awkwardly on the solid rather than as a clean angular annotation."
+        },
+        "concept": {
+          "winner": "full-pipeline-kimi_FINAL",
+          "confidence": 0.72,
+          "rationale": "Figure 1 more truthfully teaches the defining concept: its geometry explicitly builds the wedge as the region between ρ₁ and ρ₂ spherical faces, θ₁ and θ₂ fixed half-planes, and φ₁ and φ₂ conical faces, with θ shown in the horizontal plane and φ measured from the z-axis as required (L00009-L00011, L00015). Figure 2 is broadly geometrically correct, but its explanatory text describes the solid as bounded by “two radii” rather than two spherical shells, which is a less accurate statement of the bounding surfaces (L00009, L00015), and its face colors mix surface types more confusingly than Figure 1 relative to the context identifying spheres, planes, and cones (L00009-L00011)."
+        }
+      },
+      "aggregator": {
+        "winner": "full-pipeline-kimi_FINAL",
+        "confidence": 0.68,
+        "explanation": "Figure 1 is stronger overall because it more completely and accurately implements the spherical-coordinate wedge in code: it preserves the six intended bounding surfaces, keeps θ and φ conceptually correct, and its sliders remain synchronized with the geometry. Figure 2 has the clearer rendered labels and a more immediately recognizable screenshot, but relative to Figure 1 its geometry is less source-like, its auxiliary surfaces and viewpoint are less coherent, and its controls can silently disagree with the displayed slider values near crossed or degenerate bounds."
+      },
+      "evalModel": "gpt-5.5",
+      "evaluatedAt": "2026-08-14T18:49:08.963Z"
+    }
+  },
+  "chemistry__CNX_Chem_02_06_IonCharges": {
+    "setupA": "baseline-gpt_FINAL",
+    "setupB": "full-pipeline-kimi_FINAL",
+    "subject": "chemistry",
+    "figure": "CNX_Chem_02_06_IonCharges",
+    "machineEval": {
+      "figure1Setup": "baseline-gpt_FINAL",
+      "figure2Setup": "full-pipeline-kimi_FINAL",
+      "mode": "2d",
+      "dimensions": {
+        "geometry": {
+          "winner": "baseline-gpt_FINAL",
+          "confidence": 0.84,
+          "rationale": "Figure 1 better preserves the full periodic-table structure, with larger rectangular cells, complete 18-column layout, period/group label placement, a 15-cell lanthanide/actinide block, the gray separator bar, and the red boxed placeholder with two arrows matching the f-block extraction. Figure 2 is more schematic and compressed, uses rounded smaller cells, omits the gray divider, has only 14 f-block cells per row, and reduces the red annotation to a single arrow, so its topology and proportions are less faithful despite some individual label improvements."
+        },
+        "interactivity": {
+          "winner": "baseline-gpt_FINAL",
+          "confidence": 0.86,
+          "rationale": "Figure 1’s requested controls are more consistently wired: clicking a cell, including its text label, selects it and updates both the highlight and information display; the group slider redraws per-cell column highlights across the full 1–18 range; and the color toggle recomputes cell fills. Figure 2’s slider and color toggle mostly work, but its cell click handlers are attached only to the rectangle, so clicks directly on element/ion text may not select the cell, and many clicked cells report only a generic group/transition/f-block description rather than the advertised ion charge and electron configuration."
+        },
+        "faithfulness": {
+          "winner": "baseline-gpt_FINAL",
+          "confidence": 0.86,
+          "rationale": "Figure 1 is more visually faithful because the periodic-table layout, colored regions, red highlighted f-block placeholders, arrow, and full-width lanthanide/actinide rows more closely match the reference at a glance. Figure 2 adds an orange outline around Group 1 that is not in the original, uses a more prominent invented arrow/step-highlight treatment, and its detached bottom rows appear shorter and less aligned with the reference composition."
+        },
+        "labels": {
+          "winner": "baseline-gpt_FINAL",
+          "confidence": 0.86,
+          "rationale": "Figure 1 has better label fidelity because it includes the original-style 'Period' vertical label and 'Group' label along with the period and group numbers, whereas Figure 2 appears to omit the 'Period' label and adds more non-original instructional/control text around the figure. Figure 2 also has extra UI annotations and an orange highlight that clutter the labeled diagram more than Figure 1, while the core element and charge labels in Figure 1 are at least as complete and readable."
+        },
+        "concept": {
+          "winner": "baseline-gpt_FINAL",
+          "confidence": 0.78,
+          "rationale": "Figure 1 is more conceptually accurate overall because it labels the specified common ions and keeps most unlisted main-group/post-transition cells from being assigned a simple charge, whereas Figure 2’s charge-coloring and click rules broadly assign group-based charges to many elements the brief does not identify as following the rule, especially all of Groups 14–17 and Group 13 rather than just the listed examples such as C4−, N3−/P3−/As3−, O2−/S2−/Se2−/Te2−, halides, and Al3+ (L00010, L00014, L00018-L00019). Figure 2 is better than Figure 1 on mercury because it correctly shows Hg₂²⁺ and Hg²⁺, while Figure 1 incorrectly duplicates Hg²⁺ and omits Hg₂²⁺ (L00014). However, Figure 1 better preserves the central teaching that transition-metal and center-table behavior is not reliably predicted by group position, while Figure 2’s controls overstate simple group rules beyond the reliable boundary the brief asks the figure to mark (L00010, L00018-L00019). Both figures correctly convey the main Group 1/2 cations, Groups 15–17 anions, selected variable transition-metal examples, and noble gases without ionic charge labels, but Figure 2’s extra broad charge assertions are the larger conceptual problem (L00014, L00018-L00019)."
+        }
+      },
+      "aggregator": {
+        "winner": "baseline-gpt_FINAL",
+        "confidence": 0.9,
+        "explanation": "Figure 1 is the clear overall winner: it more faithfully preserves the periodic-table geometry, full-width f-block extraction, labels, red placeholder/arrows, and intended visual composition, while Figure 2 is more compressed, has shorter f-block rows, extra orange/UI annotations, and a less faithful schematic treatment. Figure 1 also has more reliable interactions, with cell text clicks, group highlighting, and color toggling working more consistently, whereas Figure 2’s click handling and informational output are incomplete or overly generic. Conceptually, Figure 1 better limits ion-charge claims to the intended/common cases, while Figure 2 overextends simple group-based charge rules despite being more accurate on mercury."
+      },
+      "evalModel": "gpt-5.5",
+      "evaluatedAt": "2026-08-14T18:49:58.283Z"
+    }
+  },
+  "chemistry__CNX_Chem_08_04_Gouy": {
+    "setupA": "baseline-gpt_FINAL",
+    "setupB": "full-pipeline-kimi_FINAL",
+    "subject": "chemistry",
+    "figure": "CNX_Chem_08_04_Gouy",
+    "machineEval": {
+      "figure1Setup": "baseline-gpt_FINAL",
+      "figure2Setup": "full-pipeline-kimi_FINAL",
+      "mode": "3d",
+      "dimensions": {
+        "geometry": {
+          "winner": "baseline-gpt_FINAL",
+          "confidence": 0.72,
+          "rationale": "Figure 1 better preserves the Gouy-balance geometry with a coherent front-on orthographic apparatus, balanced beam, suspended sample entering the magnet gap, separate electromagnet pole pieces, shallow pan, strings, and leader-callout placement. Figure 2 is more elaborate but less geometrically faithful: much of it is essentially flattened into one plane, the beam and lever proportions are exaggerated, the pan is a solid cone-like frustum rather than a shallow suspended dish, and the magnetic field/electromagnet details are over-dense and stylized relative to the apparatus."
+        },
+        "interactivity": {
+          "winner": "baseline-gpt_FINAL",
+          "confidence": 0.78,
+          "rationale": "Figure 1’s controls more consistently recompute the apparatus, readouts, field intensity, beam tilt, and sample-tube motion, with the paramagnetic sample pulling the left arm down and the diamagnetic case rising more weakly as advertised. Figure 2’s controls generally function and the directions are mostly correct, but its diamagnetic response is the same magnitude as the paramagnetic response despite being described as slight, its zero-field state still leaves visible field lines/arrowheads, and its susceptibility readout is not as clearly tied to the field-strength interaction it advertises."
+        },
+        "faithfulness": {
+          "winner": "baseline-gpt_FINAL",
+          "confidence": 0.9,
+          "rationale": "Figure 1 is more recognizable as the original Gouy balance diagram because it preserves the key composition: a hanging sample tube entering the gap between two gray cylindrical electromagnets, purple magnetic field lines, labeled sample/field/electromagnets, and a balance beam with pan and weights. Figure 2 has some similar elements, but the sample is not depicted as the vertical suspended tube from the reference and the central apparatus reads more like a simplified block/coil setup, with invented text such as “x = +2.50” making it less faithful at a glance."
+        },
+        "labels": {
+          "winner": "baseline-gpt_FINAL",
+          "confidence": 0.9,
+          "rationale": "Figure 1 has the required original labels—Sample, Magnetic field, and Electromagnets—in larger, more readable text with clearer leader-line placement. Figure 2 includes the same labels but they are noticeably smaller and more crowded among the field lines, and it adds an invented “χ = +2.50” annotation above the balance that is not present in the reference, making its labeling less faithful."
+        },
+        "concept": {
+          "winner": "full-pipeline-kimi_FINAL",
+          "confidence": 0.86,
+          "rationale": "Figure 2 is more conceptually accurate because it represents the essential Gouy-balance relationships: the sample tube hangs in the electromagnet gap, paramagnetic samples are pulled downward/apparently heavier, diamagnetic samples are repelled/apparently lighter, and the readout treats χ as an intrinsic signed susceptibility while field strength changes the force/deflection (L00010-L00016, L00019). Figure 1 also shows the apparatus and heavier/lighter behavior correctly, but it computes and displays χ as varying with magnetic field strength, which would teach the false idea that susceptibility itself changes with the applied field rather than the apparent mass/force changing with field conditions (L00010, L00019)."
+        }
+      },
+      "aggregator": {
+        "winner": "baseline-gpt_FINAL",
+        "confidence": 0.84,
+        "explanation": "Figure 1 is the stronger overall figure because it more faithfully preserves the recognizable Gouy-balance layout, with clearer sample tube, electromagnet gap, balance beam, pan/weights, field depiction, and readable original labels, while Figure 2 is more crowded, flattened/stylized, and adds non-reference annotations. Its interactions also behave more consistently, especially for field strength and asymmetric paramagnetic versus diamagnetic response, whereas Figure 2 leaves field indicators at zero field and makes the diamagnetic response too large. Figure 2 has a conceptual advantage in treating susceptibility as intrinsic rather than field-dependent, but that single issue is outweighed by Figure 1’s clearer geometry, rendering faithfulness, labeling, and interactive behavior."
+      },
+      "evalModel": "gpt-5.5",
+      "evaluatedAt": "2026-08-14T18:51:05.300Z"
+    }
+  },
+  "chemistry__CNX_Chem_11_02_electrolyt": {
+    "setupA": "baseline-gpt_FINAL",
+    "setupB": "full-pipeline-kimi_FINAL",
+    "subject": "chemistry",
+    "figure": "CNX_Chem_11_02_electrolyt",
+    "machineEval": {
+      "figure1Setup": "full-pipeline-kimi_FINAL",
+      "figure2Setup": "baseline-gpt_FINAL",
+      "mode": "3d",
+      "dimensions": {
+        "geometry": {
+          "winner": "full-pipeline-kimi_FINAL",
+          "confidence": 0.78,
+          "rationale": "Figure 1 better reconstructs the full 3D apparatus: its beakers are actual extruded rounded vessels with depth and a spout, the liquid has volume, the bulb is pear-shaped with base/filament details, and the wires/electrodes/particles are proportioned and arranged more like a textbook conductivity setup. Figure 2 has some advantages such as true spherical ions, but much of the beaker and liquid geometry is simplified into flat planes, ellipses, and outline loops, and the bulb is an inaccurate sphere rather than a light-bulb shape, so its overall spatial and primitive accuracy is weaker."
+        },
+        "interactivity": {
+          "winner": "full-pipeline-kimi_FINAL",
+          "confidence": 0.9,
+          "rationale": "Figure 1's solution buttons, compare/single modes, concentration slider, animation toggle, and demo steps all recompute the visible particles and bulb brightness coherently, with ion directions and motion matching the advertised conductance model. Figure 2 has more interaction faults: selecting a solution only highlights it rather than really toggling the view, the all-solutions status text stays qualitatively fixed even when concentration makes KCl dark at zero, the acetic-acid panel still shows at least one ion and molecule at zero concentration, and the slider range extends to 1.6 while ion density/brightness saturate before the end."
+        },
+        "faithfulness": {
+          "winner": "full-pipeline-kimi_FINAL",
+          "confidence": 0.62,
+          "rationale": "Figure 1 is more visually faithful overall because it better preserves the reference’s three-panel composition, muted cyan beakers, gray electrodes with red/black charge signs, ion arrows, and relative bulb brightness across ethanol, KCl, and acetic acid. Figure 2 is recognizable, but its green particles are larger and more blob-like, the labels overlap more, and the overall diagrams look more schematic and less like the original textbook illustration."
+        },
+        "labels": {
+          "winner": "full-pipeline-kimi_FINAL",
+          "confidence": 0.75,
+          "rationale": "Figure 1 has the required solution and conductivity labels with clearer separation under each beaker, and the electrode +/− markings are readable. Figure 2 includes the same essential labels, but the bottom labels are more cramped and closer to the artwork/neighboring labels, especially around KCl and acetic acid solution, and it adds a large block of explanatory sidebar text not present in the original, creating more extraneous labeling clutter."
+        },
+        "concept": {
+          "winner": "full-pipeline-kimi_FINAL",
+          "confidence": 0.86,
+          "rationale": "Figure 1 more truthfully represents the key concepts: ethanol contains only neutral clusters with no ions, no directed migration, and a dark bulb; KCl shows paired +/− ions migrating in the correct directions to opposite electrodes with high brightness; and acetic acid shows a mixture of mostly neutral molecules with only a few ions and dim conductivity, matching the nonelectrolyte/strong/weak distinction and the ion-concentration basis of conductivity (L00012, L00014, L00017). Figure 2 also gets the broad direction of ion migration and relative brightness right, but it can show unbalanced odd numbers of + and − ions for KCl and acetic acid even though dissociation should produce corresponding cations and anions, and at zero concentration it still forces at least one acetic-acid ion while reporting zero brightness, which weakens the asserted relationship between mobile ion concentration and conductance (L00010, L00017)."
+        }
+      },
+      "aggregator": {
+        "winner": "full-pipeline-kimi_FINAL",
+        "confidence": 0.86,
+        "explanation": "Figure 1 is stronger overall: it more accurately reconstructs the 3D conductivity apparatus, preserves the three-panel textbook layout and labels more cleanly, and its controls consistently update particles, ion motion, and bulb brightness according to the intended conductance model. Figure 2 remains recognizable and captures some broad ideas, but compared with Figure 1 it uses flatter/simpler geometry, has more cramped and extraneous labeling, and introduces conceptual/interactive inconsistencies such as saturated slider behavior, residual ions at zero concentration, and sometimes unbalanced ion counts."
+      },
+      "evalModel": "gpt-5.5",
+      "evaluatedAt": "2026-08-14T18:51:38.736Z"
+    }
+  },
+  "chemistry__CNX_Chem_12_07_Enzyme": {
+    "setupA": "baseline-gpt_FINAL",
+    "setupB": "full-pipeline-kimi_FINAL",
+    "subject": "chemistry",
+    "figure": "CNX_Chem_12_07_Enzyme",
+    "machineEval": {
+      "figure1Setup": "full-pipeline-kimi_FINAL",
+      "figure2Setup": "baseline-gpt_FINAL",
+      "mode": "2d",
+      "dimensions": {
+        "geometry": {
+          "winner": "baseline-gpt_FINAL",
+          "confidence": 0.9,
+          "rationale": "Figure 2 better reconstructs the original textbook structure by showing both lock-and-key and induced-fit models side by side, each with the initial substrate/active-site state and the formed substrate complex, along with repeated enzyme labels, panel captions, arrows, and the central division. Figure 1 collapses the comparison into a single toggleable scene, so the two models and before/after stages are not simultaneously present and the overall multi-panel topology and relative layout of the source figure are largely lost, even though some individual shapes are plausible."
+        },
+        "interactivity": {
+          "winner": "baseline-gpt_FINAL",
+          "confidence": 0.86,
+          "rationale": "Figure 2 is better because its controls actually animate substrate binding continuously and recompute the selected model’s approach diagram throughout the motion, with the induced-fit active site changing shape during docking and the lock-and-key site remaining rigid. Figure 1’s controls do redraw the correct model states, but the “Dock substrate” button only cycles through idle/docking/bound snapshots rather than animating, and toggling models while already bound can hide the induced-fit open-to-closed change until the user manually cycles back."
+        },
+        "faithfulness": {
+          "winner": "full-pipeline-kimi_FINAL",
+          "confidence": 0.98,
+          "rationale": "Figure 1 at least shows a recognizable enzyme-binding diagram with colored enzyme and substrate shapes, arrows, and labels resembling part of the textbook figure, even though it is cropped and simplified. Figure 2 fails to render the figure at all and only displays an error message, so it has essentially no visual faithfulness to the original."
+        },
+        "labels": {
+          "winner": "full-pipeline-kimi_FINAL",
+          "confidence": 0.99,
+          "rationale": "Figure 1 at least renders some relevant textbook labels such as parts of “Substrates,” “Active site is…,” “Enzyme,” and “Lock-and-key model,” although many are clipped off the left edge and the right-side control-panel text adds clutter not present in the original. Figure 2 fails to render the figure entirely and only shows an error message and reload button, so it has none of the required scientific labels or annotations."
+        },
+        "concept": {
+          "winner": "baseline-gpt_FINAL",
+          "confidence": 0.82,
+          "rationale": "Figure 2 more accurately teaches the comparison because it shows both lock-and-key and induced-fit panels with separate before/after complexes, with the lock-and-key active site preformed and the induced-fit active site reshaping during binding, matching the stated contrast (L00007, L00012, L00017). Figure 1 conveys the broad distinction, but it only shows one model/state at a time rather than the four comparative diagrams, and its lock-and-key geometry uses fairly generic rectangular notches that do not clearly make the pointed substrate a perfect complementary fit, weakening the asserted 'perfect fit' relationship (L00014, L00017)."
+        }
+      },
+      "aggregator": {
+        "winner": "baseline-gpt_FINAL",
+        "confidence": 0.58,
+        "explanation": "Figure 2 is stronger in the authored/source-level comparison: it preserves the side-by-side lock-and-key versus induced-fit structure, shows separate before/after complexes, and implements more faithful binding behavior than Figure 1’s single toggleable, snapshot-based scene. However, Figure 2’s major weakness is that the rendered screenshot reportedly fails entirely with an error, whereas Figure 1 at least displays recognizable enzyme/substrate shapes and some relevant labels, so the choice is only moderately confident despite Figure 2’s stronger conceptual and structural design."
+      },
+      "evalModel": "gpt-5.5",
+      "evaluatedAt": "2026-08-14T18:52:07.611Z"
+    }
+  },
+  "cs__GraphAdjoint": {
+    "setupA": "baseline-gpt_FINAL",
+    "setupB": "full-pipeline-kimi_FINAL",
+    "subject": "cs",
+    "figure": "GraphAdjoint",
+    "machineEval": {
+      "figure1Setup": "baseline-gpt_FINAL",
+      "figure2Setup": "full-pipeline-kimi_FINAL",
+      "mode": "2d",
+      "dimensions": {
+        "geometry": {
+          "winner": "baseline-gpt_FINAL",
+          "confidence": 0.86,
+          "rationale": "Figure 1 better preserves the original three-panel construction layout, with correct node and edge counts, midpoint edge-nodes in panel b, the full 15-edge line-graph topology in panel c, and proportions, labels, arrow captions, stroke weights, and spacing that look much closer to a textbook figure. Figure 2 has the same basic graph topology, but it is a simplified, compressed reconstruction with thinner styling, smaller nodes/labels, less faithful panel proportions, and a more generic midpoint-based layout that loses some of the original figure’s relative spacing and visual structure."
+        },
+        "interactivity": {
+          "winner": "baseline-gpt_FINAL",
+          "confidence": 0.86,
+          "rationale": "Figure 1’s controls more directly and correctly implement the requested interactions: the stage slider and Animate button recompute the construction state by revealing edge-nodes and then line-graph edges, the Original/Edge/All buttons change the comparison emphasis, and clicking an original edge highlights the corresponding edge-graph node and its generated adjacencies. Figure 2’s click-to-highlight mostly works, but its step controls do not actually animate or progressively redraw the construction because the full finished figure remains visible throughout; they mainly change narration and highlights, and its compare control only dims the original panels rather than toggling between original and edge graph views."
+        },
+        "faithfulness": {
+          "winner": "baseline-gpt_FINAL",
+          "confidence": 0.9,
+          "rationale": "Figure 1 is more visually faithful because it preserves the three-panel composition, the orange/teal node scheme, the ratio labels on inserted edge nodes, the arrows and explanatory captions, and the overall graph geometry more recognizably. Figure 2 has the same broad idea but the figure is much smaller with excessive whitespace, its labels and captions are harder to read, and the node/text styling and proportions make it less immediately recognizable as the textbook figure."
+        },
+        "labels": {
+          "winner": "baseline-gpt_FINAL",
+          "confidence": 0.93,
+          "rationale": "Figure 1 has the required panel labels, titles, node numbers, fraction labels, and bottom annotations much closer to the reference and generally readable at inline size. Figure 2 includes the same general labels, but many node/fraction labels and especially the arrow-caption annotations are noticeably too small and harder to read; it also adds more extraneous instructional text in the interface, while Figure 1’s added UI text is less damaging to the main figure labeling."
+        },
+        "concept": {
+          "winner": "full-pipeline-kimi_FINAL",
+          "confidence": 0.58,
+          "rationale": "Both figures correctly represent the core line-graph construction: each original edge becomes a teal node and new nodes are connected exactly when the corresponding original edges share an endpoint (L00007). Figure 2 is slightly better conceptually because its narration explicitly reinforces the general rule with a correct example and the true clique consequence of shared endpoints, while Figure 1 is also accurate but teaches the same relationships with less general explanatory support beyond the specific drawn graph (L00007)."
+        }
+      },
+      "aggregator": {
+        "winner": "baseline-gpt_FINAL",
+        "confidence": 0.9,
+        "explanation": "Figure 1 is the clear overall winner because it more faithfully preserves the three-panel textbook construction, including the original geometry, node/edge counts, midpoint edge-nodes, ratio labels, arrows, captions, and readable panel labeling, while Figure 2 is more compressed, smaller, and harder to read. Figure 1 also implements the intended staged construction and edge-to-line-graph highlighting more correctly, whereas Figure 2 leaves the completed figure largely visible and uses its controls mostly for narration/highlighting rather than true progressive construction. Figure 2 has a slight conceptual advantage in explaining the general line-graph rule, but both are conceptually accurate and that weaker preference is outweighed by Figure 1’s stronger visual, geometric, labeling, and interaction fidelity."
+      },
+      "evalModel": "gpt-5.5",
+      "evaluatedAt": "2026-08-14T18:52:59.190Z"
+    }
+  },
+  "physics__brdf": {
+    "setupA": "baseline-gpt_FINAL",
+    "setupB": "full-pipeline-kimi_FINAL",
+    "subject": "physics",
+    "figure": "brdf",
+    "machineEval": {
+      "figure1Setup": "baseline-gpt_FINAL",
+      "figure2Setup": "full-pipeline-kimi_FINAL",
+      "mode": "3d",
+      "dimensions": {
+        "geometry": {
+          "winner": "baseline-gpt_FINAL",
+          "confidence": 0.78,
+          "rationale": "Figure 1 better reconstructs the BRDF geometry: the tangent vectors p and q lie on the surface, the normal is perpendicular, the incoming ray is a true directed arrow terminating at the surface point, and the outgoing/scatter arrows occupy the upper hemisphere with a coherent orthographic textbook-style viewpoint. Figure 2 has a larger fan and some useful elements, but its p and q vectors are tilted off the tangent plane, the incoming ray is a tapered cylinder without a clear arrowhead, and the perspective camera/oversized plane make the spatial proportions less faithful to the likely source diagram."
+        },
+        "interactivity": {
+          "winner": "baseline-gpt_FINAL",
+          "confidence": 0.78,
+          "rationale": "Figure 1 is better because its incoming-ray drag, reset, diffuse/specular/roughness/wavelength sliders all call the same model update and visibly recompute the outgoing arrow lengths, colors, readout, and moving labels in real time. Figure 2's drag and roughness/demo controls mostly work, including tooltip values, but it only exposes roughness as the material state, keeps diffuse/specular/wavelength fixed, and its equation/HUD does not really track those quantities; it therefore covers less of the intended live BRDF interaction. Figure 1 is not perfect because it leaves nonzero baseline arrows even when diffuse and specular are both zero, but Figure 2 is still less complete interactively."
+        },
+        "faithfulness": {
+          "winner": "baseline-gpt_FINAL",
+          "confidence": 0.78,
+          "rationale": "Figure 1 is more visually faithful because it preserves the lime-green plane with a bold black outline, clustered p/n/q basis arrows, orange incoming ray, green outgoing arrows, and prominent equation/labels near the geometry, making it recognizable as the same BRDF diagram at a glance. Figure 2 has the same general subject, but the key textbook annotations are much smaller and displaced, the plane/border and arrows are less bold, and the overall composition reads more like a sparse interactive demo than the original figure."
+        },
+        "labels": {
+          "winner": "baseline-gpt_FINAL",
+          "confidence": 0.67,
+          "rationale": "Figure 1 includes the key labels from the reference—ℓ_in(λ), ℓ_out = F(ℓ_in,n,λ,p,q), and p/n/q—at a readable size in the diagram, whereas Figure 2’s in-scene labels are much too small at inline size and the main equation is tiny and displaced. Figure 1’s labels are cluttered and overlap the arrows more than ideal, and both figures add non-original UI text, but Figure 2 loses more because the required annotations on the actual figure are hard to read and less visually matched to the textbook figure."
+        },
+        "concept": {
+          "winner": "baseline-gpt_FINAL",
+          "confidence": 0.72,
+          "rationale": "Figure 1 is more conceptually faithful because it shows an incident ray striking a green surface, a normal, an equation with ℓ_in, n, λ, p, q, and many outgoing hemisphere directions without adding many unsupported physical claims, matching the general BRDF dependence and scattering idea (L00009-L00017, L00020-L00021, L00033-L00034). Figure 2 also conveys the broad BRDF idea, but it introduces a specific roughness/Blinn-Phong-style formula and demo narration claiming a rough surface becomes an almost uniform “Lambertian limit,” while its displayed model still contains a nonuniform specular term; this risks teaching a false limiting behavior relative to the Lambertian relation in the text (L00024-L00030). Both figures are weakened by treating p and q as local frame arrows rather than clearly as the incoming and outgoing ray directions required by the textbook definition (L00009-L00015), but Figure 2 adds more potentially misleading assertions beyond that."
+        }
+      },
+      "aggregator": {
+        "winner": "baseline-gpt_FINAL",
+        "confidence": 0.82,
+        "explanation": "Figure 1 is stronger across all dimensions: it more faithfully matches the intended BRDF diagram with a bold green surface, readable p/n/q and ℓ_in/ℓ_out annotations, coherent tangent/normal geometry, and outgoing hemisphere scattering that updates under the intended controls. Figure 2 conveys the same broad topic but is comparatively weaker because its basis vectors and incoming ray geometry are less accurate, its key labels/equation are small and displaced, and its interaction/model presentation omits several intended material controls while adding potentially misleading roughness/Lambertian-limit claims."
+      },
+      "evalModel": "gpt-5.5",
+      "evaluatedAt": "2026-08-14T18:54:00.902Z"
+    }
+  },
+  "physics__geometry_reconstruction_12": {
+    "setupA": "baseline-gpt_FINAL",
+    "setupB": "full-pipeline-kimi_FINAL",
+    "subject": "physics",
+    "figure": "geometry_reconstruction_12",
+    "machineEval": {
+      "figure1Setup": "full-pipeline-kimi_FINAL",
+      "figure2Setup": "baseline-gpt_FINAL",
+      "mode": "3d",
+      "dimensions": {
+        "geometry": {
+          "winner": "full-pipeline-kimi_FINAL",
+          "confidence": 0.79,
+          "rationale": "Figure 1 better preserves the actual two-view geometry: the target and reference camera centers, image planes, back-projection rays, P, p, and p′ are all placed in one coherent 3D scene, with the dashed rays converging on the same 3D point and p′ computed as a true plane intersection. Figure 2 has some useful elements, including a separate P′, but its target and reference frames are rendered as largely independent local groups whose displayed separation is not the same transformation used in the equations, so the spatial relationship between P, P′, R, and T is less geometrically faithful; it also uses less source-like plane proportions and clamps the projection in edge cases."
+        },
+        "interactivity": {
+          "winner": "full-pipeline-kimi_FINAL",
+          "confidence": 0.97,
+          "rationale": "Figure 1’s sliders and step buttons call update() and consistently recompute the back-projected point, rays, reference projection p′, arrows, and labels, with p fixed in the target frame and a status message when p′ leaves the reference plane. Figure 2 has a serious interaction-breaking bug: it calls updateModel() before const labelEntries is initialized, so updateModel’s reference to labelEntries.ready throws a ReferenceError; the module aborts before labels and later setup complete, and subsequent slider handlers continue to fail rather than reliably redrawing the live model."
+        },
+        "faithfulness": {
+          "winner": "full-pipeline-kimi_FINAL",
+          "confidence": 0.95,
+          "rationale": "Figure 1 is much more visually faithful: it preserves the two image planes, dashed projection rays, red image/world points, gray curved transformation arrows, and the key textbook labels/equations in roughly the same composition. Figure 2 shows a related two-view geometry, but it omits most of the defining labels and equations, has a much sparser/less similar layout, and is less immediately recognizable as the original figure."
+        },
+        "labels": {
+          "winner": "full-pipeline-kimi_FINAL",
+          "confidence": 0.93,
+          "rationale": "Figure 1 includes most of the original diagram annotations such as P, p, p’, P=zK^-1p, P’=MP, p’=KP, l1/l2, Target frame, Reference frame, and R,T, whereas Figure 2’s actual diagram is largely unlabeled and relies mostly on unrelated UI controls. Figure 1’s labels are somewhat too small and there are extra interface annotations, but Figure 2 omits the key textbook labels almost entirely, making it much worse for label fidelity."
+        },
+        "concept": {
+          "winner": "baseline-gpt_FINAL",
+          "confidence": 0.82,
+          "rationale": "Figure 2 more correctly teaches the two-view pipeline because it explicitly computes a target-frame back-projected point P=zK⁻¹p, applies an extrinsic transform P′=RP+T/MP, and then projects the transformed point to p′, matching the required sequence of lifted point, rigid motion, and reference projection (L00010). Figure 1 shows the back-projection and reference projection reasonably, but it largely collapses the transformed point P′ into the same displayed point P and labels P′=MP as a decorative loop rather than a distinct transformed quantity, so the role of the extrinsic transform is less accurately represented (L00010). Figure 1 also includes a narration claiming translation moves the camera while P is fixed, although its own update recomputes P with the target translation, which is a misleading assertion about the geometry constrained by camera motion and 3D point coordinates (L00007-L00010)."
+        }
+      },
+      "aggregator": {
+        "winner": "full-pipeline-kimi_FINAL",
+        "confidence": 0.92,
+        "explanation": "Figure 1 is the stronger overall result because it preserves the recognizable two-view geometry and textbook annotations while its controls reliably recompute the rays, projections, arrows, and labels; Figure 2 is much sparser visually and has an interaction-breaking initialization bug that prevents the live model from functioning correctly. Although Figure 2 more explicitly distinguishes the transformed point P′ in the intended two-view pipeline, its displayed geometry is less coherent with its equations and it omits many key labels/equations that Figure 1 includes."
+      },
+      "evalModel": "gpt-5.5",
+      "evaluatedAt": "2026-08-14T18:54:39.777Z"
+    }
+  },
+  "physics__orthogonal_projection": {
+    "setupA": "baseline-gpt_FINAL",
+    "setupB": "full-pipeline-kimi_FINAL",
+    "subject": "physics",
+    "figure": "orthogonal_projection",
+    "machineEval": {
+      "figure1Setup": "full-pipeline-kimi_FINAL",
+      "figure2Setup": "baseline-gpt_FINAL",
+      "mode": "3d",
+      "dimensions": {
+        "geometry": {
+          "winner": "full-pipeline-kimi_FINAL",
+          "confidence": 0.93,
+          "rationale": "Figure 1 reconstructs the intended 3D geometry much more accurately: the projection plane is perpendicular to Z and placed in front of a correctly proportioned two-step solid extruded deeply along Z, the orthographic rays are parallel to Z, and the projected image is the correct stepped silhouette with matching X–Y extents. Figure 2 includes the same general elements, but its stair solid is much shallower and tilted about X, its face-color assignments and projected image geometry are less faithful, and its plane/object/axis proportions and spatial layout do not match the source as closely."
+        },
+        "interactivity": {
+          "winner": "baseline-gpt_FINAL",
+          "confidence": 0.72,
+          "rationale": "Figure 2 has clearer and more reliable controls: the rotation slider, projection-blend slider, depth-guide checkbox, and animation button all call the same update routine and consistently recompute the projected faces, rays, guide lengths, labels, and readout at their extremes. Figure 1's blend slider, guide toggle, and demo buttons mostly work, but its rotation is only a hit-tested drag affordance with no displayed state, and its projected outline objects are built with an extra z offset so part of the updated projection is not actually redrawn on the projection plane, making the interaction result less coherent."
+        },
+        "faithfulness": {
+          "winner": "full-pipeline-kimi_FINAL",
+          "confidence": 0.83,
+          "rationale": "Figure 1 is more visually faithful because it preserves the core composition of a vertical projection plane, a stepped colored solid to one side, a cyan projection on the plane, and dashed depth guides in a clean schematic style. Figure 2 includes the same general ingredients, but it changes the layout more substantially, adds multiple invented explanatory labels and colored guide annotations, and makes the object/plane relationship less immediately like the textbook figure."
+        },
+        "labels": {
+          "winner": "full-pipeline-kimi_FINAL",
+          "confidence": 0.92,
+          "rationale": "Figure 1 better matches the original label set, with X, Y, Z, green x/y, and 'Projection plane' present without many invented in-diagram annotations. Figure 2 includes the required labels but adds several non-original annotations such as 'near image width,' 'same ΔX farther in Z,' and 'parallel projection rays,' creating clutter and reducing fidelity to the textbook figure."
+        },
+        "concept": {
+          "winner": "full-pipeline-kimi_FINAL",
+          "confidence": 0.84,
+          "rationale": "Figure 1 more accurately implements the core orthographic mapping: the projection plane is perpendicular to Z, the staircase solid is extruded along Z, and at the orthographic setting each corner maps to (X,Y) on the plane with dashed rays parallel to Z, matching x = X, y = Y and distance independence (L00007, L00010). Figure 2 also states x = X and y = Y and uses Z-parallel rays at blend 0, but it tilts the solid with a fixed X rotation so the staircase is not cleanly positioned/extruded along the projection axis as specified, and its persistent label 'parallel projection rays' becomes false when the perspective blend is used, where its rays converge rather than remain parallel (L00010)."
+        }
+      },
+      "aggregator": {
+        "winner": "full-pipeline-kimi_FINAL",
+        "confidence": 0.88,
+        "explanation": "Figure 1 is stronger overall because it more faithfully preserves the intended orthographic setup: a correctly proportioned stepped solid extruded along Z, a vertical projection plane, parallel Z-directed projection rays, and a projected stepped silhouette with matching X–Y extents. Compared with Figure 1, Figure 2 offers more reliable explicit controls, but it introduces a shallower and tilted object, less faithful plane/object proportions, extra non-original labels, and a ray label that can become conceptually false under perspective blending."
+      },
+      "evalModel": "gpt-5.5",
+      "evaluatedAt": "2026-08-14T18:55:33.172Z"
+    }
+  }
+}

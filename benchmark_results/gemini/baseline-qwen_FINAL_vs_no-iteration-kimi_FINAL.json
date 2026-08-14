@@ -1,0 +1,1217 @@
+{
+  "cs__11.3": {
+    "setupA": "baseline-qwen_FINAL",
+    "setupB": "no-iteration-kimi_FINAL",
+    "subject": "cs",
+    "figure": "11.3",
+    "machineEval": {
+      "figure1Setup": "baseline-qwen_FINAL",
+      "figure2Setup": "no-iteration-kimi_FINAL",
+      "mode": "2d",
+      "dimensions": {
+        "geometry": {
+          "winner": "baseline-qwen_FINAL",
+          "confidence": 0.95,
+          "rationale": "Figure 1 is significantly more accurate in its node-and-edge topology: it explicitly originates the doubly-linked list arrows from the centers of the 'prev' and 'next' pointer fields within the node structs, as is standard for textbook data structure diagrams. Figure 2 merely draws connecting lines between the outer boundary edges of adjacent nodes, failing to visually link the pointers to their respective struct fields."
+        },
+        "interactivity": {
+          "winner": "baseline-qwen_FINAL",
+          "confidence": 1,
+          "rationale": "Figure 1 evaluates the hash function exactly as written and correctly rejects out-of-bounds or non-integer outputs with an informative inline error. Figure 2 silently applies a modulo operation to the user's function behind their back, forcing any invalid mathematical input into the table bounds without warning, which undermines the learning objective that the hash function must be designed to fit the table."
+        },
+        "faithfulness": {
+          "winner": "baseline-qwen_FINAL",
+          "confidence": 0.9,
+          "rationale": "Figure 1 perfectly replicates the arbitrary hash mappings and resulting list chains of the original figure, whereas Figure 2 applies a generic hash function that changes the slot assignments and chain lengths. Additionally, Figure 1's rendering of the doubly-linked list nodes and pointers is cleaner and matches the original textbook style more closely."
+        },
+        "labels": {
+          "winner": "no-iteration-kimi_FINAL",
+          "confidence": 1,
+          "rationale": "Figure 2 has readable text and mostly preserves the subscripts from the original, whereas Figure 1's labels are microscopic and entirely illegible."
+        },
+        "concept": {
+          "winner": "baseline-qwen_FINAL",
+          "confidence": 0.9,
+          "rationale": "Figure 1 correctly matches the exact chain ordering requested in the brief (e.g., k₅, k₂, k₇), whereas Figure 2 swaps k₂ and k₇. Furthermore, Figure 2 evaluates the hash function using hidden arbitrary numeric values for each key (e.g., k₄ = 10) so that 'k % 9' yields collisions, which would deeply confuse a student trying to visually verify the math; Figure 1 transparently uses the key's subscript as its value."
+        }
+      },
+      "aggregator": {
+        "winner": "baseline-qwen_FINAL",
+        "confidence": 0.85,
+        "explanation": "Figure 1 is the clear winner for its structural and conceptual accuracy, as it explicitly connects pointers to their exact struct fields, perfectly replicates the intended hash mappings, and strictly evaluates the hash function without hidden manipulations. While Figure 2 offers significantly more readable labels than Figure 1's microscopic text, it deeply undermines the educational value by silently applying modulo bounds to user inputs, misordering the list chains, and using confusing arbitrary numeric values for the hash keys."
+      },
+      "evalModel": "gemini-3.1-pro",
+      "evaluatedAt": "2026-08-14T07:34:03.437Z"
+    }
+  },
+  "math__5.2.6": {
+    "setupA": "baseline-qwen_FINAL",
+    "setupB": "no-iteration-kimi_FINAL",
+    "subject": "math",
+    "figure": "5.2.6",
+    "machineEval": {
+      "figure1Setup": "no-iteration-kimi_FINAL",
+      "figure2Setup": "baseline-qwen_FINAL",
+      "mode": "3d",
+      "dimensions": {
+        "geometry": {
+          "winner": "baseline-qwen_FINAL",
+          "confidence": 0.95,
+          "rationale": "Figure 2 accurately reconstructs the spatial layout of the textbook diagram by rendering the partitioned solid, the extracted slab, and the connecting arrow simultaneously in the same scene. Figure 1 hides the extracted slab behind a UI toggle, losing this important spatial relationship. Additionally, Figure 2 correctly utilizes an oblique projection which perfectly matches the style of this type of calculus diagram, while Figure 1 uses standard perspective."
+        },
+        "interactivity": {
+          "winner": "no-iteration-kimi_FINAL",
+          "confidence": 0.95,
+          "rationale": "Figure 1 correctly computes and displays the cross-sectional area and slab volume for the selected slice in its readout panel, fulfilling the requested interaction's intent. Figure 2 entirely omits these slice-specific quantities, only displaying the total sum and exact volume. While neither figure implements dragging the inset directly (providing click-to-select and a slider instead), Figure 1's complete data readout makes its interaction correct and complete."
+        },
+        "faithfulness": {
+          "winner": "no-iteration-kimi_FINAL",
+          "confidence": 0.9,
+          "rationale": "Figure 1 accurately captures the 3D volumetric depth and proportions of the original solid, whereas Figure 2 renders the object as extremely thin, undermining the geometric concept being illustrated. Although Figure 2 includes more labels and attempts to show both panels at once, its distorted proportions make it less visually faithful overall."
+        },
+        "labels": {
+          "winner": "baseline-qwen_FINAL",
+          "confidence": 0.95,
+          "rationale": "Figure 2 successfully implements most of the required labels (axis ticks, slab identifiers, and the text annotation), whereas Figure 1's labels are microscopic, illegible, and missing key annotations."
+        },
+        "concept": {
+          "winner": "no-iteration-kimi_FINAL",
+          "confidence": 0.9,
+          "rationale": "Figure 1 correctly distinguishes between the exact curved slice of the solid (shown in the partitioned view) and the flat-topped right prism that approximates it (shown in the zoomed view), perfectly capturing the mathematical concept of the Riemann approximation. Figure 2 incorrectly uses a flat-topped box for the highlighted slab in the main solid, obscuring the difference between the exact slice and its geometric approximation."
+        }
+      },
+      "aggregator": {
+        "winner": "no-iteration-kimi_FINAL",
+        "confidence": 0.85,
+        "explanation": "Figure 1 is the stronger figure because it accurately illustrates the mathematical concept by distinguishing between the curved exact slice and its flat-topped approximation, and it correctly computes slice-specific volumes, whereas Figure 2 obscures this concept by incorrectly using a flat-topped box in the main solid and omits these critical data readouts. Additionally, while Figure 2 features more legible labeling and a better simultaneous spatial layout, its rendered solid is severely distorted and thin, allowing Figure 1 to succeed overall by maintaining proper 3D proportions despite its microscopic text and UI-toggled slab view."
+      },
+      "evalModel": "gemini-3.1-pro",
+      "evaluatedAt": "2026-08-14T07:34:31.108Z"
+    }
+  },
+  "math__5.2.9": {
+    "setupA": "baseline-qwen_FINAL",
+    "setupB": "no-iteration-kimi_FINAL",
+    "subject": "math",
+    "figure": "5.2.9",
+    "machineEval": {
+      "figure1Setup": "no-iteration-kimi_FINAL",
+      "figure2Setup": "baseline-qwen_FINAL",
+      "mode": "3d",
+      "dimensions": {
+        "geometry": {
+          "winner": "no-iteration-kimi_FINAL",
+          "confidence": 1,
+          "rationale": "Figure 1 correctly separates the 2D and 3D representations using an interactive toggle that dynamically switches the camera between orthographic and perspective projections. Figure 2 places a flat 2D diagram side-by-side with the 3D solid in the same 3D perspective space, which improperly distorts the 2D representation."
+        },
+        "interactivity": {
+          "winner": "no-iteration-kimi_FINAL",
+          "confidence": 0.95,
+          "rationale": "Figure 1 correctly handles degenerate and out-of-bounds interval inputs by displaying an error message while preserving the previous valid state. Figure 2 silently swallows invalid bound inputs (like setting a > b), leaving the text box showing a value that contradicts the stale figure still on screen."
+        },
+        "faithfulness": {
+          "winner": "no-iteration-kimi_FINAL",
+          "confidence": 1,
+          "rationale": "Figure 1 successfully renders the 3D solid of revolution with the representative disk and axes, closely matching panel (b) of the original. Figure 2 completely fails to render the scene, showing only a single diagonal line."
+        },
+        "labels": {
+          "winner": "no-iteration-kimi_FINAL",
+          "confidence": 1,
+          "rationale": "Figure 1 includes the necessary labels ('x', 'y', 'a', 'b', 'f(x)') corresponding to the reference, although they are extremely small and difficult to read. Figure 2 lacks any labels entirely in the rendering area."
+        },
+        "concept": {
+          "winner": "no-iteration-kimi_FINAL",
+          "confidence": 1,
+          "rationale": "Figure 1 successfully conveys the conceptual core of the brief (L00022) by actively visualizing the accumulation of the volume: as the disk sweeps from 'a' to 'x', it leaves a semi-transparent trail representing the accumulated solid, and the dynamic readout explicitly displays the integral for the volume alongside the cross-sectional area. Figure 2 correctly draws the geometry but completely omits the integration and volume calculation, missing the fundamental calculus concept the figure is meant to teach."
+        }
+      },
+      "aggregator": {
+        "winner": "no-iteration-kimi_FINAL",
+        "confidence": 1,
+        "explanation": "Figure 1 significantly outperforms Figure 2 by successfully rendering the 3D solid of revolution with correct labels and effectively visualizing the calculus concept of volume accumulation. In contrast, Figure 2 completely fails to render the scene, and its underlying code reveals fundamental flaws, including distorted 2D geometries, silent failures on invalid inputs, and a complete omission of the necessary integration concepts."
+      },
+      "evalModel": "gemini-3.1-pro",
+      "evaluatedAt": "2026-08-14T07:35:06.347Z"
+    }
+  },
+  "chemistry__CNX_Chem_02_02_GoldFoil3": {
+    "setupA": "baseline-qwen_FINAL",
+    "setupB": "no-iteration-kimi_FINAL",
+    "subject": "chemistry",
+    "figure": "CNX_Chem_02_02_GoldFoil3",
+    "machineEval": {
+      "figure1Setup": "no-iteration-kimi_FINAL",
+      "figure2Setup": "baseline-qwen_FINAL",
+      "mode": "3d",
+      "dimensions": {
+        "geometry": {
+          "winner": "baseline-qwen_FINAL",
+          "confidence": 0.95,
+          "rationale": "Figure 2 accurately reproduces the common dual-panel layout of this textbook diagram, including both the macroscopic tilted gold foil view on the left and the microscopic atomic cross-section on the right. Figure 1 completely omits the macroscopic gold foil and only models the atomic cross-section."
+        },
+        "interactivity": {
+          "winner": "no-iteration-kimi_FINAL",
+          "confidence": 0.9,
+          "rationale": "Figure 1 successfully demonstrates the change in scattering probability by dynamically updating the background rays when the nucleus size changes, whereas Figure 2's background rays are static. While both figures fail to correctly compute the backscatter direction for the interactive particle (both mistakenly shoot near-direct hits forward instead of backward), Figure 1 draws a continuous, coherent trajectory. In contrast, Figure 2's trajectory code has a severe geometric error that results in a jagged, disconnected line teleporting across the scene."
+        },
+        "faithfulness": {
+          "winner": "baseline-qwen_FINAL",
+          "confidence": 0.9,
+          "rationale": "Figure 2 successfully reproduces both the macroscopic and microscopic panels with their respective bounding boxes, capturing the overall composition of the original much better. Figure 1 omits the left panel entirely, lacks bounding boxes, and features wildly incorrect particle trajectories that curve downwards rather than scattering as straight segments."
+        },
+        "labels": {
+          "winner": "baseline-qwen_FINAL",
+          "confidence": 0.75,
+          "rationale": "Both figures suffer from severe label overlap at the top, making the text very difficult to read. However, Figure 2 is slightly better as it includes the 'Gold foil' label which Figure 1 is entirely missing, and the overlapping text is marginally more legible."
+        },
+        "concept": {
+          "winner": "no-iteration-kimi_FINAL",
+          "confidence": 0.9,
+          "rationale": "Figure 1 correctly teaches the central concept: alpha particles passing far from the nucleus travel mostly straight, while those hitting nearly head-on are strongly backscattered. Although Figure 1 incorrectly portrays the force as attractive (bending towards the nucleus instead of away) and omits the macroscopic left panel entirely, Figure 2's physics are fundamentally broken. Figure 2's static slight deflection path is a Gaussian bump that incorrectly returns to a parallel trajectory (violating momentum conservation), and its interactive trajectory is mathematically flawed, causing distant particles to visually teleport and backscatter while head-on particles go straight through."
+        }
+      },
+      "aggregator": {
+        "winner": "baseline-qwen_FINAL",
+        "confidence": 0.75,
+        "explanation": "While Figure 1 features continuous interactive trajectories that better communicate the core scattering concept, it completely omits the macroscopic gold foil panel present in the source material. Figure 2 suffers from severe mathematical errors that cause interactive particles to visually teleport, but it successfully reproduces the essential dual-panel layout, bounding boxes, and missing labels that Figure 1 ignores, making it a much more complete reproduction overall."
+      },
+      "evalModel": "gemini-3.1-pro",
+      "evaluatedAt": "2026-08-14T07:36:33.590Z"
+    }
+  },
+  "chemistry__CNX_Chem_02_02_Rutherford": {
+    "setupA": "baseline-qwen_FINAL",
+    "setupB": "no-iteration-kimi_FINAL",
+    "subject": "chemistry",
+    "figure": "CNX_Chem_02_02_Rutherford",
+    "machineEval": {
+      "figure1Setup": "baseline-qwen_FINAL",
+      "figure2Setup": "no-iteration-kimi_FINAL",
+      "mode": "3d",
+      "dimensions": {
+        "geometry": {
+          "winner": "baseline-qwen_FINAL",
+          "confidence": 0.85,
+          "rationale": "Both figures struggle to properly align the detector screen with the scattered rays, but Figure 1 is significantly better. Figure 1 correctly models the scattered trajectories as a 3D spherical burst traveling a uniform radial distance, creating a recognizable scattering cone. Figure 2 incorrectly bounds the rays against the flat open ends of its cylindrical screen, causing all rays to stop at an invisible vertical wall in mid-air long before reaching the detector, which completely ruins the physical geometry. Figure 1 also properly distributes rays in multiple 3D planes, whereas Figure 2 limits scattering to a single 2D plane."
+        },
+        "interactivity": {
+          "winner": "no-iteration-kimi_FINAL",
+          "confidence": 1,
+          "rationale": "Figure 2 correctly implements the label toggle by modifying 'visibility' instead of 'display', avoiding the scaffold's sync loop which overwrites 'display' on every frame and instantly breaks Figure 1's label toggle. Additionally, Figure 2's particle animation features a continuous firing toggle and impact flashes, making it much easier to observe the statistical scattering effects than Figure 1's single-burst button."
+        },
+        "faithfulness": {
+          "winner": "baseline-qwen_FINAL",
+          "confidence": 0.9,
+          "rationale": "Figure 1 accurately reproduces the grey box, yellow gold foil, and cylindrical screen of the original, whereas Figure 2 uses an unrecognizable black box, black foil, and a spherical green screen. Despite Figure 1's overlapping labels, its geometry and color scheme are far more faithful."
+        },
+        "labels": {
+          "winner": "baseline-qwen_FINAL",
+          "confidence": 0.6,
+          "rationale": "Figure 1 is chosen because its text is at least legible, whereas Figure 2's labels are microscopically small and completely unreadable. However, Figure 1 suffers from severe label overlap and lacks the pointer lines present in the original."
+        },
+        "concept": {
+          "winner": "baseline-qwen_FINAL",
+          "confidence": 0.85,
+          "rationale": "Both figures mistakenly orient the circular detector screen perpendicular to the beam (encircling the beam axis instead of the target), meaning straight particles pass through its center rather than hitting it. However, Figure 1 is conceptually stronger because it correctly models scattering in three dimensions (spreading in multiple planes), whereas Figure 2 restricts all scattering to a single 2D plane. Furthermore, Figure 2 features a severe geometrical bounding error where particles hit an invisible open cap and stop in mid-air at a fraction of the screen's actual radius, directly contradicting the core concept that particles travel until they strike the luminescent detector."
+        }
+      },
+      "aggregator": {
+        "winner": "baseline-qwen_FINAL",
+        "confidence": 0.9,
+        "explanation": "Although Figure 2 offers superior interactivity with a working label toggle and continuous particle animation, Figure 1 is significantly better overall. Figure 1 correctly models the scattered trajectories as a 3D spherical burst that travels the full distance, whereas Figure 2 incorrectly bounds particles at an invisible wall in mid-air and restricts scattering to a single 2D plane. Additionally, Figure 1 is much more visually faithful to the original's color scheme and features legible text, unlike Figure 2's unrecognizable colors and microscopic, unreadable labels."
+      },
+      "evalModel": "gemini-3.1-pro",
+      "evaluatedAt": "2026-08-14T07:38:39.070Z"
+    }
+  },
+  "chemistry__CNX_Chem_18_10_FrachMine": {
+    "setupA": "baseline-qwen_FINAL",
+    "setupB": "no-iteration-kimi_FINAL",
+    "subject": "chemistry",
+    "figure": "CNX_Chem_18_10_FrachMine",
+    "machineEval": {
+      "figure1Setup": "baseline-qwen_FINAL",
+      "figure2Setup": "no-iteration-kimi_FINAL",
+      "mode": "2d",
+      "dimensions": {
+        "geometry": {
+          "winner": "baseline-qwen_FINAL",
+          "confidence": 0.95,
+          "rationale": "Figure 1 correctly implements the fluid flows on both sides of the central axis to accurately represent a 2D cross-section of concentric pipes, whereas Figure 2 only routes fluid paths down one side. Figure 1 also features more precise pipe joints and manifold geometry."
+        },
+        "interactivity": {
+          "winner": "baseline-qwen_FINAL",
+          "confidence": 1,
+          "rationale": "Figure 1 correctly implements particle flows on both sides of the concentric pipes (annuli), accurately reflecting the spatial layout of the diagram, and provides granular checkboxes to isolate each fluid stream. Figure 2 restricts the flows to a single side of the pipes, undermining the physical model, and its phase-based approach artificially separates flows that occur simultaneously."
+        },
+        "faithfulness": {
+          "winner": "baseline-qwen_FINAL",
+          "confidence": 0.95,
+          "rationale": "Figure 1 accurately reproduces the concentric pipe geometry, flow arrows (including the complex bottom U-turns), and the background gradient, whereas Figure 2 features distorted pipe openings, messy looping lines instead of arrows at the base, and lacks the bottom color gradient."
+        },
+        "labels": {
+          "winner": "baseline-qwen_FINAL",
+          "confidence": 0.8,
+          "rationale": "Both figures struggle with label collisions, particularly around 'Superheated water', but Figure 1 is better overall. Figure 2 draws an arrow directly through 'and air' and overlaps pipe strokes over 'Liquid sulfur', whereas Figure 1 keeps most labels clearly separated from the linework."
+        },
+        "concept": {
+          "winner": "baseline-qwen_FINAL",
+          "confidence": 1,
+          "rationale": "Figure 1 correctly routes the fluid flows through the appropriate concentric annuli, showing the superheated water and the returning mixture flowing symmetrically down and up both sides of the inner pipes. Figure 2 mistakenly places the animated water flow path entirely outside the outermost pipe wall, causing it to visually flow through the surrounding soil and solid sulfur, and only animates the mixture rising on one side, which fails to convey the concentric nature of the pipes (L00019)."
+        }
+      },
+      "aggregator": {
+        "winner": "baseline-qwen_FINAL",
+        "confidence": 1,
+        "explanation": "Figure 1 is unanimously preferred over Figure 2 because it accurately models the concentric pipe geometry and symmetrically animates fluid flows on both sides of the central axis, whereas Figure 2 incorrectly routes water outside the pipe structure and restricts flows to a single side. Furthermore, Figure 1 features superior visual details—including clear flow arrows, a background gradient, and better label placement—while Figure 2 suffers from distorted pipe openings and overlapping text. Lastly, Figure 1 provides more intuitive interactivity with granular checkboxes to isolate fluid streams, whereas Figure 2 artificially separates simultaneous physical processes into distinct phases."
+      },
+      "evalModel": "gemini-3.1-pro",
+      "evaluatedAt": "2026-08-14T07:39:09.453Z"
+    }
+  },
+  "physics__endpoint_error": {
+    "setupA": "baseline-qwen_FINAL",
+    "setupB": "no-iteration-kimi_FINAL",
+    "subject": "physics",
+    "figure": "endpoint_error",
+    "machineEval": {
+      "figure1Setup": "no-iteration-kimi_FINAL",
+      "figure2Setup": "baseline-qwen_FINAL",
+      "mode": "2d",
+      "dimensions": {
+        "geometry": {
+          "winner": "baseline-qwen_FINAL",
+          "confidence": 0.9,
+          "rationale": "Figure 2 correctly computes the angular error arc across the 0-degree boundary using modular arithmetic, whereas Figure 1 naively iterates from the minimum to maximum angle, causing the arc to draw the long way around (180+ degrees) if the vectors straddle the positive x-axis. Figure 2 also uses proper SVG markers for accurate arrowheads and relies on a clean world-to-screen coordinate system."
+        },
+        "interactivity": {
+          "winner": "baseline-qwen_FINAL",
+          "confidence": 1,
+          "rationale": "Figure 2 correctly computes the angular arc via shortest-path interpolation, avoiding a bug in Figure 1 where dragging a vector across the negative X-axis causes the wedge to wrap around the wrong side of the circle. Additionally, Figure 2's demo playback automatically updates vector positions to match its narration, whereas Figure 1 leaves them where the user last dragged them, leading to contradictory states."
+        },
+        "faithfulness": {
+          "winner": "no-iteration-kimi_FINAL",
+          "confidence": 0.8,
+          "rationale": "Figure 1 is more faithful as it maintains the correct arrowhead proportions and does not include the extraneous angle arc (θ) added at the origin in Figure 2."
+        },
+        "labels": {
+          "winner": "no-iteration-kimi_FINAL",
+          "confidence": 0.8,
+          "rationale": "Both figures fail to correctly render the hat over the 'v' in the lower label. Figure 1 is chosen as the winner because its '(u, v)' label is placed clearly, whereas Figure 2's label overlaps the arrowhead, reducing readability."
+        },
+        "concept": {
+          "winner": "no-iteration-kimi_FINAL",
+          "confidence": 1,
+          "rationale": "Figure 1 correctly maintains a 1:1 isotropic coordinate space, ensuring that the visual lengths and angles perfectly match the calculated Endpoint Error (EPE) and angular error. Figure 2 maps its world coordinates to the screen with different X and Y scales (scX = 80.8, scY = 66.0), stretching the visual space. As a result, Figure 2 computes the numerical EPE in world space but calculates the displayed angle in the distorted screen space, breaking the geometric relationships; moving the prediction vector in a visual circle around the ground truth changes the reported EPE, which contradicts the concept of Euclidean distance."
+        }
+      },
+      "aggregator": {
+        "winner": "no-iteration-kimi_FINAL",
+        "confidence": 0.8,
+        "explanation": "While Figure 2 resolves an arc-wrapping bug during interaction and includes automatic updates during playback, it introduces a critical conceptual error by scaling the X and Y axes unevenly, which distorts the coordinate space and invalidates the depicted geometric relationships. Figure 1 wins because it maintains a strictly isotropic 1:1 coordinate system that correctly aligns visual distances and angles with mathematical reality, while also offering clearer label placement and better visual faithfulness."
+      },
+      "evalModel": "gemini-3.1-pro",
+      "evaluatedAt": "2026-08-14T07:40:10.063Z"
+    }
+  },
+  "physics__epipolar_geometry": {
+    "setupA": "baseline-qwen_FINAL",
+    "setupB": "no-iteration-kimi_FINAL",
+    "subject": "physics",
+    "figure": "epipolar_geometry",
+    "machineEval": {
+      "figure1Setup": "baseline-qwen_FINAL",
+      "figure2Setup": "no-iteration-kimi_FINAL",
+      "mode": "3d",
+      "dimensions": {
+        "geometry": {
+          "winner": "no-iteration-kimi_FINAL",
+          "confidence": 0.95,
+          "rationale": "Figure 2 correctly implements convergent cameras looking forward toward a shared scene point, resulting in standard, accurate epipolar geometry. Figure 1 orients the cameras to look directly at each other along the X-axis (the baseline), which breaks the standard stereo setup and places the epipoles at the principal points."
+        },
+        "interactivity": {
+          "winner": "no-iteration-kimi_FINAL",
+          "confidence": 0.95,
+          "rationale": "Figure 2 correctly implements a standard stereo pair with toe-in, meaning the baseline slider successfully changes the relative vergence angle and causes the epipoles to slide along the image planes as requested. Figure 1 points the cameras directly at each other along the baseline, a highly degenerate setup that permanently locks the epipoles to the dead center of the images, failing the requirement that the baseline slider demonstrate the epipoles sliding. Additionally, Figure 2 robustly clips the epipolar lines to the image boundaries (Liang-Barsky), whereas Figure 1 lets them stick out arbitrarily."
+        },
+        "faithfulness": {
+          "winner": "baseline-qwen_FINAL",
+          "confidence": 0.9,
+          "rationale": "Figure 1 successfully replicates the clear, separated layout of the image planes and prominent labeling of the original, whereas Figure 2's viewing angle causes the planes to overlap awkwardly, obscuring the geometry."
+        },
+        "labels": {
+          "winner": "baseline-qwen_FINAL",
+          "confidence": 0.8,
+          "rationale": "Figure 1 features much larger and more readable text labels, whereas Figure 2's labels are too small to read comfortably inline. Although Figure 1 appears to be missing the O_2 label, Figure 2 suffers from severe readability issues and label collisions with the geometry, making Figure 1 more effective."
+        },
+        "concept": {
+          "winner": "no-iteration-kimi_FINAL",
+          "confidence": 1,
+          "rationale": "Figure 2 correctly implements a standard verged stereo pair where the epipoles fall naturally on the image planes, and it accurately computes and clips the epipolar lines to the finite image boundaries. Figure 1 configures the cameras to face each other perfectly along the baseline, a degenerate setup where the epipoles are pinned exactly to the principal points and the epipolar lines degenerate into simple radial lines from the image centers, which fails to teach the general constraints of epipolar geometry."
+        }
+      },
+      "aggregator": {
+        "winner": "no-iteration-kimi_FINAL",
+        "confidence": 0.95,
+        "explanation": "Figure 2 correctly implements convergent stereo cameras, accurately demonstrating how epipoles slide when the baseline changes and properly clipping epipolar lines to the image boundaries. In contrast, Figure 1 incorrectly orientates the cameras directly at each other, creating a degenerate setup that pins the epipoles to the center and fails to teach the core concept, although it does feature better label readability and plane separation than Figure 2."
+      },
+      "evalModel": "gemini-3.1-pro",
+      "evaluatedAt": "2026-08-14T07:42:01.765Z"
+    }
+  },
+  "physics__homogeneousAndHeteregeneous_VS3": {
+    "setupA": "baseline-qwen_FINAL",
+    "setupB": "no-iteration-kimi_FINAL",
+    "subject": "physics",
+    "figure": "homogeneousAndHeteregeneous_VS3",
+    "machineEval": {
+      "figure1Setup": "no-iteration-kimi_FINAL",
+      "figure2Setup": "baseline-qwen_FINAL",
+      "mode": "3d",
+      "dimensions": {
+        "geometry": {
+          "winner": "baseline-qwen_FINAL",
+          "confidence": 0.99,
+          "rationale": "Figure 2 correctly rotates the w=0 heterogeneous plane to lie in the YZ plane (orthogonal to the w-axis). Figure 1 forgets to rotate its PlaneGeometry, leaving it in the world XY plane, which incorrectly spans the w and y axes rather than x and y."
+        },
+        "interactivity": {
+          "winner": "no-iteration-kimi_FINAL",
+          "confidence": 0.95,
+          "rationale": "Figure 1 correctly binds its 'pointermove' and 'pointerup' event listeners to the window rather than the canvas. This ensures the drag interaction remains robust even if the user moves the mouse outside the canvas boundaries, whereas Figure 2 binds these to the canvas, causing the dragging state to silently break and get stuck if the pointer leaves the element. Figure 1 also features better visual feedback, such as pulsing the equivalence class items, and adds a well-implemented demo sequence."
+        },
+        "faithfulness": {
+          "winner": "no-iteration-kimi_FINAL",
+          "confidence": 0.9,
+          "rationale": "Figure 1 accurately replicates the spatial proportions, line styles, and lateral label placement of the original diagram. Figure 2 clumsily places the main labels directly over the geometry, loses the dashed line styling, and compresses the distance between planes."
+        },
+        "labels": {
+          "winner": "no-iteration-kimi_FINAL",
+          "confidence": 0.9,
+          "rationale": "Figure 1 features clear, readable labels that generally match the original's layout, whereas Figure 2 suffers from tiny, cluttered text and severe misplacement of the 'Heterogeneous' and 'Homogeneous' labels. Although Figure 1 misses the '1' tick label, its vastly superior readability and freedom from severe overlap make it the better choice."
+        },
+        "concept": {
+          "winner": "baseline-qwen_FINAL",
+          "confidence": 1,
+          "rationale": "Figure 2 correctly draws the heterogeneous plane (w=0) parallel to the homogeneous plane (w=1), whereas Figure 1 draws the heterogeneous plane in the world XY plane, making it orthogonal to the w=1 plane. This fundamental geometric error in Figure 1 breaks the visual intuition of the projection."
+        }
+      },
+      "aggregator": {
+        "winner": "baseline-qwen_FINAL",
+        "confidence": 0.85,
+        "explanation": "Although Figure 1 provides more robust interactive event binding and faithfully replicates the original diagram's label placement and visual polish, it suffers from a fatal conceptual error by rendering the heterogeneous and homogeneous planes orthogonally rather than parallel. Figure 2 correctly implements the underlying 3D geometry to accurately convey the mathematical projection, making it fundamentally superior despite its cluttered text and less polished aesthetics."
+      },
+      "evalModel": "gemini-3.1-pro",
+      "evaluatedAt": "2026-08-14T07:42:48.979Z"
+    }
+  },
+  "math__1.1.4": {
+    "setupA": "baseline-qwen_FINAL",
+    "setupB": "no-iteration-kimi_FINAL",
+    "subject": "math",
+    "figure": "1.1.4",
+    "machineEval": {
+      "figure1Setup": "no-iteration-kimi_FINAL",
+      "figure2Setup": "baseline-qwen_FINAL",
+      "mode": "2d",
+      "dimensions": {
+        "geometry": {
+          "winner": "baseline-qwen_FINAL",
+          "confidence": 0.95,
+          "rationale": "Figure 2 correctly reconstructs the multi-panel structure of the original figure by laying out panels (a) and (b) side-by-side on the same canvas, matching the spatial layout of textbook figures. Figure 1 collapses them into a UI toggle, which sacrifices the comparative layout and alters the figure's structural presentation."
+        },
+        "interactivity": {
+          "winner": "baseline-qwen_FINAL",
+          "confidence": 0.95,
+          "rationale": "Figure 2 dynamically calculates the 'ghost' secant lines to fall between Q and P based on Q's current position, correctly illustrating the limiting process as Q approaches P, whereas Figure 1 uses hardcoded fixed offsets that become nonsensical if Q is moved close to P or past it. Additionally, Figure 2 handles dragging near the limit more gracefully by clamping Q's position to a minimum distance, whereas Figure 1 simply aborts the drag handler, causing the point to freeze and teleport."
+        },
+        "faithfulness": {
+          "winner": "no-iteration-kimi_FINAL",
+          "confidence": 1,
+          "rationale": "Figure 1 successfully recreates the first panel of the original figure with matching colors, geometry, and layout, whereas Figure 2 completely fails to render, displaying only an error message."
+        },
+        "labels": {
+          "winner": "no-iteration-kimi_FINAL",
+          "confidence": 1,
+          "rationale": "Figure 1 includes all relevant labels from the original diagram (x, y, P, Q, Tangent line, Secant line) with reasonable placement, whereas Figure 2 failed to render and displays an error message."
+        },
+        "concept": {
+          "winner": "no-iteration-kimi_FINAL",
+          "confidence": 1,
+          "rationale": "Figure 1 correctly aligns the visual direction of its tangent ray with the live secant ray, ensuring that the shaded wedge accurately represents the acute angle that shrinks to zero in the limit. Figure 2 fails to check this alignment, meaning that on the circle panel the secant ray points clockwise while the tangent ray points counter-clockwise, causing the visual wedge to open to 180° instead of shrinking to a limit. Furthermore, Figure 1 correctly uses fixed past points for its 'ghost' secant lines (matching the textbook's visual history of approach), whereas Figure 2 dynamically interpolates them between Q and P, causing the entire fan to collapse into one line as Q moves instead of leaving a trail."
+        }
+      },
+      "aggregator": {
+        "winner": "no-iteration-kimi_FINAL",
+        "confidence": 1,
+        "explanation": "Figure 1 successfully renders and includes all relevant labels and accurate geometric concepts, correctly illustrating the angle shrinking to zero in the limit. In contrast, Figure 2 completely fails to render and displays only an error message, making it entirely unusable despite attempting a more faithful multi-panel layout in its source code."
+      },
+      "evalModel": "gemini-3.1-pro",
+      "evaluatedAt": "2026-08-14T13:05:37.687Z"
+    }
+  },
+  "math__15.4.5": {
+    "setupA": "baseline-qwen_FINAL",
+    "setupB": "no-iteration-kimi_FINAL",
+    "subject": "math",
+    "figure": "15.4.5",
+    "machineEval": {
+      "figure1Setup": "no-iteration-kimi_FINAL",
+      "figure2Setup": "baseline-qwen_FINAL",
+      "mode": "2d",
+      "dimensions": {
+        "geometry": {
+          "winner": "baseline-qwen_FINAL",
+          "confidence": 1,
+          "rationale": "Figure 2 is significantly more structurally robust: it dynamically calculates the intersections of the cuts with the outer boundary as the hole moves, ensuring the cuts always perfectly connect the inner and outer regions. Figure 1 uses hardcoded X-coordinates for the cuts, which visually detach from or overshoot the outer boundary if the hole is dragged up or down."
+        },
+        "interactivity": {
+          "winner": "baseline-qwen_FINAL",
+          "confidence": 1,
+          "rationale": "Figure 2 correctly computes the dynamic intersections between the horizontal cuts and the outer boundary when the hole is moved, ensuring the cuts always perfectly connect the boundaries. Figure 1 hardcodes the outer X-coordinates for the cuts, causing them to fall short or poke outside the region when the hole is dragged vertically. Figure 2 also successfully animates the introduction of the cuts as requested, whereas Figure 1 only toggles their visibility abruptly."
+        },
+        "faithfulness": {
+          "winner": "baseline-qwen_FINAL",
+          "confidence": 1,
+          "rationale": "Figure 2 accurately reproduces the thick boundary lines, directional arrows, and math-formatted typography of the original, whereas Figure 1 has glitchy, almost invisible arrows and uses plain text for labels."
+        },
+        "labels": {
+          "winner": "baseline-qwen_FINAL",
+          "confidence": 1,
+          "rationale": "Figure 2 correctly formats the subscripts for C1 and C2 and includes the '(a)' label from the original, whereas Figure 1 fails to format the subscripts properly and omits the panel label entirely."
+        },
+        "concept": {
+          "winner": "baseline-qwen_FINAL",
+          "confidence": 1,
+          "rationale": "Figure 2 computes the intersections of the cuts with the outer boundary dynamically, meaning the cuts correctly bridge the inner and outer boundaries no matter where the user moves the hole (L00010-L00013, L00076). Figure 1 hardcodes the x-coordinates of the cuts, so moving the hole vertically causes the cuts to float inside the region or overshoot it, failing to divide the region into simply connected sub-regions. Figure 2 also draws the opposing cuts with a tight, realistic gap, whereas Figure 1 uses a massive vertical gap that functionally removes a large chunk of the region instead of merely slicing it."
+        }
+      },
+      "aggregator": {
+        "winner": "baseline-qwen_FINAL",
+        "confidence": 1,
+        "explanation": "Figure 2 is significantly more robust in its geometry and interactivity, dynamically calculating cut intersections so they stay properly connected to the boundaries when the inner hole is moved, whereas Figure 1's hardcoded cuts visually detach or overshoot. Furthermore, Figure 2 faithfully reproduces the original figure's thick boundary lines, visible directional arrows, and math-formatted subscripts, all of which Figure 1 fails to implement properly."
+      },
+      "evalModel": "gemini-3.1-pro",
+      "evaluatedAt": "2026-08-14T13:06:42.819Z"
+    }
+  },
+  "math__5.3.4": {
+    "setupA": "baseline-qwen_FINAL",
+    "setupB": "no-iteration-kimi_FINAL",
+    "subject": "math",
+    "figure": "5.3.4",
+    "machineEval": {
+      "figure1Setup": "baseline-qwen_FINAL",
+      "figure2Setup": "no-iteration-kimi_FINAL",
+      "mode": "3d",
+      "dimensions": {
+        "geometry": {
+          "winner": "baseline-qwen_FINAL",
+          "confidence": 0.9,
+          "rationale": "Figure 1 correctly implements the multi-panel layout of the source by placing panels (a) and (b) side-by-side in the 3D space, preserving their spatial relationship and the simultaneous view of the 2D strip and its corresponding 3D shell. Figure 2 incorrectly collapses these into a UI toggle, breaking the visual layout, and clutters the scene by drawing all n shells instead of focusing on the single representative shell S_k shown in the source."
+        },
+        "interactivity": {
+          "winner": "baseline-qwen_FINAL",
+          "confidence": 0.95,
+          "rationale": "Figure 1 displays both panels side-by-side, perfectly fulfilling the request to 'simultaneously highlight' the rectangle and its corresponding shell when the slider is moved. Figure 2 splits the scene into two mutually exclusive view modes, making simultaneous observation impossible. Additionally, Figure 1 provides a fully working equation input that dynamically updates both the 3D geometry and the numerical integration for the volume, which is an excellent, well-implemented addition."
+        },
+        "faithfulness": {
+          "winner": "no-iteration-kimi_FINAL",
+          "confidence": 0.9,
+          "rationale": "Figure 2 accurately reproduces the multipanel structure using a toggle for parts (a) and (b), with the 2D view closely matching the composition and colors of the original. Figure 1 attempts to combine the 2D and 3D elements into a single, zoomed-out 3D view that is harder to read and less faithful to the original layout."
+        },
+        "labels": {
+          "winner": "no-iteration-kimi_FINAL",
+          "confidence": 0.8,
+          "rationale": "Figure 2 includes the specific mathematical labels from the reference (such as 'R_k' and the x-axis tick labels), whereas Figure 1 omits these in the scene. While labels in both are quite small, Figure 2 aligns much better with the required annotations."
+        },
+        "concept": {
+          "winner": "baseline-qwen_FINAL",
+          "confidence": 0.9,
+          "rationale": "Figure 1 correctly presents both panels simultaneously side-by-side, allowing the student to visually connect the 2D strip to the 3D shell it generates. It also accurately isolates a single strip and a single shell as specified by the brief ('a single rectangular strip', 'the cylindrical shell'), whereas Figure 2 shows the entire Riemann sum of all strips and shells, which clutters the visual and contradicts the prompt's focus on a representative kth element."
+        }
+      },
+      "aggregator": {
+        "winner": "baseline-qwen_FINAL",
+        "confidence": 0.95,
+        "explanation": "Figure 1 successfully implements a side-by-side layout that allows for simultaneous viewing of the 2D strip and its corresponding 3D cylindrical shell, directly connecting the two concepts visually. In contrast, Figure 2 splits these views into mutually exclusive modes via a toggle, preventing simultaneous observation, and incorrectly renders the entire Riemann sum of all shells instead of isolating the single representative element requested."
+      },
+      "evalModel": "gemini-3.1-pro",
+      "evaluatedAt": "2026-08-14T13:07:20.417Z"
+    }
+  },
+  "cs__LossLogisticSigmoid": {
+    "setupA": "baseline-qwen_FINAL",
+    "setupB": "no-iteration-kimi_FINAL",
+    "subject": "cs",
+    "figure": "LossLogisticSigmoid",
+    "machineEval": {
+      "figure1Setup": "no-iteration-kimi_FINAL",
+      "figure2Setup": "baseline-qwen_FINAL",
+      "mode": "2d",
+      "dimensions": {
+        "geometry": {
+          "winner": "no-iteration-kimi_FINAL",
+          "confidence": 0.9,
+          "rationale": "Figure 1 includes a slight vertical padding on the y-axis (-0.03 to 1.03) while keeping the visible ticks at 0 and 1. This prevents the sigmoid's horizontal asymptotes (which have a thick stroke weight) from visually merging with or being clipped by the top and bottom edges of the plotting box, which happens in Figure 2 due to its exact [0, 1] yDomain. Figure 1 also correctly implements bounds-checking for its custom text readouts to prevent clipping."
+        },
+        "interactivity": {
+          "winner": "baseline-qwen_FINAL",
+          "confidence": 0.9,
+          "rationale": "Figure 2 maintains its threshold line and intercept readout consistently across the entire slider range, whereas Figure 1 intentionally hides the threshold line and its accompanying text when the slider is set to 0.5. Additionally, Figure 2 allows the user to click anywhere on the plot to snap and drag the point, which is a much easier affordance than Figure 1's strict requirement to click exactly on the small marker."
+        },
+        "faithfulness": {
+          "winner": "no-iteration-kimi_FINAL",
+          "confidence": 0.9,
+          "rationale": "Figure 1 perfectly renders the mathematical equation and correctly bounds the dashed guide lines, whereas Figure 2 features a severely disjointed equation, extends the horizontal dashed line across the entire plot incorrectly, and has overlapping text near the center point."
+        },
+        "labels": {
+          "winner": "no-iteration-kimi_FINAL",
+          "confidence": 0.95,
+          "rationale": "Figure 1 has much better label quality, as Figure 2 suffers from a severely mangled equation rendering (the numerator and denominator are disjointed from the fraction bar) and cluttered, overlapping interactive labels. Figure 1 maintains readable, properly formatted math text."
+        },
+        "concept": {
+          "winner": "baseline-qwen_FINAL",
+          "confidence": 0.9,
+          "rationale": "Both figures correctly plot the sigmoid curve, but Figure 1 introduces a conceptual error in its step narration by claiming that a higher probability threshold demands a 'proportionally larger' z. The relationship between p and z is highly non-linear (the logit function), not proportional. Figure 2 avoids this error, instead explaining the inverse relationship accurately with concrete mathematical examples."
+        }
+      },
+      "aggregator": {
+        "winner": "no-iteration-kimi_FINAL",
+        "confidence": 0.85,
+        "explanation": "Figure 1 offers vastly superior visual execution by maintaining perfectly formatted math equations, properly bounded guide lines, and unclipped asymptotes, whereas Figure 2 suffers from a severely disjointed equation rendering, overlapping interactive labels, and thick strokes clipped by exact axis bounds. Although Figure 2 provides slightly more forgiving dragging interactions and avoids a conceptual phrasing error regarding proportionality in its text, Figure 1's flawless visual presentation and cleaner layout make it a much more readable and reliable visualization."
+      },
+      "evalModel": "gemini-3.1-pro",
+      "evaluatedAt": "2026-08-14T13:09:54.250Z"
+    }
+  },
+  "cs__PerfSmoothness": {
+    "setupA": "baseline-qwen_FINAL",
+    "setupB": "no-iteration-kimi_FINAL",
+    "subject": "cs",
+    "figure": "PerfSmoothness",
+    "machineEval": {
+      "figure1Setup": "baseline-qwen_FINAL",
+      "figure2Setup": "no-iteration-kimi_FINAL",
+      "mode": "2d",
+      "dimensions": {
+        "geometry": {
+          "winner": "no-iteration-kimi_FINAL",
+          "confidence": 0.95,
+          "rationale": "Figure 2 correctly reconstructs the conceptual structure of the textbook figure by modeling the network fits as piecewise-linear curves (characteristic of ReLU networks) and using 10 data points, which accurately reflects the interpolation behavior described. Figure 1 relies on 6 data points and artificially fakes the fits using a continuous sinusoidal function, missing the distinctive piecewise-linear artifacts of the network."
+        },
+        "interactivity": {
+          "winner": "baseline-qwen_FINAL",
+          "confidence": 1,
+          "rationale": "Figure 1 successfully satisfies the request to animate the regression curve between states by continuously morphing the drawn line as the slider moves, whereas Figure 2 completely misses this requirement and merely changes the opacity of static, pre-rendered Chart.js panels."
+        },
+        "faithfulness": {
+          "winner": "no-iteration-kimi_FINAL",
+          "confidence": 0.9,
+          "rationale": "Figure 2 accurately reproduces the piecewise linear geometry (sharp kinks) of the model fits from the original, whereas Figure 1 incorrectly renders them as smooth, oscillatory curves. Despite Figure 2 fading out inactive panels, its underlying data shape is far more faithful to the reference."
+        },
+        "labels": {
+          "winner": "no-iteration-kimi_FINAL",
+          "confidence": 0.8,
+          "rationale": "Figure 2 has cleaner and more legible tick marks, while Figure 1's tick labels overlap the axes. Additionally, Figure 1 severely misplaces the 'Output, y' labels, leaving them floating far above the plots, whereas Figure 2 positions its axis labels more logically, despite containing corrupted panel letters."
+        },
+        "concept": {
+          "winner": "no-iteration-kimi_FINAL",
+          "confidence": 0.9,
+          "rationale": "Figure 2 correctly illustrates the core concept: the lower-capacity networks develop severe oscillations specifically because they are forced to fit the training data, with the fitted curve passing through or very near the data points. Figure 1's curve misses the training points by large margins, failing to resemble a trained model. Additionally, the brief states the function should develop 'more oscillations and finer local structure' as capacity decreases; Figure 2 shows this structural change, whereas Figure 1 merely scales the amplitude of a static error function so the number of oscillations never actually changes. Although Figure 2 has a technical flaw (drawing 12 kinks for a 6-hidden-unit ReLU network, exceeding the mathematical limit), Figure 1's failure to depict data interpolation makes Figure 2 conceptually far superior."
+        }
+      },
+      "aggregator": {
+        "winner": "no-iteration-kimi_FINAL",
+        "confidence": 0.9,
+        "explanation": "Figure 2 accurately captures the piecewise-linear geometry of ReLU networks and correctly depicts the curves interpolating the data points, whereas Figure 1 incorrectly uses a continuous sinusoidal function that misses the training data entirely. Although Figure 1 provides a smoother interactive animation compared to Figure 2's cross-fading of static panels, Figure 2's overwhelmingly superior conceptual accuracy and cleaner label placement make it the better overall figure."
+      },
+      "evalModel": "gemini-3.1-pro",
+      "evaluatedAt": "2026-08-14T13:11:55.443Z"
+    }
+  },
+  "physics__basic_motion_point": {
+    "setupA": "baseline-qwen_FINAL",
+    "setupB": "no-iteration-kimi_FINAL",
+    "subject": "physics",
+    "figure": "basic_motion_point",
+    "machineEval": {
+      "figure1Setup": "baseline-qwen_FINAL",
+      "figure2Setup": "no-iteration-kimi_FINAL",
+      "mode": "3d",
+      "dimensions": {
+        "geometry": {
+          "winner": "no-iteration-kimi_FINAL",
+          "confidence": 0.9,
+          "rationale": "Figure 2 accurately constructs the geometric relationship between the 3D velocity and the 2D optical flow vector by deriving the image-plane arrow directly from the projected displacement, ensuring the dashed ray perfectly intersects the tip of the 2D arrow. Figure 1 uses an arbitrarily scaled analytic derivative for the arrow and a differently scaled discrete displacement for the ray, causing them to visually misalign."
+        },
+        "interactivity": {
+          "winner": "baseline-qwen_FINAL",
+          "confidence": 0.95,
+          "rationale": "Figure 1 correctly computes the actual instantaneous time derivative (optical flow) using the quotient rule as requested by the subject matter, while Figure 2 substitutes a discrete difference between projected positions which diverges from the instantaneous velocity, especially during depth motion. Figure 1 also provides a more robust set of interactions, allowing the 3D point to be moved in all three dimensions."
+        },
+        "faithfulness": {
+          "winner": "no-iteration-kimi_FINAL",
+          "confidence": 0.85,
+          "rationale": "Figure 2 accurately reproduces the geometric relationships (rays from the origin, intersections on the image plane, and corresponding velocity vectors) and the exact color scheme of the original. Figure 1 mangles the geometry, misplacing the vectors and points in a way that obscures the camera projection setup shown in the reference."
+        },
+        "labels": {
+          "winner": "baseline-qwen_FINAL",
+          "confidence": 0.9,
+          "rationale": "Figure 1 features legible labels with correct mathematical notation (dots over variables), even though it misses the origin 'O' and misplaces 'P'. Figure 2 is heavily penalized because its labels are microscopically small and completely unreadable at standard viewing size."
+        },
+        "concept": {
+          "winner": "baseline-qwen_FINAL",
+          "confidence": 0.95,
+          "rationale": "Figure 1 correctly computes the instantaneous 2D velocity using the analytical time derivatives of the perspective projection, as required by the brief (L00010-L00014). Figure 2 instead computes a finite displacement of the projected point and falsely equates it with the instantaneous velocity, incorrectly asserting in its narration that the ray through the displaced 3D point pierces the image plane exactly at the tip of the velocity vector—a claim that is mathematically false due to the non-linearity of perspective projection."
+        }
+      },
+      "aggregator": {
+        "winner": "baseline-qwen_FINAL",
+        "confidence": 0.9,
+        "explanation": "Figure 1 is the stronger figure because it correctly calculates the instantaneous 2D velocity using analytical time derivatives and provides legible, properly formatted labels. In contrast, Figure 2 relies on a discrete displacement rather than an instantaneous derivative—leading to mathematically false assertions about the perspective projection—and features microscopically small, unreadable labels."
+      },
+      "evalModel": "gemini-3.1-pro",
+      "evaluatedAt": "2026-08-14T13:15:38.105Z"
+    }
+  },
+  "physics__cross_ratio_description2": {
+    "setupA": "baseline-qwen_FINAL",
+    "setupB": "no-iteration-kimi_FINAL",
+    "subject": "physics",
+    "figure": "cross_ratio_description2",
+    "machineEval": {
+      "figure1Setup": "baseline-qwen_FINAL",
+      "figure2Setup": "no-iteration-kimi_FINAL",
+      "mode": "2d",
+      "dimensions": {
+        "geometry": {
+          "winner": "baseline-qwen_FINAL",
+          "confidence": 0.95,
+          "rationale": "Figure 1 constructs the cross-ratio invariants more rigorously, calculating and displaying the pencil cross-ratio alongside the transversals using a robust homogeneous coordinate method. Additionally, Figure 1 dynamically pins the 'R1 → ∞' marker to the edge of the viewbox, whereas Figure 2 positions its infinity label at a fixed distance from the draggable center O, which causes it to disappear off-screen when O is dragged to the right."
+        },
+        "interactivity": {
+          "winner": "baseline-qwen_FINAL",
+          "confidence": 1,
+          "rationale": "Figure 1 correctly fixes the first ray's angle to maintain R1 at infinity while allowing all other P, Q, and R points to be dragged, and it robustly handles points escaping to infinity using homogeneous coordinates for the cross-ratio computation. Figure 2 completely fails to make the R points draggable, and if P1 or Q1 is dragged, it erroneously rotates the R transversal line instead of keeping it fixed."
+        },
+        "faithfulness": {
+          "winner": "baseline-qwen_FINAL",
+          "confidence": 1,
+          "rationale": "Figure 1 successfully reproduces the geometric diagram with lines, points, and relevant labels, whereas Figure 2 fails to render completely, displaying only a Javascript error."
+        },
+        "labels": {
+          "winner": "baseline-qwen_FINAL",
+          "confidence": 1,
+          "rationale": "Figure 1 provides partial labels ('O' and numerical indices) matching the reference, whereas Figure 2 failed to render entirely and displays an error message."
+        },
+        "concept": {
+          "winner": "baseline-qwen_FINAL",
+          "confidence": 0.95,
+          "rationale": "Figure 1 uses a fully homogeneous coordinate calculation for the cross-ratio, cleanly handling the point at infinity without special-cased limit formulas. It also explicitly displays the cross-ratio of the pencil of rays, which masterfully reinforces the core concept that the invariant originates from the projection center itself. Figure 2 places the 'R1 → ∞' label on Ray 1 rather than the R-line, which slightly muddles the fact that R1 belongs to the collinear R set, and its intersection logic lacks safety checks for parallel rays, risking a crash."
+        }
+      },
+      "aggregator": {
+        "winner": "baseline-qwen_FINAL",
+        "confidence": 1,
+        "explanation": "Figure 1 is overwhelmingly superior because it successfully renders an interactive geometric diagram with correctly draggable points and a robust calculation of the cross-ratio using homogeneous coordinates. In contrast, Figure 2 completely fails to render, displaying only a JavaScript error. Furthermore, Figure 2's underlying code suffers from fundamental flaws such as un-draggable points, erroneous line rotations, and conceptually improper placement of the infinity label."
+      },
+      "evalModel": "gemini-3.1-pro",
+      "evaluatedAt": "2026-08-14T13:17:38.534Z"
+    }
+  },
+  "physics__no_picture_on_a_wall_aina": {
+    "setupA": "baseline-qwen_FINAL",
+    "setupB": "no-iteration-kimi_FINAL",
+    "subject": "physics",
+    "figure": "no_picture_on_a_wall_aina",
+    "machineEval": {
+      "figure1Setup": "no-iteration-kimi_FINAL",
+      "figure2Setup": "baseline-qwen_FINAL",
+      "mode": "3d",
+      "dimensions": {
+        "geometry": {
+          "winner": "no-iteration-kimi_FINAL",
+          "confidence": 1,
+          "rationale": "Figure 1 correctly constructs a 3D barrier with a true circular hole (using ShapeGeometry) and projects a flat 2D image onto the wall. Figure 2 incorrectly constructs the barrier as two stacked boxes (creating a horizontal slit rather than a pinhole) and incorrectly models the projected image as a full inverted 3D tree intersecting the wall."
+        },
+        "interactivity": {
+          "winner": "no-iteration-kimi_FINAL",
+          "confidence": 0.95,
+          "rationale": "Figure 1 implements the requested interactions far more robustly. Its toggle transforms the single panel between states smoothly, whereas Figure 2's panel toggle just abruptly hides the rays in panel (a) and leaves it empty. Furthermore, Figure 1's ray comparison allows the user to click anywhere on the wall to dynamically trace back the light rays reaching that exact spot, perfectly demonstrating the physical concept, whereas Figure 2 relies on a static overlay of hardcoded lines."
+        },
+        "faithfulness": {
+          "winner": "baseline-qwen_FINAL",
+          "confidence": 0.9,
+          "rationale": "Figure 2 accurately reproduces the two-panel layout side-by-side like the original, including the inverted projection on the wall, whereas Figure 1 relies on toggles and has less faithful geometry."
+        },
+        "labels": {
+          "winner": "baseline-qwen_FINAL",
+          "confidence": 0.95,
+          "rationale": "Figure 2 successfully replicates all labels from the original diagram with clear readability and correct placement. Figure 1's labels are severely undersized and mostly illegible, with incorrect text such as '(a) No aperture' instead of just '(a)'."
+        },
+        "concept": {
+          "winner": "no-iteration-kimi_FINAL",
+          "confidence": 1,
+          "rationale": "Figure 1 correctly computes the projection geometrically, ensuring light rays travel in unbroken straight lines through the pinhole (L00010). Figure 2 hardcodes the wall target coordinates, causing the light rays to visibly bend or kink as they pass through the pinhole, which violates the fundamental physics of rectilinear light propagation required to explain the pinhole camera."
+        }
+      },
+      "aggregator": {
+        "winner": "no-iteration-kimi_FINAL",
+        "confidence": 0.9,
+        "explanation": "Figure 1 is the clear winner because it accurately models the physics of a pinhole camera with straight light rays and true 3D geometry for the circular aperture, whereas Figure 2 violates basic physics by depicting bending light rays and constructs a horizontal slit instead of a pinhole. Although Figure 2 features a more faithful static two-panel layout and significantly better label legibility, Figure 1's robust interactivity—such as dynamic ray tracing based on user clicks—and flawless conceptual execution make it far superior overall."
+      },
+      "evalModel": "gemini-3.1-pro",
+      "evaluatedAt": "2026-08-14T13:21:32.739Z"
+    }
+  },
+  "cs__ReinforceMDPLoop": {
+    "setupA": "baseline-qwen_FINAL",
+    "setupB": "no-iteration-kimi_FINAL",
+    "subject": "cs",
+    "figure": "ReinforceMDPLoop",
+    "machineEval": {
+      "figure1Setup": "no-iteration-kimi_FINAL",
+      "figure2Setup": "baseline-qwen_FINAL",
+      "mode": "2d",
+      "dimensions": {
+        "geometry": {
+          "winner": "no-iteration-kimi_FINAL",
+          "confidence": 0.95,
+          "rationale": "Figure 1 correctly captures the topology of the diagram by drawing a line that splits from the left 'State' riser, crosses horizontally to the right, and enters the right side of the Environment (showing that the Environment takes the current state as input). Figure 1 achieves this by merging the 'stateRight' line seamlessly into the 'stateLeft' riser. Figure 2 completely fails to understand this crossing topology, instead creating two disconnected state arrows that both point upwards into the Agent from opposite sides, which misrepresents the MDP flow."
+        },
+        "interactivity": {
+          "winner": "no-iteration-kimi_FINAL",
+          "confidence": 0.95,
+          "rationale": "Figure 1 implements the requested time-step sequence beautifully using a moving dot that traces the physical paths between the components, accurately depicting the flow of data. Figure 2 simply toggles static arrow highlights on a timer, and in its second step, simultaneously highlights two duplicate state arrows on opposite sides of the diagram, which is physically incoherent. Both figures correctly handle the box click events, but Figure 1 provides a much better animation."
+        },
+        "faithfulness": {
+          "winner": "no-iteration-kimi_FINAL",
+          "confidence": 0.9,
+          "rationale": "Figure 1 accurately reproduces the directed flow of the arrows between the agent and environment. Figure 2 incorrectly places inward-pointing arrowheads at almost every connection point, fundamentally breaking the visual representation of the action-state-reward loop."
+        },
+        "labels": {
+          "winner": "baseline-qwen_FINAL",
+          "confidence": 0.9,
+          "rationale": "Both figures completely omit the essential labels on the arrows (Reward, State, Action). However, Figure 2 is the winner because the labels inside the Environment box are properly centered and legible, whereas in Figure 1, the text and equations collide and overlap severely."
+        },
+        "concept": {
+          "winner": "no-iteration-kimi_FINAL",
+          "confidence": 1,
+          "rationale": "Figure 1 correctly subscripts the state variable in the policy equation as π[a_t|s_t] (L00007), whereas Figure 2 inaccurately omits the subscript 't' on the state (writing π[a_t|s]), missing a key notational detail specified by the brief."
+        }
+      },
+      "aggregator": {
+        "winner": "no-iteration-kimi_FINAL",
+        "confidence": 0.95,
+        "explanation": "Figure 1 correctly captures the required MDP topology with accurate directed flows and seamless state lines, effectively demonstrating the time-step sequence with a moving dot animation. Figure 2, although possessing better text layout inside the Environment box, fundamentally misrepresents the data flow with disconnected state arrows, incorrectly placed inward arrowheads, and missing equation subscripts. Figure 1 is the clear winner despite its text overlap issues."
+      },
+      "evalModel": "gemini-3.1-pro",
+      "evaluatedAt": "2026-08-14T15:52:38.117Z"
+    }
+  },
+  "math__14.1.3": {
+    "setupA": "baseline-qwen_FINAL",
+    "setupB": "no-iteration-kimi_FINAL",
+    "subject": "math",
+    "figure": "14.1.3",
+    "machineEval": {
+      "figure1Setup": "no-iteration-kimi_FINAL",
+      "figure2Setup": "baseline-qwen_FINAL",
+      "mode": "3d",
+      "dimensions": {
+        "geometry": {
+          "winner": "no-iteration-kimi_FINAL",
+          "confidence": 0.95,
+          "rationale": "Figure 1 constructs a highly accurate 'arbitrary' amoeba-like region rather than a simple ellipse, and properly offsets the coordinate axes to the background just like the textbook source. Furthermore, it features fully dynamic curved 3D leaders with correctly oriented arrowheads that track the column as it is dragged, whereas Figure 2 uses plain straight lines with no arrowheads."
+        },
+        "interactivity": {
+          "winner": "no-iteration-kimi_FINAL",
+          "confidence": 1,
+          "rationale": "Figure 1 correctly handles and renders negative function values (a core concept of the Riemann sum as a signed volume), updating the column to extend downwards and displaying negative readouts. Figure 2 arbitrarily clamps the column height and readout to a minimum of 0.01, completely breaking the interaction when the user inputs an equation that evaluates to negative numbers."
+        },
+        "faithfulness": {
+          "winner": "no-iteration-kimi_FINAL",
+          "confidence": 1,
+          "rationale": "Figure 1 successfully renders the surface, base grid, sample column, and coordinate axes, capturing the core composition of the original. Figure 2 fails to render the 3D scene entirely, displaying only a single line."
+        },
+        "labels": {
+          "winner": "no-iteration-kimi_FINAL",
+          "confidence": 0.99,
+          "rationale": "Figure 1 includes the required mathematical labels within the 3D scene, although they are quite small and lack the precise leader lines of the original. Figure 2 fails to render the 3D scene and consequently displays no labels at all."
+        },
+        "concept": {
+          "winner": "no-iteration-kimi_FINAL",
+          "confidence": 0.95,
+          "rationale": "Figure 1 correctly matches the column's width and depth (0.35) to the drawn partition's grid spacing, whereas Figure 2 draws grid lines every 0.25 units but draws a column 0.3 units wide, contradicting the visual definition of the subrectangle. Figure 1 also correctly evaluates signed volume (showing it in red when the surface dips below the xy-plane) and correctly maps the variables for the surface equation, whereas Figure 2's custom plotSurface variable array swaps x and y."
+        }
+      },
+      "aggregator": {
+        "winner": "no-iteration-kimi_FINAL",
+        "confidence": 0.99,
+        "explanation": "Figure 1 successfully renders the full 3D Riemann sum scene, properly handling signed volume with downward columns for negative values, and accurately matching the column dimensions to the base grid spacing. In contrast, Figure 2 entirely fails to render the 3D scene, displaying only a single line, and its underlying logic improperly clamps column heights to positive values while misaligning the grid spacing."
+      },
+      "evalModel": "gemini-3.1-pro",
+      "evaluatedAt": "2026-08-14T19:22:55.947Z"
+    }
+  },
+  "math__14.3.3": {
+    "setupA": "baseline-qwen_FINAL",
+    "setupB": "no-iteration-kimi_FINAL",
+    "subject": "math",
+    "figure": "14.3.3",
+    "machineEval": {
+      "figure1Setup": "no-iteration-kimi_FINAL",
+      "figure2Setup": "baseline-qwen_FINAL",
+      "mode": "2d",
+      "dimensions": {
+        "geometry": {
+          "winner": "baseline-qwen_FINAL",
+          "confidence": 0.95,
+          "rationale": "Figure 2 correctly calculates the tangential width of the Cartesian comparison rectangle as r₁Δθ (matching the inner arc length), whereas Figure 1 incorrectly scales the tangential side strictly by the angle difference Δθ, breaking the geometric relationship. Figure 2 also properly renders the angles as stacked π-fractions (e.g., π/6), which accurately reflects the standard textbook notation for polar coordinates."
+        },
+        "interactivity": {
+          "winner": "baseline-qwen_FINAL",
+          "confidence": 0.98,
+          "rationale": "Figure 1 has a bug in its bounds enforcement logic: the argument telling the function which slider was moved is never passed, so it always defaults to snapping the lower bound backwards, effectively altering the user's input behind their back when they try to drag the lower bound up. Figure 2 avoids this by gracefully swapping min and max if the bounds cross, keeping the interactions smooth. Additionally, Figure 2 maps the dimensions of the Cartesian overlay to dr and r1*dθ, which matches the physical geometry of the inner corner, whereas Figure 1 uses the unscaled angle dθ as a length in the xy-plane."
+        },
+        "faithfulness": {
+          "winner": "baseline-qwen_FINAL",
+          "confidence": 0.95,
+          "rationale": "Figure 2 includes the prominent light blue shading for region R, which is completely missing in Figure 1. Figure 2 also positions its labels much more similarly to the original."
+        },
+        "labels": {
+          "winner": "baseline-qwen_FINAL",
+          "confidence": 0.9,
+          "rationale": "Figure 2 places the labels much closer to their corresponding arcs and rays, closely mirroring the original textbook layout. Figure 1's labels for r and theta are awkwardly grouped to the left, floating far from the features they describe."
+        },
+        "concept": {
+          "winner": "baseline-qwen_FINAL",
+          "confidence": 0.95,
+          "rationale": "Figure 2 accurately conveys the geometric concepts by sizing the Cartesian comparison rectangle's tangential side as r·Δθ, properly illustrating why the area element includes a factor of r (L00010). Figure 1 sizes the comparison rectangle's tangential side as simply Δθ, which is dimensionally incorrect in the x-y plane and completely fails to match the inner arc length or grow as the inner radius increases."
+        }
+      },
+      "aggregator": {
+        "winner": "baseline-qwen_FINAL",
+        "confidence": 0.98,
+        "explanation": "Figure 2 dominates Figure 1 across all dimensions, most importantly by correctly scaling the tangential width of the Cartesian comparison rectangle as r·Δθ instead of the dimensionally incorrect Δθ used in Figure 1. Additionally, Figure 2 implements smooth slider interactions and faithfully renders the shaded region R, whereas Figure 1 contains a frustrating bounds-enforcement bug and completely omits the shading. Finally, Figure 2 places its mathematical labels precisely near the geometric features they describe, unlike Figure 1 which leaves them awkwardly floating to the side."
+      },
+      "evalModel": "gemini-3.1-pro",
+      "evaluatedAt": "2026-08-14T19:24:23.603Z"
+    }
+  },
+  "math__5.8.4": {
+    "setupA": "baseline-qwen_FINAL",
+    "setupB": "no-iteration-kimi_FINAL",
+    "subject": "math",
+    "figure": "5.8.4",
+    "machineEval": {
+      "figure1Setup": "baseline-qwen_FINAL",
+      "figure2Setup": "no-iteration-kimi_FINAL",
+      "mode": "2d",
+      "dimensions": {
+        "geometry": {
+          "winner": "baseline-qwen_FINAL",
+          "confidence": 0.95,
+          "rationale": "Figure 1 perfectly captures the standard side-by-side layout typical of textbook figures for this topic, allowing immediate visual comparison between the continuous surface, the partition, and the isolated kth strip. It also uses proper architectural dimension lines (I-beams and single-headed arrows with ticks) for width and height annotations, whereas Figure 2 uses a vertically stacked layout that forces scrolling and less precise double-arrows."
+        },
+        "interactivity": {
+          "winner": "no-iteration-kimi_FINAL",
+          "confidence": 0.95,
+          "rationale": "Figure 2 successfully displays the numerical values for depth and width in its readout, directly fulfilling the prompt's request, whereas Figure 1 only provides symbolic labels. Additionally, Figure 2's animated mode loops continuously, allowing the user to change the number of strips on the fly while watching the animation adapt; Figure 1's animation plays once and stops, and changing the slider after it finishes leaves the figure in a permanently frozen, half-drawn state."
+        },
+        "faithfulness": {
+          "winner": "no-iteration-kimi_FINAL",
+          "confidence": 1,
+          "rationale": "Figure 2 accurately reproduces the vertical panel layout and the original color scheme, notably the light blue water background. Figure 1 completely changes the visual impression by using a black background for the water, arranging the panels horizontally, and rendering the labels nearly illegible."
+        },
+        "labels": {
+          "winner": "no-iteration-kimi_FINAL",
+          "confidence": 0.99,
+          "rationale": "Figure 2 provides legible, correctly placed labels that closely match the original. Figure 1's labels are illegible due to tiny font sizes and poor contrast against the black background."
+        },
+        "concept": {
+          "winner": "no-iteration-kimi_FINAL",
+          "confidence": 0.95,
+          "rationale": "Figure 2 accurately matches the brief's notation for the weight density $\\rho$, labelling the terms $\\rho h w \\Delta x$ correctly, whereas Figure 1 incorrectly inserts an extraneous 'g' ($\\rho g h w \\Delta x$), contradicting the brief's definition of $\\rho$ as the weight density (L00007, L00021-L00026). Additionally, Figure 2 correctly labels the upper bound of the $k$th strip as $x_{k-1}$, while Figure 1 mislabels it as $x_{k1}$ due to a missing minus sign."
+        }
+      },
+      "aggregator": {
+        "winner": "no-iteration-kimi_FINAL",
+        "confidence": 0.98,
+        "explanation": "Figure 2 is significantly stronger than Figure 1 due to correct conceptual notation (avoiding Figure 1's extraneous 'g' in weight density and missing minus sign in $x_{k-1}$) and highly legible labels against an accurate light blue background, whereas Figure 1's labels are illegible against a black background. Additionally, Figure 2 features a robust, continuous animation loop and numeric readouts, avoiding Figure 1's permanently frozen state upon interacting after the initial animation."
+      },
+      "evalModel": "gemini-3.1-pro",
+      "evaluatedAt": "2026-08-14T19:25:16.818Z"
+    }
+  },
+  "chemistry__CNX_Chem_02_03_MassSpec": {
+    "setupA": "baseline-qwen_FINAL",
+    "setupB": "no-iteration-kimi_FINAL",
+    "subject": "chemistry",
+    "figure": "CNX_Chem_02_03_MassSpec",
+    "machineEval": {
+      "figure1Setup": "no-iteration-kimi_FINAL",
+      "figure2Setup": "baseline-qwen_FINAL",
+      "mode": "3d",
+      "dimensions": {
+        "geometry": {
+          "winner": "no-iteration-kimi_FINAL",
+          "confidence": 0.85,
+          "rationale": "Figure 1 constructs the ion paths using solid 3D TubeGeometries rather than flat 1-pixel lines, models the vapor cloud with actual 3D spheres, and correctly tilts the magnet and exit tube assemblies to match the physical geometry of the spectrometer. Its use of depth and 3D primitives is much more comprehensive than Figure 2."
+        },
+        "interactivity": {
+          "winner": "no-iteration-kimi_FINAL",
+          "confidence": 1,
+          "rationale": "Figure 1 implements all requested interactions flawlessly. Clicking a bar in Figure 1 changes the magnetic field to bring that specific isotope's path onto the detector while updating the m/z annotation, perfectly fulfilling the prompt. Figure 2's click handler merely changes the color of the path without updating the magnetic field to align it with the detector, and it lacks the requested mass-to-charge ratio annotation."
+        },
+        "faithfulness": {
+          "winner": "no-iteration-kimi_FINAL",
+          "confidence": 0.9,
+          "rationale": "Figure 1 successfully reproduces both the spectrometer diagram with its labels and the accompanying bar chart, whereas Figure 2 is missing all labels, the chart, and views the instrument from an unhelpful angle."
+        },
+        "labels": {
+          "winner": "no-iteration-kimi_FINAL",
+          "confidence": 1,
+          "rationale": "Figure 1 includes the required labels for both the diagram and the chart, whereas Figure 2 omits all in-scene labels entirely. Although Figure 1 suffers from severe label overlapping and clutter, it is the only one that attempts the dimension."
+        },
+        "concept": {
+          "winner": "baseline-qwen_FINAL",
+          "confidence": 0.95,
+          "rationale": "Figure 2 correctly implements the physics of the magnetic sector: for a fixed detector angle (fixed radius of curvature), the magnetic field required is proportional to the ion's mass, so heavier isotopes require a stronger field. Figure 1 implements this backwards, stating that the lightest isotope requires the strongest field and the heaviest requires the weakest, which is a fundamental physics error."
+        }
+      },
+      "aggregator": {
+        "winner": "no-iteration-kimi_FINAL",
+        "confidence": 0.9,
+        "explanation": "Figure 1 provides a vastly more complete visualization by including the requested dual-panel layout, interactive bar chart, in-scene labels, and robust 3D geometry for the ion paths. In contrast, while Figure 2 correctly models the underlying physics of the magnetic sector, it completely omits the chart, labels, and functional interactivity, making Figure 1 the overall winner despite its conceptual flaw in the physics logic."
+      },
+      "evalModel": "gemini-3.1-pro",
+      "evaluatedAt": "2026-08-14T19:25:46.352Z"
+    }
+  },
+  "cs__ConvAlex": {
+    "setupA": "baseline-qwen_FINAL",
+    "setupB": "no-iteration-kimi_FINAL",
+    "subject": "cs",
+    "figure": "ConvAlex",
+    "machineEval": {
+      "figure1Setup": "no-iteration-kimi_FINAL",
+      "figure2Setup": "baseline-qwen_FINAL",
+      "mode": "3d",
+      "dimensions": {
+        "geometry": {
+          "winner": "no-iteration-kimi_FINAL",
+          "confidence": 1,
+          "rationale": "Figure 1 perfectly follows the highly specific geometry requested in the prompt, including the exact block dimensions, the procedural candlelit texture for the input photo, and the zigzag notches for the fully connected layers. Figure 2 ignores the provided dimensional specs entirely, misses the zigzag cutaways, and fails to align the blocks on a common ground line."
+        },
+        "interactivity": {
+          "winner": "no-iteration-kimi_FINAL",
+          "confidence": 0.95,
+          "rationale": "Figure 1 correctly handles the rotation state, applying it to the group and registering drag listeners on the window to prevent stuck states. Figure 2 has flawed index math that resets the wrong blocks' rotations when changing layers, spins individual meshes in place instead of around a shared center, and uses canvas-bound pointerup events that cause the drag state to stick if the user releases the mouse outside the element."
+        },
+        "faithfulness": {
+          "winner": "no-iteration-kimi_FINAL",
+          "confidence": 0.95,
+          "rationale": "Figure 1 successfully replicates the specific geometry, color scheme (brown convolutional layers, tall cyan fully connected layers with breaks), and includes all text labels from the original. Figure 2 uses incorrect colors for the layer blocks, has inaccurate proportions, and lacks all annotations and arrows, making it far less recognizable as the specific reference figure."
+        },
+        "labels": {
+          "winner": "no-iteration-kimi_FINAL",
+          "confidence": 1,
+          "rationale": "Figure 1 includes most of the required labels from the original, whereas Figure 2 completely omits all text annotations on the diagram. Although Figure 1 suffers from severe label overlap and clutter in the central and rightmost sections, it is the only one that attempts to convey the required textual information."
+        },
+        "concept": {
+          "winner": "baseline-qwen_FINAL",
+          "confidence": 0.95,
+          "rationale": "Figure 2 correctly applies the requested color scheme, rendering the feature map volumes in teal and the filter kernels in orange (L00008-L00010). Figure 1 mistakenly renders the feature map volumes in orange and only uses teal for the fully connected layers, directly contradicting the brief."
+        }
+      },
+      "aggregator": {
+        "winner": "no-iteration-kimi_FINAL",
+        "confidence": 0.95,
+        "explanation": "Figure 1 significantly outperforms Figure 2 by adhering to the requested geometric proportions, including crucial text annotations, and correctly implementing robust 3D rotation and drag interactions. Although Figure 2 more accurately maps the specified colors to the conceptual components, it completely lacks the required labels, ignores dimension specifications, and suffers from buggy interaction logic."
+      },
+      "evalModel": "gemini-3.1-pro",
+      "evaluatedAt": "2026-08-14T19:26:32.338Z"
+    }
+  },
+  "cs__GraphNodeEdgeAdjacency": {
+    "setupA": "baseline-qwen_FINAL",
+    "setupB": "no-iteration-kimi_FINAL",
+    "subject": "cs",
+    "figure": "GraphNodeEdgeAdjacency",
+    "machineEval": {
+      "figure1Setup": "baseline-qwen_FINAL",
+      "figure2Setup": "no-iteration-kimi_FINAL",
+      "mode": "2d",
+      "dimensions": {
+        "geometry": {
+          "winner": "no-iteration-kimi_FINAL",
+          "confidence": 0.95,
+          "rationale": "Figure 2 correctly reconstructs the crucial feature vectors attached to the nodes and edges in panel a, which visually links the graph components to their respective matrices. Figure 1 omits these entirely, missing a core structural component of the original figure, making Figure 2 the winner despite drawing 4 rows instead of 5 in panel c."
+        },
+        "interactivity": {
+          "winner": "baseline-qwen_FINAL",
+          "confidence": 0.95,
+          "rationale": "Figure 1 completely satisfies the interaction requirements, notably highlighting both endpoint nodes when an edge is clicked as requested. Figure 2 fails to highlight the connected nodes upon clicking an edge, and its panel toggling relies on a dropdown that only allows viewing one panel at a time (or all) rather than independent checkboxes."
+        },
+        "faithfulness": {
+          "winner": "no-iteration-kimi_FINAL",
+          "confidence": 0.95,
+          "rationale": "Figure 2 correctly reproduces the color-coded feature stacks attached to the nodes and edges in panel a. Figure 1 omits these elements entirely, failing to show the relationship between the graph elements and the data matrices."
+        },
+        "labels": {
+          "winner": "no-iteration-kimi_FINAL",
+          "confidence": 0.9,
+          "rationale": "Figure 2 features much larger, readable text labels compared to Figure 1, where the text is extremely small and practically illegible at inline size."
+        },
+        "concept": {
+          "winner": "baseline-qwen_FINAL",
+          "confidence": 0.95,
+          "rationale": "Figure 1 maintains consistent dimensions across all representations. Figure 2 attempts to visualize the node feature vectors directly on the graph (a good idea), but it draws these stacks with 5 dimensions (5 blocks) while its corresponding node feature matrix X is drawn with only 4 rows, breaking the conceptual mapping between the graph's attributes and the matrix that encodes them."
+        }
+      },
+      "aggregator": {
+        "winner": "no-iteration-kimi_FINAL",
+        "confidence": 0.85,
+        "explanation": "Figure 2 successfully reconstructs the essential color-coded feature vectors on the graph components and provides highly legible labels, whereas Figure 1 completely omits these crucial visual elements and features practically illegible text. Although Figure 1 correctly implements the required interactions and maintains consistent matrix dimensions—avoiding Figure 2's minor inconsistency between its five-block feature stacks and four-row matrix—Figure 2's inclusion of the core structural components makes it the superior visualization."
+      },
+      "evalModel": "gemini-3.1-pro",
+      "evaluatedAt": "2026-08-14T19:27:17.507Z"
+    }
+  },
+  "physics__flatland_camera_linear": {
+    "setupA": "baseline-qwen_FINAL",
+    "setupB": "no-iteration-kimi_FINAL",
+    "subject": "physics",
+    "figure": "flatland_camera_linear",
+    "machineEval": {
+      "figure1Setup": "baseline-qwen_FINAL",
+      "figure2Setup": "no-iteration-kimi_FINAL",
+      "mode": "2d",
+      "dimensions": {
+        "geometry": {
+          "winner": "baseline-qwen_FINAL",
+          "confidence": 0.9,
+          "rationale": "Figure 1 constructs pseudo-subscripts correctly by positioning smaller text, whereas Figure 2 literally prints 'ℓ_w'. Furthermore, Figure 1 maps intensity to grayscale (leaving red for ray tracing highlights), while Figure 2 confusingly maps it to the opacity of red rectangles. Figure 1 also uses proper SVG markers for arrowheads instead of manually calculated polygons."
+        },
+        "interactivity": {
+          "winner": "baseline-qwen_FINAL",
+          "confidence": 1,
+          "rationale": "Figure 1 correctly implements a relative vertical drag that does not jump the value on click and smoothly covers the full 0-1 range. Figure 2 maps absolute Y coordinates to intensity, causing the value to jump instantly upon clicking, and maps the 0-1 range to a 90px span on a 26px tall cell—forcing the user to drag far outside the element to lower the value. Furthermore, Figure 1 explicitly draws connectors to satisfy the request to 'highlight the reversal', whereas Figure 2 only changes text labels."
+        },
+        "faithfulness": {
+          "winner": "baseline-qwen_FINAL",
+          "confidence": 0.8,
+          "rationale": "Figure 1 is much more visually faithful to the original's layout and composition. While Figure 2 correctly fills the active cells with red, its labels heavily overlap the graphical elements (e.g., 'Occluder', 'Scene', and 'Camera sensor'), severely degrading the resemblance."
+        },
+        "labels": {
+          "winner": "baseline-qwen_FINAL",
+          "confidence": 0.9,
+          "rationale": "Both figures struggle with label placement, but Figure 1 is significantly better. Figure 2 completely hides the 'Occluder' and 'Aperture' labels behind the black rectangles and heavily overlaps 'Camera sensor' with the grid, whereas Figure 1's labels are mostly readable despite some truncation at the right edge."
+        },
+        "concept": {
+          "winner": "no-iteration-kimi_FINAL",
+          "confidence": 1,
+          "rationale": "Figure 2 correctly places the pinhole exactly halfway between the scene and the sensor vertically, ensuring that the light rays remain perfectly straight as they pass through the aperture. Figure 1 places the pinhole off-center vertically but still connects symmetrical scene and sensor pixels, causing the light rays to visibly bend at the occluder, which violates the basic physics of light propagation."
+        }
+      },
+      "aggregator": {
+        "winner": "baseline-qwen_FINAL",
+        "confidence": 0.9,
+        "explanation": "Figure 1 provides smooth, relative drag interactions and visually readable labels, whereas Figure 2 suffers from instantly jumping values, broken drag scales, and labels that are completely hidden behind geometric elements. Although Figure 2 correctly maintains the straight propagation of light rays while Figure 1 incorrectly bends them at the pinhole, Figure 1's superior interactions, faithful visual layout, and correct graphical constructions make it the overall stronger figure."
+      },
+      "evalModel": "gemini-3.1-pro",
+      "evaluatedAt": "2026-08-14T19:27:55.096Z"
+    }
+  },
+  "physics__plenoptic_function": {
+    "setupA": "baseline-qwen_FINAL",
+    "setupB": "no-iteration-kimi_FINAL",
+    "subject": "physics",
+    "figure": "plenoptic_function",
+    "machineEval": {
+      "figure1Setup": "no-iteration-kimi_FINAL",
+      "figure2Setup": "baseline-qwen_FINAL",
+      "mode": "2d",
+      "dimensions": {
+        "geometry": {
+          "winner": "baseline-qwen_FINAL",
+          "confidence": 0.9,
+          "rationale": "Figure 2 is structurally much more accurate to the standard textbook diagram by explicitly including static examples of the crossing rays inside the camera (image formation) and a full starburst in free space, alongside the dynamic interactive point. Figure 1 omits these essential static explanatory points entirely, relying solely on the single interactive probe."
+        },
+        "interactivity": {
+          "winner": "baseline-qwen_FINAL",
+          "confidence": 1,
+          "rationale": "Figure 2 correctly updates the location context automatically when the user clicks inside or outside the camera, whereas Figure 1 keeps the 'free' mode active if clicked inside the camera while the checkbox is off, resulting in 360-degree rays passing straight through the opaque camera walls. Furthermore, Figure 2 evaluates fixed angular directions and correctly intersects them with the aperture to calculate which rays survive, natively demonstrating the sparsity, while Figure 1 just hardcodes three rays pointing at the aperture regardless of geometry."
+        },
+        "faithfulness": {
+          "winner": "baseline-qwen_FINAL",
+          "confidence": 1,
+          "rationale": "Figure 2 successfully replicates the composition and key elements of the original figure (camera, tree, light rays), whereas Figure 1 fails to render entirely, showing only a script error."
+        },
+        "labels": {
+          "winner": "baseline-qwen_FINAL",
+          "confidence": 1,
+          "rationale": "Figure 2 successfully includes the required 'Pinhole camera' label in a readable size and correct placement, whereas Figure 1 failed to render and shows a script error."
+        },
+        "concept": {
+          "winner": "baseline-qwen_FINAL",
+          "confidence": 0.95,
+          "rationale": "Figure 2 accurately depicts four sampling locations simultaneously (three static, one dynamic) as specified in the brief, whereas Figure 1 only shows a single point at a time. Furthermore, Figure 2 explicitly shows the zero-valued directions inside the camera using faint grey dots, perfectly capturing the concept that the plenoptic function exists for all directions but evaluates to zero for most when inside the camera."
+        }
+      },
+      "aggregator": {
+        "winner": "baseline-qwen_FINAL",
+        "confidence": 1,
+        "explanation": "Figure 2 is the clear winner as it successfully renders all required elements and labels, whereas Figure 1 fails to render entirely due to a script error. Furthermore, code analysis reveals that Figure 2 correctly implements the interactive ray geometry—including occlusion and explicitly showing zero-valued directions inside the camera—while Figure 1 omits essential static examples and improperly allows rays to pass through opaque camera walls."
+      },
+      "evalModel": "gemini-3.1-pro",
+      "evaluatedAt": "2026-08-14T19:28:17.436Z"
+    }
+  },
+  "physics__yaw_pitch_roll": {
+    "setupA": "baseline-qwen_FINAL",
+    "setupB": "no-iteration-kimi_FINAL",
+    "subject": "physics",
+    "figure": "yaw_pitch_roll",
+    "machineEval": {
+      "figure1Setup": "baseline-qwen_FINAL",
+      "figure2Setup": "no-iteration-kimi_FINAL",
+      "mode": "3d",
+      "dimensions": {
+        "geometry": {
+          "winner": "no-iteration-kimi_FINAL",
+          "confidence": 0.9,
+          "rationale": "Figure 2 more accurately reconstructs the 3D geometry of the concept by including the projection ray segment from the origin (center of projection) to the image point, whereas Figure 1 only connects the image point to the world point. Figure 2 also includes right-angle coordinate drop lines to anchor the 3D world point to the reference plane, which is standard for spatial diagrams, and correctly uses depthWrite: false on the transparent projection plane to prevent occlusion artifacts."
+        },
+        "interactivity": {
+          "winner": "no-iteration-kimi_FINAL",
+          "confidence": 0.85,
+          "rationale": "Both figures fail to dynamically compute the image point 'p' as the true projection of 'P', leaving it static on the image plane—which results in Figure 2 drawing an unphysical bent ray and Figure 1 drawing a ray that fails to connect to the center of projection. However, Figure 2 handles the interactions much better: its 'Apply rotations one at a time' correctly compounds the angles in sequence rather than just oscillating them indefinitely, and it correctly implements the Roll-Pitch-Yaw order as 'ZXY' (whereas Figure 1 incorrectly uses 'ZYX', which is Roll-Yaw-Pitch)."
+        },
+        "faithfulness": {
+          "winner": "baseline-qwen_FINAL",
+          "confidence": 0.9,
+          "rationale": "Figure 1 captures the visual styling of the original much more effectively, featuring correctly sized labels, clear blue points with outlines, and clean rotation arrows. Figure 2 suffers from tiny, illegible text and awkwardly scaled, overlapping arrows, making it visually messy, though both figures fail to match the original's camera angle."
+        },
+        "labels": {
+          "winner": "baseline-qwen_FINAL",
+          "confidence": 0.9,
+          "rationale": "Figure 1's labels are significantly larger and more readable than Figure 2's, which are too small to easily decipher. While Figure 1 has some placement inaccuracies (like the position of 'P'), its clear visibility makes it much closer in utility to the reference."
+        },
+        "concept": {
+          "winner": "baseline-qwen_FINAL",
+          "confidence": 0.95,
+          "rationale": "Figure 1 correctly places the center of rotation at the camera's optical center (the origin) by rotating a camera group that contains the offset image plane. Figure 2 incorrectly applies the rotation directly to the offset image plane group at z=1.6, causing the plane to spin in place around its own local origin rather than orbiting the camera center as true yaw and pitch would dictate. Furthermore, Figure 2's drawn projection ray bends at the image plane rather than forming a straight line."
+        }
+      },
+      "aggregator": {
+        "winner": "baseline-qwen_FINAL",
+        "confidence": 0.85,
+        "explanation": "Figure 1 is conceptually and visually superior, correctly placing the center of rotation at the camera's optical center and featuring clearly legible labels. In contrast, Figure 2 fundamentally fails by incorrectly rotating the offset image plane around its own local origin and drawing an unphysical bent projection ray. Although Figure 2 implements the UI rotation sequence logic more accurately and includes useful spatial drop lines, its critical mechanical errors and unreadable text make Figure 1 the better diagram."
+      },
+      "evalModel": "gemini-3.1-pro",
+      "evaluatedAt": "2026-08-14T19:29:03.974Z"
+    }
+  }
+}

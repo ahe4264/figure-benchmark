@@ -1,0 +1,407 @@
+{
+  "math__1.6.1": {
+    "setupA": "full-pipeline-gemini_FINAL",
+    "setupB": "full-pipeline-kimi_FINAL",
+    "subject": "math",
+    "figure": "1.6.1",
+    "machineEval": {
+      "figure1Setup": "full-pipeline-kimi_FINAL",
+      "figure2Setup": "full-pipeline-gemini_FINAL",
+      "mode": "2d",
+      "dimensions": {
+        "geometry": {
+          "winner": "full-pipeline-gemini_FINAL",
+          "confidence": 0.82,
+          "rationale": "Figure 2 better matches the core 2D structure of the textbook-style unit-circle diagram: it has a clean solid right semicircle and dashed left semicircle, unobstructed axes, radii to P and Q, a uniform shaded sector, and an outer arrow that runs from P toward Q. Figure 1 includes the same general elements but its large readout box obstructs the upper-left diagram area, the circle styling is less clean with only partial dashed left arcs, and its outer curved arrow is placed past Q rather than clearly showing P approaching Q."
+        },
+        "interactivity": {
+          "winner": "full-pipeline-kimi_FINAL",
+          "confidence": 0.78,
+          "rationale": "Figure 1’s sliders and demo controls consistently stop any running animation, update the stored angles, redraw P, Q, radii, sector, labels, and readouts, and its animation explicitly approaches c from below and then from above before ending at c. Figure 2’s sliders mostly work, and its dynamic arrow is better tied to the current P-to-Q motion, but its advertised animation is a perpetual damped oscillation that repeatedly resets and jumps away instead of settling at c, so it less correctly implements the intended two-sided limit animation; both figures have some weakness near the 0 and 2π endpoints due to clamping rather than angular wraparound."
+        },
+        "faithfulness": {
+          "winner": "full-pipeline-kimi_FINAL",
+          "confidence": 0.72,
+          "rationale": "Figure 1 is more visually faithful overall because its geometry and angles match the reference more closely: P and Q sit in nearly the same positions, the shaded sector has similar proportions, and the circle/axes/caption composition is closer to the textbook figure. Figure 2 is recognizable, but its drawing is smaller, the variable angle places P noticeably lower than in the reference, and the overall proportions feel less like the original; Figure 1 does add an intrusive coordinate box, but it still preserves the main figure more accurately."
+        },
+        "labels": {
+          "winner": "full-pipeline-gemini_FINAL",
+          "confidence": 0.86,
+          "rationale": "Figure 2 has the required diagram labels for P, Q, x, c, and the bottom explanatory sentence with less clutter and closer placement to the original. Figure 1 also includes the main labels, but it adds a non-original coordinate/status box inside the plotting area that clutters the figure and competes with the textbook annotations, making its label quality worse."
+        },
+        "concept": {
+          "winner": "full-pipeline-gemini_FINAL",
+          "confidence": 0.88,
+          "rationale": "Figure 2 more accurately teaches the key idea that as the variable angle x approaches the fixed angle c, P(cos x, sin x) moves along the unit circle toward Q(cos c, sin c), so the corresponding coordinates approach each other and motivate the sine/cosine limits (L00007-L00013, L00016). Figure 1 correctly places and labels P and Q, but its outside arrow is drawn from just past Q farther away rather than toward Q, contradicting the required motion toward Q (L00016), and its narration says the coordinate difference is “exactly” the angular gap, which is not mathematically true; Figure 2 avoids those conceptual errors."
+        }
+      },
+      "aggregator": {
+        "winner": "full-pipeline-gemini_FINAL",
+        "confidence": 0.74,
+        "explanation": "Figure 2 is the stronger overall choice because it has cleaner diagram geometry, less cluttered and better-placed labels, and more accurately conveys the concept of P moving toward Q as x approaches c. Figure 1 has better implemented controls and its rendered positions resemble the reference more closely in some respects, but its intrusive coordinate box, less clean dashed-circle styling, misleading outer arrow placement, and inaccurate narration make it weaker than Figure 2 overall."
+      },
+      "evalModel": "gpt-5.5",
+      "evaluatedAt": "2026-08-14T19:05:57.698Z"
+    }
+  },
+  "math__15.2.12": {
+    "setupA": "full-pipeline-gemini_FINAL",
+    "setupB": "full-pipeline-kimi_FINAL",
+    "subject": "math",
+    "figure": "15.2.12",
+    "machineEval": {
+      "figure1Setup": "full-pipeline-kimi_FINAL",
+      "figure2Setup": "full-pipeline-gemini_FINAL",
+      "mode": "2d",
+      "dimensions": {
+        "geometry": {
+          "winner": "full-pipeline-kimi_FINAL",
+          "confidence": 0.93,
+          "rationale": "Figure 1 more accurately reconstructs the textbook structure: the vertical path is exactly from y=1 to y=2 at x=−π/2, the parabolic path is constrained to y=x² from x=−1 to x=2, the panel-specific tick marks and labels match the intended subfigures, and the curve arrows/labels are styled close to the source. Figure 2 has several structural inaccuracies: its vertical segment initially runs from y=0.5 to y=2.5, it shows extra ticks and −π/2 simultaneously rather than panel-specific axes, omits the (a)/(b) panel labels, and adds an active highlighted partial path and large local vectors that change the visual structure compared with the original figure."
+        },
+        "interactivity": {
+          "winner": "full-pipeline-kimi_FINAL",
+          "confidence": 0.84,
+          "rationale": "Figure 1's handlers more consistently recompute and redraw the claimed state: dragging endpoints resamples the path and updates the displayed total line integral, the t slider updates the marker, field/tangent vectors, local dot product, and running integral, and the panel buttons switch without overwriting the user's edited path state. Figure 2's basic dragging, selection, and t slider do work, but its path selector resets dragged endpoints behind the user's back, its displayed “Accumulated Integral” is only the partial integral up to the current slider value rather than the full line integral along C, and its drag coordinate conversion is less reliable because it uses the container bounds rather than the actual SVG drawing frame."
+        },
+        "faithfulness": {
+          "winner": "full-pipeline-kimi_FINAL",
+          "confidence": 0.88,
+          "rationale": "Figure 1 is more visually faithful to the original panel (a): it preserves the lower x-axis placement, the y-axis labels around 1 and 2, the short red vertical segment at x = -π/2, the pale green field background, and the overall textbook composition. Figure 2 uses a taller y-range with labels up to 4, a longer red segment, and prominent extra blue/green vector annotations and labels that make it look less like the reference panel and more like a modified instructional overlay."
+        },
+        "labels": {
+          "winner": "full-pipeline-kimi_FINAL",
+          "confidence": 0.88,
+          "rationale": "Figure 1 more closely matches the original panel (a) labeling: it includes the title, x/y axis labels, the -π/2 tick, y tick labels 1 and 2, the curve label C, and the panel marker (a) with relatively uncluttered placement. Figure 2 adds many labels not present in the original plot, such as r′, F, extra x ticks and y ticks up to 4, while omitting the panel marker and mixing labeling conventions from the other panel, making it less faithful and more cluttered."
+        },
+        "concept": {
+          "winner": "full-pipeline-kimi_FINAL",
+          "confidence": 0.86,
+          "rationale": "Figure 1 is more conceptually accurate because it represents the vector field F=(cos x, sin x) and the specified parabolic path y=x^2 from (-1,1) to (2,4), giving the correct line-integral value for part (b) under a reparameterization (L00022-L00039, L00042). Figure 2 seriously changes the mathematics: its vertical path runs from y=0.5 to y=2.5 rather than between 1 and 2, so the part (a) integral has the wrong length/value, and its “parabola” is a Bezier curve with control point below the axis rather than r(t)=(t,t^2), so its displayed dot products and accumulated integral are for a different curve (L00007-L00021, L00022-L00039). Both figures conflict with the authored brief’s statement that panel (a) is directed downward, but Figure 1 remains much closer to the textbook parameterization and results, while Figure 2 alters both paths materially (L00042)."
+        }
+      },
+      "aggregator": {
+        "winner": "full-pipeline-kimi_FINAL",
+        "confidence": 0.9,
+        "explanation": "Figure 1 is the clear winner because it more accurately preserves the textbook geometry, labels, and visual composition: the vertical segment, parabolic path, panel markings, ticks, and vector-field depiction align much more closely with the intended figure. Figure 2 introduces substantial deviations, including altered path endpoints, a Bezier-like parabola instead of the specified curve, extra annotations and ticks, missing panel labels, and interactive behavior that can reset or misreport the intended integral state."
+      },
+      "evalModel": "gpt-5.5",
+      "evaluatedAt": "2026-08-14T19:06:45.091Z"
+    }
+  },
+  "chemistry__CNX_Chem_01_01_FuelCell": {
+    "setupA": "full-pipeline-gemini_FINAL",
+    "setupB": "full-pipeline-kimi_FINAL",
+    "subject": "chemistry",
+    "figure": "CNX_Chem_01_01_FuelCell",
+    "machineEval": {
+      "figure1Setup": "full-pipeline-kimi_FINAL",
+      "figure2Setup": "full-pipeline-gemini_FINAL",
+      "mode": "2d",
+      "dimensions": {
+        "geometry": {
+          "winner": "full-pipeline-kimi_FINAL",
+          "confidence": 0.91,
+          "rationale": "Figure 1 better reconstructs the fuel-cell diagram’s 2D structure: it preserves the tall paired electrode blocks, central blue membrane, purple catalyst layers, dark gas channels, external circuit/load, multiple flow arrows, labels with leader lines, and visible proton/electron populations in proportions that look close to a textbook schematic. Figure 2 captures the general topology but is more simplified and compressed, with fewer arrows, less accurate internal layering/detail, missing static charge populations, simplified circuit terminals/load, and a coarser layout that loses several relative proportions and structural cues present in Figure 1."
+        },
+        "interactivity": {
+          "winner": "full-pipeline-kimi_FINAL",
+          "confidence": 0.78,
+          "rationale": "Figure 1 implements all requested controls more directly: the play/step controls update the animation state, the H2 feed slider visibly recomputes arrow thickness and particle flow, and the label toggle hides annotations for a cleaner schematic. Figure 2 has a more state-based cycle control, but its H2 feed slider does not update the advertised arrow thickness or current path at all, only particle spawning/speed, and changing cycle states can leave stale particles from prior states on screen; its label toggle also only hides labels despite advertising labels and structure."
+        },
+        "faithfulness": {
+          "winner": "full-pipeline-kimi_FINAL",
+          "confidence": 0.95,
+          "rationale": "Figure 1 is much more visually faithful to the reference: it preserves the central purple anode/cathode and blue membrane arrangement, the yellow electric power zigzag, labeled gas/product channels, arrows, charge symbols, and recognizable hydrogen/oxygen/water molecule depictions. Figure 2 has the same broad fuel-cell layout, but it is far more simplified, uses duller and less accurate colors, omits many of the charge and reaction details visible in the original, and its particles/molecules are much less recognizable, making it less like the textbook figure at a glance."
+        },
+        "labels": {
+          "winner": "full-pipeline-kimi_FINAL",
+          "confidence": 0.88,
+          "rationale": "Figure 1 includes all of the original diagram labels and places them more clearly, with the bottom Anode/Proton exchange membrane/Cathode labels readable and tied to the correct parts. Figure 2 also has the main labels, but they are generally smaller, the bottom component labels are more cramped and less clearly associated with the layers, making the labeling less readable at inline size."
+        },
+        "concept": {
+          "winner": "full-pipeline-gemini_FINAL",
+          "confidence": 0.72,
+          "rationale": "Both figures teach the main fuel-cell sequence—H₂ at the anode, O₂ at the cathode, electrons through an external load, protons through the membrane, and water output (L00014, L00017)—but Figure 2 is conceptually cleaner because its particle logic actually splits H₂ into H⁺ and e⁻ and recombines O₂ with the needed protons/electrons to form water, matching the separated half-reaction idea more faithfully (L00017). Figure 1 is mostly accurate and even gives correct half-reaction tooltips, but it incorrectly marks both external-circuit terminals with negative signs, which misrepresents the anode/cathode polarity/electron-receiving cathode side, and its animated streams are less chemically coupled than Figure 2’s recombination depiction."
+        }
+      },
+      "aggregator": {
+        "winner": "full-pipeline-kimi_FINAL",
+        "confidence": 0.89,
+        "explanation": "Figure 1 is the stronger overall reconstruction because it more faithfully preserves the textbook schematic’s layered fuel-cell geometry, colors, labels, arrows, charge symbols, external load, and readable component annotations, while Figure 2 is more compressed, simplified, and less visually/structurally detailed. Figure 1 also implements the intended controls more completely, with working play/step behavior, visible H2 feed effects, and label toggling, whereas Figure 2’s slider and state changes are less consistent. Figure 2 has an advantage in conceptually cleaner particle recombination logic and avoids some of Figure 1’s polarity/animation-coupling issues, but that single conceptual strength is outweighed by Figure 1’s higher-fidelity rendering, layout, labeling, and interaction coverage."
+      },
+      "evalModel": "gpt-5.5",
+      "evaluatedAt": "2026-08-14T19:07:29.818Z"
+    }
+  },
+  "chemistry__CNX_Chem_07_06_Axeq": {
+    "setupA": "full-pipeline-gemini_FINAL",
+    "setupB": "full-pipeline-kimi_FINAL",
+    "subject": "chemistry",
+    "figure": "CNX_Chem_07_06_Axeq",
+    "machineEval": {
+      "figure1Setup": "full-pipeline-kimi_FINAL",
+      "figure2Setup": "full-pipeline-gemini_FINAL",
+      "mode": "3d",
+      "dimensions": {
+        "geometry": {
+          "winner": "full-pipeline-kimi_FINAL",
+          "confidence": 0.88,
+          "rationale": "Figure 1 better reconstructs the trigonal-bipyramidal ClF3 geometry: it includes the labeled axial/equatorial position panel plus separate b–d configurations with central Cl sphere, F atoms at the correct occupied vertices, red lone-pair elements at the correct positions, an equatorial triangular plane, dashed/solid frame cues, and an orthographic isometric viewpoint closer to a textbook diagram. Figure 2 captures the rough axial/equatorial scaffold but reduces atoms and lone pairs mostly to colored cylinders and labels, omits explicit atom spheres, shows only a two-model layout rather than the full panel structure, uses a less textbook-like perspective view, and its left/right separation and simplified bond-only representation make the spatial relationships less faithful."
+        },
+        "interactivity": {
+          "winner": "full-pipeline-gemini_FINAL",
+          "confidence": 0.62,
+          "rationale": "Figure 2 handles the axial/equatorial label/button highlighting more correctly because the highlight state persists while switching among the b/c/d arrangements and affects both the reference position model and the current ClF3 arrangement, whereas Figure 1 clears the highlight on every panel switch and clicking the panel (a) label only recolors the currently displayed frame rather than highlighting positions across b-d. Figure 1's panel buttons do switch arrangements cleanly, but its core requested label-highlight interaction is largely not carried through; Figure 2 has its own problems, especially the dropdown not updating the step narration and F labels being hidden via display styles that the label sync may undo, but its advertised highlighting behavior is closer to the intended interaction."
+        },
+        "faithfulness": {
+          "winner": "full-pipeline-gemini_FINAL",
+          "confidence": 0.78,
+          "rationale": "Figure 2 is more visually faithful because it includes the green trigonal-bipyramidal framework, F/Cl labels, red highlighted positions, and a second molecular arrangement that resembles the textbook panels beyond just the introductory positions diagram. Figure 1 only shows a simplified version of panel (a), with altered arrow placement/orientation and none of the F/red-position arrangements that make the original figure recognizable as the full ClF3 VSEPR comparison."
+        },
+        "labels": {
+          "winner": "full-pipeline-kimi_FINAL",
+          "confidence": 0.58,
+          "rationale": "Figure 1 has clearer, larger labels for the portion it shows, including Equatorial, Axial, Cl, and the subfigure marker (a), with relatively readable placement. Figure 2 includes useful F and Cl labels, but its Equatorial/Axial labels are much smaller and more cramped, it lacks the original subfigure markers, and it adds a large amount of non-original explanatory/UI text; both figures miss much of the original multi-panel labeling, but Figure 1’s visible diagram labels are closer and more legible."
+        },
+        "concept": {
+          "winner": "full-pipeline-kimi_FINAL",
+          "confidence": 0.86,
+          "rationale": "Figure 1 more accurately represents all key VSEPR claims: axial positions are opposite and equatorial positions form a triangular plane, and its panels B–D place the ClF3 lone pairs exactly as specified, with (b) both equatorial giving the observed T shape, (c) one axial/one equatorial, and (d) both axial as highest lone-pair–bond-pair repulsion (L00010-L00014, L00021). Figure 2 gets the main configurations mostly right, but its mixed-arrangement narration inaccurately says axial positions have “three neighboring bonds at 90°” even though in the displayed ClF3 mixed case one of those equatorial neighbors is a lone pair rather than a bond; it also less clearly establishes the four-panel a–d structure required by the brief (L00021)."
+        }
+      },
+      "aggregator": {
+        "winner": "full-pipeline-kimi_FINAL",
+        "confidence": 0.7,
+        "explanation": "Figure 1 is stronger overall because the higher-confidence geometry and concept judgments find that it reconstructs the trigonal-bipyramidal ClF3 arrangements more accurately, including the axial/equatorial framework, correct lone-pair placements across b–d, and clearer textbook-style spatial structure. Figure 2 has advantages in rendered visual completeness and more persistent interaction highlighting, but relative to Figure 1 it simplifies the molecular geometry, omits or weakens the full panel structure, and contains a conceptual narration issue in the mixed arrangement."
+      },
+      "evalModel": "gpt-5.5",
+      "evaluatedAt": "2026-08-14T19:08:20.860Z"
+    }
+  },
+  "cs__GanStyleGANArch": {
+    "setupA": "full-pipeline-gemini_FINAL",
+    "setupB": "full-pipeline-kimi_FINAL",
+    "subject": "cs",
+    "figure": "GanStyleGANArch",
+    "machineEval": {
+      "figure1Setup": "full-pipeline-gemini_FINAL",
+      "figure2Setup": "full-pipeline-kimi_FINAL",
+      "mode": "3d",
+      "dimensions": {
+        "geometry": {
+          "winner": "full-pipeline-gemini_FINAL",
+          "confidence": 0.82,
+          "rationale": "Figure 1 better preserves the textbook diagram’s 3D geometry: the 4×4 blocks are square, the 8×8 blocks double the spatial extent, the 512-channel depth is kept consistent, the noise maps are thin single-channel slabs, and the generated image is placed on the visible front face of the final block. Figure 2 has the right general layout but distorts several proportions by making the 4×4 blocks long rectangles, not doubling the 8×8 width appropriately, using a small output patch on the side rather than the main visible face, and replacing the section braces with oversized text braces rather than actual spanning geometry."
+        },
+        "interactivity": {
+          "winner": "full-pipeline-kimi_FINAL",
+          "confidence": 0.94,
+          "rationale": "Figure 2 is clearly better because it implements working developer-built controls: the trace button animates a marker through z, w, style transforms, and injection sites, the noise ψ slider recomputes visible noise opacity/arrow scale and highlight pulsing across the allowed 0–1 range, and the demo step buttons correctly update both the narrative state and slider. Figure 1 has essentially no requested controls at all beyond hover/click explanations, so it cannot animate the pipeline or adjust ψ; Figure 2 is only partial because its trace emphasizes the style branch more than the full synthesis pipeline and its noise highlighting is approximate rather than showing explicit per-channel magnitudes, but its handlers do materially update the figure while Figure 1's requested interactions are absent."
+        },
+        "faithfulness": {
+          "winner": "full-pipeline-kimi_FINAL",
+          "confidence": 0.86,
+          "rationale": "Figure 2 is more visually faithful because it preserves the original's overall three-band layout with noise above, the main generative pipeline across the middle, style inputs below, repeated orange feature blocks, teal modulation/noise elements, and the final textured output. Figure 1 has some of the same colors and labels, but the composition is much more compressed and shifted, several pipeline elements are cropped or clustered on the right, and the labels/braces are tangled enough that it is less immediately recognizable as the textbook figure."
+        },
+        "labels": {
+          "winner": "full-pipeline-kimi_FINAL",
+          "confidence": 0.72,
+          "rationale": "Figure 2 has larger, more readable labels and includes most of the key original annotations, whereas Figure 1’s labels are generally much smaller and several are difficult to read at inline size. Both figures suffer from clutter in the lower style section, but Figure 1 has especially cramped/overlapping bottom labels such as the latent/intermediate variable text and small transform labels, making it worse overall for label quality."
+        },
+        "concept": {
+          "winner": "full-pipeline-gemini_FINAL",
+          "confidence": 0.78,
+          "rationale": "Figure 1 is more conceptually accurate because it explicitly shows the latent z feeding a fully connected network to w, then w branching through three separate 2×1×512 linear transforms to styles y1–y3, with arrows from those styles into the corresponding AdaIN/style injection sites, matching the stated StyleGAN style pathway and per-channel scale/offset role (L00007). Figure 2 has the same labels, but its static geometry omits or weakens key causal links from z to w and from w to the three linear transforms, relying more on an optional trace/narration, so the asserted mapping-network relationship is less clearly and truthfully represented (L00007). Both figures represent the learned 4×4×512 constant, 4×4→8×8 resolution growth, 4×4×1/8×8×1 noise maps scaled as zᵢ⊗ψᵢ and broadcast to channels, but Figure 1’s block sizing and arrows make these relationships more faithful, while Figure 2’s symbolic block dimensions and disconnected style bars make the architecture easier to misread (L00007). Both figures also fail the brief’s requested vertical-column/underbrace organization by arranging noise above and style below rather than as the specified columns, so that flaw does not distinguish them much (L00007)."
+        }
+      },
+      "aggregator": {
+        "winner": "full-pipeline-kimi_FINAL",
+        "confidence": 0.73,
+        "explanation": "Figure 2 is stronger overall because it is more visually faithful and readable in the rendered view, preserving the recognizable three-band StyleGAN layout with clearer labels, and it also adds working controls for tracing the pipeline and adjusting noise strength that Figure 1 largely lacks. Figure 1 is better in source-level geometry and conceptual wiring, especially its more accurate block proportions and clearer z→w→style-transform relationships, but compared with Figure 2 it appears cramped, less legible, and much less interactive."
+      },
+      "evalModel": "gpt-5.5",
+      "evaluatedAt": "2026-08-14T19:08:51.427Z"
+    }
+  },
+  "cs__ResidualNormTypes": {
+    "setupA": "full-pipeline-gemini_FINAL",
+    "setupB": "full-pipeline-kimi_FINAL",
+    "subject": "cs",
+    "figure": "ResidualNormTypes",
+    "machineEval": {
+      "figure1Setup": "full-pipeline-kimi_FINAL",
+      "figure2Setup": "full-pipeline-gemini_FINAL",
+      "mode": "3d",
+      "dimensions": {
+        "geometry": {
+          "winner": "full-pipeline-gemini_FINAL",
+          "confidence": 0.72,
+          "rationale": "Figure 2 better reconstructs the 3D tensor geometry as a contiguous 6×6×6 voxel block with visible boundary slices for the selected normalization regions and more coherent axis-label placement. Figure 1 has the right general idea and correct voxel count, but its small separated cubes make the tensor look more like a sparse point cloud, and several highlighted regions are placed on interior or less-visible slices so the intended slabs/groups are geometrically obscured; its group/ghost proportions also appear less faithful than Figure 2's half/subgroup-style partitioning."
+        },
+        "interactivity": {
+          "winner": "full-pipeline-kimi_FINAL",
+          "confidence": 0.84,
+          "rationale": "Figure 1's normalization buttons immediately recompute the highlighted voxel set, update colors, active state, and readout, and its aggregation control starts/stops a visible sweep with running statistics over the selected cells. Figure 2's dropdown does eventually redraw through a render-hook rather than the handler itself, and its animation is only a sinusoidal color wave rather than a clear aggregation sweep; worse, for GhostNorm it treats the pale excluded sub-batch as active in the animation, so excluded cells participate visually in the advertised aggregation."
+        },
+        "faithfulness": {
+          "winner": "full-pipeline-gemini_FINAL",
+          "confidence": 0.82,
+          "rationale": "Figure 2 is more visually faithful because its BatchNorm view clearly shows a full orange slab on one side of the grey cube, matching the reference panel’s fixed-channel aggregation across batch index and position. Figure 1 has a similar cube-and-controls concept, but the highlighted region reads more like a narrow L-shaped strip across the top and side rather than the broad side slab in the textbook figure, making the normalization pattern less recognizable at a glance."
+        },
+        "labels": {
+          "winner": "full-pipeline-kimi_FINAL",
+          "confidence": 0.75,
+          "rationale": "Figure 1 includes more of the original label content, including the panel-style 'a) BatchNorm' and the other normalization names with letter prefixes in the controls, whereas Figure 2 only shows the axis labels and a dropdown value, missing the visible 'a)' panel label, the bottom 'BatchNorm' title, and the other method labels from the reference. Figure 1's labels are somewhat cluttered and poorly placed compared with the textbook, but Figure 2 is more incomplete in terms of required annotations."
+        },
+        "concept": {
+          "winner": "full-pipeline-kimi_FINAL",
+          "confidence": 0.84,
+          "rationale": "Figure 1 is more conceptually accurate because its internal axes and most masks match the stated normalization sets: BatchNorm is one channel over batch and position, LayerNorm is one batch instance over channels and position, GroupNorm is a channel subset within one sample, and InstanceNorm is one channel within one sample over positions (L00007). Both figures get GhostNorm wrong relative to the brief, since they show a BatchNorm-like single-channel slab split by batch subgroup rather than a region covering all batch instances and all channels but not spatial position (L00007). Figure 2 is worse because, in addition to the same GhostNorm error, its geometry maps batch and channel to different world directions than its labels imply, so the labeled axes can make otherwise correct masks read as the wrong normalization relationship (L00007)."
+        }
+      },
+      "aggregator": {
+        "winner": "full-pipeline-kimi_FINAL",
+        "confidence": 0.68,
+        "explanation": "Figure 1 is favored overall because it implements the intended controls more correctly, gives clearer active-state/readout feedback, and is judged more conceptually accurate for most normalization masks while also preserving more of the reference label content than Figure 2. Figure 2 has the stronger contiguous cube geometry and a more immediately recognizable BatchNorm slab, but it is weaker on interaction behavior, visually includes excluded GhostNorm cells in aggregation, omits several reference annotations, and has axis/mask relationships that can make the normalization concepts read incorrectly."
+      },
+      "evalModel": "gpt-5.5",
+      "evaluatedAt": "2026-08-14T19:09:29.595Z"
+    }
+  },
+  "cs__TransformerDecoder": {
+    "setupA": "full-pipeline-gemini_FINAL",
+    "setupB": "full-pipeline-kimi_FINAL",
+    "subject": "cs",
+    "figure": "TransformerDecoder",
+    "machineEval": {
+      "figure1Setup": "full-pipeline-gemini_FINAL",
+      "figure2Setup": "full-pipeline-kimi_FINAL",
+      "mode": "2d",
+      "dimensions": {
+        "geometry": {
+          "winner": "full-pipeline-gemini_FINAL",
+          "confidence": 0.78,
+          "rationale": "Figure 1 better preserves the likely textbook structure: seven token-aligned rows pass through embeddings, a masked-attention block with a 7-row lower-triangular topology, residual add nodes, position-wise feed-forward boxes, the repeated ×K transition, and per-row linear/softmax probability outputs. Figure 2 is polished but structurally less faithful: it introduces input/output brackets and a large dashed transformer container, uses a 9-row attention fan and only six feed-forward units that are not aligned to the seven token rows, and its unrolled-layer layout changes the proportions and topology of the compact original diagram more substantially."
+        },
+        "interactivity": {
+          "winner": "full-pipeline-kimi_FINAL",
+          "confidence": 0.9,
+          "rationale": "Figure 2 has substantially more correct interactions: its K slider updates the displayed value and rebuilds the transformer interior into K actual stacked masked-attention/residual/feed-forward layers across the full range, while Figure 1 only changes the ×K text and background shadow stack and even leaves the displayed K value stale when the user drags the slider. Figure 2 also wires clickable/tooltip handlers to embeddings, transformer components, residual adds, feed-forward units, and output heads, whereas Figure 1 mostly provides hover-only tooltips for a few broad groups, has an empty transformerGroup handler that will not fire, and lacks the requested click behavior for residual adds and probability rows. Both animations are imperfect at non-1 K because the trace path is largely hardcoded, but Figure 2’s pulse animation more explicitly traces through the pipeline, while Figure 1’s trace is more of a temporary highlight and is tied to its compact schematic."
+        },
+        "faithfulness": {
+          "winner": "full-pipeline-kimi_FINAL",
+          "confidence": 0.91,
+          "rationale": "Figure 2 is more visually faithful because it preserves the main left-to-right composition, visible word embedding rows, dashed module boxes, transformer block structure, repeated softmax outputs, and probability-token panel in roughly the same proportions as the reference. Figure 1 has the same broad idea but is much smaller and less recognizable: the embedding area is largely empty/faint, several details are compressed or missing, and the output probability section is less like the original at a glance."
+        },
+        "labels": {
+          "winner": "full-pipeline-kimi_FINAL",
+          "confidence": 0.64,
+          "rationale": "Figure 2 has noticeably larger and more readable diagram labels than Figure 1, whose labels are extremely small at inline size and many are barely legible. However, Figure 2 is not perfect: some output-token labels appear truncated, especially the final 'yourself' label, whereas Figure 1 seems to preserve more of the original label text but at a much less readable scale."
+        },
+        "concept": {
+          "winner": "full-pipeline-gemini_FINAL",
+          "confidence": 0.86,
+          "rationale": "Figure 1 more accurately represents the causal masked-attention relationship: its bottom position receives lines from itself and all earlier token rows, matching the brief that each token can attend only to itself and earlier positions during shifted next-token prediction (L00007). Figure 2 otherwise captures the pipeline and shifted targets, but its masked-attention diagram and explanatory text describe rows fanning to points at or below their level, which is inconsistent with the displayed top-to-bottom token order and risks teaching the future/earlier direction incorrectly; it also claims positions are processed independently, which is misleading for masked self-attention where positions are parallel but not independent (L00007)."
+        }
+      },
+      "aggregator": {
+        "winner": "full-pipeline-kimi_FINAL",
+        "confidence": 0.67,
+        "explanation": "Figure 2 is the overall stronger figure because it is more visually faithful and readable in the rendered view, and its interactions are much more complete: the K slider actually rebuilds stacked transformer layers and many components have working handlers, whereas Figure 1 mostly changes a compact schematic, leaves the displayed K value stale, and has limited hover/click behavior. Figure 1 is better on source-level structural and conceptual correctness, especially its seven-row alignment and causal masked-attention direction, but Figure 2’s advantages in rendered fidelity, label legibility, and implemented interactivity outweigh those issues overall."
+      },
+      "evalModel": "gpt-5.5",
+      "evaluatedAt": "2026-08-14T19:09:58.614Z"
+    }
+  },
+  "physics__boats": {
+    "setupA": "full-pipeline-gemini_FINAL",
+    "setupB": "full-pipeline-kimi_FINAL",
+    "subject": "physics",
+    "figure": "boats",
+    "machineEval": {
+      "figure1Setup": "full-pipeline-kimi_FINAL",
+      "figure2Setup": "full-pipeline-gemini_FINAL",
+      "mode": "2d",
+      "dimensions": {
+        "geometry": {
+          "winner": "full-pipeline-gemini_FINAL",
+          "confidence": 0.78,
+          "rationale": "Figure 2 better preserves the textbook-style geometric structure: it explicitly draws the relevant triangle sides h, d, and t, includes right-angle markers, and shows the two-observer triangulation as a baseline with two sight lines to the target and labeled α/β angles. Figure 1 is visually richer, but it omits or deemphasizes key construction lines such as the explicit distance segment/right angle in the single-observer view, adds extra error rays/readout scenery, and its triangulation mode uses two observers vertically on a mast rather than the clearer planar baseline geometry, making the underlying 2D structure less faithful."
+        },
+        "interactivity": {
+          "winner": "full-pipeline-kimi_FINAL",
+          "confidence": 0.87,
+          "rationale": "Figure 1 has more correct interactions: its method toggle redraws a unified diagram, enables the relevant slider, and both the height and baseline sliders recompute the sight geometry, parallax/intersection, and displayed distance/error values, including sensible behavior when the triangulation fix goes off screen at small baselines. Figure 2's controls do redraw and the toggle works, but the sliders mostly scale or move the whole constructed triangle/boat while keeping angles fixed, so the baseline control does not really demonstrate triangulation changing for a fixed target and it provides no recomputed distance/error readout; its interaction is therefore less faithful to what the controls advertise."
+        },
+        "faithfulness": {
+          "winner": "full-pipeline-kimi_FINAL",
+          "confidence": 0.86,
+          "rationale": "Figure 1 is more visually faithful because it preserves the reference’s overall single-observer composition: a curved brown shoreline/cliff, cyan water, vertical height marker, horizon line, slanted sight line to a small boat, and the α and d? labels in roughly similar roles. Figure 2 has the same basic idea but simplifies the coastline into a straight triangular wedge, adds an extra angle marking and a prominent horizontal distance segment that change the visual geometry, making it look less like the textbook figure at a glance."
+        },
+        "labels": {
+          "winner": "full-pipeline-kimi_FINAL",
+          "confidence": 0.75,
+          "rationale": "Figure 1 matches the reference labels better in the single-observer diagram: it includes h, α, and d? with appropriate wording and without duplicating α. Figure 2 has readable labels, but it adds an extra α near the horizon/boat area that is not present in the corresponding reference panel and places d? less naturally on the baseline rather than in the water distance region, making its annotations less faithful."
+        },
+        "concept": {
+          "winner": "full-pipeline-kimi_FINAL",
+          "confidence": 0.78,
+          "rationale": "Figure 1 more accurately teaches the specified geometric ideas: its single-observer panel explicitly represents the known height above water, the horizon/horizontal reference, the measured depression angle, and the correct trigonometric relation d = h/tan α (L00012, L00021-L00022), and its two-observer mode shows distance as the intersection of two sight lines from a known baseline with parallax decreasing as the baseline becomes ineffective, matching the triangulation/stereo precursor idea (L00014-L00019, L00022). Figure 2 conveys the broad two-method distinction, but it moves the boat when height or baseline changes to keep angles fixed, so the interaction can imply that changing observer height or baseline changes the boat's distance rather than that measured geometry is used to estimate a fixed unknown distance; its stereo panel also emphasizes similar-triangle scaling more than the disparity/parallax-distance relationship requested by the context (L00012, L00014-L00019, L00022)."
+        }
+      },
+      "aggregator": {
+        "winner": "full-pipeline-kimi_FINAL",
+        "confidence": 0.83,
+        "explanation": "Figure 1 is stronger overall because it more faithfully matches the rendered reference’s shoreline, water, horizon, height marker, sight line, and labels, and its controls actually recompute the distance/parallax geometry when height or baseline changes. Figure 2 has a clearer textbook-style construction with explicit triangle sides, right-angle markers, and planar triangulation lines, but it is less visually faithful to the reference and its sliders tend to move or scale the target geometry while keeping angles fixed, weakening the intended conceptual and interactive lesson."
+      },
+      "evalModel": "gpt-5.5",
+      "evaluatedAt": "2026-08-14T19:10:43.658Z"
+    }
+  },
+  "physics__telescope2": {
+    "setupA": "full-pipeline-gemini_FINAL",
+    "setupB": "full-pipeline-kimi_FINAL",
+    "subject": "physics",
+    "figure": "telescope2",
+    "machineEval": {
+      "figure1Setup": "full-pipeline-gemini_FINAL",
+      "figure2Setup": "full-pipeline-kimi_FINAL",
+      "mode": "2d",
+      "dimensions": {
+        "geometry": {
+          "winner": "full-pipeline-kimi_FINAL",
+          "confidence": 0.88,
+          "rationale": "Figure 2 better reconstructs the original optical layout: it preserves the tall convex objective, shorter concave eyepiece, shared focal point with f₁ and f₂ brackets, two parallel input/output rays, prominent δᵢ/δₒ angle arcs with arrowheads, and the dashed back-projection with proportions and stroke weights that read like a textbook diagram. Figure 1 has the same basic topology, but its proportions are more compressed, the angle arcs and labels are less faithful and lighter, the dashed construction ray is less accurately emphasized, and the overall lens/ray spacing and styling look more schematic than source-accurate."
+        },
+        "interactivity": {
+          "winner": "full-pipeline-kimi_FINAL",
+          "confidence": 0.9,
+          "rationale": "Figure 2’s interactions are substantially more correct: its focal-length sliders recompute the ray paths, reset lens 2 to the afocal separation, and update a live δₒ/δᵢ = f₁/f₂ readout, while its canvas drags actually change the input angle and move lens 2 off focus with a convergence/divergence warning. Figure 1’s sliders do redraw the rays and its offset slider can mimic lens defocus, but it omits the required live magnification readout, provides no actual drag interactions, and silently clamps lens 2 position at some focal-length extremes so the displayed slider state can disagree with the drawn separation and afocal condition."
+        },
+        "faithfulness": {
+          "winner": "full-pipeline-kimi_FINAL",
+          "confidence": 0.78,
+          "rationale": "Figure 2 is more recognizable as the original: it preserves the two-lens Galilean telescope layout, blue lens labels, purple ray geometry, optical axis, focal-length brackets, and the relative placement of the output point and δo more clearly and at a larger scale. Figure 1 has the same basic elements, but the actual diagram is smaller, the ray/output geometry is more compressed around lens 2, and the labels/annotations are harder to read, making it less faithful at a glance."
+        },
+        "labels": {
+          "winner": "full-pipeline-kimi_FINAL",
+          "confidence": 0.88,
+          "rationale": "Figure 2 has the main diagram labels much larger and more readable, with clearer placement of lens 1, lens 2, both δ_i labels, δ_o, d, f1, and f2. Figure 1 includes most of the same labels, but they are noticeably smaller at inline size, the δ_o and d annotations are cramped and less legible, and the overall labeling is weaker compared with Figure 2."
+        },
+        "concept": {
+          "winner": "full-pipeline-gemini_FINAL",
+          "confidence": 0.68,
+          "rationale": "Figure 1 more consistently represents the Galilean afocal geometry: the convex objective, concave eyepiece, shared focal point, d offset, f1/f2 distances, and parallel magnified output rays are geometrically aligned in the focused state required by the brief (L00007, L00010). Figure 2 teaches many of the same ideas, but it displays the unconditional readout “δₒ/δᵢ = f₁/f₂” even when its own dragged/off-focus state makes the exit rays non-parallel, so δₒ as a telescope output-bundle angle is no longer the magnification relation stated for the shared-focus afocal condition (L00007, L00010); its f₂ bracket also remains tied to the afocal seat rather than the moved eyepiece in that state, which is more conceptually misleading than Figure 1’s handling."
+        }
+      },
+      "aggregator": {
+        "winner": "full-pipeline-kimi_FINAL",
+        "confidence": 0.86,
+        "explanation": "Figure 2 is the clearer overall reconstruction: compared with Figure 1 it has more faithful textbook geometry, larger and more legible labels, better-preserved lens/ray proportions, and substantially more complete interactions including live ray recomputation, drag behavior, and a magnification readout. Figure 1 captures the basic Galilean afocal concept and avoids some of Figure 2’s conceptual ambiguity when dragged off-focus, but it is more compressed, less readable, less source-faithful, and missing or mishandling several intended interactive behaviors."
+      },
+      "evalModel": "gpt-5.5",
+      "evaluatedAt": "2026-08-14T19:12:10.019Z"
+    }
+  }
+}

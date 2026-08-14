@@ -1,0 +1,407 @@
+{
+  "cs__2.2": {
+    "setupA": "baseline-kimi_FINAL",
+    "setupB": "baseline-qwen_FINAL",
+    "subject": "cs",
+    "figure": "2.2",
+    "machineEval": {
+      "figure1Setup": "baseline-kimi_FINAL",
+      "figure2Setup": "baseline-qwen_FINAL",
+      "mode": "2d",
+      "dimensions": {
+        "geometry": {
+          "winner": "baseline-kimi_FINAL",
+          "confidence": 0.9,
+          "rationale": "Figure 1 better reconstructs the textbook insertion-sort figure: it uses the six CLRS-style panels (a)–(f), fixed 1–6 index labels, the correct array states, gray sorted-prefix cells, black current-key cell, and curved arrows indicating shifts/insertion. Figure 2 is more of a generic coding workbench/animation: it shows only one dynamic frame, lacks the labeled textbook panels, uses a legend and trace captions not in the original structure, and its compare/shift arrows represent execution steps rather than the high-level panel topology of the source figure."
+        },
+        "interactivity": {
+          "winner": "baseline-qwen_FINAL",
+          "confidence": 0.82,
+          "rationale": "Figure 2's run, playback, log, and frame navigation controls are generally robust and its worker confines learner code to the intended compare/shift/get interface, while Figure 1 has important interaction bugs: the frame navigation buttons can crash before any run because frames is empty, shift frames highlight the wrong cell after the swap, and direct eval lets student code access and mutate the hidden array rather than using the advertised primitives. Figure 2 is not perfect—its extra array input silently filters/defaults invalid input and its API is global rather than insertionSort(api)—but its handlers more reliably recompute and redraw the trace it claims to animate."
+        },
+        "faithfulness": {
+          "winner": "baseline-kimi_FINAL",
+          "confidence": 0.95,
+          "rationale": "Figure 1 is much more visually faithful because it reproduces the textbook’s panel-style insertion-sort array with numbered positions, shaded/black cells, the panel label, and a curved movement arrow. Figure 2 mostly shows an unhighlighted plain array with a legend and trace text, lacking the characteristic black/gray emphasis and arrow geometry that make the original recognizable."
+        },
+        "labels": {
+          "winner": "baseline-kimi_FINAL",
+          "confidence": 0.86,
+          "rationale": "Figure 1 has the key labels for the displayed textbook panel—'(a)', indices 1–6, and cell values—placed clearly and readably near the diagram, whereas Figure 2 omits the panel label, adds non-original labels such as a legend and 'Initial array', and its diagram labels are smaller and less faithful to the reference annotations."
+        },
+        "concept": {
+          "winner": "baseline-kimi_FINAL",
+          "confidence": 0.86,
+          "rationale": "Figure 1 more accurately represents the specified insertion-sort panels: its configured panels (a)–(f) use the requested fixed array states, black key positions, gray sorted prefix, final sorted array, and gray right-shift/black insertion arrows for the named cases in the brief (L00007, L00010). Figure 2 is much less conceptually faithful: it is primarily a generic workbench rather than the six fixed labeled panels, and its trace arrows/messages model shifting as moving the current element left by swaps rather than showing larger elements shifting one position right to make room and the key moving to its insertion slot, which contradicts the textbook/brief description (L00007, L00010). Figure 1 does have a conceptual blemish in its extra coding workbench API, which also describes shift as moving an element left, but its main authored panels teach the requested figure far more correctly than Figure 2."
+        }
+      },
+      "aggregator": {
+        "winner": "baseline-kimi_FINAL",
+        "confidence": 0.9,
+        "explanation": "Figure 1 is the stronger overall reconstruction because it reproduces the six fixed textbook-style insertion-sort panels with indices, panel labels, correct array states, shaded sorted prefixes, black key cells, and curved shift/insertion arrows, whereas Figure 2 is closer to a generic animated coding workbench with a single dynamic trace and added non-original labels. Although Figure 2 has more reliable interactive controls and safer execution behavior, it is much less faithful conceptually and visually to the intended CLRS-style figure, including modeling shifts more like swap-based execution steps rather than the textbook right-shift/insertion depiction."
+      },
+      "evalModel": "gpt-5.5",
+      "evaluatedAt": "2026-08-14T18:54:49.128Z"
+    }
+  },
+  "cs__24.4": {
+    "setupA": "baseline-kimi_FINAL",
+    "setupB": "baseline-qwen_FINAL",
+    "subject": "cs",
+    "figure": "24.4",
+    "machineEval": {
+      "figure1Setup": "baseline-qwen_FINAL",
+      "figure2Setup": "baseline-kimi_FINAL",
+      "mode": "2d",
+      "dimensions": {
+        "geometry": {
+          "winner": "baseline-kimi_FINAL",
+          "confidence": 0.72,
+          "rationale": "Figure 2 better preserves the textbook graph’s 2D structure: it keeps a fixed aspect-ratio layout, includes the panel label, uses the expected five-node rectangular arrangement, draws all 10 directed weighted edges with arrowheads, and curves the bidirectional t–x pair and the z→s edge to reduce overlap. Figure 1 has the same basic topology, but its graph can be stretched by the plot-frame scaling, omits the visible panel marker, and draws z→s as a straight diagonal, making the layout and styling less faithful even though its Bellman-Ford edge-order logic is closer."
+        },
+        "interactivity": {
+          "winner": "baseline-kimi_FINAL",
+          "confidence": 0.72,
+          "rationale": "Figure 2 has more correct interaction behavior overall: its run handler executes the requested four passes in an edge order that produces the advertised Bellman-Ford pass progression, detects actual distance improvements with dist[v] < before, updates playback counters/captions consistently, and handles timeouts/errors by redrawing an error state rather than leaving the old figure stale. Figure 1 does validate predecessors, which Figure 2 does not, but Figure 1 uses an edge order that delays z = -2 until the fourth pass instead of the advertised third pass, counts any changed distance as a relaxation even if it increased, leaves stale graphics on timeout, and its speed control does not affect an already-running playback."
+        },
+        "faithfulness": {
+          "winner": "baseline-qwen_FINAL",
+          "confidence": 0.72,
+          "rationale": "Figure 1 is more visually faithful because its panel (a) graph includes the full weighted edge set at a glance, notably the top t-to-x weight 5 as well as the reverse −2, and its node/edge arrangement closely matches the reference. Figure 2 has a cleaner textbook-like panel label, but it appears to omit or fail to show the top weight 5, making the graph less faithful despite otherwise similar geometry."
+        },
+        "labels": {
+          "winner": "baseline-qwen_FINAL",
+          "confidence": 0.82,
+          "rationale": "Figure 1 has the essential vertex labels, distance labels, and edge-weight labels including the top-edge 5, and the labels are generally larger and more readable. Figure 2 includes the panel label “(a)”, which Figure 1 lacks, but it appears to omit the important top edge label 5 and its labels are smaller overall, with similar central clutter around the -4/-3 labels."
+        },
+        "concept": {
+          "winner": "baseline-qwen_FINAL",
+          "confidence": 0.68,
+          "rationale": "Figure 1 is conceptually more accurate because it uses the stated CLRS relaxation order (t,x), (t,y), (t,z), (x,t), … (L00007) and reaches the correct final estimates and predecessors for the path s→y→x→t→z (L00010), whereas Figure 2 explicitly claims to use CLRS edge order but actually relaxes x→t before t→y and t→z, changing the causal timing of Bellman-Ford updates. Both figures are weaker on the final panel because neither reliably shows the bold shortest-path tree in panel (e) as requested (L00010), but Figure 2’s false edge-order assertion is the more serious conceptual error."
+        }
+      },
+      "aggregator": {
+        "winner": "baseline-qwen_FINAL",
+        "confidence": 0.64,
+        "explanation": "Figure 1 is favored overall because it is more faithful in the rendered view: it shows the essential vertex, distance, and edge-weight labels more readably, including the important top t→x weight 5 that Figure 2 appears to omit. It also better matches the stated CLRS relaxation order and final shortest-path estimates, whereas Figure 2’s claimed edge order is conceptually inconsistent despite its stronger fixed layout, panel label, and more robust playback behavior."
+      },
+      "evalModel": "gpt-5.5",
+      "evaluatedAt": "2026-08-14T18:56:13.444Z"
+    }
+  },
+  "chemistry__CNX_Chem_01_05_Archer2_img": {
+    "setupA": "baseline-kimi_FINAL",
+    "setupB": "baseline-qwen_FINAL",
+    "subject": "chemistry",
+    "figure": "CNX_Chem_01_05_Archer2_img",
+    "machineEval": {
+      "figure1Setup": "baseline-kimi_FINAL",
+      "figure2Setup": "baseline-qwen_FINAL",
+      "mode": "2d",
+      "dimensions": {
+        "geometry": {
+          "winner": "baseline-kimi_FINAL",
+          "confidence": 0.82,
+          "rationale": "Figure 1 better preserves the structural layout of the textbook-style four side-by-side archer targets: the panels are tall enough to contain the off-center and scattered shots, the target rings and shot counts are consistent, and the main marks are not visibly clipped. Figure 2 has the same basic four-target topology, but its compressed vertical layout causes some extreme shots to sit outside or at the edge of their panels/viewbox, and it adds structurally extraneous default elements such as the orange draggable 'new shot' dot and classification text inside each panel."
+        },
+        "interactivity": {
+          "winner": "baseline-qwen_FINAL",
+          "confidence": 0.86,
+          "rationale": "Figure 2’s controls mostly perform the advertised state changes correctly: panel clicks highlight and show the correct high/low classification, overlay mode redraws all shots together, and dragging the orange new-shot dot onto a panel recomputes and redraws that archer’s rating. Figure 1’s controls generally function, but its classification handler mislabels the initial Archer W cluster as only medium precision despite the figure’s intended high-precision/high-accuracy case, so the click callout and labels compute the wrong result for a key panel; its drag interaction also updates labels but can leave an existing popup stale."
+        },
+        "faithfulness": {
+          "winner": "tie",
+          "confidence": 0.95,
+          "rationale": "Both figures fail to render the target diagram and instead show a blank page with a JavaScript error and reload button, so neither preserves the four target panels, rings, arrows/points, labels, colors, or composition of the reference. The only visible difference is the specific error text, which does not make either more recognizable as the original figure."
+        },
+        "labels": {
+          "winner": "baseline-kimi_FINAL",
+          "confidence": 0.58,
+          "rationale": "Both figures fail to render the intended archer labels entirely and instead show error text, so neither matches the original labels. Figure 1 is slightly better only because its unintended error message is shorter and less cluttered, while Figure 2 has a longer extraneous error string that is more visually intrusive."
+        },
+        "concept": {
+          "winner": "baseline-qwen_FINAL",
+          "confidence": 0.94,
+          "rationale": "Figure 2 more accurately teaches the intended contrast: W is shown and labeled as high precision/high accuracy, X as a tight off-center lower-right cluster with high precision/low accuracy, and Y and Z as low-precision/low-accuracy patterns consistent with the brief (L00009, L00012). Figure 1 gets most geometries broadly right, but its own computed label for Archer W is “Precision: Medium” rather than high precision even though W is supposed to represent both high precision and high accuracy, so a student could learn the wrong classification for the central example (L00012)."
+        }
+      },
+      "aggregator": {
+        "winner": "baseline-qwen_FINAL",
+        "confidence": 0.68,
+        "explanation": "Figure 2 is stronger overall because its implemented interactions and conceptual classifications match the intended lesson better: it correctly treats Archer W as high precision/high accuracy and supports click, overlay, and drag updates more reliably than Figure 1. Figure 1 has cleaner structural geometry and slightly less intrusive error text, but it misclassifies the key central W example as only medium precision and can leave stale interaction popups, which is more damaging to the figure’s instructional purpose. Both figures reportedly fail in the rendered screenshot view, so the preference for Figure 2 is based mainly on its stronger source-level behavior and concept fidelity."
+      },
+      "evalModel": "gpt-5.5",
+      "evaluatedAt": "2026-08-14T18:57:25.624Z"
+    }
+  },
+  "chemistry__CNX_Chem_08_02_sp3Geom": {
+    "setupA": "baseline-kimi_FINAL",
+    "setupB": "baseline-qwen_FINAL",
+    "subject": "chemistry",
+    "figure": "CNX_Chem_08_02_sp3Geom",
+    "machineEval": {
+      "figure1Setup": "baseline-qwen_FINAL",
+      "figure2Setup": "baseline-kimi_FINAL",
+      "mode": "3d",
+      "dimensions": {
+        "geometry": {
+          "winner": "baseline-qwen_FINAL",
+          "confidence": 0.82,
+          "rationale": "Figure 1 better matches the likely textbook geometry by preserving the separate s, px, py, and pz orbitals, the four separate sp³ hybrid orbitals, and a distinct final tetrahedral arrangement connected by arrows. Figure 2 collapses the atomic orbitals into one overlapping left panel and omits the intermediate four separate hybrids and the second downward tetrahedral-transition arrow, so its element count and spatial sequence are less faithful even though its final tetrahedral cluster is reasonably modeled."
+        },
+        "interactivity": {
+          "winner": "baseline-qwen_FINAL",
+          "confidence": 0.72,
+          "rationale": "Figure 1’s requested orbital toggle handlers are straightforward and consistently change the visibility of the corresponding s, px, py, and pz orbital groups, so the advertised isolate/show-hide interaction works reliably. Figure 2’s individual toggles also mostly work, but its added Hybridization slider is only an opacity fade rather than a real recomputation or transformation, leaves atomic orbitals still visible at the fully hybridized end, and can make the 'Show sp³ hybrids' button appear active while the hybrids are hidden at zero mixing; both figures leave some labels visible after hiding objects, but Figure 2 has more misleading control behavior."
+        },
+        "faithfulness": {
+          "winner": "baseline-qwen_FINAL",
+          "confidence": 0.82,
+          "rationale": "Figure 1 is more visually faithful because it preserves the original’s overall multi-part structure: separate s, px, py, and pz orbitals on the left, a hybridization arrow, several orange hybrid orbitals, and a final tetrahedral arrangement. Figure 2 has a cleaner final tetrahedral depiction, but it collapses the left-side atomic orbitals into one combined cluster and omits much of the original step-by-step layout, so it reads more like a simplified reinterpretation than the same textbook figure."
+        },
+        "labels": {
+          "winner": "baseline-qwen_FINAL",
+          "confidence": 0.76,
+          "rationale": "Figure 1 includes most of the original label set, including individual orbital labels s, p_x, p_y, p_z, the Hybridization annotation, and the 'Gives a tetrahedral arrangement' text, whereas Figure 2 replaces the individual orbital labels with broader invented labels like 'p orbitals' and 'sp³ hybrids' and adds non-original annotations such as '109.5°'. Figure 1's labels are quite small and somewhat cluttered, but Figure 2 is less faithful to the reference labeling despite being a bit more readable."
+        },
+        "concept": {
+          "winner": "baseline-qwen_FINAL",
+          "confidence": 0.78,
+          "rationale": "Figure 1 more accurately represents the brief’s stepwise concept: it separates the four pre-hybridization orbitals, shows four equivalent sp³ hybrids as individual products, and then shows the simultaneous tetrahedral arrangement using true tetrahedral directions, matching the transformation described in the brief and caption (L00007, L00010-L00014, L00018-L00019). Figure 2 correctly states that one s and three p orbitals form four equivalent sp³ hybrids at 109.5°, but it compresses the process into a single overlaid atomic-orbital panel and one final hybrid panel, so it less clearly represents the intermediate set of four individual equivalent hybrids and the “gives a tetrahedral arrangement” step required by the authored brief (L00018-L00019)."
+        }
+      },
+      "aggregator": {
+        "winner": "baseline-qwen_FINAL",
+        "confidence": 0.89,
+        "explanation": "Figure 1 is stronger overall because it preserves the intended stepwise structure: separate s, px, py, and pz orbitals, a hybridization transition, four individual sp³ hybrids, and a distinct final tetrahedral arrangement. Figure 2 has a cleaner final tetrahedral cluster, but it compresses the atomic orbitals into one combined panel, omits key intermediate structure, uses less faithful labeling, and its extra slider creates misleading visibility/opacity behavior rather than a true hybridization transformation."
+      },
+      "evalModel": "gpt-5.5",
+      "evaluatedAt": "2026-08-14T18:58:01.756Z"
+    }
+  },
+  "chemistry__CNX_Chem_08_02_sp3d": {
+    "setupA": "baseline-kimi_FINAL",
+    "setupB": "baseline-qwen_FINAL",
+    "subject": "chemistry",
+    "figure": "CNX_Chem_08_02_sp3d",
+    "machineEval": {
+      "figure1Setup": "baseline-kimi_FINAL",
+      "figure2Setup": "baseline-qwen_FINAL",
+      "mode": "3d",
+      "dimensions": {
+        "geometry": {
+          "winner": "baseline-qwen_FINAL",
+          "confidence": 0.78,
+          "rationale": "Figure 2 better matches the likely textbook geometry because it reconstructs both labeled panels side by side with the ball-and-stick model and the sp³d orbital diagram visible simultaneously, preserving the overall spatial layout and element counts of the source. Figure 1 has a more refined trigonal-bipyramidal molecule in some details, such as longer axial distances and orthographic framing, but it only shows one panel at a time by default, so the full two-part figure geometry is not reconstructed in the initial view."
+        },
+        "interactivity": {
+          "winner": "baseline-kimi_FINAL",
+          "confidence": 0.9,
+          "rationale": "Figure 1 implements the requested interactions more correctly: its panel buttons reliably switch between the molecular model and orbital diagram, and clicking a visible sp³d lobe switches back to panel (a) with the matching P–Cl bond highlighted. Figure 2’s lobe-click highlighting only works well when both panels are visible; if the user uses its panel toggle to show panel (b) only, clicking a lobe highlights a hidden bond, and toggling back clears the highlight, defeating the advertised comparison. Figure 2 also leaves labels visible for hidden panels and has a confusing initial toggle label/state, whereas Figure 1 keeps labels and active button states aligned with the displayed panel."
+        },
+        "faithfulness": {
+          "winner": "baseline-kimi_FINAL",
+          "confidence": 0.72,
+          "rationale": "Figure 1 more faithfully captures the recognizable ball-and-stick panel with the correct central orange atom, green surrounding atoms, trigonal-bipyramidal arrangement, and similar color scheme, even though it is showing only one panel via a toggle. Figure 2 attempts to show both panels, but the composition is cramped and overlapping, the orbital panel is much too large and dark brown rather than the pale yellow/orange translucent lobes of the reference, and the two panels are not cleanly separated like the original."
+        },
+        "labels": {
+          "winner": "baseline-qwen_FINAL",
+          "confidence": 0.86,
+          "rationale": "Figure 2 is better because it includes the key sp³d orbital labels and both panel markers, whereas Figure 1 only shows panel (a), omits all of the required sp³d labels from panel (b), and adds non-original atom labels like P and Cl. Figure 2's labels are somewhat small and cluttered, with the bottom '(b)' and sp³d text colliding, but it still matches the original annotations far more completely than Figure 1."
+        },
+        "concept": {
+          "winner": "baseline-kimi_FINAL",
+          "confidence": 0.67,
+          "rationale": "Figure 1 is conceptually stronger because its molecular model uses the correct trigonal-bipyramidal arrangement of two axial and three equatorial P–Cl directions and its orbital panel shows five outward-pointing sp³d lobes in the same geometry, with a popup correctly tying each hybrid to one 3s, three 3p, and one 3d orbital as required (L00010, L00012, L00018). Figure 2 also has the correct five-direction trigonal bipyramid, but its orbital lobes are symmetric ellipsoids that extend back through the nucleus rather than clearly showing only the large outward lobes with small back-lobes omitted, which weakens the intended orbital concept (L00007, L00012, L00018)."
+        }
+      },
+      "aggregator": {
+        "winner": "baseline-kimi_FINAL",
+        "confidence": 0.65,
+        "explanation": "Figure 1 is stronger overall because its controls behave more coherently, its molecule and orbital geometry convey the intended trigonal-bipyramidal sp³d concept more accurately, and its rendered ball-and-stick panel is more faithful in color and arrangement. Figure 2 has advantages in showing both panels and including more of the original labels, but it is comparatively cramped, has cluttered/colliding annotations, less faithful orbital styling, and its panel toggle undermines the lobe-to-bond highlighting interaction."
+      },
+      "evalModel": "gpt-5.5",
+      "evaluatedAt": "2026-08-14T18:58:40.605Z"
+    }
+  },
+  "cs__Conv2D": {
+    "setupA": "baseline-kimi_FINAL",
+    "setupB": "baseline-qwen_FINAL",
+    "subject": "cs",
+    "figure": "Conv2D",
+    "machineEval": {
+      "figure1Setup": "baseline-kimi_FINAL",
+      "figure2Setup": "baseline-qwen_FINAL",
+      "mode": "3d",
+      "dimensions": {
+        "geometry": {
+          "winner": "baseline-kimi_FINAL",
+          "confidence": 0.9,
+          "rationale": "Figure 1 better reconstructs the original convolution diagram geometry: it uses the correct 4×6 input and hidden grids plus a 3×3 weight kernel, arranged as compact axonometric panels with rows/columns slanting like the textbook figure, circular input/output cells, square weight cells, highlighted 3×3 patch, padding zeros, and connector lines with proportions and camera framing that match the source. Figure 2 has the right element counts, but it places all grids flat on a horizontal ground plane and spreads the three arrays far apart in a long row, making the spatial relationships, apparent cell shapes, connector geometry, and overall perspective much less faithful to the original."
+        },
+        "interactivity": {
+          "winner": "baseline-kimi_FINAL",
+          "confidence": 0.92,
+          "rationale": "Figure 1 implements all three intended interaction modes more correctly: play/step and direct dragging both recompute the active receptive field, output highlight, zero-padding labels, connection lines, and product-sum readout, and the stride slider updates the valid kernel centers, skipped outputs, and output-count explanation. Figure 2 has working play/step, click-to-inspect, and stride controls, but it does not implement dragging the kernel across the input grid at all, and its stride behavior is less coherent because clicking a skipped output at stride > 1 still activates and computes that cell even though the stride control says such cells should be skipped; it also gives much less feedback about output-size changes."
+        },
+        "faithfulness": {
+          "winner": "baseline-kimi_FINAL",
+          "confidence": 0.96,
+          "rationale": "Figure 1 is much more visually faithful: it preserves the textbook figure’s overall composition with a large input grid, central 3×3 weight matrix, hidden-layer grid, labels, highlighted cells, and connecting convolution lines in roughly the same arrangement. Figure 2 contains the same general elements, but they are rendered very small and stretched across the scene with heavy perspective and overlapping labels, making the textbook diagram far less recognizable at a glance."
+        },
+        "labels": {
+          "winner": "baseline-kimi_FINAL",
+          "confidence": 0.98,
+          "rationale": "Figure 1 has the main diagram labels such as Input, X, Weights, Ω, Hidden layer, H1 and the node/kernel labels at a readable size with mostly sensible placement, whereas Figure 2 renders the diagram much smaller so most node and weight labels are tiny, crowded, and difficult to read. Figure 2's major labels also overlap the artwork more noticeably, while Figure 1 preserves clearer separation and legibility despite some extra interface text not present in the original."
+        },
+        "concept": {
+          "winner": "baseline-kimi_FINAL",
+          "confidence": 0.78,
+          "rationale": "Figure 1 more accurately teaches the intended symbolic Conv2D operation: each active 3×3 receptive field in X is paired with the fixed square Ω kernel and summed into the corresponding h_ij, with explicit zero terms when the patch crosses the border, matching the sliding-window, zero-padding, elementwise-product/dot-product concepts in the brief (L00007). Figure 2 captures the same broad idea, but it adds specific numerical X and Ω values and displays numerical h results even though the main grids are labeled symbolically, which can mislead students into thinking the figure asserts a particular data/kernel instance rather than the general symbolic computation requested (L00007). Figure 1 does have a minor unsupported popup mention of bias, but Figure 2’s numerical specialization and less faithful symbolic product labeling make it conceptually weaker overall."
+        }
+      },
+      "aggregator": {
+        "winner": "baseline-kimi_FINAL",
+        "confidence": 0.97,
+        "explanation": "Figure 1 is the clear winner because it more closely matches the original convolution diagram’s geometry, composition, and readability: it preserves the compact axonometric arrangement, readable labels, highlighted receptive field, kernel, hidden grid, padding, and connector lines, while Figure 2 spreads the same elements into a flatter, smaller, harder-to-read scene with overlapping labels. Figure 1 also implements the intended interactions more coherently, including dragging, stepping/playback, stride-dependent highlights, output explanations, and product-sum feedback, whereas Figure 2 lacks kernel dragging and can compute skipped outputs inconsistently at higher stride values. Conceptually, Figure 1 better presents the general symbolic Conv2D operation, while Figure 2’s added numeric values make the diagram feel like a particular example rather than the intended symbolic construction."
+      },
+      "evalModel": "gpt-5.5",
+      "evaluatedAt": "2026-08-14T18:59:14.775Z"
+    }
+  },
+  "physics__homography_plane_geometry2": {
+    "setupA": "baseline-kimi_FINAL",
+    "setupB": "baseline-qwen_FINAL",
+    "subject": "physics",
+    "figure": "homography_plane_geometry2",
+    "machineEval": {
+      "figure1Setup": "baseline-kimi_FINAL",
+      "figure2Setup": "baseline-qwen_FINAL",
+      "mode": "3d",
+      "dimensions": {
+        "geometry": {
+          "winner": "baseline-kimi_FINAL",
+          "confidence": 0.86,
+          "rationale": "Figure 1 reconstructs the 3D pinhole homography geometry more accurately: the camera/image plane is positioned from the camera center at a focal distance, oriented toward the world plane, with rays, projected grid, image rectangle, world plane, axes, and point correspondence all spatially consistent. Figure 2 has the same general components, but its image plane is fixed independently of the camera center, the camera geometry is therefore less faithful to a real camera setup, and it omits or simplifies details such as the nested image rectangle/dashed border and more precise projected-grid clipping, making its proportions and spatial relationships less accurate."
+        },
+        "interactivity": {
+          "winner": "baseline-kimi_FINAL",
+          "confidence": 0.86,
+          "rationale": "Figure 1's controls more directly and correctly perform the requested interactions: dragging the camera center or world point recomputes the projection, projected grid, rays, point labels, and H consistently; the tilt slider updates the plane geometry and homography; and the flatten toggle actually transitions to a paired 2D homography view while hiding the 3D rays/camera appropriately. Figure 2's sliders and camera drag mostly recompute the scene and H, but its 'Homography (2D→2D) view' does not really flatten the mapping into source/image coordinates; it mainly hides rays/camera and draws 3D correspondence lines between still-separated planes, and it even leaves the camera-center label visible after hiding the camera sphere. Figure 2 also handles extreme projections less cleanly, with projected grids/points allowed to run far off the image plane rather than being coherently clipped or reframed."
+        },
+        "faithfulness": {
+          "winner": "baseline-qwen_FINAL",
+          "confidence": 0.93,
+          "rationale": "Figure 2 is much more visually faithful: it preserves the left camera center, vertical camera plane, grey planar surface to the right, dashed projection rays, cyan point correspondence, and red/green coordinate axes in a composition close to the reference. Figure 1 includes many of the same elements, but its camera is placed above the scene, the camera plane is small and nearly horizontal, and the planar surface sits below rather than extending to the right, making the overall diagram less immediately recognizable as the original."
+        },
+        "labels": {
+          "winner": "baseline-qwen_FINAL",
+          "confidence": 0.78,
+          "rationale": "Figure 2 has more of the original labels present and readable, including camera center, camera plane, planar surface, image-plane x/y, world X/Y/Z axes, and both point labels, whereas Figure 1 has smaller labels with more overlap around the camera plane and the projected point, and some axis/point annotations are harder to read or less clearly placed. Both include extra UI text not in the original, but Figure 2’s diagram labels better match the reference overall."
+        },
+        "concept": {
+          "winner": "baseline-kimi_FINAL",
+          "confidence": 0.78,
+          "rationale": "Figure 1 more truthfully ties the world frame to the planar surface with the point labelled (X,Y,0), shows the camera center, image plane, image point, and pinhole ray geometry, and computes/displays a homography from the planar coordinates to image coordinates, matching the brief's claims that planarity Z=0 removes depth and yields a 3×3 H mapping (X,Y) to (x,y) (L00010). Figure 2 also has a mostly correct projective homography calculation and labels the planar point, but its fixed image plane while the camera center is dragged is less faithful to a camera image plane geometry, and its homography mode draws magenta world-to-image correspondence segments through space that can be mistaken for physical projection rays rather than the ray-through-image-plane construction required by the brief (L00010)."
+        }
+      },
+      "aggregator": {
+        "winner": "baseline-kimi_FINAL",
+        "confidence": 0.68,
+        "explanation": "Figure 1 is stronger overall because it more accurately couples the camera center, image plane, projection rays, planar grid, point correspondence, homography computation, and interactive updates, including a more meaningful 2D homography/flattened view. Figure 2 is visually closer to the reference screenshot and has clearer, more faithful labels, but its camera/image-plane relationship is less geometrically faithful and its homography view can misrepresent the mapping with spatial correspondence lines rather than a true source-to-image flattening."
+      },
+      "evalModel": "gpt-5.5",
+      "evaluatedAt": "2026-08-14T18:59:57.543Z"
+    }
+  },
+  "physics__pinhole_geometry2": {
+    "setupA": "baseline-kimi_FINAL",
+    "setupB": "baseline-qwen_FINAL",
+    "subject": "physics",
+    "figure": "pinhole_geometry2",
+    "machineEval": {
+      "figure1Setup": "baseline-kimi_FINAL",
+      "figure2Setup": "baseline-qwen_FINAL",
+      "mode": "3d",
+      "dimensions": {
+        "geometry": {
+          "winner": "baseline-kimi_FINAL",
+          "confidence": 0.98,
+          "rationale": "Figure 1 much more accurately reconstructs the pinhole-camera geometry: it shows both virtual and real projection planes on opposite sides of the pinhole at ±f, has correct upright/inverted projected points, focal-length arrows, a side panel for camera/image coordinates, and a coherent spatial layout. Figure 2 is geometrically weaker because it uses inconsistent axis conventions, draws the world X axis diagonally, toggles away one of the two planes instead of showing their relationship, places panel (b) as another object along the optical depth rather than a separate diagram panel, uses a top-left/downward image coordinate frame that does not match the described figure, and its update code attempts to reassign const plane borders, likely breaking the rendering entirely."
+        },
+        "interactivity": {
+          "winner": "baseline-kimi_FINAL",
+          "confidence": 0.96,
+          "rationale": "Figure 1's sliders and toggle generally recompute the plane positions, projected points, ray, panel-b point, and readout, even though it substitutes sliders for true dragging and has some label-update mistakes and board clipping at extremes. Figure 2 is much worse for interaction correctness because updateAll() reassigns const virtBorder/projBorder, so the initial update and every control-driven update throw an error; even aside from that, its toggle would not correctly invert/update panel-b coordinates and many labels would remain stale."
+        },
+        "faithfulness": {
+          "winner": "baseline-kimi_FINAL",
+          "confidence": 0.82,
+          "rationale": "Figure 1 is more recognizable as the original because it preserves the two-panel side-by-side composition, the projection plane, pinhole, virtual camera plane, point P, red optical/ray line, and the separate camera/image coordinate panel. Figure 2 includes some of the same labels and planes, but its layout is rotated into a diagonal 3D arrangement, the right panel is not represented as the large boxed virtual camera plane, and the overall composition reads much less like the textbook figure at a glance."
+        },
+        "labels": {
+          "winner": "baseline-kimi_FINAL",
+          "confidence": 0.62,
+          "rationale": "Figure 1 includes more of the original labels in the expected arrangement, such as World coordinates, Pinhole, Projection plane, Virtual camera plane, Camera coordinates, Image coordinates, coordinate origins, and the panel markers, whereas Figure 2 has smaller, harder-to-read text and places the two subfigures in a more confusing swapped/clustered layout. Figure 1 still has serious label clutter and several overlaps around the pinhole and planes, but Figure 2 loses more label clarity through tiny text, crowding near the main plane, and less faithful placement of the annotations."
+        },
+        "concept": {
+          "winner": "baseline-kimi_FINAL",
+          "confidence": 0.9,
+          "rationale": "Figure 1 more correctly teaches the pinhole geometry: its point P, pinhole at the origin, virtual plane at +f, physical projection plane at -f, and projected points use the correct similar-triangle sign relationship so the virtual image is upright and the physical image is inverted, matching the brief (L00007, L00010). Figure 2 also intends this relationship, but its world X axis is actually drawn as a diagonal vector in the X-Y plane rather than an orthogonal coordinate axis, and its update routine reassigns const plane borders, preventing the projection positions and panel layout from being reliably updated; this undermines the stated coordinate-geometry lesson (L00010). Figure 1 also represents the two coordinate systems on panel (b) with a centered camera frame and corner-origin image frame plus principal-point offset readout, whereas Figure 2's panel is less reliable because the faulty update can leave projected points at incorrect positions despite the intended labels (L00010)."
+        }
+      },
+      "aggregator": {
+        "winner": "baseline-kimi_FINAL",
+        "confidence": 0.95,
+        "explanation": "Figure 1 is the clear winner because it more accurately represents the pinhole-camera geometry, including the virtual and physical projection planes on opposite sides of the pinhole, correct upright versus inverted projections, and the separate camera/image coordinate panel. Figure 2 is weaker both visually and functionally: its layout is less faithful to the intended two-panel figure, its coordinate conventions and panel placement are confusing, and its update code likely breaks interaction by reassigning constant plane-border objects. Although Figure 1 has some clutter and label-update issues, it preserves the core geometry, labeling, and interactive behavior far better than Figure 2."
+      },
+      "evalModel": "gpt-5.5",
+      "evaluatedAt": "2026-08-14T19:00:37.721Z"
+    }
+  },
+  "physics__similar_triangles2": {
+    "setupA": "baseline-kimi_FINAL",
+    "setupB": "baseline-qwen_FINAL",
+    "subject": "physics",
+    "figure": "similar_triangles2",
+    "machineEval": {
+      "figure1Setup": "baseline-qwen_FINAL",
+      "figure2Setup": "baseline-kimi_FINAL",
+      "mode": "3d",
+      "dimensions": {
+        "geometry": {
+          "winner": "baseline-kimi_FINAL",
+          "confidence": 0.78,
+          "rationale": "Figure 2 better matches the standard pinhole-projection geometry: the image plane is placed at positive focal distance between the pinhole and the 3D point, the projected image point satisfies x=fX/Z and y=fY/Z with the same sign, and the coordinate axes/pinhole/plane border/drop lines are more coherently represented. Figure 1 does correctly draw a ray through the origin to a plane behind the pinhole, but that makes the image coordinates inverted while the displayed equations use positive ratios, and several axes are geometrically distorted or misplaced, such as the X/image axes being tilted rather than aligned with the coordinate directions and the Z arrow being detached from the origin."
+        },
+        "interactivity": {
+          "winner": "baseline-qwen_FINAL",
+          "confidence": 0.68,
+          "rationale": "Figure 1’s sliders and drag handler recompute the projected point, ray, image plane, readout, and both colored triangle cross sections together, and its equation toggle actually appears and disappears as the button advertises. Figure 2 has a cleaner persistent geometry update path and a more robust point-drag method, but its correspondence-label toggle is partly broken because hidden HTML labels are made visible again by the global label sync loop, so the figure can show correspondence labels even when the control says they are hidden; it also advertises a ray through the pinhole while the drawn ray segment does not actually pass through the origin."
+        },
+        "faithfulness": {
+          "winner": "baseline-kimi_FINAL",
+          "confidence": 0.72,
+          "rationale": "Figure 2 is more recognizable as the same projection-geometry figure because it retains the labeled 3D axes, red point and ray, dashed projection line, image plane, and translucent colored planes that echo the cyan/green regions in the reference. Figure 1 captures a small image-plane-and-point projection idea, but it is much sparser, omits the large colored planes and red coordinate frame structure, and its composition is too reduced to resemble the original at a glance."
+        },
+        "labels": {
+          "winner": "baseline-kimi_FINAL",
+          "confidence": 0.78,
+          "rationale": "Figure 2 has substantially more readable and better placed diagram labels, including clear X, Y, Z axes and visible lowercase coordinate labels, whereas Figure 1’s labels are very small, cramped around the central geometry, and harder to distinguish. Figure 2 does add some non-original labels such as “image plane,” “O,” and “P” and appears to miss or deemphasize the original f label, but Figure 1 is more cluttered and less legible overall, with labels colliding visually with the geometry and UI text also distracting from the original annotation set."
+        },
+        "concept": {
+          "winner": "baseline-kimi_FINAL",
+          "confidence": 0.72,
+          "rationale": "Figure 2 more truthfully represents the stated projection equations because its image point is placed at (f, fY/Z, fX/Z), so the displayed/readout relations x/f = X/Z and y/f = Y/Z match the textbook context (L00007) and the image plane at focal distance f (L00010). Figure 1 puts the image plane on the opposite side of the pinhole and computes image coordinates with a negative sign, then hides this by taking absolute values in the readout, so its asserted x/f = X/Z and y/f = Y/Z are sign-convention-dependent rather than directly the stated equations (L00007). Figure 2 also has nondegenerate X-Z and Y-Z cross-section triangles tied to the world point, whereas Figure 1's colored “triangles” are made from the world point, origin, and image point, which are collinear and therefore do not actually form shaded triangular regions as requested (L00010). Figure 2 is not perfect: its dashed ray segment does not actually pass through the origin despite the brief’s pinhole-through-origin requirement, but Figure 1’s equation/sign issue and degenerate triangle construction are more conceptually misleading overall (L00010)."
+        }
+      },
+      "aggregator": {
+        "winner": "baseline-kimi_FINAL",
+        "confidence": 0.78,
+        "explanation": "Figure 2 is stronger overall because it better matches the pinhole-projection geometry and stated equations, with the image plane at positive focal distance, coherent axes, readable labels, and a composition closer to the reference including colored planes and projection structure. Figure 1 has better functioning interaction controls, but relative to Figure 2 it is visually sparser, less legible, and conceptually weaker because its image plane/sign convention conflicts with the displayed positive-ratio equations and its colored triangle regions are effectively degenerate."
+      },
+      "evalModel": "gpt-5.5",
+      "evaluatedAt": "2026-08-14T19:01:29.386Z"
+    }
+  }
+}

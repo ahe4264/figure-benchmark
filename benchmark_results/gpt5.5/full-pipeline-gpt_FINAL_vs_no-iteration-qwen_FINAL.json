@@ -1,0 +1,407 @@
+{
+  "cs__2.2": {
+    "setupA": "full-pipeline-gpt_FINAL",
+    "setupB": "no-iteration-qwen_FINAL",
+    "subject": "cs",
+    "figure": "2.2",
+    "machineEval": {
+      "figure1Setup": "full-pipeline-gpt_FINAL",
+      "figure2Setup": "no-iteration-qwen_FINAL",
+      "mode": "2d",
+      "dimensions": {
+        "geometry": {
+          "winner": "full-pipeline-gpt_FINAL",
+          "confidence": 0.82,
+          "rationale": "Figure 1 better preserves the textbook snapshot structure: all six panels have the correct six-cell arrays, index labels, black key cells, gray trace cells, and the expected curved black/gray arrow topology with heavier strokes and proportions closer to the source. Figure 2 has the same basic panel counts and values, but its reconstruction is more compact with noticeably thinner cell borders, arrows, and arrowheads, and it introduces a non-textbook live-code overlay state that can replace panel (a), making the structural presentation less faithful overall."
+        },
+        "interactivity": {
+          "winner": "no-iteration-qwen_FINAL",
+          "confidence": 0.72,
+          "rationale": "Figure 2 is better because it actually provides the requested code-editing/run/playback workflow and recomputes a live trace from the learner’s code, whereas Figure 1’s controls only navigate pre-rendered static snapshots and do not implement the intended compare/shift coding interaction at all. However, Figure 2 has real correctness flaws: its provided Buggy example can be marked correct because the final sortedness check drops the first element, and its custom array input is poorly supported by hard-coded sample code; Figure 1’s simpler controls are more reliable but far less relevant to the requested interaction."
+        },
+        "faithfulness": {
+          "winner": "full-pipeline-gpt_FINAL",
+          "confidence": 0.86,
+          "rationale": "Figure 1 is more visually faithful because it presents the six insertion-sort panels in the same two-row composition with recognizable labels, cell shading, black key cells, and curved arrows at a readable size. Figure 2 contains the same general content but the actual figure is much smaller and visually dominated by an unrelated code-running interface, with arrows and highlights harder to recognize and some panel details appearing compressed or distorted."
+        },
+        "labels": {
+          "winner": "full-pipeline-gpt_FINAL",
+          "confidence": 0.9,
+          "rationale": "Figure 1 has the required panel labels, column indices, and cell values at a noticeably larger and more readable size, and they more closely match the textbook figure. Figure 2 includes the same basic diagram labels but they are much smaller and harder to read at inline size, while the screenshot is dominated by extra non-original explanatory text, code, buttons, and controls that add substantial label clutter."
+        },
+        "concept": {
+          "winner": "full-pipeline-gpt_FINAL",
+          "confidence": 0.78,
+          "rationale": "Figure 1 is conceptually more accurate because its six static panels correctly show the specified array states, black key positions, key destinations, rightward shifts, and final sorted array for panels (a)–(f) (L00007, L00010), and its annotations correctly treat gray cells as the local comparison/shift trace described in the textbook context (L00007). Figure 2’s static panels are mostly correct, but its added narration/live trace repeatedly frames gray shading as the full sorted prefix; that is misleading for the textbook snapshots because panels such as (c) and (e) do not shade every already-sorted cell, only the values compared and/or shifted (L00007), so a student could come away with a less accurate interpretation of the gray cells."
+        }
+      },
+      "aggregator": {
+        "winner": "full-pipeline-gpt_FINAL",
+        "confidence": 0.84,
+        "explanation": "Figure 1 is the stronger overall match because it preserves the textbook six-panel insertion-sort structure with more faithful geometry, readable labels, correct cell values, key/trace shading, and arrow topology, whereas Figure 2 compresses the diagram and surrounds it with a visually dominant code-running interface. Figure 2 offers the better interactive coding workflow, but that advantage is outweighed by its clutter, smaller and less readable rendered panels, and misleading live-trace/narration details relative to the textbook depiction."
+      },
+      "evalModel": "gpt-5.5",
+      "evaluatedAt": "2026-08-14T19:11:49.220Z"
+    }
+  },
+  "cs__24.4": {
+    "setupA": "full-pipeline-gpt_FINAL",
+    "setupB": "no-iteration-qwen_FINAL",
+    "subject": "cs",
+    "figure": "24.4",
+    "machineEval": {
+      "figure1Setup": "no-iteration-qwen_FINAL",
+      "figure2Setup": "full-pipeline-gpt_FINAL",
+      "mode": "2d",
+      "dimensions": {
+        "geometry": {
+          "winner": "full-pipeline-gpt_FINAL",
+          "confidence": 0.95,
+          "rationale": "Figure 2 much more accurately reconstructs the original textbook structure by showing the five Bellman-Ford panels in the three-over-two layout with panel captions, the same five vertices, ten directed weighted edges, arrowheads, distance labels, and gray predecessor/highlight bands for each stage. Figure 1 has the correct underlying graph topology and weights, but it renders only a single interactive workbench-style graph with playback/UI elements rather than the original multi-panel figure, so it misses the fixed panel count, arrangement, captions, and stage-by-stage structural comparison."
+        },
+        "interactivity": {
+          "winner": "full-pipeline-gpt_FINAL",
+          "confidence": 0.9,
+          "rationale": "Figure 2's limited controls work as advertised: the guided-step buttons, checkbox, and panel selector update the displayed panel and narration consistently. Figure 1 attempts the requested code-editing interaction, but its JavaScript contains syntax errors in the edge-order parser and worker source, so the run/animation controls cannot reliably execute the learner's relax implementation or redraw the pass results at all."
+        },
+        "faithfulness": {
+          "winner": "full-pipeline-gpt_FINAL",
+          "confidence": 0.99,
+          "rationale": "Figure 2 clearly reproduces the original five-panel Bellman-Ford graph layout with the same node arrangement, edge labels, gray highlighted paths, and panel labels, so it is immediately recognizable despite being smaller. Figure 1 shows only UI controls and a blank drawing area with no visible graph, making it essentially unfaithful to the textbook figure at a glance."
+        },
+        "labels": {
+          "winner": "full-pipeline-gpt_FINAL",
+          "confidence": 0.98,
+          "rationale": "Figure 2 is clearly better because it includes the required textbook-style labels: vertex names, distance values, edge weights, and panel captions (a)–(e), whereas Figure 1 essentially shows only interface controls and instructional text with the diagram labels absent. Figure 2's labels are somewhat small at inline size and mildly crowded, but Figure 1 fails to reproduce the actual figure annotations and instead contains unrelated UI labels."
+        },
+        "concept": {
+          "winner": "full-pipeline-gpt_FINAL",
+          "confidence": 0.86,
+          "rationale": "Figure 2 is more conceptually accurate because it presents the specified five-panel Bellman-Ford trace on the correct directed weighted graph, with the initial values, panels (b) and (c), and the final estimates/tree largely matching the brief (L00007, L00010). Figure 1 instead replaces the required trace with a code-runner view rather than the five textbook panels, its displayed/run logic would not reliably show the stated panel sequence, and its narration incorrectly attributes the pass-2 value d[z]=2 to y→z rather than t→z; Figure 2 does have a flaw in panel (d), leaving z at 2 even though the brief says panel (d) should have d[z]=−2, but it is still substantially closer to the requested concept than Figure 1 (L00010)."
+        }
+      },
+      "aggregator": {
+        "winner": "full-pipeline-gpt_FINAL",
+        "confidence": 0.97,
+        "explanation": "Figure 2 is decisively better because it reconstructs the intended five-panel Bellman-Ford textbook figure with the correct directed weighted graph, panel captions, vertex/distance labels, edge weights, and stage-by-stage highlighted predecessor structure, while Figure 1 instead presents a single interactive workbench/UI and in the rendered view lacks the visible diagram and annotations. Figure 1’s attempted code-running interaction is also unreliable due to implementation errors, whereas Figure 2’s simpler controls behave consistently; although Figure 2 has a conceptual flaw in one later panel, it remains far closer to the requested structure and visual content than Figure 1."
+      },
+      "evalModel": "gpt-5.5",
+      "evaluatedAt": "2026-08-14T19:12:44.432Z"
+    }
+  },
+  "chemistry__CNX_Chem_01_05_Archer2_img": {
+    "setupA": "full-pipeline-gpt_FINAL",
+    "setupB": "no-iteration-qwen_FINAL",
+    "subject": "chemistry",
+    "figure": "CNX_Chem_01_05_Archer2_img",
+    "machineEval": {
+      "figure1Setup": "full-pipeline-gpt_FINAL",
+      "figure2Setup": "no-iteration-qwen_FINAL",
+      "mode": "2d",
+      "dimensions": {
+        "geometry": {
+          "winner": "full-pipeline-gpt_FINAL",
+          "confidence": 0.88,
+          "rationale": "Figure 1 better reconstructs the likely textbook structure: four large, evenly spaced target panels with thick borders, large concentric rings, prominent labels, and shot locations that preserve the intended precision/accuracy patterns including W tight at center, X tight off-center, Y scattered around center, and Z scattered/off-center. Figure 2 has the same basic four-panel concept but the targets are noticeably undersized within the panels, borders and labels are much lighter/smaller, and its Z shot pattern is structurally wrong because its centroid is near the bullseye, making it resemble low-precision/high-accuracy rather than the intended low-precision/low-accuracy case."
+        },
+        "interactivity": {
+          "winner": "full-pipeline-gpt_FINAL",
+          "confidence": 0.88,
+          "rationale": "Figure 1 implements the requested controls much more correctly: panel clicks select and visibly highlight a panel with an updating precision/accuracy callout, the overlay toggle redraws all four clusters on one target, and a draggable orange shot updates the selected archer's rating during and after the drag. Figure 2 only toggles callouts without highlighting, uses double-click-to-add rather than dragging, hides the callout after adding so the rating label does not immediately update, and its classifications for Y and Z contradict its own narration and the brief; Figure 1 still has a classification weakness for Y and a live-drag double-count issue after an existing added shot, but its handlers and advertised interactions are substantially closer to correct."
+        },
+        "faithfulness": {
+          "winner": "full-pipeline-gpt_FINAL",
+          "confidence": 0.95,
+          "rationale": "Figure 1 is much closer to the original at a glance: it preserves the four large bordered panels in a row, the target proportions, blue color scheme, labels, and approximate arrow placements. Figure 2 contains the same basic elements, but the panels and targets are drastically smaller with much more surrounding whitespace, lighter borders, tiny labels, and a layout that makes it look less like the textbook figure."
+        },
+        "labels": {
+          "winner": "full-pipeline-gpt_FINAL",
+          "confidence": 0.92,
+          "rationale": "Figure 1 has the required Archer W, Archer X, Archer Y, and Archer Z labels placed clearly beneath the corresponding panels at a readable inline size, whereas Figure 2 includes the same labels but they are very small and less comfortable to read. Figure 2 also adds a large explanatory text block and extra UI text not present in the original, creating more non-original annotation clutter than Figure 1."
+        },
+        "concept": {
+          "winner": "full-pipeline-gpt_FINAL",
+          "confidence": 0.86,
+          "rationale": "Figure 1 is more conceptually accurate because its displayed shot patterns match the brief for W as tight near the bullseye, X as a tight lower-right off-target cluster, Y as widely scattered far from center, and Z as two near plus two far shots (L00009, L00012). Figure 2 also gets W and X visually right, but its computed/classified callouts make both Y and Z come out as high accuracy because their centroids are near the bullseye, contradicting the brief that Y is low precision/low accuracy and Z is inconsistent and inaccurate (L00012); Figure 1 has a similar centroid-based misclassification risk for Y when interacted with, but it at least keeps Z inaccurate and its core geometry is closer to the requested concepts."
+        }
+      },
+      "aggregator": {
+        "winner": "full-pipeline-gpt_FINAL",
+        "confidence": 0.93,
+        "explanation": "Figure 1 is the clear winner because it more closely matches the original four-panel textbook layout, with larger bordered targets, readable Archer W–Z labels, and shot clusters that better preserve the intended precision/accuracy patterns. Figure 2 has the same broad idea, but its targets and labels are much smaller, it adds more non-original annotation clutter, and its Y/Z patterns and callouts make low-accuracy cases appear high-accuracy. Figure 1 also implements the intended interactions more completely, while Figure 2 relies on weaker toggles/double-click behavior and inconsistent classifications."
+      },
+      "evalModel": "gpt-5.5",
+      "evaluatedAt": "2026-08-14T19:13:21.145Z"
+    }
+  },
+  "chemistry__CNX_Chem_08_02_sp3Geom": {
+    "setupA": "full-pipeline-gpt_FINAL",
+    "setupB": "no-iteration-qwen_FINAL",
+    "subject": "chemistry",
+    "figure": "CNX_Chem_08_02_sp3Geom",
+    "machineEval": {
+      "figure1Setup": "no-iteration-qwen_FINAL",
+      "figure2Setup": "full-pipeline-gpt_FINAL",
+      "mode": "3d",
+      "dimensions": {
+        "geometry": {
+          "winner": "full-pipeline-gpt_FINAL",
+          "confidence": 0.86,
+          "rationale": "Figure 2 better reconstructs the likely textbook geometry because it includes the full sp3 hybridization layout: separate s, px, py, and pz atomic orbitals, transition arrows, four individual hybrid orbitals, and the final tetrahedral arrangement with appropriate spatial grouping. Figure 1 only shows four superimposed hybrid-orbital surfaces at one origin with axes, so although its tetrahedral sign-pattern directions are mathematically cleaner, it omits most of the original figure's element count and process geometry."
+        },
+        "interactivity": {
+          "winner": "full-pipeline-gpt_FINAL",
+          "confidence": 0.88,
+          "rationale": "Figure 2 has substantially more reliable interactions: its view selector, demo buttons, and contribution checkboxes update the shown stages, checkbox state, camera framing, and hybrid geometry from stored state for all contribution combinations, including the all-off case. Figure 1's checkboxes do trigger a redraw, but the lobe update mutates the current vertex positions and then reuses them as if they were the original unit sphere, so vertices that collapse to zero when all contributions are turned off cannot recover when contributions are re-enabled, producing an irreversible degenerate stale figure; it also offers fewer working states and no stage/view interaction."
+        },
+        "faithfulness": {
+          "winner": "full-pipeline-gpt_FINAL",
+          "confidence": 0.95,
+          "rationale": "Figure 2 is much more recognizable as the textbook flowchart: it includes the initial s and p orbitals, the hybridization arrow, the four hybrid orbitals, and the final tetrahedral arrangement with similar axes and orange coloring. Figure 1 shows only a simplified cluster of orange spheres with axes and controls, omitting the overall composition and key staged transformation, so it reads far less like the reference figure."
+        },
+        "labels": {
+          "winner": "full-pipeline-gpt_FINAL",
+          "confidence": 0.88,
+          "rationale": "Figure 2 includes most of the textbook annotations such as s, px, py, pz, axis labels, “Hybridization,” and “Gives a tetrahedral arrangement,” whereas Figure 1 omits nearly all of the original figure’s labels and instead shows unrelated UI step/contribution labels. Figure 2’s labels are somewhat cluttered and some text is crowded or partially cut off near the control panel, but it still matches the original labeling far better than Figure 1, whose diagram labels are minimal and not representative of the source."
+        },
+        "concept": {
+          "winner": "no-iteration-qwen_FINAL",
+          "confidence": 0.72,
+          "rationale": "Figure 1 is conceptually more accurate on the central chemistry relationship: its four sp³ hybrids are generated from one s term plus three p terms and point along true tetrahedral sign-pattern directions with mutual angles of about 109.5°, matching the requirement that four equivalent sp³ orbitals are produced and tetrahedrally oriented (L00007, L00010-L00012, L00019). Figure 2 better includes the requested flowchart and atomic-orbital stages, but its 3D geometry uses non-orthogonal constructed directions for the p axes and the final hybrid lobes are not actually arranged with tetrahedral 109.5° separations despite being labeled/narrated as a tetrahedral arrangement, which risks teaching the key spatial relationship incorrectly (L00014, L00019). Figure 1 is not perfect because it largely omits the left-to-right stepwise textbook transformation and has an incorrect tooltip sign description for some hybrid coordinates, but those issues are less damaging than Figure 2 claiming tetrahedral geometry while drawing a non-tetrahedral set of directions."
+        }
+      },
+      "aggregator": {
+        "winner": "full-pipeline-gpt_FINAL",
+        "confidence": 0.9,
+        "explanation": "Figure 2 is the stronger overall reconstruction because it includes the full textbook-style progression from s and p orbitals through hybridization to four hybrids and a tetrahedral arrangement, with substantially better matching labels and more reliable interactive controls. Figure 1 has a cleaner conceptual tetrahedral sign-pattern model, but relative to Figure 2 it omits most of the staged composition, source-like annotations, and interaction states, and its contribution toggles can irreversibly degenerate the geometry. Figure 2’s main weakness is that its final 3D directions may not be truly tetrahedral, but this is outweighed by its much closer faithfulness to the rendered reference and broader functional coverage."
+      },
+      "evalModel": "gpt-5.5",
+      "evaluatedAt": "2026-08-14T19:14:11.669Z"
+    }
+  },
+  "chemistry__CNX_Chem_08_02_sp3d": {
+    "setupA": "full-pipeline-gpt_FINAL",
+    "setupB": "no-iteration-qwen_FINAL",
+    "subject": "chemistry",
+    "figure": "CNX_Chem_08_02_sp3d",
+    "machineEval": {
+      "figure1Setup": "full-pipeline-gpt_FINAL",
+      "figure2Setup": "no-iteration-qwen_FINAL",
+      "mode": "3d",
+      "dimensions": {
+        "geometry": {
+          "winner": "full-pipeline-gpt_FINAL",
+          "confidence": 0.9,
+          "rationale": "Figure 1 better reconstructs the trigonal-bipyramidal geometry: it uses an orthographic/isometric view closer to a textbook diagram, has the correct five P–Cl directions, more complete dashed bipyramidal orbital guide lines including the equatorial triangle and centerlines, better lobe proportions, and manages the (a)/(b) labels and orbital labels appropriately by view. Figure 2 has the same basic five-direction arrangement, but its perspective camera is less textbook-like, its orbital guide is incomplete, its sp3d labels remain visible even in the molecular view, and its overall orbital/bond detailing is cruder."
+        },
+        "interactivity": {
+          "winner": "full-pipeline-gpt_FINAL",
+          "confidence": 0.86,
+          "rationale": "Figure 1 has the more correct interaction behavior: its molecular/orbital toggle updates group visibility, panel labels, orbital labels, and active button state, and clicking or selecting a lobe consistently updates the corresponding lobe and P–Cl bond highlighting. Figure 2’s representation toggle mostly switches the 3D groups, but the sp3d labels are never hidden, so the molecular model view still shows orbital labels; its lobe highlighting works via a separate click listener, but the registered interactive handlers themselves only show popups and do not perform the advertised highlight, making the interaction less coherent."
+        },
+        "faithfulness": {
+          "winner": "full-pipeline-gpt_FINAL",
+          "confidence": 0.95,
+          "rationale": "Figure 1 is much more recognizable as the original molecular model panel: it preserves the trigonal bipyramidal ball-and-stick geometry and the green chlorine/orange phosphorus color scheme, even if the viewpoint and one atom color are imperfect. Figure 2 has a similar rough geometry but renders the molecule as an almost entirely black silhouette with inappropriate sp³d labels on the molecular-model view, losing the original color coding and visual character."
+        },
+        "labels": {
+          "winner": "full-pipeline-gpt_FINAL",
+          "confidence": 0.68,
+          "rationale": "Figure 1 has a clear, correctly placed '(a)' label matching the molecular-model panel, whereas Figure 2 omits the '(a)' label and instead places tiny sp³d labels around the molecular model where they do not belong in the reference. Figure 1 is missing the orbital-panel annotations in this screenshot and has unrelated UI text, but Figure 2's required labels are less readable, incomplete, and incorrectly associated with the wrong artwork."
+        },
+        "concept": {
+          "winner": "full-pipeline-gpt_FINAL",
+          "confidence": 0.88,
+          "rationale": "Figure 1 is more conceptually accurate because it correctly separates the PCl5 ball-and-stick trigonal bipyramid from the hybrid-orbital depiction: panel (a) has a central phosphorus with five chlorine atoms in two axial and three equatorial directions, while panel (b) shows five large sp3d lobes radiating from a central dot in the same trigonal-bipyramidal arrangement with sp3d labels and dashed geometry guides, matching the required molecular/orbital correspondence (L00007, L00012-L00014, L00019). Figure 2 uses the same basic trigonal-bipyramidal directions, but its sp3d labels are always present even when the molecular model is selected, so it effectively labels the ball-and-stick panel with orbital labels rather than reserving those labels for the hybrid-orbital panel as specified (L00014, L00019); it also gives a less complete dashed outline of the trigonal bipyramid than Figure 1."
+        }
+      },
+      "aggregator": {
+        "winner": "full-pipeline-gpt_FINAL",
+        "confidence": 0.93,
+        "explanation": "Figure 1 is consistently stronger: it better preserves the trigonal-bipyramidal PCl5 geometry, the molecular/orbital separation, the color-coded ball-and-stick model, dashed orbital guide structure, and correct label behavior. Figure 2 has the same rough five-direction arrangement, but it is less faithful visually, leaves sp3d orbital labels visible on the molecular model, has cruder/incomplete orbital guides, and its interactions are less coherent than Figure 1's highlighting and toggle behavior."
+      },
+      "evalModel": "gpt-5.5",
+      "evaluatedAt": "2026-08-14T19:14:43.358Z"
+    }
+  },
+  "cs__Conv2D": {
+    "setupA": "full-pipeline-gpt_FINAL",
+    "setupB": "no-iteration-qwen_FINAL",
+    "subject": "cs",
+    "figure": "Conv2D",
+    "machineEval": {
+      "figure1Setup": "full-pipeline-gpt_FINAL",
+      "figure2Setup": "no-iteration-qwen_FINAL",
+      "mode": "3d",
+      "dimensions": {
+        "geometry": {
+          "winner": "full-pipeline-gpt_FINAL",
+          "confidence": 0.92,
+          "rationale": "Figure 1 much more accurately reconstructs the textbook convolution diagram geometry: it uses the correct 4×6 input and hidden lattices, a correctly sized central 3×3 weight grid, selected receptive-field cells, nine connectors including zero-padding positions, panel markers for the four printed cases, and a flat/skewed viewpoint that matches the source-style schematic. Figure 2 has the same basic counts, but its grids are laid out as simplified rectangular arrays on a horizontal 3D plane with an isometric camera, making the viewpoint and spatial relationships less like the original; it also omits the printed multi-panel geometry and handles border/connector structure less faithfully."
+        },
+        "interactivity": {
+          "winner": "full-pipeline-gpt_FINAL",
+          "confidence": 0.93,
+          "rationale": "Figure 1 has substantially more correct interactions: dragging over the input, playing the sliding window, selecting textbook positions, changing stride/padding, and clicking output cells all recompute the highlighted receptive field, selected h cell, zero padding, skipped outputs, and symbolic product sum consistently, including at stride extremes. Figure 2’s basic slider and auto-scan work for legal positions, but it lacks a true drag interaction and has a serious stride-state error: clicking a hidden cell that should be skipped under the current stride still computes and highlights it as if it were a valid output, contradicting the stride control; its kernel-position slider also silently snaps user input to valid positions when stride changes."
+        },
+        "faithfulness": {
+          "winner": "full-pipeline-gpt_FINAL",
+          "confidence": 0.92,
+          "rationale": "Figure 1 is much more recognizable as the textbook panel: it preserves the large input grid, central weight matrix, highlighted h23 cell, reddish connection lines, and the overall left-to-right composition. Figure 2 contains the same basic elements, but the whole diagram is rendered very small and in a steep perspective, making the labels, circles, and weights hard to recognize at a glance and much less faithful to the original layout."
+        },
+        "labels": {
+          "winner": "full-pipeline-gpt_FINAL",
+          "confidence": 0.95,
+          "rationale": "Figure 1 has much more complete and readable labels matching the original, including the panel marker a), node labels, weight labels, and the main captions Input, X; Weights, Ω; and Hidden layer, H1. Figure 2’s diagram is scaled down so most node and weight labels are too small to read comfortably, the panel label is absent, and it adds a large computation/control sidebar with many invented text annotations not present in the textbook figure."
+        },
+        "concept": {
+          "winner": "full-pipeline-gpt_FINAL",
+          "confidence": 0.86,
+          "rationale": "Figure 1 more accurately represents the intended convolution concept: it maps each selected output h_ij to the corresponding centered 3×3 receptive field in X, reuses the same Ω weights, shows out-of-border entries as explicit zeros for edge cases, and gives the dot-product formula with 0 terms where padding applies (L00007). Figure 2 is broadly correct about a sliding 3×3 kernel and zero padding, but it reduces the specified four-panel a–d comparison to a generic slider and does not anchor the required c and d padding examples as explicit panels; it also introduces arbitrary numeric x and ω values in its readout even though the brief only specifies symbolic x_ij and ω_ij labels, making its teaching less faithful to what the figure is supposed to assert (L00007)."
+        }
+      },
+      "aggregator": {
+        "winner": "full-pipeline-gpt_FINAL",
+        "confidence": 0.94,
+        "explanation": "Figure 1 is the clear overall winner because it more faithfully matches the textbook convolution schematic: the 4×6 grids, central 3×3 weight matrix, highlighted receptive fields, panel markers, readable labels, and left-to-right layout are all closer to the intended figure than Figure 2’s small, steep-perspective rendering. It also provides more reliable interactions, with dragging, playback, stride/padding changes, and output-cell selection consistently updating the receptive field and formula, while Figure 2 lacks true dragging and can highlight stride-skipped hidden cells as if they were valid. Conceptually, Figure 1 better anchors the selected h_ij cells to centered 3×3 receptive fields with explicit zero padding, whereas Figure 2 presents a more generic slider-based convolution demo with less faithful panel structure and less readable labeling."
+      },
+      "evalModel": "gpt-5.5",
+      "evaluatedAt": "2026-08-14T19:15:22.488Z"
+    }
+  },
+  "physics__homography_plane_geometry2": {
+    "setupA": "full-pipeline-gpt_FINAL",
+    "setupB": "no-iteration-qwen_FINAL",
+    "subject": "physics",
+    "figure": "homography_plane_geometry2",
+    "machineEval": {
+      "figure1Setup": "full-pipeline-gpt_FINAL",
+      "figure2Setup": "no-iteration-qwen_FINAL",
+      "mode": "3d",
+      "dimensions": {
+        "geometry": {
+          "winner": "no-iteration-qwen_FINAL",
+          "confidence": 0.88,
+          "rationale": "Figure 2 is geometrically more accurate because it builds an actual 3D pinhole-camera configuration with a camera center, image plane at finite depth, tilted world plane, projected points, grids, frustum rays, and a homography derived from the 3D plane pose. Figure 1 mostly fakes the textbook drawing as a flat 2D illustration in the XY plane with hand-skewed quadrilaterals and rays, so its spatial relationships, depth, and projection geometry are not truly reconstructed even though the visual layout is polished."
+        },
+        "interactivity": {
+          "winner": "full-pipeline-gpt_FINAL",
+          "confidence": 0.82,
+          "rationale": "Figure 1's controls mostly do what they advertise: the tilt slider, camera-center drag, mode toggle, matrix readout, labels, and step buttons all recompute and redraw the visible state, and the 2D homography mode is actually reframed and cleaned up. Figure 2 has a more physically meaningful projection computation, but its 2D homography toggle is functionally flawed: it switches to a camera view looking essentially edge-on at the flat 2D grids, and it does not hide the 3D labels or 2D labels appropriately, so the advertised flattened paired-coordinate view does not reliably appear. Figure 2's drag handling is also less robust because it lacks pointer capture/window pointer-up cleanup, while Figure 1 handles camera dragging more safely, though Figure 1's homography is somewhat synthetic and only loosely tied to the drawn full-geometry mapping."
+        },
+        "faithfulness": {
+          "winner": "full-pipeline-gpt_FINAL",
+          "confidence": 0.92,
+          "rationale": "Figure 1 is much more recognizable as the textbook figure because it preserves the large left-to-right composition with camera center, camera plane, planar surface, dashed projection rays, cyan point/ray, and colored coordinate axes in roughly the same visual roles. Figure 2 contains many of the same elements, but they are rendered extremely small and distant with mostly unreadable labels, so the overall figure is far less recognizable at a glance despite having similar geometry."
+        },
+        "labels": {
+          "winner": "full-pipeline-gpt_FINAL",
+          "confidence": 0.93,
+          "rationale": "Figure 1 has most of the original labels present and large enough to read, including Camera center, Camera plane, coordinate labels, and point annotations, even though some labels are cluttered and the planar surface label is partly cut off. Figure 2’s labels are much too small at the rendered scale, many are barely readable, and the overall annotations fail to match the reference effectively despite being less cluttered."
+        },
+        "concept": {
+          "winner": "no-iteration-qwen_FINAL",
+          "confidence": 0.93,
+          "rationale": "Figure 2 is more conceptually accurate because it actually parameterizes a planar world surface with local coordinates (X,Y) and a normal Z direction perpendicular to the plane, then projects points from a camera center through an image plane and computes H = K[r1|r2|t], matching the collapse from planar 3D points (X,Y,0) to image coordinates (x,y) (L00007, L00010). Figure 1 labels the right ideas, but its geometry is largely a flat screen-space construction: the world Z arrow is not geometrically perpendicular to the drawn planar surface, the image point and displayed homography matrix are not derived consistently from the same projective camera model, and the shown H is an arbitrary live matrix rather than the 3x3 collapse of a 3x4 projection for the displayed scene (L00010)."
+        }
+      },
+      "aggregator": {
+        "winner": "full-pipeline-gpt_FINAL",
+        "confidence": 0.66,
+        "explanation": "Figure 1 is the stronger overall figure because, compared with Figure 2, it is much more faithful to the intended textbook-style rendering: the camera center, camera plane, planar surface, rays, coordinate axes, and point labels are visible, recognizable, and mostly readable, while Figure 2’s annotations and scene are rendered too small to communicate the diagram effectively. Figure 1 also has more reliable advertised interactions, including dragging, sliders, mode changes, labels, and matrix updates, whereas Figure 2’s flattened 2D homography view and label handling are flawed. Figure 2 is clearly superior in underlying projective geometry and conceptual correctness, but those strengths are outweighed by Figure 1’s better rendered communication and interactivity."
+      },
+      "evalModel": "gpt-5.5",
+      "evaluatedAt": "2026-08-14T19:16:05.124Z"
+    }
+  },
+  "physics__pinhole_geometry2": {
+    "setupA": "full-pipeline-gpt_FINAL",
+    "setupB": "no-iteration-qwen_FINAL",
+    "subject": "physics",
+    "figure": "pinhole_geometry2",
+    "machineEval": {
+      "figure1Setup": "full-pipeline-gpt_FINAL",
+      "figure2Setup": "no-iteration-qwen_FINAL",
+      "mode": "3d",
+      "dimensions": {
+        "geometry": {
+          "winner": "full-pipeline-gpt_FINAL",
+          "confidence": 0.98,
+          "rationale": "Figure 1 reconstructs the pinhole-camera geometry much more accurately: it places the physical and virtual image planes symmetrically at z=±f, computes the upright and inverted projected points with the correct signs, draws the full collinear ray through P, p, the pinhole, and the real-plane point, and includes the focal-length arrows, plane axes, construction lines, and a separate front-on panel (b). Figure 2 is both geometrically much more simplified and flawed: it shows only one projection plane at a time, uses square rather than tall plane proportions, omits much of the construction geometry, uses a camera-anchored panel (b) rather than a faithful separate plane view, and its update function attempts to reassign const arrow variables, likely causing the figure to fail at runtime."
+        },
+        "interactivity": {
+          "winner": "full-pipeline-gpt_FINAL",
+          "confidence": 0.98,
+          "rationale": "Figure 1 has working handlers for focal length, projection convention, panel switching, P dragging, and readouts, with geometry and the 2D panel recomputed consistently. Figure 2 is effectively broken: updateAll() reassigns const redArrowVirt/redArrowProj, causing a runtime TypeError on the initial update and on any focal/projection change, so its advertised slider, toggle, demo, and projection updates cannot function; even aside from that, its labels are mostly static and would not stay consistent with moved P or f."
+        },
+        "faithfulness": {
+          "winner": "full-pipeline-gpt_FINAL",
+          "confidence": 0.82,
+          "rationale": "Figure 1 is more visually faithful because it preserves the main composition of the reference’s 3D projection setup: left projection plane, central pinhole/world axes, virtual camera plane, point P, rays, and familiar labeling are all visible in roughly the expected arrangement. Figure 2 contains similar elements but they are much smaller, more sparsely arranged, and partly displaced by an extra floating camera/image panel above the main diagram, making the overall silhouette and at-a-glance resemblance to the textbook figure weaker."
+        },
+        "labels": {
+          "winner": "full-pipeline-gpt_FINAL",
+          "confidence": 0.9,
+          "rationale": "Figure 1 has substantially more of the original labels present and readable, including World coordinates, X/Y/Z, Projection plane, Virtual camera plane, P, p, f, Pinhole, and origin text, whereas Figure 2’s labels are mostly tiny and illegible at the displayed size and several important annotations cannot be read. Figure 1 is cluttered and has notable label collisions around the pinhole and projection plane, but Figure 2’s severe smallness and missing/indistinct annotations make its label quality worse overall."
+        },
+        "concept": {
+          "winner": "full-pipeline-gpt_FINAL",
+          "confidence": 0.97,
+          "rationale": "Figure 1 more correctly represents the pinhole geometry: P, the virtual upright point, the pinhole at the origin, and the physical inverted point are collinear with planes at ±f, and its panel (b) correctly distinguishes a principal-point-centered camera frame from corner-origin image coordinates with an offset (L00007,L00010). Figure 2 is conceptually and technically much weaker: it reassigns const focal-arrow variables in updateAll, likely preventing the figure from running at all, and even ignoring that, its virtual projection ray is drawn only from P to the virtual plane rather than through the pinhole at the origin, so it fails the central projection relationship stated in the brief (L00010); its labels for projected p and f are also static under changes, which can make the displayed assertions false."
+        }
+      },
+      "aggregator": {
+        "winner": "full-pipeline-gpt_FINAL",
+        "confidence": 0.98,
+        "explanation": "Figure 1 is clearly stronger because it reconstructs the pinhole-camera geometry with planes at ±f, correct collinear rays through P, the pinhole, and projected points, and it includes working controls/readouts that update the 3D and 2D views consistently. Figure 2 is comparatively weaker both geometrically and technically: it omits or simplifies much of the construction, draws an incorrect virtual projection ray, has tiny or missing labels, and likely fails at runtime due to reassignment of const arrow variables."
+      },
+      "evalModel": "gpt-5.5",
+      "evaluatedAt": "2026-08-14T19:16:32.008Z"
+    }
+  },
+  "physics__similar_triangles2": {
+    "setupA": "full-pipeline-gpt_FINAL",
+    "setupB": "no-iteration-qwen_FINAL",
+    "subject": "physics",
+    "figure": "similar_triangles2",
+    "machineEval": {
+      "figure1Setup": "no-iteration-qwen_FINAL",
+      "figure2Setup": "full-pipeline-gpt_FINAL",
+      "mode": "3d",
+      "dimensions": {
+        "geometry": {
+          "winner": "no-iteration-qwen_FINAL",
+          "confidence": 0.9,
+          "rationale": "Figure 1 is geometrically more faithful because it uses an orthogonal 3D coordinate setup with the world point at (X,Y,Z), an image plane one focal length behind the pinhole, and a projected point satisfying x=-fX/Z and y=-fY/Z so the ray passes through the pinhole. Figure 2 is visually polished, but it constructs a flattened oblique pseudo-basis with non-orthogonal axes, places the red point on the X-Z plane rather than at the full X,Y,Z point, scales the projected Y coordinate incorrectly, and draws the projection ray to the wrong point, so its spatial relationships are substantially less accurate."
+        },
+        "interactivity": {
+          "winner": "no-iteration-qwen_FINAL",
+          "confidence": 0.9,
+          "rationale": "Figure 1 has controls that mostly recompute the actual pinhole geometry consistently: dragging P updates its X/Y position, the ray, projected point, and both cyan/green triangle cross sections, and the focal-length slider moves the image plane while scaling both projected coordinates from the same Z. Figure 2’s interactions are less correct: the draggable red point only changes X and Z rather than the full 3D point, the ray is drawn to the X-Z point rather than the full point with Y, and the projected image point’s Y component is inconsistently scaled, so the focal slider and drag do not faithfully update the advertised similar-triangle projection geometry. Figure 2’s correspondence toggle is visually clearer than Figure 1’s color-only toggle, but its underlying interactive geometry is substantially less correct."
+        },
+        "faithfulness": {
+          "winner": "full-pipeline-gpt_FINAL",
+          "confidence": 0.78,
+          "rationale": "Figure 2 is more visually recognizable as the textbook construction because it preserves the large left projection plane, central axes, red distance edges, green perspective triangle, and prominent X/Y/Z/f labels in a composition similar to the reference. Figure 1 contains some of the same colored geometric elements, but they are rendered very small and compressed in the scene with labels barely legible, making the overall figure much less recognizable at a glance."
+        },
+        "labels": {
+          "winner": "full-pipeline-gpt_FINAL",
+          "confidence": 0.9,
+          "rationale": "Figure 2 has the main mathematical labels from the reference (x, y, f, X, Y, Z) large and readable and placed near the corresponding parts of the geometry, whereas Figure 1’s diagram labels are extremely small and hard to read at inline size, with the scene occupying too little of the canvas. Figure 1 also shows prominent UI/control text that is not part of the original figure, while Figure 2’s extra sidebar text is present but the actual figure annotations are much closer to the textbook labeling."
+        },
+        "concept": {
+          "winner": "no-iteration-qwen_FINAL",
+          "confidence": 0.88,
+          "rationale": "Figure 1 better teaches the core derivation because its world point, pinhole, and projected image point are actually collinear and its green/cyan world and image triangles are constructed as corresponding X-Z and Y-Z cross-sections, matching the requested similar-triangle basis for x/f = X/Z and y/f = Y/Z (L00007, L00010). Figure 2 is conceptually worse because its dashed path is bent rather than a single collinear ray through the 3D point, optical center, and image point, its projected y coordinate is arbitrarily scaled, and its cyan construction is not a true Y-Z cross-sectional triangle, so a student would not see the stated pinhole-projection geometry correctly (L00010). Figure 1 still has a sign-convention problem by computing and even describing negative image coordinates for an image plane placed behind the pinhole, which conflicts with the positive equations in the brief, but Figure 2 violates more fundamental geometric relationships."
+        }
+      },
+      "aggregator": {
+        "winner": "no-iteration-qwen_FINAL",
+        "confidence": 0.74,
+        "explanation": "Figure 1 is the stronger overall figure because its source geometry and interactions more consistently implement the pinhole projection: the 3D point, pinhole, image point, ray, focal-length changes, and similar-triangle cross sections correspond to the intended derivation. Figure 2 is visually clearer and has much more readable textbook-style labels, but relative to Figure 1 it misrepresents key spatial relationships by using an oblique pseudo-basis, placing the point/projection inconsistently, and drawing a ray and projected y coordinate that do not match the stated pinhole geometry."
+      },
+      "evalModel": "gpt-5.5",
+      "evaluatedAt": "2026-08-14T19:17:12.054Z"
+    }
+  }
+}

@@ -1,0 +1,407 @@
+{
+  "math__1.6.4": {
+    "setupA": "baseline-qwen_FINAL",
+    "setupB": "no-iteration-gpt_FINAL",
+    "subject": "math",
+    "figure": "1.6.4",
+    "machineEval": {
+      "figure1Setup": "no-iteration-gpt_FINAL",
+      "figure2Setup": "baseline-qwen_FINAL",
+      "mode": "2d",
+      "dimensions": {
+        "geometry": {
+          "winner": "no-iteration-gpt_FINAL",
+          "confidence": 0.83,
+          "rationale": "Figure 1 better matches the expected unit-circle/squeeze-theorem structure: it includes the full left construction with axes, circle, base radius, slanted radius, tangent ray, labeled points, dashed auxiliary segments, and a clear side-by-side comparison of the outer triangle, sector, and inner triangle with correct area inequalities and fractions. Figure 2 captures the same general idea but is less structurally faithful: the left construction omits the explicit red radius/base segment to (1,0), uses dashed blue arcs in some comparison panels where the circle arc should read as a solid boundary, and overall has sparser styling and less precise correspondence of auxiliary lines and labels."
+        },
+        "interactivity": {
+          "winner": "no-iteration-gpt_FINAL",
+          "confidence": 0.72,
+          "rationale": "Figure 1’s angle slider covers essentially the requested 0 to π/2 range and its handler consistently redraws the unit-circle construction, side-by-side comparisons, overlay view, and area readout, including with visual capping/warning near the tangent blow-up. Figure 2’s slider redraws correctly within its own range and its label clicks implement highlighting better than Figure 1, but it incorrectly restricts x to 0.15–1.15 rather than 0–π/2, so the user cannot test the degenerate x=0 behavior or the near-π/2 behavior the control is supposed to expose; Figure 1’s main interaction flaw is that label clicks display formulas but do not actually highlight the region."
+        },
+        "faithfulness": {
+          "winner": "baseline-qwen_FINAL",
+          "confidence": 0.99,
+          "rationale": "Figure 2 is clearly recognizable as the original: it includes the unit circle construction on the left and the three area comparison diagrams with matching red/blue geometry and labels, even if rendered small with extra UI controls. Figure 1 fails to render the figure at all and instead shows only an error message, so it has essentially no visual faithfulness to the reference."
+        },
+        "labels": {
+          "winner": "baseline-qwen_FINAL",
+          "confidence": 0.99,
+          "rationale": "Figure 2 at least includes most of the original mathematical labels and annotations such as the point labels, x, tan x, sin x, area captions, and inequalities, although they are very small and somewhat hard to read at inline size. Figure 1 fails to render the figure at all and only shows an error message and reload button, so it has none of the required textbook labels."
+        },
+        "concept": {
+          "winner": "baseline-qwen_FINAL",
+          "confidence": 0.78,
+          "rationale": "Figure 2 is more concept-accurate because, over its allowed angle range, the tangent point and outer triangle height are actually drawn proportional to tan x, the sector has area x/2, and the inner triangle height is sin x, so the displayed area inequality tan x/2 ≥ x/2 ≥ sin x/2 matches the geometry (L00010). Figure 1 conveys the same main idea, but for larger slider values it visually caps the tangent height while still labeling the point as (1, tan x) and the outer area as tan x/2, so the asserted formulas no longer match the drawn geometry; it also permits x = 0 while displaying bounds involving sin x/x in overlay, even though the geometric division/quotient is only meaningful for positive x approaching 0 (L00007, L00010)."
+        }
+      },
+      "aggregator": {
+        "winner": "baseline-qwen_FINAL",
+        "confidence": 0.86,
+        "explanation": "Figure 2 is the stronger final figure because it actually renders a recognizable unit-circle squeeze-theorem diagram with the key labels, area comparisons, and inequalities, whereas Figure 1 reportedly renders only an error message in the visual evaluation. Although Figure 1’s source appears to contain a fuller construction and broader slider behavior, those advantages are outweighed by its failed rendering and by conceptual issues where its capped tangent geometry can disagree with its tan x labels; Figure 2 is less complete structurally but remains visually and mathematically usable."
+      },
+      "evalModel": "gpt-5.5",
+      "evaluatedAt": "2026-08-14T19:03:58.340Z"
+    }
+  },
+  "math__14.7.5": {
+    "setupA": "baseline-qwen_FINAL",
+    "setupB": "no-iteration-gpt_FINAL",
+    "subject": "math",
+    "figure": "14.7.5",
+    "machineEval": {
+      "figure1Setup": "no-iteration-gpt_FINAL",
+      "figure2Setup": "baseline-qwen_FINAL",
+      "mode": "2d",
+      "dimensions": {
+        "geometry": {
+          "winner": "no-iteration-gpt_FINAL",
+          "confidence": 0.72,
+          "rationale": "Figure 1 better reconstructs the textbook-style structure: it has the two large coordinate panels, a prominent transformation arrow, a clearly filled rectangular S with all four constant-u/v boundary lines and labels, and a large filled curvilinear image region R with the four corresponding image-boundary curves. Figure 2 contains the same basic topology, but its right-hand image is comparatively small and tied to a fixed polar coordinate scale, its labels are more crowded and endpoint-dependent, and the overall proportions and visual hierarchy are less faithful to the schematic textbook layout."
+        },
+        "interactivity": {
+          "winner": "no-iteration-gpt_FINAL",
+          "confidence": 0.86,
+          "rationale": "Figure 1 handles the requested interactions more correctly: formula edits recompile both expressions, redraw all four image boundaries and the filled region, update the Jacobian/area readouts, and invalid formulas show an inline error while preserving the last valid drawing. Its corner dragging keeps the rectangle dimensions positive and within the uv panel while recomputing the image. Figure 2 also has working formula inputs and drag handlers, but its corner dragging is less correct and less robust: some dragged corners move the whole rectangle edge/rectangle rather than keeping the opposite corner fixed, and the BL drag can push the rectangle beyond the intended coordinate frame because du/dv are left unchanged. Figure 2 also uses a fixed xy scale, so valid transformations or drag extremes can easily send R off panel rather than keeping the redrawn image usable."
+        },
+        "faithfulness": {
+          "winner": "baseline-qwen_FINAL",
+          "confidence": 0.98,
+          "rationale": "Figure 2 is recognizable as the original: it includes the left uv-rectangle S, the arrow mapping, and the curved image region R with similar blue outlines and light fill, even though it is smaller and cluttered by UI text. Figure 1 fails to render the figure at all and only shows an error message, so it has essentially no visual resemblance to the textbook figure."
+        },
+        "labels": {
+          "winner": "baseline-qwen_FINAL",
+          "confidence": 0.99,
+          "rationale": "Figure 2 includes most of the intended mathematical labels and annotations for the rectangle, axes, arrow, and image curves, whereas Figure 1 fails to render the figure at all and only shows an error message, so it has essentially none of the required labels. Figure 2's labels are small and some differ from or are less cleanly placed than the reference, but it is clearly superior because the relevant labels are at least present and mostly readable."
+        },
+        "concept": {
+          "winner": "no-iteration-gpt_FINAL",
+          "confidence": 0.68,
+          "rationale": "Figure 1 is more conceptually aligned with the brief because it treats R as the image of the four sampled sides of S under the displayed transformation and frames the Jacobian as a local area-scaling approximation |J|ΔuΔv, matching the small-rectangle motivation in the context and brief (L00007, L00010). Figure 2 correctly maps and labels the rectangle and its image curves, but its prominent readout emphasizes Area(R)/Area(S) as an averaged Jacobian and adds global area claims that require stronger assumptions such as one-to-one behavior and no folding; that is less faithful to the local small-region Jacobian idea the figure is supposed to motivate (L00007-L00010)."
+        }
+      },
+      "aggregator": {
+        "winner": "baseline-qwen_FINAL",
+        "confidence": 0.66,
+        "explanation": "Figure 2 is the better final artifact because it actually renders a recognizable uv-rectangle S, mapping arrow, curved image region R, and most required mathematical labels, while Figure 1 reportedly displays only an error message in the rendered view. Although Figure 1 appears stronger at the source-code level for geometry, interaction robustness, and local-Jacobian framing, those advantages are largely negated if the user cannot see the figure; Figure 2 is smaller, more cluttered, and less robust interactively, but it preserves the essential visual and labeling content."
+      },
+      "evalModel": "gpt-5.5",
+      "evaluatedAt": "2026-08-14T19:05:16.204Z"
+    }
+  },
+  "math__15.2.2": {
+    "setupA": "baseline-qwen_FINAL",
+    "setupB": "no-iteration-gpt_FINAL",
+    "subject": "math",
+    "figure": "15.2.2",
+    "machineEval": {
+      "figure1Setup": "no-iteration-gpt_FINAL",
+      "figure2Setup": "baseline-qwen_FINAL",
+      "mode": "2d",
+      "dimensions": {
+        "geometry": {
+          "winner": "no-iteration-gpt_FINAL",
+          "confidence": 0.87,
+          "rationale": "Figure 1 better matches the likely textbook structure: it has the main blue curve with labeled partition points including Pₖ₋₁ and Pₖ, a clearly highlighted kth subarc, a broad outlined zoom arrow leading to a separate enlarged subarc, endpoint dots, double-headed Δsₖ dimension lines with ticks, the red sample point P*ₖ, and the formula box in proportions and placement resembling the original. Figure 2 captures the same general concept but its layout is less faithful: the curve is more vertically stretched and angular, the zoom arrow is a simpler thick stroke with a polygon head, the selected main subarc is not visibly highlighted as well, and important main-curve labels for Pₖ₋₁/Pₖ are missing or relegated mainly to the inset."
+        },
+        "interactivity": {
+          "winner": "no-iteration-gpt_FINAL",
+          "confidence": 0.93,
+          "rationale": "Figure 1’s slider and inset drag generally recompute the partition, sample-point positions, and Riemann-sum readout consistently, whereas Figure 2’s update handlers clear only some groups but create many dots, labels, arrows, ticks, and inset sample labels on the root SVG, so slider changes and dragging leave stale/duplicated geometry on screen. Figure 2 also resets the dragged sample position to the midpoint whenever n changes and does not show multiplying sample points along the main curve, while Figure 1 preserves the sample choice and updates the displayed sum as the red point is dragged, though it has a lesser issue of accumulating pointer handlers across redraws."
+        },
+        "faithfulness": {
+          "winner": "no-iteration-gpt_FINAL",
+          "confidence": 0.9,
+          "rationale": "Figure 1 is more visually faithful because it preserves the main blue space curve with labeled points, the looped zoom region, the beige arrow to the inset, the inset segment with red sample point, and the boxed formula at the bottom in a layout closely resembling the reference. Figure 2 captures the general idea but is less recognizable: it omits or diminishes several key labels and the boxed equation, changes the inset geometry and label placement, and introduces extra numerical text that distracts from the original composition."
+        },
+        "labels": {
+          "winner": "no-iteration-gpt_FINAL",
+          "confidence": 0.93,
+          "rationale": "Figure 1 has far more of the original labels and annotations, including P=P0, P1/P2/P3, Pk-1, Pk, Pn-1, Q=Pn, Mass ΔMk, Δsk, the inset sample-point label, and the boxed formula, whereas Figure 2 omits or badly degrades several key labels, leaves the bottom formula box essentially empty, adds irrelevant numeric annotations, and even appears to misplace or swap some inset labels. Figure 1 does have some small and slightly cluttered labels near the inset and extra numeric text, but Figure 2 is substantially less faithful and readable overall."
+        },
+        "concept": {
+          "winner": "no-iteration-gpt_FINAL",
+          "confidence": 0.78,
+          "rationale": "Figure 1 more accurately preserves the key relationships: it labels the local approximation as ΔMₖ ≈ f(x*ₖ,y*ₖ,z*ₖ)Δsₖ and its sum readout as Σ f(P*ᵢ)Δsᵢ approaching ∫C f ds, matching the textbook/brief distinction between actual arc mass and the Riemann-sum approximation (L00021-L00034, L00037-L00044, L00046-L00047). Figure 2 depicts the partition and sample point correctly in broad terms, but it repeatedly labels computed sampled approximations as “Σ ΔMₖ” and “ΔMₖ” and says any sample choice gives a valid ΔMₖ, which blurs the brief’s point that ΔMₖ is approximated by f(P*ₖ)Δsₖ rather than equal to an arbitrary sampled value (L00021-L00025, L00046-L00047)."
+        }
+      },
+      "aggregator": {
+        "winner": "no-iteration-gpt_FINAL",
+        "confidence": 0.92,
+        "explanation": "Figure 1 is the clear overall winner: compared with Figure 2, it more faithfully preserves the reference layout, including the labeled main curve, highlighted kth subarc, zoom inset, red sample point, Δsₖ annotations, mass approximation label, and boxed formula. Figure 2 conveys the broad partition-and-sample idea, but it loses or misplaces important labels, has a less faithful geometry and inset composition, introduces distracting or incorrect numerical/text annotations, and its interactive redraw behavior leaves stale duplicated elements while resetting sample choices. Conceptually, Figure 1 also better distinguishes the Riemann-sum approximation f(P*ₖ)Δsₖ from the actual mass element, whereas Figure 2 blurs that relationship."
+      },
+      "evalModel": "gpt-5.5",
+      "evaluatedAt": "2026-08-14T19:05:45.922Z"
+    }
+  },
+  "math__15.6.9": {
+    "setupA": "baseline-qwen_FINAL",
+    "setupB": "no-iteration-gpt_FINAL",
+    "subject": "math",
+    "figure": "15.6.9",
+    "machineEval": {
+      "figure1Setup": "no-iteration-gpt_FINAL",
+      "figure2Setup": "baseline-qwen_FINAL",
+      "mode": "3d",
+      "dimensions": {
+        "geometry": {
+          "winner": "no-iteration-gpt_FINAL",
+          "confidence": 0.93,
+          "rationale": "Figure 1 better matches the likely textbook geometry of a small surface element σ_k on an arbitrary curved surface, with a highlighted curved rectangular patch embedded in a larger surface, correct local normal, flow arrows parallel to the normal, a swept volume slab, leaders, and callout elements arranged in an isometric view. Figure 2 replaces the original general surface with a spherical guide surface and a thick spherical-cap tile, which changes the underlying geometry and spatial relationships; it also lacks the swept volume/callout structure and instead computes flux from a vertical field while drawing arrows along the local normal, making the reconstruction less faithful."
+        },
+        "interactivity": {
+          "winner": "no-iteration-gpt_FINAL",
+          "confidence": 0.93,
+          "rationale": "Figure 1’s drag handler actually updates the patch geometry, edge curves, sample point, normal, area estimate, swept volume, and labels consistently, and its velocity slider scales the normal-direction flow visualization/readouts and handles zero speed cleanly. Figure 2’s controls partly work, but its flux computation uses a fixed vertical field while the drawn arrows are always aligned with the normal, so the displayed flux can contradict the visualization; its ΔSₖ readout changes with spherical coordinates even though the drawn patch is just rigidly transformed and does not change area, and at zero velocity it still shows nonzero flow arrows. Figure 2 also has weaker drag robustness because it lacks pointer capture/window release handling."
+        },
+        "faithfulness": {
+          "winner": "no-iteration-gpt_FINAL",
+          "confidence": 0.95,
+          "rationale": "Figure 1 is much more recognizable as the textbook figure: it preserves the broad curved turquoise surface patch, the upright normal vector, labels for area/surface, and the beige explanatory callout. Figure 2 instead places a small patch on a sphere with a very different composition and omits the large callout structure, making it read as a different diagram despite sharing some labels and a normal arrow."
+        },
+        "labels": {
+          "winner": "no-iteration-gpt_FINAL",
+          "confidence": 0.9,
+          "rationale": "Figure 1 includes most of the original textual annotations, including the callout sentence, n, Area ΔS_k, and Surface σ_k, and they are generally readable, though somewhat cluttered and with extra invented numeric labels overlapping the patch. Figure 2 omits the large explanatory callout entirely, shrinks the main labels into a cramped cluster where Area and Surface overlap, and adds unrelated UI/readout text, so its labels match the original much less well."
+        },
+        "concept": {
+          "winner": "no-iteration-gpt_FINAL",
+          "confidence": 0.93,
+          "rationale": "Figure 1 more accurately teaches the intended local flux idea: it shows a single curved surface element with a normal and flow arrows in the normal direction, and its displayed vΔS/readout is consistent with the special case F = v n, so the volume-per-time interpretation matches the brief and context (L00014-L00027, L00056-L00057). Figure 2 has serious conceptual inconsistencies: its flow arrows are drawn along the patch normal while its flux computation uses a fixed global upward velocity F=(0,flowSpeed,0), so the displayed F·nΔS value does not match the drawn velocity direction, and when the normal tilts or points downward it can imply negative flux while still drawing flow in the direction of n rather than opposite to n as the context requires (L00028-L00042). Figure 2 also computes ΔS_k as a latitude-dependent spherical-coordinate area even though the patch geometry is a rigid cap moved on the sphere, so its area label can assert a changing area not represented by the actual patch (L00019-L00027, L00057)."
+        }
+      },
+      "aggregator": {
+        "winner": "no-iteration-gpt_FINAL",
+        "confidence": 0.95,
+        "explanation": "Figure 1 is clearly stronger: it preserves the intended curved surface element, local normal, normal-aligned flow, swept-volume/callout structure, and most of the original labels, while its interactions update the geometry and readouts consistently. Figure 2 changes the geometry into a spherical-cap construction, omits the main explanatory callout, has cramped/overlapping labels, and introduces conceptual mismatches such as arrows drawn along the normal while flux is computed from a fixed vertical field and area readouts that do not match the drawn patch."
+      },
+      "evalModel": "gpt-5.5",
+      "evaluatedAt": "2026-08-14T19:06:25.402Z"
+    }
+  },
+  "chemistry__CNX_Chem_12_07_HetCats-230a": {
+    "setupA": "baseline-qwen_FINAL",
+    "setupB": "no-iteration-gpt_FINAL",
+    "subject": "chemistry",
+    "figure": "CNX_Chem_12_07_HetCats-230a",
+    "machineEval": {
+      "figure1Setup": "baseline-qwen_FINAL",
+      "figure2Setup": "no-iteration-gpt_FINAL",
+      "mode": "3d",
+      "dimensions": {
+        "geometry": {
+          "winner": "no-iteration-gpt_FINAL",
+          "confidence": 0.68,
+          "rationale": "Figure 2 reconstructs the catalytic surface and molecular geometry more accurately, with a staggered Ni lattice, larger ball-and-stick molecules, explicit Ni-H/Ni-C contacts, correct single versus double C-C bonding in the adsorbed/product stages, and curved/dashed indicators for migration and pi-bond weakening. Figure 1 better preserves a four-panel side-by-side layout, but its chemistry geometry is cruder: the surface atoms are an overly regular small grid, contacts to the metal are mostly missing, adsorbed intermediates are less realistic, and panel (c) still uses an ethylene-style double bond despite representing hydrogen addition."
+        },
+        "interactivity": {
+          "winner": "no-iteration-gpt_FINAL",
+          "confidence": 0.93,
+          "rationale": "Figure 2 has substantially more correct controls: the step selector updates the visible mechanism group, labels/leaders, narration, and animated molecular positions consistently, and the cycle animation interpolates the advertised approach/addition/desorption states while click handlers identify Ni atoms and provide feedback. Figure 1’s step buttons only hide/show 3D panel groups while its HTML labels remain visible for hidden panels, it starts with Step (a) marked active while all panels are displayed, and its animation merely cycles static panels rather than animating the claimed molecular mechanism."
+        },
+        "faithfulness": {
+          "winner": "no-iteration-gpt_FINAL",
+          "confidence": 0.72,
+          "rationale": "Figure 2 is more visually faithful at a glance because it presents a clear, large nickel surface with green atom lattice, hydrogen label, arrows, and panel marker resembling the original panel style. Figure 1 includes all four stages, which is useful, but the entire figure is shrunken into a small diagonal cluster with cramped/overlapping labels, making the composition much less like the original horizontal textbook sequence and harder to recognize."
+        },
+        "labels": {
+          "winner": "baseline-qwen_FINAL",
+          "confidence": 0.86,
+          "rationale": "Figure 1 includes the key original labels such as Ni surface, Hydrogen, Ethylene, the ethylene-adsorbed annotation, and panel markers (a)–(d), whereas Figure 2 only shows the labels for step (a) and omits the ethylene-related labels and later panel labels entirely. Figure 1's labels are quite small and somewhat cluttered/overlapping, especially around the middle panels, but Figure 2 is much less complete and adds interface/explanatory text not present in the textbook figure."
+        },
+        "concept": {
+          "winner": "no-iteration-gpt_FINAL",
+          "confidence": 0.94,
+          "rationale": "Figure 2 is more conceptually accurate because it explicitly shows H2 dissociation with separated adsorbed H atoms and Ni-H contacts, ethylene adsorption with loss of pi-bond character and Ni-C contacts, migrating H atoms forming C-H bonds, and ethane desorption, matching the mechanism described in the caption and brief (L00007, L00012, L00018-L00019). Figure 1 gets the broad sequence and final ethane desorption mostly right, but it omits Ni-H and Ni-C bond formation and, more seriously, continues to draw the adsorbed ethylene/step-c intermediate with a C=C double bond even where the pi bond should be broken, which would teach the wrong bonding state for panels b and c (L00007, L00018-L00019)."
+        }
+      },
+      "aggregator": {
+        "winner": "no-iteration-gpt_FINAL",
+        "confidence": 0.88,
+        "explanation": "Figure 2 is stronger overall because it more accurately represents the catalytic mechanism: it shows Ni-H and Ni-C contacts, H2 dissociation, pi-bond weakening, hydrogen migration, and ethane desorption, while Figure 1 keeps cruder surface geometry and incorrectly retains ethylene-like double bonding in later intermediates. Figure 2 also has much more functional interactivity, with step controls and animations that update the mechanism coherently, whereas Figure 1’s controls leave labels mismatched and mostly just switch static panels. Figure 1 does include more of the original textbook labels and all four panel markers, but its cramped rendering and less accurate chemistry make it weaker than Figure 2 despite that labeling advantage."
+      },
+      "evalModel": "gpt-5.5",
+      "evaluatedAt": "2026-08-14T19:06:56.515Z"
+    }
+  },
+  "cs__GanDCGANArch": {
+    "setupA": "baseline-qwen_FINAL",
+    "setupB": "no-iteration-gpt_FINAL",
+    "subject": "cs",
+    "figure": "GanDCGANArch",
+    "machineEval": {
+      "figure1Setup": "baseline-qwen_FINAL",
+      "figure2Setup": "no-iteration-gpt_FINAL",
+      "mode": "3d",
+      "dimensions": {
+        "geometry": {
+          "winner": "no-iteration-gpt_FINAL",
+          "confidence": 0.93,
+          "rationale": "Figure 2 reconstructs the DCGAN architecture geometry much more accurately: it uses custom extruded prism blocks with visible front/top/side faces, black outlines, more faithful relative tensor proportions, a segmented 100×1 latent vector with dotted break, a thin textured 64×64×3 image plane, scalar 1×1 markers, overbraces/brackets, and spatial layout closer to the original left-to-right schematic. Figure 1 has the correct broad block counts and labels, but its geometry is much cruder: plain centered boxes with weak depth cues, a solid latent bar instead of a broken vector glyph, an orange output slab instead of an image-like plane, simplified braces/arrows, and less faithful proportions and placement."
+        },
+        "interactivity": {
+          "winner": "no-iteration-gpt_FINAL",
+          "confidence": 0.86,
+          "rationale": "Figure 2 implements the requested animations more correctly: its selected-pass animation traces a moving marker through the generator stages including project/reshape and activation, and through the discriminator from x/x* to convolution stages, 1×1, sigmoid, and Pr(real), while updating the displayed step text and highlighting the relevant label. Figure 1’s buttons technically work and its Stop control resets cleanly, but its discriminator animation starts only at 32×32×128 and omits the input image, sigmoid, and probability stages, and both animations are only simple block highlights rather than a real trace. Figure 2 has minor state issues if the user switches passes mid-animation, such as stale button/glow state, but it still satisfies the intended interactions substantially better than Figure 1."
+        },
+        "faithfulness": {
+          "winner": "baseline-qwen_FINAL",
+          "confidence": 0.88,
+          "rationale": "Figure 1 is much more recognizable as the original GAN architecture: it preserves the left-to-right generator and discriminator layout, orange block sequences, latent vector, arrows, and labels in a relatively readable composition. Figure 2 has the same intended elements but the text and blocks are heavily overlapped, oversized, and partly greyed out, making the architecture much harder to read at a glance and less visually faithful to the clean textbook diagram."
+        },
+        "labels": {
+          "winner": "baseline-qwen_FINAL",
+          "confidence": 0.86,
+          "rationale": "Figure 1 has most of the required labels with more correct placement relative to the architecture, even though they are quite small and some dimension labels crowd together. Figure 2 uses larger text, but the labels heavily overlap each other and the blocks, the discriminator labels are washed out/greyed, and the overall annotation area is much more cluttered and harder to read."
+        },
+        "concept": {
+          "winner": "no-iteration-gpt_FINAL",
+          "confidence": 0.82,
+          "rationale": "Figure 2 is more conceptually accurate because it preserves the generator and discriminator tensor progressions and explicitly describes the discriminator reduction from image input through 64→32→16→8→4 to sigmoid Pr(real), matching the brief's architecture sequence (L00007). Figure 1 gets the main visible dimensions mostly right, but it falsely asserts in an interactive tooltip that the generator's final activation is tanh rather than the arctan activation specified in the brief, and it less clearly represents the discriminator as receiving a 64×64×3 image before the 32×32×128 stage (L00007)."
+        }
+      },
+      "aggregator": {
+        "winner": "no-iteration-gpt_FINAL",
+        "confidence": 0.72,
+        "explanation": "Figure 2 is overall stronger because it more accurately reconstructs the DCGAN architecture geometry and tensor progression, including the latent vector, image input/output, discriminator reduction path, sigmoid/Pr(real), and more complete generator/discriminator animations. Figure 1 is cleaner and more readable in the rendered screenshot, with better label placement and less clutter, but relative to Figure 2 it uses cruder block geometry, omits or simplifies key interaction stages, and contains a conceptual error about the generator activation."
+      },
+      "evalModel": "gpt-5.5",
+      "evaluatedAt": "2026-08-14T19:07:28.826Z"
+    }
+  },
+  "cs__ResidualResnet2": {
+    "setupA": "baseline-qwen_FINAL",
+    "setupB": "no-iteration-gpt_FINAL",
+    "subject": "cs",
+    "figure": "ResidualResnet2",
+    "machineEval": {
+      "figure1Setup": "no-iteration-gpt_FINAL",
+      "figure2Setup": "baseline-qwen_FINAL",
+      "mode": "3d",
+      "dimensions": {
+        "geometry": {
+          "winner": "no-iteration-gpt_FINAL",
+          "confidence": 0.91,
+          "rationale": "Figure 1 better reconstructs the original ResNet architecture geometry: it uses an oblique textbook-like projection, includes repeated stage cuboids, ellipsis markers, double-headed residual-stage brackets, segmented classifier bars, and a wide residual-block inset with skip connection and addition node laid out similarly to the source. Figure 2 is much more schematic and geometrically compressed, with later residual stages represented as single simple blocks rather than repeated/elongated structures, missing many brackets/ellipsis/repetition cues, and using less accurate proportions and spatial relationships for the input, stages, and classifier."
+        },
+        "interactivity": {
+          "winner": "no-iteration-gpt_FINAL",
+          "confidence": 0.94,
+          "rationale": "Figure 1 has working controls that mostly match the requested interactions: its forward-pass button visibly traces both main and skip paths and highlights the addition, its 24/36 depth slider updates the displayed depth/repeat labels while keeping tensor dimensions fixed, and clicking a stage redraws the inset labels with the selected stage’s bottleneck and output channel counts. Figure 2 is substantially weaker: its animation can complete instantly if started after a delay because the timestamp is not reset on click, its depth control is a model select rather than the requested 24/36 slider and updates only a couple of labels plus stage-1 visibility with inconsistent totals, and clicking stages mostly opens popup text rather than updating the inset drawing with stage-specific labeled bottleneck details."
+        },
+        "faithfulness": {
+          "winner": "baseline-qwen_FINAL",
+          "confidence": 0.88,
+          "rationale": "Figure 2 is more recognizable as the original ResNet architecture diagram: it preserves the left-to-right flow, the large input image, staged blue feature blocks, subsample points, final classifier bars, and the gray ResBlock inset. Figure 1 contains many of the same labels and elements, but they are severely overlapped and compressed into an unreadable cluster, making the composition much less visually faithful at a glance."
+        },
+        "labels": {
+          "winner": "baseline-qwen_FINAL",
+          "confidence": 0.82,
+          "rationale": "Figure 2 has fewer and smaller annotations than the reference, and it appears to omit or make unreadable the detailed labels inside the ResBlock inset, but its main architecture labels are generally legible and placed with less collision. Figure 1 includes more attempted labels, including ResBlock-detail text, but they are heavily overlapped and cluttered across the central diagram, making many labels difficult or impossible to read and reducing overall label quality."
+        },
+        "concept": {
+          "winner": "no-iteration-gpt_FINAL",
+          "confidence": 0.72,
+          "rationale": "Figure 1 is more conceptually accurate overall because its main diagram more faithfully represents the specified tensor progression from 224×224×3 through 112×112×64 and the four residual stages to 7×7×2048 with AvgPool+FC, and it treats depth changes as added repeated residual blocks while keeping stage dimensions fixed (L00007). Figure 2 also labels the main dimensions, but its ResNet-18/34/50/101/152 selector asserts incompatible standard architectures while leaving a bottleneck/2048-channel ResNet-style diagram in place and gives block-count labels that do not correspond reliably to those selected models, which is more misleading. Both figures are wrong on the ResBlock inset sequence: the brief requires Conv 1×1, BN, ReLU, Conv 3×3, BN, ReLU, Conv 1×1 with a skip addition, but both show BN/ReLU before the first Conv 1×1, so Figure 1 only wins because Figure 2 adds more false architecture/depth assertions (L00007)."
+        }
+      },
+      "aggregator": {
+        "winner": "no-iteration-gpt_FINAL",
+        "confidence": 0.69,
+        "explanation": "Figure 1 is stronger overall because it more accurately reconstructs the ResNet geometry in source, implements the requested interactions better, and preserves the intended tensor/depth progression with repeated residual stages, working forward-path highlighting, and stage-specific inset updates. Figure 2 is more legible and visually faithful in the rendered screenshot, but relative to Figure 1 it is geometrically oversimplified, has weaker or inconsistent depth controls, popup-based stage interaction instead of inset updates, and makes more misleading architecture/depth assertions."
+      },
+      "evalModel": "gpt-5.5",
+      "evaluatedAt": "2026-08-14T19:08:09.819Z"
+    }
+  },
+  "physics__sampling_reconstruction2": {
+    "setupA": "baseline-qwen_FINAL",
+    "setupB": "no-iteration-gpt_FINAL",
+    "subject": "physics",
+    "figure": "sampling_reconstruction2",
+    "machineEval": {
+      "figure1Setup": "no-iteration-gpt_FINAL",
+      "figure2Setup": "baseline-qwen_FINAL",
+      "mode": "2d",
+      "dimensions": {
+        "geometry": {
+          "winner": "no-iteration-gpt_FINAL",
+          "confidence": 0.82,
+          "rationale": "Figure 1 better matches the expected convolution-of-samples-with-sinc structure: it uses a clear three-panel layout with a star convolution operator and equals sign, blue impulse samples, a green sinc kernel, dashed shifted/scaled sinc copies, and a solid red reconstructed sum with proportions and labels close to a textbook schematic. Figure 2 has the same broad idea but is structurally less faithful: the convolution symbol is rendered as an empty circle rather than an asterisk/star, the sample labels lose the subscript in T_s, the right panel uses a different time window and denser sampling pattern, and the dashed copies/stems are thinner and less visually aligned with the original schematic style."
+        },
+        "interactivity": {
+          "winner": "no-iteration-gpt_FINAL",
+          "confidence": 0.88,
+          "rationale": "Figure 1's slider, copy-view selector/click-to-isolate behavior, and convolution sweep all recompute and redraw the relevant samples, sinc copies, kernel, and red cumulative sum coherently, including updating the UI state when animation forces all copies visible. Figure 2's basic slider and sweep work, but it does not provide true individual-copy toggling, its middle kernel remains static when T_s changes even though the right-panel sinc widths change, and during a sweep it can show green copies while the 'show individual sinc copies' checkbox remains unchecked, so the control state can disagree with the drawing."
+        },
+        "faithfulness": {
+          "winner": "no-iteration-gpt_FINAL",
+          "confidence": 0.9,
+          "rationale": "Figure 1 is more visually faithful because it preserves the key three-part convolution/reconstruction composition: blue sample impulses on the left, a green sinc kernel in the middle, and a right-hand reconstruction with red curve, blue sample stems, and green dashed sinc copies. Figure 2 has the same broad layout but shows a different sampling setting and omits the visible individual dashed sinc copies in the right panel, making it look less like the reference at a glance."
+        },
+        "labels": {
+          "winner": "no-iteration-gpt_FINAL",
+          "confidence": 0.87,
+          "rationale": "Figure 1 has more complete and readable diagram labels matching the reference, including the sample-time labels, the convolution asterisk, equals sign, the middle-panel “1”, and t-axis labels. Figure 2’s labels are noticeably smaller and harder to read, the left-panel time labels are cramped, and the convolution symbol appears incorrect or unclear, so it matches the original annotations less well."
+        },
+        "concept": {
+          "winner": "no-iteration-gpt_FINAL",
+          "confidence": 0.86,
+          "rationale": "Figure 1 more correctly represents the sinc-reconstruction equation: its kernel is a peak-1 sinc scaled by the current sampling interval, its dashed copies are shifted and scaled by each sample, and the red sum is computed from those copies so it passes through the sample values, matching the intended convolution/superposition concept (L00007, L00012). Figure 2 also computes a sinc sum, but it is less accurate because its left-panel labels are changed from the required -T_s, T_s, 2T_s to -T, T, 2T, and its middle panel draws a normalized sinc on an axis labeled t that does not rescale with T_s even though the right-panel reconstruction kernel does, making the displayed kernel less truthfully tied to the sampling interval described in the brief (L00012). Both figures make some unsupported Nyquist/aliasing claims outside the brief, but Figure 2’s labeling and kernel-time inconsistency make it the weaker conceptually."
+        }
+      },
+      "aggregator": {
+        "winner": "no-iteration-gpt_FINAL",
+        "confidence": 0.9,
+        "explanation": "Figure 1 is the clear winner because it more faithfully presents the textbook convolution/sinc-reconstruction structure, with readable sample labels, a correct convolution star, a peak-1 sinc kernel tied to the sampling interval, visible shifted/scaled sinc copies, and a red summed reconstruction that coherently matches the samples. Figure 2 captures the broad idea but is weaker visually and conceptually: its convolution symbol and labels are less accurate, the kernel display is inconsistent with the sampling interval, individual sinc copies are less clearly represented, and some interactive controls can leave the UI state inconsistent with the drawing."
+      },
+      "evalModel": "gpt-5.5",
+      "evaluatedAt": "2026-08-14T19:08:50.057Z"
+    }
+  },
+  "physics__snellcropped": {
+    "setupA": "baseline-qwen_FINAL",
+    "setupB": "no-iteration-gpt_FINAL",
+    "subject": "physics",
+    "figure": "snellcropped",
+    "machineEval": {
+      "figure1Setup": "baseline-qwen_FINAL",
+      "figure2Setup": "no-iteration-gpt_FINAL",
+      "mode": "2d",
+      "dimensions": {
+        "geometry": {
+          "winner": "baseline-qwen_FINAL",
+          "confidence": 0.86,
+          "rationale": "Figure 1 better preserves the core Snell-law geometry: a horizontal interface, a truly vertical normal perpendicular to it, incident and refracted rays meeting at the boundary, and angle arcs placed consistently relative to the normal. Figure 2 has the same basic ray topology but its normal line is visibly slanted while the surface is horizontal, which undermines the structural geometry; it also adds extra equation/readout/critical-angle elements that clutter the reconstruction compared with the simpler textbook-style layout."
+        },
+        "interactivity": {
+          "winner": "baseline-qwen_FINAL",
+          "confidence": 0.88,
+          "rationale": "Figure 1 has more correct and complete interactions: dragging or the θ₁ slider recomputes θ₂ from Snell’s law, updates the angle arcs/readout, and correctly swaps the refracted ray for a reflected ray under total internal reflection across nearly the full physical range. Figure 2’s sliders and mouse drag mostly work, but the drag range is artificially clamped to 3°–82°, so normal incidence and high-angle edge cases are not reachable, it lacks a θ₁ slider/readout control synchronization, and its touch-start handler passes a Touch object to code that calls preventDefault, which can break touch dragging."
+        },
+        "faithfulness": {
+          "winner": "baseline-qwen_FINAL",
+          "confidence": 0.99,
+          "rationale": "Figure 1 clearly reproduces the refraction diagram with the horizontal interface, vertical surface normal, bent blue ray, angle labels, medium labels, and right-angle marker, so it is recognizable as the original figure. Figure 2 does not render the diagram at all and only shows an error message, making it visually unfaithful."
+        },
+        "labels": {
+          "winner": "baseline-qwen_FINAL",
+          "confidence": 0.99,
+          "rationale": "Figure 1 includes the essential diagram labels such as n₁, n₂, surface normal, ray direction, and θ₁/θ₂ annotations, with generally readable placement, whereas Figure 2 fails to render the diagram at all and only shows an error message and reload button, so it has none of the required textbook labels."
+        },
+        "concept": {
+          "winner": "baseline-qwen_FINAL",
+          "confidence": 0.9,
+          "rationale": "Figure 1 more accurately represents the required refraction geometry: its interface is horizontal, its normal is truly vertical and perpendicular, the right-angle square matches that perpendicularity, and θ₁/θ₂ are computed and drawn relative to that normal while satisfying n₁ sin θ₁ = n₂ sin θ₂ (L00007, L00010). Figure 2 computes Snell’s-law bending mostly correctly, but its drawn 'normal' line is slightly slanted while the angles and right-angle marker are drawn relative to a vertical line, so the labeled surface normal is not actually perpendicular to the horizontal interface as required (L00010)."
+        }
+      },
+      "aggregator": {
+        "winner": "baseline-qwen_FINAL",
+        "confidence": 0.98,
+        "explanation": "Figure 1 is the clear overall winner because it renders the intended Snell’s-law diagram with a horizontal interface, perpendicular vertical normal, correctly meeting incident/refracted rays, readable n₁/n₂ and θ₁/θ₂ labels, and interactions that update the geometry and handle total internal reflection. Figure 2 is weaker both visually and structurally: the rendered view reportedly fails entirely for screenshot-based judges, and in the code-based assessment its normal is slanted relative to the horizontal interface, its controls are less complete, and some drag/touch edge cases are mishandled."
+      },
+      "evalModel": "gpt-5.5",
+      "evaluatedAt": "2026-08-14T19:09:13.611Z"
+    }
+  }
+}

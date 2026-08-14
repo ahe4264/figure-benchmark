@@ -1,0 +1,452 @@
+{
+  "math__15.2.7": {
+    "setupA": "baseline-kimi_FINAL",
+    "setupB": "no-iteration-gpt_FINAL",
+    "subject": "math",
+    "figure": "15.2.7",
+    "machineEval": {
+      "figure1Setup": "no-iteration-gpt_FINAL",
+      "figure2Setup": "baseline-kimi_FINAL",
+      "mode": "3d",
+      "dimensions": {
+        "geometry": {
+          "winner": "no-iteration-gpt_FINAL",
+          "confidence": 0.88,
+          "rationale": "Figure 1 more accurately reconstructs the 3D textbook geometry: it has the correct wireframe box ranges, the half-turn helix with start/end points at (1,0,0) and (−1,0,π), an interior reference line, tick marks, tangent/direction arrow, leader arrow, and curve label. Figure 2 has the basic box and helix, but it omits tick-mark geometry and the interior vertical reference line, places endpoint coordinate labels away from the actual endpoints, lacks the curve label C, and adds an orange tracer/trace line that is not part of the original geometry."
+        },
+        "interactivity": {
+          "winner": "no-iteration-gpt_FINAL",
+          "confidence": 0.82,
+          "rationale": "Figure 1 has more correct and coherent interaction handling: the t slider clamps to the physical interval, recomputes the traced and untraced portions, moves the point, updates the direction arrow and readouts, and its playback/tween controls are cancelled when the user manually moves the slider so the controls do not fight each other. Figure 2’s basic slider and trace animation work, but its animation keeps overriding user slider input while tracing, it provides a less complete arc-length readout, and its control set is more limited, so it is less robust at interactive use even though the main slider functions."
+        },
+        "faithfulness": {
+          "winner": "no-iteration-gpt_FINAL",
+          "confidence": 0.82,
+          "rationale": "Figure 1 is more recognizable as the textbook figure because it preserves the labeled cube, blue endpoints, endpoint coordinate annotations, pi/0/±1 tick styling, and a similar half-turn blue curve through the box. Figure 2 has the same general helix-in-a-box idea, but its viewpoint and curve placement are less like the reference, the bottom endpoint is orange instead of blue, the labels are sparser and more schematic, and the composition reads less like the original textbook diagram."
+        },
+        "labels": {
+          "winner": "no-iteration-gpt_FINAL",
+          "confidence": 0.75,
+          "rationale": "Figure 1 has larger, more readable labels and includes most of the important annotations from the reference, including both endpoint coordinate labels, axis labels, and the key tick/value labels such as π, 1, 0, and −1. Figure 2 uses more correct plain zeros in the coordinate labels and avoids the invented curve label C, but many of its labels are noticeably smaller, less prominent, and some important reference labels are missing or poorly placed, such as the top endpoint 0 and clearer axis/tick annotations."
+        },
+        "concept": {
+          "winner": "no-iteration-gpt_FINAL",
+          "confidence": 0.86,
+          "rationale": "Figure 1 more truthfully represents the required helix r(t)=(cos t, sin t, t) on 0≤t≤π, with the curve starting at (1,0,0), ending at (−1,0,π), and an arrow in the increasing-t direction, matching the path and orientation needed for the line integral (L00007, L00010). Figure 2 has the same basic helix geometry and correct arc-length readout, but its coordinate labels for the endpoints are anchored away from the actual start and end points in the 3D scene, making the labeled points less accurate for the specified labeled start and endpoint (L00010)."
+        }
+      },
+      "aggregator": {
+        "winner": "no-iteration-gpt_FINAL",
+        "confidence": 0.9,
+        "explanation": "Figure 1 is stronger overall because it more accurately matches the intended helix geometry and textbook rendering: it places the start and end at the correct points, preserves the wireframe box, tick/reference markings, endpoint annotations, direction arrow, and readable labels. Compared with Figure 1, Figure 2 is more schematic and less faithful, with missing tick/reference geometry, smaller or misplaced labels, an extra trace element, and less robust interaction behavior that can override manual slider input."
+      },
+      "evalModel": "gpt-5.5",
+      "evaluatedAt": "2026-08-14T18:40:59.320Z"
+    }
+  },
+  "math__15.8.6": {
+    "setupA": "baseline-kimi_FINAL",
+    "setupB": "no-iteration-gpt_FINAL",
+    "subject": "math",
+    "figure": "15.8.6",
+    "machineEval": {
+      "figure1Setup": "no-iteration-gpt_FINAL",
+      "figure2Setup": "baseline-kimi_FINAL",
+      "mode": "3d",
+      "dimensions": {
+        "geometry": {
+          "winner": "no-iteration-gpt_FINAL",
+          "confidence": 0.9,
+          "rationale": "Figure 1 better reconstructs the intended 3D curl/paddle-wheel geometry: it has a vertical spindle through P0, a curl arrow aligned with that spindle, four evenly distributed radial paddle blades with supports, and concentric flow arcs in the horizontal plane through the point. Figure 2 is geometrically weaker because its four blades are placed over only a semicircular fan rather than around the full wheel, its flow rings sit well below P0, the curl arrow starts too high instead of at the sampled point, and it even introduces an inaccurate position-dependent tilt for a curl vector that should remain vertical in this model."
+        },
+        "interactivity": {
+          "winner": "no-iteration-gpt_FINAL",
+          "confidence": 0.96,
+          "rationale": "Figure 1 implements the requested controls much more correctly: its rotation-rate slider updates the displayed value, curl arrow length/direction, and paddle spin, its spin checkbox works, and dragging P0 recomputes a position-dependent curl, though it incorrectly leaves a small nonzero curl arrow at zero rate. Figure 2 has serious interaction failures: the visible initial rotation slider, checkbox, and curl magnitude readout are mostly unwired, it adds a second separate slider instead, its animation loop reassigns a const and throws every frame, the animate checkbox does not control spinning, and dragging P0 gives inconsistent curl/label updates rather than a coherent recomputation."
+        },
+        "faithfulness": {
+          "winner": "no-iteration-gpt_FINAL",
+          "confidence": 0.9,
+          "rationale": "Figure 1 is more visually faithful because it preserves the original's four peach paddle panels arranged around P0, the central vertical curl axis with label, and the surrounding light-blue curved flow arcs in roughly the same composition. Figure 2 captures the general idea of curl and flow but the paddles are clustered and less like the original arrangement, the flow is rendered as many dashed concentric rings with an added 'fluid flow' label, and the overall geometry reads less like the textbook figure."
+        },
+        "labels": {
+          "winner": "baseline-kimi_FINAL",
+          "confidence": 0.72,
+          "rationale": "Figure 2 places the main “Curl F(P0)” label cleanly above the vertical arrow and keeps it readable, whereas Figure 1 makes this label oversized and cluttered, overlapping the arrow and paddle-wheel geometry. Figure 1 has a more prominent P0 label, but it also crowds the center; Figure 2’s P0 is small and somewhat crowded, and it invents an extra “fluid flow” label not in the original, but overall its label placement is less obstructive and closer to the reference."
+        },
+        "concept": {
+          "winner": "no-iteration-gpt_FINAL",
+          "confidence": 0.93,
+          "rationale": "Figure 1 more accurately teaches the intended analogy: it keeps the paddle wheel, vertical spindle, curl arrow, rotation cue, and concentric circulation arcs centered on P0, with the curl vector aligned along the spindle as required by the statement that maximum rotation occurs when the spindle is aligned with curl F(P0) (L00007, L00010). Figure 2 initially resembles the setup, but it explicitly claims and depicts position-dependent curl direction for F = ω(-z,0,x)+v0 even though that field has constant curl (0,2ω,0), and it tilts the Curl F(P0) arrow away from the vertical spindle when P0 is moved, contradicting the brief’s upward arrow along the spindle and the maximum-circulation alignment concept (L00007, L00010). Figure 2 also leaves the flow arcs world-centered while moving P0, so after dragging they are no longer concentric around P0 as the brief describes, whereas Figure 1 maintains that relationship (L00010)."
+        }
+      },
+      "aggregator": {
+        "winner": "no-iteration-gpt_FINAL",
+        "confidence": 0.93,
+        "explanation": "Figure 1 is the clear overall winner because it better preserves the intended paddle-wheel curl geometry and concept: four radial blades around P0, a vertical spindle and curl arrow, and flow arcs centered on the sampled point, while Figure 2 clusters the blades, misplaces the rings, and introduces an incorrect tilted/position-dependent curl direction. Figure 1 also implements the interactive controls far more coherently, whereas Figure 2 has unwired controls, inconsistent dragging behavior, and animation errors. Figure 2 has cleaner placement of the main curl label, but that labeling advantage is outweighed by its geometric, conceptual, visual-faithfulness, and interactivity failures relative to Figure 1."
+      },
+      "evalModel": "gpt-5.5",
+      "evaluatedAt": "2026-08-14T18:41:25.956Z"
+    }
+  },
+  "cs__19.2": {
+    "setupA": "baseline-kimi_FINAL",
+    "setupB": "no-iteration-gpt_FINAL",
+    "subject": "cs",
+    "figure": "19.2",
+    "machineEval": {
+      "figure1Setup": "no-iteration-gpt_FINAL",
+      "figure2Setup": "baseline-kimi_FINAL",
+      "mode": "2d",
+      "dimensions": {
+        "geometry": {
+          "winner": "no-iteration-gpt_FINAL",
+          "confidence": 0.94,
+          "rationale": "Figure 1 more accurately reconstructs the original two-panel Fibonacci-heap structure: it shows both panels (a) and (b), preserves the 14-node key set, root/child topology, marked black nodes, dashed root list in the abstract panel, H.min pointers, and explicit circular doubly linked-list arrows in the pointer panel. Figure 2 has the same basic node keys and tree topology, but it only displays one panel at a time rather than the full two-part figure, uses a more compressed layout, and its pointer-view wraparound arcs do not clearly connect the first and last nodes of lists, making the circular-list structure less faithful."
+        },
+        "interactivity": {
+          "winner": "baseline-kimi_FINAL",
+          "confidence": 0.82,
+          "rationale": "Figure 2 has more correct working controls: the view toggle actually redraws a single abstract or pointer representation, node clicks compute pointer fields from the current heap state, and insertion uses a numeric key, mutates the root list, and updates H.min appropriately with invalid-input handling. Figure 1’s toggle mostly just changes opacity while leaving both panels visible, and its insertion is a fixed, non-stateful overlay for key 2 rather than recomputing the heap/root list, so repeated use does not really add nodes. Figure 2 is not perfect—its two-node sibling lists do not visibly distinguish left and right when they are the same target, and repeated insert captions compare against a hardcoded 3—but its handlers are substantially closer to the advertised interactions."
+        },
+        "faithfulness": {
+          "winner": "no-iteration-gpt_FINAL",
+          "confidence": 0.87,
+          "rationale": "Figure 1 is more visually faithful because it presents both the abstract heap panel and the explicit pointer panel in a composition that clearly resembles the original two-part textbook figure, including the same node values, black marked nodes, dashed root list, H.min labels, and dense pointer arrows. Figure 2 reproduces panel (a) reasonably well, but the screenshot shows only that panel with panel (b) hidden behind a toggle, leaving the overall figure much less recognizable at a glance as the full original; it also appears more sparse and reduced compared with the reference."
+        },
+        "labels": {
+          "winner": "no-iteration-gpt_FINAL",
+          "confidence": 0.9,
+          "rationale": "Figure 1 includes the important original labels for both panels, including (a), (b), both H.min annotations, and the numeric node labels, whereas Figure 2 only shows panel (a) and is missing the entire panel (b) labeling and second H.min annotation. Figure 1 does have extra UI text not in the original and its lower-panel labels are somewhat small/cluttered, but Figure 2 is more incomplete and its diagram labels are smaller overall."
+        },
+        "concept": {
+          "winner": "no-iteration-gpt_FINAL",
+          "confidence": 0.83,
+          "rationale": "Figure 1 more accurately represents the specified Fibonacci heap because it simultaneously shows panels (a) and (b) as the same heap, with the five roots 23, 7, 3, 17, 24, H.min pointing to 3, the stated child structure, and marked nodes 18, 39, and 26 matching the brief (L00010). Figure 2 has the same underlying heap data, but it only displays one panel at a time rather than the two complementary representations described, and its pointer-view wraparound arcs for circular doubly linked lists are visually much less faithful, especially for end-to-end circular links and singleton sibling lists (L00010). Both figures somewhat overdraw parent-child bidirectional arrows in panel (b), which can blur the distinction between one child pointer and parent pointers, but Figure 1’s overall pointer-list depiction is closer to the required circular root and sibling lists (L00007, L00010)."
+        }
+      },
+      "aggregator": {
+        "winner": "no-iteration-gpt_FINAL",
+        "confidence": 0.88,
+        "explanation": "Figure 1 is stronger overall because it reconstructs the full two-panel Fibonacci-heap figure at once, with the correct node set, root and child topology, marked nodes, H.min labels, dashed root list, and explicit pointer-panel structure, whereas Figure 2 only shows one view at a time and is therefore less visually and conceptually complete. Figure 2 has better working interactivity, especially for toggling views, node pointer inspection, and stateful insertion, but its displayed figure is more incomplete and its circular-list pointer depiction is less faithful than Figure 1’s. Figure 1’s controls are weaker and less stateful, yet the primary diagrammatic, labeling, geometric, and conceptual fidelity clearly favor it over Figure 2."
+      },
+      "evalModel": "gpt-5.5",
+      "evaluatedAt": "2026-08-14T18:42:10.360Z"
+    }
+  },
+  "math__5.7.13": {
+    "setupA": "baseline-kimi_FINAL",
+    "setupB": "no-iteration-gpt_FINAL",
+    "subject": "math",
+    "figure": "5.7.13",
+    "machineEval": {
+      "figure1Setup": "no-iteration-gpt_FINAL",
+      "figure2Setup": "baseline-kimi_FINAL",
+      "mode": "3d",
+      "dimensions": {
+        "geometry": {
+          "winner": "no-iteration-gpt_FINAL",
+          "confidence": 0.97,
+          "rationale": "Figure 1 reconstructs the torus geometry, vertical rotation axis, generating disk, centroid path, dimension arrows for a and b, and perspective/callout relationships coherently. Figure 2 contains a fatal initialization error by calling rebuild() before lblA is declared, so the intended camera, labels, and later setup do not complete; even apart from that, its reconstruction is less polished and complete than Figure 1."
+        },
+        "interactivity": {
+          "winner": "no-iteration-gpt_FINAL",
+          "confidence": 0.98,
+          "rationale": "Figure 1’s sliders, readouts, demo-step buttons, and revolution toggle are wired to rebuild the torus, path, arrows, labels, and Pappus volume/surface calculations in real time, whereas Figure 2 calls rebuild() before lblA is declared, causing a ReferenceError during initialization; as a result its later labels, camera setup, and event listeners for the sliders and animation button are not installed, so the advertised controls largely fail."
+        },
+        "faithfulness": {
+          "winner": "no-iteration-gpt_FINAL",
+          "confidence": 0.97,
+          "rationale": "Figure 1 is much more recognizable as the textbook figure because it includes the gray torus, red dashed centroid path, vertical axis, labeled radii a and b, generating circle, and the beige callout arrow/text. Figure 2 shows only a simplified torus with a small radius line and lacks the distinctive dashed red path, external circle, labels, arrows, and explanatory callout that define the original composition."
+        },
+        "labels": {
+          "winner": "no-iteration-gpt_FINAL",
+          "confidence": 0.92,
+          "rationale": "Figure 1 is better because it includes the key original annotations: the in-diagram labels a and b and the callout text about the centroid traveling distance 2πa, even though they are quite small and not as cleanly placed as in the reference. Figure 2 lacks the important in-figure a and b labels and the large callout annotation entirely, relying mostly on UI/formula text that does not match the textbook figure."
+        },
+        "concept": {
+          "winner": "no-iteration-gpt_FINAL",
+          "confidence": 0.97,
+          "rationale": "Figure 1 truthfully represents the core concepts: a circular region of radius b at distance a from the vertical axis generates the torus, the centroid follows a full circular path of circumference 2πa, and the displayed volume formula is V=(2πa)(πb²)=2π²ab² (L00007-L00012, L00015). Figure 2 contains the same intended formulas, but its code calls rebuild() before lblA is initialized, so the figure would fail before presenting the labels/annotations that establish those relationships; therefore it teaches the requested concept less correctly in practice."
+        }
+      },
+      "aggregator": {
+        "winner": "no-iteration-gpt_FINAL",
+        "confidence": 0.98,
+        "explanation": "Figure 1 is clearly stronger: it coherently shows the torus, generating circle, vertical axis, centroid path, a and b dimensions, and the 2πa callout, while Figure 2 omits many of these defining annotations in the rendered view. Figure 2 is also critically weaker in implementation because it calls rebuild() before lblA is initialized, preventing later setup such as labels, camera configuration, and controls from working reliably, whereas Figure 1’s controls and formula updates are wired to the geometry."
+      },
+      "evalModel": "gpt-5.5",
+      "evaluatedAt": "2026-08-14T18:42:43.739Z"
+    }
+  },
+  "chemistry__CNX_Chem_07_06_Dipolfield": {
+    "setupA": "baseline-kimi_FINAL",
+    "setupB": "no-iteration-gpt_FINAL",
+    "subject": "chemistry",
+    "figure": "CNX_Chem_07_06_Dipolfield",
+    "machineEval": {
+      "figure1Setup": "baseline-kimi_FINAL",
+      "figure2Setup": "no-iteration-gpt_FINAL",
+      "mode": "3d",
+      "dimensions": {
+        "geometry": {
+          "winner": "no-iteration-gpt_FINAL",
+          "confidence": 0.78,
+          "rationale": "Figure 2 better reconstructs the likely textbook geometry: it uses taller outlined plate electrodes with visible oblique depth, a wider chamber-like spacing, five HF molecules arranged in a planar diagrammatic layout, and an applied-field region between the plates. Figure 1 has the correct basic ingredients but the plates are smaller and less diagram-like, the molecule orientations are fully random 3D quaternions rather than controlled planar orientations, and it lacks the outlined plate/field-region geometry that makes the spatial relationships clearer. Figure 1’s field arrow is directionally clearer, but overall Figure 2 is geometrically closer and more proportioned."
+        },
+        "interactivity": {
+          "winner": "baseline-kimi_FINAL",
+          "confidence": 0.62,
+          "rationale": "Figure 1's toggle and field-strength slider consistently update the molecular orientations and labels, and changing the slider during alignment simply retargets the ongoing interpolation without breaking any controls. Figure 2 covers more requested affordances, including an explicit animation button and step buttons, but its animation can be interrupted by changing the mode, slider, or step controls after the Animate button disables itself; the tween is canceled by the token logic and the Animate button may never be re-enabled, leaving a requested interaction broken."
+        },
+        "faithfulness": {
+          "winner": "baseline-kimi_FINAL",
+          "confidence": 0.78,
+          "rationale": "Figure 1 is more visually faithful because its molecules have proportions and shaded green/white sphere styling closer to the textbook panel, and its grey plates read more like the broad vertical capacitor plates in the original. Figure 2 captures the same general idea, but the plates are much too thin, the molecules look smaller and more toy-like with exaggerated highlights, and several charge labels appear incomplete or crowded, making it less immediately recognizable as the same figure."
+        },
+        "labels": {
+          "winner": "baseline-kimi_FINAL",
+          "confidence": 0.68,
+          "rationale": "Figure 1 has the δ+ and δ− labels more consistently placed just outside the molecules and generally readable, whereas Figure 2’s larger labels frequently overlap the spheres so some signs appear cluttered or partially ambiguous. Both figures are missing the original panel (b) annotations such as the Electric field label and plate charge labels, but Figure 1 better preserves the no-field panel’s label placement with fewer collisions."
+        },
+        "concept": {
+          "winner": "baseline-kimi_FINAL",
+          "confidence": 0.68,
+          "rationale": "Figure 1 more directly and correctly represents the key relationship that, under the applied field, the δ+ H end faces the negative left plate and the δ− F end faces the positive right plate, and it even shows the electric field direction from the positive plate toward the negative plate, consistent with the plate charges and dipole alignment described in the brief (L00010, L00016, L00019). Figure 2 also gets the HF charge assignment and strong-field alignment mostly right, but its applied-field pointer is only a slanted callout rather than a correct field-direction arrow, and its weak/partial applied-field states can show molecules not uniformly aligned even while labeled as an applied-field panel, which is less faithful to the stated panel-b concept of uniformly aligned molecules under the field (L00007, L00014, L00019)."
+        }
+      },
+      "aggregator": {
+        "winner": "baseline-kimi_FINAL",
+        "confidence": 0.76,
+        "explanation": "Figure 1 is stronger overall: compared with Figure 2, it more clearly preserves readable δ+/δ− label placement, more recognizable molecule styling, and the core conceptual alignment of HF dipoles with H toward the negative plate and F toward the positive plate, while its controls remain functional under changes. Figure 2 has a better reconstructed chamber/plate geometry, but relative to Figure 1 it suffers from cluttered or ambiguous charge labels, less faithful rendered molecule/plate appearance, a weaker field-direction depiction, and a broken animation interaction that can leave the animation button disabled."
+      },
+      "evalModel": "gpt-5.5",
+      "evaluatedAt": "2026-08-14T18:43:26.326Z"
+    }
+  },
+  "chemistry__CNX_Chem_09_04_Diffusion": {
+    "setupA": "baseline-kimi_FINAL",
+    "setupB": "no-iteration-gpt_FINAL",
+    "subject": "chemistry",
+    "figure": "CNX_Chem_09_04_Diffusion",
+    "machineEval": {
+      "figure1Setup": "no-iteration-gpt_FINAL",
+      "figure2Setup": "baseline-kimi_FINAL",
+      "mode": "2d",
+      "dimensions": {
+        "geometry": {
+          "winner": "no-iteration-gpt_FINAL",
+          "confidence": 0.92,
+          "rationale": "Figure 1 better matches the likely textbook structure by reconstructing three side-by-side apparatus panels labeled (a), (b), and (c), with separate closed, open, and after-diffusion states, correct bulb-and-stopcock topology, captions, and distinct H₂/O₂ distributions. Figure 2 reduces the structure to a single dynamic apparatus with only one panel visible at a time, so it misses the simultaneous three-panel layout and panel topology of the original; it also uses randomized particle placement and a more crowded particle count, making the relative distributions and proportions less faithful."
+        },
+        "interactivity": {
+          "winner": "no-iteration-gpt_FINAL",
+          "confidence": 0.96,
+          "rationale": "Figure 1's slider, animation, mass-emphasis toggle, and step controls all redraw the figure and generally produce the advertised sequence: H₂ crosses faster than O₂ and the final state has roughly equal amounts of both gases in both bulbs. Figure 2's controls technically fire and redraw, but the underlying interaction is scientifically and visually wrong: its threshold formula makes O₂ begin crossing earlier than H₂ despite claiming the opposite, and at high elapsed time the particles mostly swap sides rather than become uniformly mixed, so the slider, animation, and step narration contradict what is drawn. Figure 1 has minor shortcomings, such as the slider not stopping an active animation, but Figure 2's main interactive state progression is incorrect."
+        },
+        "faithfulness": {
+          "winner": "no-iteration-gpt_FINAL",
+          "confidence": 0.72,
+          "rationale": "Figure 1 is more visually faithful because it preserves the original’s three-panel horizontal composition, pale blue bulbs, red/white particle coding, stopcock apparatus, and captions for the closed/open/later stages. Figure 2 is cleaner and larger for panel (a), but it only shows one state in the screenshot and its particle rendering and bulb connection/stopcock geometry depart more noticeably from the textbook figure, making it less recognizable as the full original figure at a glance."
+        },
+        "labels": {
+          "winner": "no-iteration-gpt_FINAL",
+          "confidence": 0.72,
+          "rationale": "Figure 1 includes the full set of original panel labels and captions for (a), (b), and (c), whereas Figure 2 only shows the first state’s labels and omits the visible captions for the stopcock-open and later-time panels. Figure 1’s labels are smaller and the panel (c) caption is cluttered/colliding, but Figure 2 loses more label fidelity by not presenting most of the original figure’s required text in the rendered view."
+        },
+        "concept": {
+          "winner": "no-iteration-gpt_FINAL",
+          "confidence": 0.97,
+          "rationale": "Figure 1 more accurately represents the required three-stage diffusion story: initially H₂ is confined left and O₂ right with a closed stopcock, the open middle state shows more H₂ crossing into the O₂ bulb than O₂ crossing into the H₂ bulb because H₂ is lighter and diffuses faster, and the final state leaves both gases approximately evenly distributed on both sides (L00007, L00014, L00021). Figure 2 asserts the same labels, but its particle algorithm makes O₂ cross earlier/more readily than H₂ and at the final time largely swaps the gases into opposite bulbs rather than mixing both gases uniformly across both bulbs, contradicting the faster-H₂ and equalized-concentration concepts (L00010, L00014, L00021)."
+        }
+      },
+      "aggregator": {
+        "winner": "no-iteration-gpt_FINAL",
+        "confidence": 0.94,
+        "explanation": "Figure 1 is stronger because it preserves the original three-panel sequence with closed, open, and later diffusion states, including the expected labels, stopcock apparatus, and H₂/O₂ distributions. Figure 2 only presents one state at a time and, more importantly, its interactive progression contradicts the intended concept by letting O₂ cross too early and ending with gases largely swapped rather than uniformly mixed. Although Figure 1 has minor visual clutter and interaction imperfections, Figure 2 loses both structural fidelity and scientific correctness relative to Figure 1."
+      },
+      "evalModel": "gpt-5.5",
+      "evaluatedAt": "2026-08-14T18:43:50.912Z"
+    }
+  },
+  "chemistry__CNX_Chem_18_02_DownsCell": {
+    "setupA": "baseline-kimi_FINAL",
+    "setupB": "no-iteration-gpt_FINAL",
+    "subject": "chemistry",
+    "figure": "CNX_Chem_18_02_DownsCell",
+    "machineEval": {
+      "figure1Setup": "baseline-kimi_FINAL",
+      "figure2Setup": "no-iteration-gpt_FINAL",
+      "mode": "2d",
+      "dimensions": {
+        "geometry": {
+          "winner": "no-iteration-gpt_FINAL",
+          "confidence": 0.86,
+          "rationale": "Figure 2 better reconstructs the Downs cell structure: it has a more accurate outer cell layout, curved iron screen/mesh, central chlorine collector with outlet, side sodium collection chamber and outlet, NaCl inlet piping, electrodes, wires, and voltage source with closer relative proportions. Figure 1 includes the main components but simplifies the apparatus into blocky rectangles, uses a flat rectangular screen instead of a cylindrical/curved separator, and its collector, reservoir, and wiring are less faithful to the likely textbook topology and proportions."
+        },
+        "interactivity": {
+          "winner": "no-iteration-gpt_FINAL",
+          "confidence": 0.72,
+          "rationale": "Figure 2 has the more correct interactions overall: its animation checkbox and guided step controls consistently update the displayed motion, narration, highlights, and half-reaction callouts, and its sodium/chlorine motion better matches the advertised migration and product collection. Figure 1’s animate button works and the electrode clicks show correct popups, but its Na+ particles simply disappear at the cathode rather than showing liquid sodium collecting at the Na outlet, and its clickable regions are limited to the drawn electrode pieces. Figure 2 is not perfect—the reset control also resets the guided step and turns off animation, and the screen hit zone can overlap some electrode click areas—but its requested interactions are more complete and coherent than Figure 1’s."
+        },
+        "faithfulness": {
+          "winner": "no-iteration-gpt_FINAL",
+          "confidence": 0.99,
+          "rationale": "Figure 2 is far more visually faithful: it preserves the recognizable electrolysis cell layout, colored molten NaCl and sodium regions, curved chlorine outlet, sodium outlet, iron screen, electrodes, voltage source, arrows, and labels in roughly the same composition as the reference. Figure 1 reduces the scene to a mostly featureless gray rectangle with only a few labels and line fragments, omitting nearly all of the distinctive geometry and color cues that make the original recognizable."
+        },
+        "labels": {
+          "winner": "no-iteration-gpt_FINAL",
+          "confidence": 0.98,
+          "rationale": "Figure 2 includes nearly all of the original labels such as Cl₂ outlet, inlet for NaCl, liquid Na metal, Na outlet, voltage source, molten NaCl, iron screen, cathode and anode, with generally readable placement matching the reference. Figure 1 is missing most required annotations, has labels that are very small and low-contrast against a dark background, and adds an equation not present in the original while failing to label the apparatus adequately."
+        },
+        "concept": {
+          "winner": "no-iteration-gpt_FINAL",
+          "confidence": 0.78,
+          "rationale": "Figure 2 teaches the Downs cell concepts more completely and accurately: it explicitly identifies molten NaCl rather than aqueous solution, shows/labels the central anode (+), outer cathode (−), correct half-reactions, overall reaction, chlorine outlet, sodium collection/outlet, and iron screen preventing recombination, matching the brief’s key claims (L00007, L00012, L00016, L00019). Figure 1 is mostly correct on the same electrode reactions and product separation, but it does less to convey the aqueous-electrolysis limitation and is somewhat less explicit about the complete conceptual chain, so a student would get a less complete understanding of the process described in the brief (L00007, L00014, L00019)."
+        }
+      },
+      "aggregator": {
+        "winner": "no-iteration-gpt_FINAL",
+        "confidence": 0.96,
+        "explanation": "Figure 2 is clearly stronger across all dimensions: it more accurately reconstructs the Downs cell geometry with a curved iron screen, central chlorine collector, sodium outlet, NaCl inlet, electrodes, wiring, and voltage source, while Figure 1 reduces the apparatus to simplified blocky shapes with many missing features. Figure 2 also provides far more complete and readable labels and more faithful conceptual/interactivity support, including molten NaCl, correct electrode roles, product collection, half-reactions, and guided animation; Figure 1 has limited clickable regions, weaker product-collection behavior, small or missing labels, and a less recognizable visual match to the reference."
+      },
+      "evalModel": "gpt-5.5",
+      "evaluatedAt": "2026-08-14T18:44:22.610Z"
+    }
+  },
+  "chemistry__CNX_Chem_21_04_CritMass": {
+    "setupA": "baseline-kimi_FINAL",
+    "setupB": "no-iteration-gpt_FINAL",
+    "subject": "chemistry",
+    "figure": "CNX_Chem_21_04_CritMass",
+    "machineEval": {
+      "figure1Setup": "no-iteration-gpt_FINAL",
+      "figure2Setup": "baseline-kimi_FINAL",
+      "mode": "2d",
+      "dimensions": {
+        "geometry": {
+          "winner": "no-iteration-gpt_FINAL",
+          "confidence": 0.78,
+          "rationale": "Figure 1 better reconstructs the two-panel chain-reaction structure with distinct sub-critical and critical masses, filled circular regions, many directed neutron paths with arrowheads, and a more deliberate topology showing leakage in panel (a) versus sustained branching in panel (b). Figure 2 has the same basic layout, but its critical panel uses a more artificial ring/loop-like arrangement with arrows mechanically connecting bursts, and its fission marks are simplified ray symbols rather than the filled explosion shapes; it also gives a less precise visual distinction between escaping and productive neutron paths."
+        },
+        "interactivity": {
+          "winner": "baseline-kimi_FINAL",
+          "confidence": 0.62,
+          "rationale": "Figure 2 has imperfect interactions, especially its mass slider only redraws panel (a) and its focus notes can become stale, but its controls generally produce the visible effects they advertise and the chain animation actually highlights 1, 2, 4, and 8 fission events. Figure 1 has better coverage of the requested controls and recomputes meters, but its cascade animation is substantially less correct: the generated fission starbursts are created with zero opacity and animating the parent groups does not make those child elements appear, so the advertised cascade is mostly labels over a static/dimmed panel; it also silently forces the mass slider to 1 when animation starts."
+        },
+        "faithfulness": {
+          "winner": "no-iteration-gpt_FINAL",
+          "confidence": 0.75,
+          "rationale": "Figure 1 is more recognizable as the reference because it preserves the two-circle composition, relative sub-critical versus critical sizes, dense yellow fission bursts in the critical mass, and overall blue/yellow/black visual scheme. Figure 2 has a cleaner layout but the bursts are much smaller and sparser, and the critical panel’s arrows form an unnatural central crisscross rather than the distributed chain-reaction pattern of the original, making it look less like the textbook figure."
+        },
+        "labels": {
+          "winner": "baseline-kimi_FINAL",
+          "confidence": 0.84,
+          "rationale": "Figure 2 preserves the essential original labels—“Sub-critical mass,” “Critical mass,” and the panel markers “(a)” and “(b)”—with relatively little added clutter in the diagram. Figure 1 also includes the main labels, but it adds many non-original annotations, percentage bars, and explanatory captions under the circles that are small, cluttered, and partially crowd the panel labels, making it less faithful to the textbook figure."
+        },
+        "concept": {
+          "winner": "no-iteration-gpt_FINAL",
+          "confidence": 0.86,
+          "rationale": "Figure 1 is more conceptually accurate because its main panels correctly encode the required contrast: the sub-critical sample is smaller with many escaping neutrons and a dying chain, while the critical sample is larger with mostly internal neutron paths leading to further fissions and self-sustaining propagation (L00007, L00014, L00021). Figure 2’s static panels mostly show this, but it makes a stronger false assertion in its animation/note that the critical case has 1 → 2 → 4 → 8 fissions and “grows exponentially,” which describes an increasing/supercritical reaction rather than the minimum critical condition where neutron production balances losses (L00010, L00021). Figure 2 also lets panel (a) remain labeled sub-critical even when its radius can exceed the critical panel’s radius and its displayed escape fraction falls below half, undermining the stated size/leakage threshold relationship (L00021); Figure 1 has some interactive simplifications but states the balance/loss relationship more faithfully overall."
+        }
+      },
+      "aggregator": {
+        "winner": "no-iteration-gpt_FINAL",
+        "confidence": 0.72,
+        "explanation": "Figure 1 is stronger overall because it more accurately reconstructs the textbook two-panel chain-reaction comparison: the sub-critical case shows a smaller mass with neutron leakage, while the critical case shows denser internal branching and a sustained reaction, matching both the intended geometry and concept better than Figure 2. Figure 2 has cleaner, more faithful labels and a better visible cascade interaction, but its critical panel looks more artificial and its animation/text imply exponential supercritical growth, whereas Figure 1 better preserves the reference’s visual and conceptual distinction despite added clutter and weaker animation behavior."
+      },
+      "evalModel": "gpt-5.5",
+      "evaluatedAt": "2026-08-14T18:45:32.671Z"
+    }
+  },
+  "chemistry__CNX_Chem_21_04_Fission1": {
+    "setupA": "baseline-kimi_FINAL",
+    "setupB": "no-iteration-gpt_FINAL",
+    "subject": "chemistry",
+    "figure": "CNX_Chem_21_04_Fission1",
+    "machineEval": {
+      "figure1Setup": "baseline-kimi_FINAL",
+      "figure2Setup": "no-iteration-gpt_FINAL",
+      "mode": "2d",
+      "dimensions": {
+        "geometry": {
+          "winner": "no-iteration-gpt_FINAL",
+          "confidence": 0.78,
+          "rationale": "Figure 2 better preserves the main fission-diagram structure: the U-236 intermediate is drawn as one elongated, pinched, red-outlined unstable nucleus, whereas Figure 1 renders it as two separated lobes that look more like already-split fragments. Figure 2 also has cleaner arrow geometry and a more balanced left-to-right layout of incoming neutron, U-235, unstable U-236, fragments, energy, and three emitted neutrons; Figure 1 is broadly correct but has the incoming neutron partly clipped and less accurate proportions for the unstable nucleus. Figure 2 does add some instructional highlighting and has a slightly cramped right-side neutron label, but these are smaller structural issues than Figure 1's misleading U-236 topology."
+        },
+        "interactivity": {
+          "winner": "baseline-kimi_FINAL",
+          "confidence": 0.86,
+          "rationale": "Figure 1's controls more directly do what they advertise: the animation actually moves the neutron into the target, reveals the unstable U-236 state, then sends fragments/neutrons outward, and its chain-reaction slider recomputes a 3^n-style branching count with labels. Figure 2's controls generally function, but its fission animation is mostly opacity changes rather than the advertised strike/split/ejection sequence, and its chain-reaction slider reveals a prebuilt schematic with only a few nodes rather than three neutrons each triggering three further fissions, so the interaction is less correct even though the buttons and slider do respond."
+        },
+        "faithfulness": {
+          "winner": "no-iteration-gpt_FINAL",
+          "confidence": 0.72,
+          "rationale": "Figure 2 is more visually faithful overall because the main fission sequence has proportions and geometry closer to the reference, especially the large horizontal composition and the elongated unstable nucleus between the uranium and products. Figure 1 preserves more of the isotope labeling, but its central unstable nucleus is rendered more like two separate red-circled clusters rather than the single constricted nucleus in the original, and the whole diagram is much smaller and more compressed, making the overall resemblance weaker at a glance."
+        },
+        "labels": {
+          "winner": "baseline-kimi_FINAL",
+          "confidence": 0.96,
+          "rationale": "Figure 1 has most of the original labels and annotations present and legible, including the isotope labels, Energy, Unstable nucleus, neutron count, and the bottom reaction equation, though they are somewhat small. Figure 2 loses or clips important label text in several places, with isotope symbols/neutron labels partially missing or rendered incorrectly, and the bottom equation is much less readable and less faithful to the reference."
+        },
+        "concept": {
+          "winner": "no-iteration-gpt_FINAL",
+          "confidence": 0.72,
+          "rationale": "Figure 2 more accurately teaches the two-step process because it depicts the absorbed-neutron intermediate as a single elongated, pinched U-236 nucleus before splitting, matching the requirement that U-235 first forms short-lived unstable U-236 and only then breaks apart (L00007, L00012, L00018). Figure 1 has the correct visible isotope labels and balanced equation, but its U-236 intermediate is drawn as two separated lobes with separate outlines, which can make the intermediate look already split rather than a single unstable compound nucleus (L00018). Figure 2 does have a minor false tooltip typo for krypton that appears to read ²⁹²₃₆Kr, but its main visible Kr-92 label, products, neutron count, energy burst, and equation are correct (L00014, L00018), so overall it is conceptually stronger."
+        }
+      },
+      "aggregator": {
+        "winner": "no-iteration-gpt_FINAL",
+        "confidence": 0.62,
+        "explanation": "Figure 2 is stronger overall because it better preserves the core fission structure: the absorbed-neutron intermediate appears as a single elongated, pinched U-236 nucleus before splitting, with cleaner left-to-right geometry and closer visual resemblance to the reference, whereas Figure 1’s U-236 looks like two already-separated fragments. Figure 1 is better labeled and its interactive controls more faithfully animate the intended sequence and chain-reaction count, while Figure 2 has clipped/missing labels and less complete interaction behavior; however, those weaknesses are outweighed by Figure 1’s more misleading central topology and less faithful overall rendering of the main concept."
+      },
+      "evalModel": "gpt-5.5",
+      "evaluatedAt": "2026-08-14T18:46:06.898Z"
+    }
+  },
+  "physics__ames_room_description": {
+    "setupA": "baseline-kimi_FINAL",
+    "setupB": "no-iteration-gpt_FINAL",
+    "subject": "physics",
+    "figure": "ames_room_description",
+    "machineEval": {
+      "figure1Setup": "baseline-kimi_FINAL",
+      "figure2Setup": "no-iteration-gpt_FINAL",
+      "mode": "2d",
+      "dimensions": {
+        "geometry": {
+          "winner": "no-iteration-gpt_FINAL",
+          "confidence": 0.68,
+          "rationale": "Figure 2 better reconstructs the intended Ames-room floor-plan structure: it uses a deeper trapezoidal actual room with a dashed rectangular perceived room, includes the two equal actual objects plus the smaller dashed perceived object, and aligns the perceived object with the sight-cone geometry more coherently. Figure 1 captures the same basic elements but is more compressed and schematic, with the perceived rectangle/object placement feeling more arbitrary and the sight-line construction less complete relative to the object layout."
+        },
+        "interactivity": {
+          "winner": "no-iteration-gpt_FINAL",
+          "confidence": 0.68,
+          "rationale": "Figure 2's controls generally recompute and redraw all dependent geometry correctly: the skew slider updates the trapezoid, object locations, rays, gap, and perceived object, the overlay selector switches among actual/perceived/both states, and the step buttons keep the UI controls synchronized with the displayed state. Figure 1's drag and skew slider mostly work, but its actual-floor-plan toggle is incomplete because the 'Actual room floor plan' label remains visible even when the actual overlay is unchecked, and its overlay controls are less cleanly tied to the advertised contrast between actual and perceived plans. Figure 2 is not perfect—the pinhole drag range is narrower than the full bottom wall and its overlay modes fade or affect some objects rather than strictly toggling only floor-plan outlines—but its interaction behavior is overall more complete and consistent."
+        },
+        "faithfulness": {
+          "winner": "no-iteration-gpt_FINAL",
+          "confidence": 0.78,
+          "rationale": "Figure 2 is more recognizable as the original because it preserves the tall, skewed trapezoidal room geometry, the placement of the dashed perceived room, the diagonal red sight lines converging on the pinhole, and the relative positions of the circles more faithfully. Figure 1 has the same basic elements, but its composition is much more horizontally compressed and flattened, with a shallower actual-room outline and more schematic proportions that make it look less like the reference at a glance."
+        },
+        "labels": {
+          "winner": "baseline-kimi_FINAL",
+          "confidence": 0.72,
+          "rationale": "Figure 1 has all the key diagram labels with correct text and generally cleaner placement: the pinhole label is below the point and readable, and the perceived floor-plan label does not collide badly with the dashed outline. Figure 2 uses larger labels that are closer in scale to the reference, but its pinhole label overlaps the bottom wall/pinhole area and the perceived room floor plan label is more crowded against the outline, making the annotations less clean overall."
+        },
+        "concept": {
+          "winner": "no-iteration-gpt_FINAL",
+          "confidence": 0.82,
+          "rationale": "Figure 2 is more conceptually accurate because it correctly represents the actual room as a large trapezoid and the perceived room as a smaller dashed rectangle, and its red cone plus scaled dashed circle accurately show a nearer perceived object lying along the same line of sight as the far actual object, matching the single-view/projective ambiguity and mislocalization described in the brief (L00007, L00010). Figure 1 also shows the trapezoid, rectangle, and dashed perceived object, but it explicitly asserts that the two equal-sized gray actual objects subtend nearly the same visual angle even though its geometry places the near-right object much closer to the pinhole and therefore at a much larger angular size; its red sight lines only demonstrate the far-left object, so the claimed relationship is false rather than merely omitted (L00010)."
+        }
+      },
+      "aggregator": {
+        "winner": "no-iteration-gpt_FINAL",
+        "confidence": 0.78,
+        "explanation": "Figure 2 is the stronger overall reconstruction: compared with Figure 1, it preserves the deeper skewed Ames-room trapezoid, dashed perceived rectangle, sight-cone geometry, and actual/perceived object relationships more coherently, and its controls more consistently recompute the dependent geometry. Figure 1 has cleaner label placement, but it is more compressed and schematic, its overlay behavior is less complete, and its geometry makes one of the implied visual-angle relationships conceptually less accurate than Figure 2."
+      },
+      "evalModel": "gpt-5.5",
+      "evaluatedAt": "2026-08-14T18:47:04.656Z"
+    }
+  }
+}
