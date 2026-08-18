@@ -27,63 +27,352 @@ export const DIMENSIONS = ['geometry', 'interactivity', 'faithfulness', 'labels'
 export const LAYERS = ['all', 'ablation', 'rotation']
 
 /**
- * Ported verbatim from visionbook's server.js:computeBradleyTerry.
+ * 400 points per decade of odds — the transform that turns a BT strength into an
+ * Elo-style rating. A 400-point gap is 10:1, i.e. a ~91% win probability.
+ */
+export const ELO_SCALE = 400 / Math.LN10
+
+/**
+ * Where the mean of a table sits. Arbitrary, as any BT anchor is: the model
+ * identifies only differences, and only differences are read off the table.
+ */
+export const ELO_ANCHOR = 1000
+
+/**
+ * How far below the strongest setup a strength may fall before the log transform
+ * is floored. BT has no finite estimate for a setup that never won — its
+ * likelihood keeps rising as that strength goes to zero — so the honest options
+ * are to print nothing or to pin it to a rail. It is pinned, at
+ * ln(1e-6) x ELO_SCALE ~ 2400 points down, and its interval comes out wide
+ * enough to say so.
+ */
+const STRENGTH_FLOOR_RATIO = 1e-6
+
+/**
+ * Bootstrap replicates. Arena uses ~100, which is plenty for an interval endpoint,
+ * but the rank comes from a proportion tested against SEPARATION_LEVEL and a
+ * proportion needs more replicates than a percentile does: at 200 rounds the
+ * standard error near 0.95 is about 1.5 points, enough to move a borderline pair
+ * across the line. 500 halves that and still fits in the panel's budget.
+ */
+const DEFAULT_BOOTSTRAP_ROUNDS = 500
+
+/**
+ * How often one setup has to come out ahead across the paired replicates before
+ * the table is willing to rank it above another. The usual 95%.
+ */
+const SEPARATION_LEVEL = 0.95
+
+/**
+ * Seeded PRNG, so an interval is a property of the data and not of when it was
+ * computed. A resampled CI that moved on every refresh would read as a bug.
+ */
+function mulberry32(seed) {
+  let a = seed >>> 0
+  return () => {
+    a = (a + 0x6D2B79F5) >>> 0
+    let t = Math.imul(a ^ (a >>> 15), 1 | a)
+    t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t
+    return ((t ^ (t >>> 14)) >>> 0) / 4294967296
+  }
+}
+
+/**
+ * Zermelo's algorithm, the MLE iteration for Bradley-Terry — the same fixed point
+ * as visionbook's server.js:computeBradleyTerry, over flat typed arrays rather
+ * than string-keyed objects.
+ *
+ * The shape is what makes the interval affordable. A bootstrap wants a few hundred
+ * refits, and the object-keyed version spent almost all of its time allocating an
+ * n x n map of plain objects per replicate; indices and a Float64Array take the
+ * whole panel from ~1s to well under 100ms, which is the difference between
+ * shipping an interval and not.
+ *
+ * @param {number} n number of setups
+ * @param {Int32Array} ai left setup index per comparison
+ * @param {Int32Array} bi right setup index per comparison
+ * @param {Float64Array} aw a's share of each comparison (1, 0.5 or 0)
+ * @param {Int32Array|null} order which comparisons to fit over, by index into the
+ *   arrays above; null means all of them, in order. A bootstrap replicate is just
+ *   a different `order`, so resampling allocates one Int32Array and nothing else.
+ * @param {Float64Array|null} p0 warm start
+ * @returns {{p: Float64Array, seen: Uint8Array}}
+ */
+function solve(n, ai, bi, aw, order, p0, maxIter, tol) {
+  const m = order ? order.length : ai.length
+  const W = new Float64Array(n)
+  const N = new Float64Array(n * n)
+  const seen = new Uint8Array(n)
+
+  for (let k = 0; k < m; k++) {
+    const e = order ? order[k] : k
+    const a = ai[e]
+    const b = bi[e]
+    const w = aw[e]
+    W[a] += w
+    W[b] += 1 - w
+    N[a * n + b]++
+    N[b * n + a]++
+    seen[a] = 1
+    seen[b] = 1
+  }
+
+  const p = new Float64Array(n)
+  if (p0) p.set(p0)
+  else p.fill(1)
+  const next = new Float64Array(n)
+
+  for (let iter = 0; iter < maxIter; iter++) {
+    for (let i = 0; i < n; i++) {
+      let denom = 0
+      const row = i * n
+      for (let j = 0; j < n; j++) {
+        if (j === i) continue
+        const nij = N[row + j]
+        if (nij !== 0) denom += nij / (p[i] + p[j])
+      }
+      next[i] = denom > 0 ? W[i] / denom : p[i]
+    }
+    let total = 0
+    for (let i = 0; i < n; i++) total += next[i]
+    let maxChange = 0
+    for (let i = 0; i < n; i++) {
+      const norm = total > 0 ? next[i] / total : 1 / n
+      const change = Math.abs(norm - p[i])
+      if (change > maxChange) maxChange = change
+      p[i] = norm
+    }
+    if (maxChange < tol) break
+  }
+
+  return { p, seen }
+}
+
+/**
+ * Strengths to ratings: log, floored, then shifted so the table's mean lands on
+ * ELO_ANCHOR.
+ *
+ * The log is what makes the number readable. `score` is normalised to sum to 1,
+ * so it is a function of how many setups share the table: deselecting a setup
+ * moves every remaining number, and each of the four ablation tables renormalises
+ * to its own 100. On this scale that mechanical part of the movement is gone — a
+ * gap between two setups is a property of the fit, so it means the same thing in
+ * every table.
+ *
+ * @param {Float64Array} p
+ * @returns {Float64Array}
+ */
+function toElo(p) {
+  const n = p.length
+  let maxP = 0
+  for (let i = 0; i < n; i++) if (p[i] > maxP) maxP = p[i]
+  const floor = maxP * STRENGTH_FLOOR_RATIO
+
+  const raw = new Float64Array(n)
+  let sum = 0
+  for (let i = 0; i < n; i++) {
+    raw[i] = ELO_SCALE * Math.log(Math.max(p[i], floor))
+    sum += raw[i]
+  }
+  const shift = ELO_ANCHOR - sum / n
+  for (let i = 0; i < n; i++) raw[i] += shift
+  return raw
+}
+
+/** Linear-interpolated percentile over an ascending array. */
+function percentile(sorted, q) {
+  if (sorted.length === 0) return null
+  if (sorted.length === 1) return sorted[0]
+  const idx = q * (sorted.length - 1)
+  const lo = Math.floor(idx)
+  const hi = Math.ceil(idx)
+  return sorted[lo] + (sorted[hi] - sorted[lo]) * (idx - lo)
+}
+
+/**
+ * Resample the comparisons with replacement and refit, which is how arena
+ * quantifies a rating: the spread of the replicates is the spread of the
+ * evidence.
+ *
+ * Every replicate refits *all* setups on the same resample, so the returned
+ * ratings are paired across a row. That pairing is what makes a real comparison
+ * possible later — see separate() — and it is thrown away by anything that only
+ * keeps per-setup percentiles.
+ *
+ * @returns {{elo: Float64Array[], seen: Uint8Array[]}} one entry per replicate
+ */
+function bootstrapReplicates(n, ai, bi, aw, rounds, p0) {
+  const rand = mulberry32(0x5EED)
+  const elo = []
+  const seen = []
+  const m = ai.length
+  const order = new Int32Array(m)
+
+  for (let r = 0; r < rounds; r++) {
+    for (let i = 0; i < m; i++) order[i] = (rand() * m) | 0
+    // Warm-started from the full-data fit and held to a looser tolerance: a
+    // replicate only has to find its own optimum, not resolve it to 1e-8.
+    const rep = solve(n, ai, bi, aw, order, p0, 100, 1e-6)
+    elo.push(toElo(rep.p))
+    seen.push(rep.seen)
+  }
+
+  return { elo, seen }
+}
+
+/**
+ * P(i outranks j), read straight off the paired replicates.
+ *
+ * This replaces the obvious-looking test — do the two 95% intervals overlap? —
+ * which is wrong twice over. It discards the pairing, comparing each setup against
+ * its own marginal spread when both moved together in every replicate; and it is
+ * a yes/no readout of a continuous quantity, so a sliver of tail overlap and near
+ * total overlap both come back "cannot order these". On the real benchmark,
+ * full-pipeline-gpt and baseline-gemini overlap by 15 rating points and the
+ * interval rule calls them inseparable, while the paired replicates put
+ * baseline-gemini ahead just 2.5% of the time. Testing the difference directly
+ * takes separability across the whole table from 62% of pairs to 79%.
+ *
+ * @returns {Float64Array} n x n, entry i*n+j is P(i > j)
+ */
+function pairwiseWinShare(n, replicates) {
+  const beats = new Float64Array(n * n)
+  const both = new Float64Array(n * n)
+
+  for (let r = 0; r < replicates.elo.length; r++) {
+    const elo = replicates.elo[r]
+    const seen = replicates.seen[r]
+    for (let i = 0; i < n; i++) {
+      if (!seen[i]) continue
+      for (let j = 0; j < n; j++) {
+        // A replicate that dropped one side says nothing about that pair.
+        if (i === j || !seen[j]) continue
+        both[i * n + j]++
+        if (elo[i] > elo[j]) beats[i * n + j]++
+      }
+    }
+  }
+
+  for (let k = 0; k < n * n; k++) beats[k] = both[k] > 0 ? beats[k] / both[k] : 0.5
+  return beats
+}
+
+/**
+ * Bradley-Terry with a bootstrap interval, an adjacent-step confidence, and a
+ * significance-based rank.
+ *
+ * `beatsNext` is the one the table leads with, because it is the only one of the
+ * three that does not overstate something. A shared `rankUB` says two setups are
+ * tied, which is not what the evidence found: it found that they cannot be *put in
+ * an order*, while the ratings still differ and the table still draws one above the
+ * other. Reading the shared rank as "equal" contradicts the bars sitting right
+ * beside it. `beatsNext` says the true thing instead — this row is ahead of the
+ * next, and here is how sure that is — and it is well defined because the
+ * unresolved sets turn out to be contiguous in rating order, so all the doubt
+ * lives in the step between neighbours.
+ *
+ * `rankUB` and `tiedWith` are kept for the arena-style reading and for the
+ * separability summary, but they are not the primary label.
  *
  * @param {Array<{a: string, b: string, aWins: 0|0.5|1}>} matchups
- * @returns {Array<{id, score, wins, losses, ties, comparisons}>} sorted by score
+ * @param {object} [options]
+ * @param {number} [options.bootstrapRounds] 0 reports no interval, and rank falls
+ *   back to the ordinal position.
+ * @returns {Array<{id, score, elo, eloLow, eloHigh, beatsNext, rankUB, rankLB,
+ *   tiedWith, wins, losses, ties, comparisons}>} sorted by score
  */
-export function computeBradleyTerry(matchups) {
-  const setupSet = new Set(matchups.flatMap(m => [m.a, m.b]))
-  const setups = [...setupSet]
-  if (setups.length === 0) return []
+export function computeBradleyTerry(matchups, { bootstrapRounds = DEFAULT_BOOTSTRAP_ROUNDS } = {}) {
+  const setups = [...new Set(matchups.flatMap(m => [m.a, m.b]))]
+  const n = setups.length
+  if (n === 0) return []
 
-  const W = Object.fromEntries(setups.map(s => [s, 0]))
-  const rawWins = Object.fromEntries(setups.map(s => [s, 0]))
-  const rawLosses = Object.fromEntries(setups.map(s => [s, 0]))
-  const rawTies = Object.fromEntries(setups.map(s => [s, 0]))
-  const Nij = {}
-  for (const s of setups) Nij[s] = Object.fromEntries(setups.map(t => [t, 0]))
+  const index = new Map(setups.map((s, i) => [s, i]))
+  const m = matchups.length
+  const ai = new Int32Array(m)
+  const bi = new Int32Array(m)
+  const aw = new Float64Array(m)
+  const wins = new Int32Array(n)
+  const losses = new Int32Array(n)
+  const ties = new Int32Array(n)
 
-  for (const { a, b, aWins } of matchups) {
-    W[a] += aWins
-    W[b] += (1 - aWins)
-    Nij[a][b]++
-    Nij[b][a]++
-    if (aWins === 1) { rawWins[a]++; rawLosses[b]++ }
-    else if (aWins === 0) { rawLosses[a]++; rawWins[b]++ }
-    else { rawTies[a]++; rawTies[b]++ }
+  for (let k = 0; k < m; k++) {
+    const a = index.get(matchups[k].a)
+    const b = index.get(matchups[k].b)
+    const w = matchups[k].aWins
+    ai[k] = a
+    bi[k] = b
+    aw[k] = w
+    if (w === 1) { wins[a]++; losses[b]++ }
+    else if (w === 0) { losses[a]++; wins[b]++ }
+    else { ties[a]++; ties[b]++ }
   }
 
-  const p = Object.fromEntries(setups.map(s => [s, 1]))
-  for (let iter = 0; iter < 500; iter++) {
-    const newP = {}
-    for (const i of setups) {
-      let denom = 0
-      for (const j of setups) {
-        if (j !== i) denom += Nij[i][j] / (p[i] + p[j])
-      }
-      newP[i] = denom > 0 ? W[i] / denom : p[i]
-    }
-    const total = setups.reduce((acc, s) => acc + newP[s], 0)
-    let maxChange = 0
-    for (const s of setups) {
-      const norm = total > 0 ? newP[s] / total : 1 / setups.length
-      maxChange = Math.max(maxChange, Math.abs(norm - p[s]))
-      p[s] = norm
-    }
-    if (maxChange < 1e-8) break
-  }
+  const { p } = solve(n, ai, bi, aw, null, null, 500, 1e-8)
+  const elo = toElo(p)
 
-  return setups
-    .map(id => ({
+  const replicates = bootstrapRounds > 0
+    ? bootstrapReplicates(n, ai, bi, aw, bootstrapRounds, p)
+    : null
+  const beats = replicates ? pairwiseWinShare(n, replicates) : null
+
+  // The marginal interval still drives the whisker in the table: it is the right
+  // thing for showing how much a single rating is pinned down, and only the wrong
+  // thing for comparing two of them.
+  const bounds = setups.map((_, i) => {
+    if (!replicates) return { low: null, high: null }
+    const column = []
+    for (let r = 0; r < replicates.elo.length; r++) {
+      if (replicates.seen[r][i]) column.push(replicates.elo[r][i])
+    }
+    column.sort((a, b) => a - b)
+    return { low: percentile(column, 0.025), high: percentile(column, 0.975) }
+  })
+
+  const rows = setups
+    .map((id, i) => ({
       id,
-      score: p[id],
-      wins: rawWins[id],
-      losses: rawLosses[id],
-      ties: rawTies[id],
-      comparisons: rawWins[id] + rawLosses[id] + rawTies[id],
+      index: i,
+      score: p[i],
+      elo: elo[i],
+      eloLow: bounds[i].low,
+      eloHigh: bounds[i].high,
+      wins: wins[i],
+      losses: losses[i],
+      ties: ties[i],
+      comparisons: wins[i] + losses[i] + ties[i],
     }))
     .sort((a, b) => b.score - a.score)
+
+  return rows.map((row, ordinal) => {
+    if (!beats) {
+      const { index: _drop, ...rest } = row
+      return { ...rest, beatsNext: null, rankUB: ordinal + 1, rankLB: ordinal + 1, tiedWith: [] }
+    }
+    // The last row has no step below it to be confident about.
+    const next = rows[ordinal + 1]
+    const beatsNext = next ? beats[row.index * n + next.index] : null
+    let better = 0
+    let worse = 0
+    const tiedWith = []
+    for (const other of rows) {
+      if (other === row) continue
+      if (beats[other.index * n + row.index] >= SEPARATION_LEVEL) better++
+      else if (beats[row.index * n + other.index] >= SEPARATION_LEVEL) worse++
+      else tiedWith.push(other.id)
+    }
+    const { index: _drop, ...rest } = row
+    return { ...rest, beatsNext, rankUB: 1 + better, rankLB: n - worse, tiedWith }
+  })
+}
+
+/**
+ * The probability BT assigns to `a` beating `b`, straight from the fit.
+ *
+ * The rating is an abstraction; this is not. It gives the table a column a reader
+ * can act on without first learning what a point is worth.
+ */
+export function winProbability(eloA, eloB) {
+  return 1 / (1 + Math.pow(10, (eloB - eloA) / 400))
 }
 
 /**

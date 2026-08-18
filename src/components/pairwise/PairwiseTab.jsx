@@ -10,7 +10,7 @@ import {
   fetchRankings, startBatchEvaluate, clearHumanEval, deleteMachineEval as apiDeleteMachineEval,
 } from '../../api.js'
 import { DEFAULT_JUDGE, isHumanSource } from '../../lib/judges.js'
-import { LAYERS } from '../../lib/rankings.js'
+import { LAYERS, ELO_ANCHOR } from '../../lib/rankings.js'
 import { useUrlState } from '../../lib/urlState.js'
 
 /**
@@ -805,6 +805,75 @@ function tally(rows, winnerOf, setupA, setupB) {
 
 
 /**
+ * What a rank cell says on hover.
+ *
+ * The number itself is a plain ordinal — position by rating, nothing more — which
+ * is why it can sit beside the bars without contradicting them. Everything it
+ * deliberately does not claim goes here.
+ */
+function rankTitle(row) {
+  if (!row.tiedWith?.length) return 'Rating is above every setup below it at 95%'
+  return `Position by rating. Cannot be ordered at 95% against: ${row.tiedWith.join(', ')}`
+}
+
+/**
+ * A step in the ordering is firm when this row beats the next in at least
+ * SEPARATION_LEVEL of the resamples. Below that the two are still in *an* order —
+ * the ratings differ and the table draws one above the other — but the run has not
+ * established it.
+ */
+const STEP_FIRM = 0.95
+
+/**
+ * One rating and its bootstrap interval, on a domain shared by the whole table so
+ * the dots line up and a gap read down the column means the same thing at every
+ * row.
+ *
+ * A dot and a whisker rather than a bar. A bar encodes a ratio to the baseline it
+ * grows from, and this scale has no such baseline — ELO_ANCHOR is a free constant,
+ * and only differences are identified — so a bar length here would encode nothing.
+ * The dot marks the estimate; the whisker marks how much of it the data actually
+ * pins down.
+ */
+function RatingInterval({ row, domain }) {
+  const [lo, hi] = domain
+  const span = (hi - lo) || 1
+  const pct = v => ((v - lo) / span) * 100
+  const hasInterval = row.eloLow != null && row.eloHigh != null
+  const anchorPct = pct(ELO_ANCHOR)
+
+  return (
+    <div style={{ position: 'relative', height: 14, flex: 1, minWidth: 90 }}>
+      {/* The anchor, so a rating can be read as above or below the table's mean
+          without arithmetic. Hairline and one step off the surface: it is a
+          reference, not data. */}
+      {anchorPct >= 0 && anchorPct <= 100 && (
+        <div style={{
+          position: 'absolute', left: `${anchorPct}%`, top: 0, bottom: 0,
+          width: 1, background: 'var(--border)',
+        }} />
+      )}
+      {hasInterval && (
+        <div style={{
+          position: 'absolute', top: 6, height: 2, borderRadius: 1,
+          left: `${pct(row.eloLow)}%`,
+          width: `${Math.max(pct(row.eloHigh) - pct(row.eloLow), 0.5)}%`,
+          background: 'var(--accent)', opacity: 0.35,
+        }} />
+      )}
+      <div style={{
+        position: 'absolute', top: 3, left: `${pct(row.elo)}%`,
+        width: 8, height: 8, borderRadius: '50%', marginLeft: -4,
+        background: 'var(--accent)',
+        // A surface ring, so the dot stays legible where it sits on its own
+        // whisker or crosses the anchor line.
+        boxShadow: '0 0 0 2px var(--surface)',
+      }} />
+    </div>
+  )
+}
+
+/**
  * One Bradley-Terry table.
  *
  * Rendered once for most views and once per experiment model under Ablation,
@@ -820,11 +889,11 @@ function RankingTable({ ranking, dim }) {
   if (dim === 'all') {
     const overallRows = ranking?.overall ?? []
     if (overallRows.length === 0) return <div style={styles.pwEmptyMsg}>No data yet.</div>
-    const dimScores = {}
+    const dimRatings = {}
     for (const d of DIMENSIONS) {
       for (const row of (ranking?.[d] ?? [])) {
-        if (!dimScores[row.id]) dimScores[row.id] = {}
-        dimScores[row.id][d] = row.score
+        if (!dimRatings[row.id]) dimRatings[row.id] = {}
+        dimRatings[row.id][d] = row.elo
       }
     }
     return (
@@ -832,7 +901,7 @@ function RankingTable({ ranking, dim }) {
         <table style={{ ...styles.pwTable, tableLayout: 'auto', minWidth: 480 }}>
           <thead>
             <tr>
-              <th style={{ ...styles.pwTh, width: 28 }}>#</th>
+              <th style={{ ...styles.pwTh, width: 44 }}>#</th>
               <th style={styles.pwTh}>Setup</th>
               <th style={{ ...styles.pwTh, textAlign: 'right' }}>Overall</th>
               {DIMENSIONS.map(d => (
@@ -843,16 +912,19 @@ function RankingTable({ ranking, dim }) {
           <tbody>
             {overallRows.map((row, i) => (
               <tr key={row.id}>
-                <td style={{ ...styles.pwTd, fontWeight: 700, color: i === 0 ? 'var(--accent)' : 'var(--text-faint)', fontSize: 11 }}>{i + 1}</td>
+                <td style={{ ...styles.pwTd, fontWeight: 700, color: i === 0 ? 'var(--accent)' : 'var(--text-faint)', fontSize: 11, fontVariantNumeric: 'tabular-nums' }}
+                  title={rankTitle(row)}>
+                  {i + 1}
+                </td>
                 <td style={styles.pwTd}>
                   <div style={{ fontWeight: 600, fontSize: 11, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }} title={row.id}>{row.id}</div>
                 </td>
-                <td style={{ ...styles.pwTd, textAlign: 'right', fontWeight: 700, color: 'var(--accent)', fontSize: 11 }}>{(row.score * 100).toFixed(1)}</td>
+                <td style={{ ...styles.pwTd, textAlign: 'right', fontWeight: 700, color: 'var(--accent)', fontSize: 11, fontVariantNumeric: 'tabular-nums' }}>{Math.round(row.elo)}</td>
                 {DIMENSIONS.map(d => {
-                  const s = dimScores[row.id]?.[d]
+                  const r = dimRatings[row.id]?.[d]
                   return (
-                    <td key={d} style={{ ...styles.pwTd, textAlign: 'right', fontSize: 11, color: s != null ? 'var(--text)' : 'var(--text-faint)' }}>
-                      {s != null ? (s * 100).toFixed(1) : '—'}
+                    <td key={d} style={{ ...styles.pwTd, textAlign: 'right', fontSize: 11, fontVariantNumeric: 'tabular-nums', color: r != null ? 'var(--text)' : 'var(--text-faint)' }}>
+                      {r != null ? Math.round(r) : '—'}
                     </td>
                   )
                 })}
@@ -866,14 +938,23 @@ function RankingTable({ ranking, dim }) {
 
   const rows = ranking?.[dim] ?? []
   if (rows.length === 0) return <div style={styles.pwEmptyMsg}>No data yet.</div>
-  const maxScore = rows[0]?.score ?? 1
+
+  // One domain for the whole table, padded so the outermost interval ends do not
+  // sit flush against the column edge.
+  const lows = rows.map(r => r.eloLow ?? r.elo)
+  const highs = rows.map(r => r.eloHigh ?? r.elo)
+  const min = Math.min(...lows, ELO_ANCHOR)
+  const max = Math.max(...highs, ELO_ANCHOR)
+  const pad = ((max - min) || 1) * 0.06
+  const domain = [min - pad, max + pad]
+
   return (
     <table style={{ ...styles.pwTable, tableLayout: 'fixed' }}>
       <thead>
         <tr>
-          <th style={{ ...styles.pwTh, width: 32 }}>#</th>
+          <th style={{ ...styles.pwTh, width: 44 }} title="Position by rating. An ordinal only: a dashed rule under a row marks a step to the row below that the run has not established at 95%.">#</th>
           <th style={styles.pwTh}>Setup</th>
-          <th style={{ ...styles.pwTh, width: '22%' }}>BT Score</th>
+          <th style={{ ...styles.pwTh, width: '38%' }}>Rating (95% CI)</th>
           <th style={{ ...styles.pwTh, width: 40 }}>W</th>
           <th style={{ ...styles.pwTh, width: 40 }}>L</th>
           <th style={{ ...styles.pwTh, width: 40 }}>T</th>
@@ -881,26 +962,47 @@ function RankingTable({ ranking, dim }) {
         </tr>
       </thead>
       <tbody>
-        {rows.map((row, i) => (
+        {rows.map((row, i) => {
+          // The doubt in a ranking lives in the step between two neighbours, so
+          // that is where it is drawn: the row's own bottom edge. A solid rule is
+          // a step the comparisons establish, a dashed one is a step they do not.
+          const firm = row.beatsNext == null || row.beatsNext >= STEP_FIRM
+          const td = {
+            ...styles.pwTd,
+            borderBottom: firm
+              ? styles.pwTd.borderBottom
+              : '1px dashed var(--border-subtle)',
+          }
+          return (
           <tr key={row.id}>
-            <td style={{ ...styles.pwTd, fontWeight: 700, color: i === 0 ? 'var(--accent)' : 'var(--text-faint)', fontSize: 12 }}>{i + 1}</td>
-            <td style={styles.pwTd}>
+            <td style={{ ...td, fontWeight: 700, color: i === 0 ? 'var(--accent)' : 'var(--text-faint)', fontSize: 12, fontVariantNumeric: 'tabular-nums' }}
+              title={rankTitle(row)}>
+              {i + 1}
+            </td>
+            <td style={td}>
               <div style={{ fontWeight: 600, fontSize: 12, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }} title={row.id}>{row.id}</div>
             </td>
-            <td style={styles.pwTd}>
-              <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
-                <div style={{ flex: 1, height: 6, background: 'var(--accent-track)', borderRadius: 3, overflow: 'hidden' }}>
-                  <div style={{ height: '100%', width: `${(row.score / maxScore) * 100}%`, background: 'var(--accent)', borderRadius: 3 }} />
-                </div>
-                <span style={{ fontSize: 10, color: 'var(--text-muted)', width: 34, textAlign: 'right', flexShrink: 0 }}>{(row.score * 100).toFixed(1)}</span>
+            <td style={td}
+              title={row.eloLow != null
+                ? `${Math.round(row.elo)} (95% CI ${Math.round(row.eloLow)}–${Math.round(row.eloHigh)}) over ${row.comparisons} comparisons`
+                : `${Math.round(row.elo)} over ${row.comparisons} comparisons`}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+                <RatingInterval row={row} domain={domain} />
+                <span style={{ fontSize: 11, fontWeight: 700, color: 'var(--text)', width: 34, textAlign: 'right', flexShrink: 0, fontVariantNumeric: 'tabular-nums' }}>
+                  {Math.round(row.elo)}
+                </span>
+                <span style={{ fontSize: 10, color: 'var(--text-muted)', width: 30, textAlign: 'right', flexShrink: 0, fontVariantNumeric: 'tabular-nums' }}>
+                  {row.eloLow != null ? `±${Math.round((row.eloHigh - row.eloLow) / 2)}` : ''}
+                </span>
               </div>
             </td>
-            <td style={{ ...styles.pwTd, color: 'var(--badge-b-text)', fontWeight: 600, fontSize: 11 }}>{row.wins}</td>
-            <td style={{ ...styles.pwTd, color: 'var(--danger)', fontWeight: 600, fontSize: 11 }}>{row.losses}</td>
-            <td style={{ ...styles.pwTd, color: 'var(--badge-tie-text)', fontSize: 11 }}>{row.ties}</td>
-            <td style={{ ...styles.pwTd, color: 'var(--text-faint)', fontSize: 11 }}>{row.comparisons}</td>
+            <td style={{ ...td, color: 'var(--badge-b-text)', fontWeight: 600, fontSize: 11 }}>{row.wins}</td>
+            <td style={{ ...td, color: 'var(--danger)', fontWeight: 600, fontSize: 11 }}>{row.losses}</td>
+            <td style={{ ...td, color: 'var(--badge-tie-text)', fontSize: 11 }}>{row.ties}</td>
+            <td style={{ ...td, color: 'var(--text-faint)', fontSize: 11 }}>{row.comparisons}</td>
           </tr>
-        ))}
+          )
+        })}
       </tbody>
     </table>
   )
