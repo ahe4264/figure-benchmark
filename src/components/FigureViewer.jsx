@@ -4,6 +4,13 @@ import { useUrlState } from '../lib/urlState.js';
 
 const SUBJECTS = ['math', 'cs', 'physics', 'chemistry'];
 const TYPES = ['2d', '3d'];
+const SETS = ['benchmark', 'candidates'];
+
+// Candidate figures live in a `new_<subject>` folder and share the benchmark's
+// subject taxonomy — they just have no prompt or interactions written yet, so
+// they are browsable but off by default.
+const isCandidate = fig => fig.subject.startsWith('new_');
+const baseSubject = fig => fig.subject.replace(/^new_/, '');
 
 function FigureCard({ fig, onClick }) {
   const src = `/images/${fig.subject}/${fig.type}/${fig.stem}${fig.ext || '.png'}`;
@@ -16,8 +23,9 @@ function FigureCard({ fig, onClick }) {
       <div className="card-meta">
         <span className="card-stem">{fig.stem}</span>
         <div className="card-badges">
-          <Badge kind="subject" value={fig.subject} />
+          <Badge kind="subject" value={baseSubject(fig)} />
           <Badge kind="type" value={fig.type} />
+          {isCandidate(fig) && <span className="badge badge-candidate">candidate</span>}
         </div>
       </div>
     </div>
@@ -57,10 +65,17 @@ function FigureModal({ fig, ctx, onClose }) {
             <div className="modal-fig-header">
               <span className="modal-stem">{fig.stem}</span>
               <div className="card-badges">
-                <Badge kind="subject" value={fig.subject} />
+                <Badge kind="subject" value={baseSubject(fig)} />
                 <Badge kind="type" value={fig.type} />
+                {isCandidate(fig) && <span className="badge badge-candidate">candidate</span>}
               </div>
             </div>
+
+            {isCandidate(fig) && !ctx && (
+              <div className="modal-candidate-note">
+                Candidate figure — no input prompt or interactions generated yet.
+              </div>
+            )}
 
             {ctx?.['input prompt'] && (
               <section className="modal-section">
@@ -101,6 +116,7 @@ export default function FigureViewer() {
   // Both filters and the open figure live in the URL, so a view is linkable:
   // #figures?subject=math&type=3d&figure=11.3
   const { params, setParams } = useUrlState();
+  const set = params.get('set') || 'benchmark';
   const subject = params.get('subject') || 'all';
   const type = params.get('type') || 'all';
   const openStem = params.get('figure');
@@ -119,9 +135,10 @@ export default function FigureViewer() {
   }, []);
 
   const filtered = useMemo(() => figures.filter(f =>
-    (subject === 'all' || f.subject === subject) &&
+    (set === 'all' || isCandidate(f) === (set === 'candidates')) &&
+    (subject === 'all' || baseSubject(f) === subject) &&
     (type === 'all' || f.type === type)
-  ), [figures, subject, type]);
+  ), [figures, set, subject, type]);
 
   // Stems are globally unique in figures.json, so one is enough to name a figure
   // whatever the filters are set to.
@@ -130,6 +147,7 @@ export default function FigureViewer() {
     [figures, openStem],
   );
 
+  const setSet = useCallback(v => setParams({ set: v === 'benchmark' ? null : v }, { replace: true }), [setParams]);
   const setSubject = useCallback(v => setParams({ subject: v === 'all' ? null : v }, { replace: true }), [setParams]);
   const setType = useCallback(v => setParams({ type: v === 'all' ? null : v }, { replace: true }), [setParams]);
 
@@ -146,6 +164,7 @@ export default function FigureViewer() {
         </div>
 
         <nav className="filters">
+          <FilterGroup label="Set" options={SETS} value={set} onChange={setSet} />
           <FilterGroup label="Subject" options={SUBJECTS} value={subject} onChange={setSubject} />
           <FilterGroup label="Type" options={TYPES} value={type} onChange={setType} />
         </nav>

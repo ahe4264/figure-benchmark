@@ -4,13 +4,13 @@ A static benchmark dataset of hand-labeled scientific figures, categorized by su
 
 ## Dataset
 
-Figures live in `public/images/{subject}/{type}/{stem}{ext}` and are indexed by `public/figures.json`. Each manifest entry has the shape:
+Figures live in `public/images/{subject}/{type}/{stem}{ext}` and are indexed by `public/figures.json`, which is generated from that tree rather than hand-edited (`server/figures_manifest.js`). Each manifest entry has the shape:
 
 ```json
 { "stem": "CNX_Chem_01_01_FuelCell", "subject": "chemistry", "type": "2d", "ext": ".jpg" }
 ```
 
-- **`subject`**: `physics` | `chemistry` | `cs` | `math`
+- **`subject`**: `physics` | `chemistry` | `cs` | `math`, plus `new_physics` | `new_chemistry` | `new_math` for the candidates below
 - **`type`**: `2d` (flat diagrams, schematics, graphs) | `3d` (spatial/volumetric illustrations)
 
 Current counts:
@@ -23,9 +23,65 @@ Current counts:
 | Math             | 12 | 13 |    25 |
 | **Total**        | **47** | **53** | **100** |
 
+### Candidate figures
+
+Three staging folders hold additional figures sourced from OpenStax. They are
+indexed in `figures.json` like everything else, under the `new_*` subjects, and
+kept out of the benchmark by that naming: the Figures tab's benchmark/candidates
+switch shows the settled 100 by default, and the evaluator only sees figures that
+have generated output in `experiments/`, which no candidate has.
+
+| Folder | Source | 2d | 3d | Total |
+|--------|--------|----|----|-------|
+| `new_physics/`   | OpenStax *University Physics* (Volumes 1–3) | 16 | 24 |  40 |
+| `new_chemistry/` | OpenStax *Organic Chemistry* + *Chemistry 2e* | 16 | 18 |  34 |
+| `new_math/`      | OpenStax *Algebra and Trigonometry 2e* + *Calculus Volume 3* | 25 | 18 |  43 |
+| **Total**        |                              | **57** | **60** | **117** |
+
+Those are the counts on disk now, after a curation pass. The initial pull was
+larger — 43, 66, and 61 figures — and each folder used to carry a `manifest.json`
+recording it, with the source chapter, section, caption, and the textbook's alt
+text. Those manifests have been removed; the files on disk are the record.
+
+A candidate has no row in `contexts_export.json`, so it has no figure brief and
+cannot be evaluated until one is authored in `contexts.xlsx`.
+
+`new_math` draws on two books because one could not supply both halves.
+*Algebra and Trigonometry 2e* is almost entirely planar — its entire 3D
+inventory is the conic-section cone slices, the plane arrangements for systems
+in three variables, and three labeled solids — so it caps out at 11 spatial
+figures, six of which survive the curation pass. The other 12 come from
+*Calculus Volume 3*, whose multivariable chapters are the opposite: quadric
+surfaces, tangent planes and gradients, space curves, vector fields, and solids
+of integration. Every 2d figure is from *Algebra and Trigonometry 2e*; each
+entry's `book` field records its source.
+
+`new_chemistry` draws on two books for a different reason. *Organic Chemistry*
+is a book of drawn molecules, so once the conformer, orbital, chirality and
+spectrum templates were curated away, what was left to refill with was more
+drawn molecules — dense ones. *Chemistry 2e* has the visual vocabulary that book
+lacks: packing diagrams, glassware, band and energy-level diagrams, phase and
+free-energy plots. The ten Chemistry 2e figures were picked for how few things
+each one is made of, and checked against the settled 25 — which come from the
+same book — so none repeats a unit cell, a VSEPR wireframe or a hybrid orbital
+already in the benchmark. Here too the `book` field records the source.
+
+`new_physics` is one book, but its 3d half has since been topped up: ten more
+spatial figures from *University Physics*, seven of which survive, taking it
+from 17 to 24. The settled physics 25 are the odd ones out here — they are
+*Foundations of Computer Vision*, camera and projection geometry rather than
+mechanics — so the check that mattered was against the 17 candidates already
+in the folder, which had used up the vector-in-axes, Gaussian-box and
+polarizing-filter templates. The ten came from nine different chapters — only
+33 repeated — and no two were the same kind of picture.
+
+Promoting a figure into the benchmark means moving its file into
+`public/images/{subject}/{type}/`; `figures.json` is regenerated from the tree,
+so only the counts tables above need updating by hand.
+
 ## App
 
-A React + Vite app with three tabs.
+A React + Vite app with four tabs.
 
 ```bash
 npm install
@@ -186,14 +242,29 @@ Figures are from:
 > Anton, Bivens, and Davis. *Calculus, 10th Edition*
 > © John Wiley & Sons
 
+> OpenStax *Calculus Volume 3*
+> © Rice University
+> Licensed under [CC BY-NC-SA 4.0](https://creativecommons.org/licenses/by-nc-sa/4.0/)
+> https://openstax.org/details/books/calculus-volume-3
+
+> OpenStax *Algebra and Trigonometry 2e*
+> © Rice University
+> Licensed under [CC BY-NC-SA 4.0](https://creativecommons.org/licenses/by-nc-sa/4.0/)
+> https://openstax.org/details/books/algebra-and-trigonometry-2e
+
 ### Chemistry figures
 
 Figures are from:
 
 > OpenStax *Chemistry 2e*
 > © Rice University
-> Licensed under [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/)
+> Licensed under [CC BY-NC-SA 4.0](https://creativecommons.org/licenses/by-nc-sa/4.0/)
 > https://openstax.org/details/books/chemistry-2e
+
+> OpenStax *Organic Chemistry*
+> © Rice University
+> Licensed under [CC BY-NC-SA 4.0](https://creativecommons.org/licenses/by-nc-sa/4.0/)
+> https://openstax.org/details/books/organic-chemistry
 
 ### Computer Science figures
 
@@ -215,3 +286,8 @@ Figures are from:
 > Published by The MIT Press, 2024
 > Licensed under [CC BY-NC-ND 4.0](https://creativecommons.org/licenses/by-nc-nd/4.0/)
 > https://visionbook.mit.edu/
+
+> OpenStax *University Physics* (Volumes 1–3)
+> © Rice University
+> Licensed under [CC BY-NC-SA 4.0](https://creativecommons.org/licenses/by-nc-sa/4.0/)
+> https://openstax.org/details/books/university-physics-volume-1

@@ -6,8 +6,8 @@
  * runs under `npm run dev`. A production build (Vercel, `npm run preview`) has
  * no server at all, so the build step exports the same data as static JSON under
  * /api-static and READ_ONLY flips every reader over to it. Writers — evaluation
- * runs, deletes, human submissions — have nowhere to go and are hidden from the
- * UI rather than left to fail on click.
+ * runs, human submissions — have nowhere to go and are hidden from the UI rather
+ * than left to fail on click.
  */
 
 import { joinMatchingFigures, pairKey } from './lib/pairs.js'
