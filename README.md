@@ -23,65 +23,9 @@ Current counts:
 | Math             | 12 | 13 |    25 |
 | **Total**        | **47** | **53** | **100** |
 
-### Candidate figures
-
-Three staging folders hold additional figures sourced from OpenStax. They are
-indexed in `figures.json` like everything else, under the `new_*` subjects, and
-kept out of the benchmark by that naming: the Figures tab's benchmark/candidates
-switch shows the settled 100 by default, and the evaluator only sees figures that
-have generated output in `experiments/`, which no candidate has.
-
-| Folder | Source | 2d | 3d | Total |
-|--------|--------|----|----|-------|
-| `new_physics/`   | OpenStax *University Physics* (Volumes 1–3) | 16 | 24 |  40 |
-| `new_chemistry/` | OpenStax *Organic Chemistry* + *Chemistry 2e* | 16 | 18 |  34 |
-| `new_math/`      | OpenStax *Algebra and Trigonometry 2e* + *Calculus Volume 3* | 25 | 18 |  43 |
-| **Total**        |                              | **57** | **60** | **117** |
-
-Those are the counts on disk now, after a curation pass. The initial pull was
-larger — 43, 66, and 61 figures — and each folder used to carry a `manifest.json`
-recording it, with the source chapter, section, caption, and the textbook's alt
-text. Those manifests have been removed; the files on disk are the record.
-
-A candidate has no row in `contexts_export.json`, so it has no figure brief and
-cannot be evaluated until one is authored in `contexts.xlsx`.
-
-`new_math` draws on two books because one could not supply both halves.
-*Algebra and Trigonometry 2e* is almost entirely planar — its entire 3D
-inventory is the conic-section cone slices, the plane arrangements for systems
-in three variables, and three labeled solids — so it caps out at 11 spatial
-figures, six of which survive the curation pass. The other 12 come from
-*Calculus Volume 3*, whose multivariable chapters are the opposite: quadric
-surfaces, tangent planes and gradients, space curves, vector fields, and solids
-of integration. Every 2d figure is from *Algebra and Trigonometry 2e*; each
-entry's `book` field records its source.
-
-`new_chemistry` draws on two books for a different reason. *Organic Chemistry*
-is a book of drawn molecules, so once the conformer, orbital, chirality and
-spectrum templates were curated away, what was left to refill with was more
-drawn molecules — dense ones. *Chemistry 2e* has the visual vocabulary that book
-lacks: packing diagrams, glassware, band and energy-level diagrams, phase and
-free-energy plots. The ten Chemistry 2e figures were picked for how few things
-each one is made of, and checked against the settled 25 — which come from the
-same book — so none repeats a unit cell, a VSEPR wireframe or a hybrid orbital
-already in the benchmark. Here too the `book` field records the source.
-
-`new_physics` is one book, but its 3d half has since been topped up: ten more
-spatial figures from *University Physics*, seven of which survive, taking it
-from 17 to 24. The settled physics 25 are the odd ones out here — they are
-*Foundations of Computer Vision*, camera and projection geometry rather than
-mechanics — so the check that mattered was against the 17 candidates already
-in the folder, which had used up the vector-in-axes, Gaussian-box and
-polarizing-filter templates. The ten came from nine different chapters — only
-33 repeated — and no two were the same kind of picture.
-
-Promoting a figure into the benchmark means moving its file into
-`public/images/{subject}/{type}/`; `figures.json` is regenerated from the tree,
-so only the counts tables above need updating by hand.
-
 ## App
 
-A React + Vite app with four tabs.
+A React + Vite app with three tabs.
 
 ```bash
 npm install
@@ -132,7 +76,8 @@ an interrupt can't leave a half-written JPEG behind, and Ctrl-C closes the
 browser and stops after the figure in flight. `--list` prints the queue without
 rendering anything.
 
-The directory is gitignored and entirely regenerable. Nothing depends on it
+The directory is committed — a deployed build has no API and so no way to render
+one — but it is entirely regenerable. Nothing depends on it
 existing: a missing capture makes the evaluator render that one figure on demand
 (writing it back to the same cache, so an eval run warms the grid), and makes the
 Outputs card fall back to the reference image.
@@ -215,8 +160,8 @@ the read paths need into `dist/`:
 | `dist/experiments/<setup>/*.html` | copies of the generated figures |
 | `dist/screenshots/<setup>/*.jpg` | pre-rendered stills for the Outputs grid |
 | `dist/api-static/setups.json` | the setup index, with dist-relative paths |
-| `dist/api-static/results/*.json` | one file per evaluated pair |
-| `dist/api-static/ranking-records.json` | winners only, ranked in the browser |
+| `dist/api-static/results/<judge>/*.json` | one file per evaluated pair, per judge, plus `results/human/` |
+| `dist/api-static/<judge>/ranking-records.json` | winners only, ranked in the browser, plus `human/` |
 
 `src/api.js` picks between the two sources on `import.meta.env.DEV`, so the
 deployed Figures, Outputs, and Benchmark tabs all read the committed results.
@@ -226,12 +171,13 @@ Bradley-Terry scoring is shared between the server and the browser
 Preview the deployed build locally with `npm run build && npm run preview` — that
 is a faithful read-only run, API and all.
 
-**One catch:** `.gitignore` excludes `/experiments` and `/screenshots`, so a Vercel
-build from GitHub finds no experiment HTML and the Outputs and Benchmark tabs come
-up empty (the build logs a warning when this happens). Either un-ignore those
-directories and commit them — about 70 MB of HTML plus the captures — or deploy
-with `vercel --prod` from a working copy, which uploads the working tree and
-honours `.vercelignore` instead of `.gitignore`.
+**The catch this pays for:** `experiments/`, `screenshots/` and
+`benchmark_results/` are deliberately *not* gitignored — about 70 MB of HTML plus
+40 MB of captures, committed. Vercel builds from a clone, so anything the static
+export reads at build time has to be in the repo. Ignore them and the build finds
+no experiment HTML and the Outputs and Benchmark tabs come up empty; it logs a
+warning when that happens. The alternative is `vercel --prod` from a working copy,
+which uploads the working tree and honours `.vercelignore` instead of `.gitignore`.
 
 ## Credits
 
@@ -276,6 +222,12 @@ Figures are from:
 
 > Cormen, Leiserson, Rivest, and Stein. *Introduction to Algorithms, Third Edition*
 > © The MIT Press
+
+> Torralba, Isola, and Freeman. *Foundations of Computer Vision*
+> © Antonio Torralba, Phillip Isola, and William Freeman
+> Published by The MIT Press, 2024
+> Licensed under [CC BY-NC-ND 4.0](https://creativecommons.org/licenses/by-nc-nd/4.0/)
+> https://visionbook.mit.edu/
 
 ### Physics figures
 
