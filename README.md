@@ -10,18 +10,24 @@ Figures live in `public/images/{subject}/{type}/{stem}{ext}` and are indexed by 
 { "stem": "CNX_Chem_01_01_FuelCell", "subject": "chemistry", "type": "2d", "ext": ".jpg" }
 ```
 
-- **`subject`**: `physics` | `chemistry` | `cs` | `math`, plus `new_physics` | `new_chemistry` | `new_math` for the candidates below
+- **`subject`**: `physics` | `chemistry` | `cs` | `math`, plus `new_physics` | `new_chemistry` | `new_cs` | `new_math` for the candidates below
 - **`type`**: `2d` (flat diagrams, schematics, graphs) | `3d` (spatial/volumetric illustrations)
 
 Current counts:
 
-| Subject          | 2d | 3d | Total |
-|------------------|----|----|-------|
-| Physics          | 10 | 15 |    25 |
-| Chemistry        | 12 | 13 |    25 |
-| Computer Science | 13 | 12 |    25 |
-| Math             | 12 | 13 |    25 |
-| **Total**        | **47** | **53** | **100** |
+| Subject              | 2d | 3d | Total |
+|----------------------|----|----|-------|
+| Physics              | 10 | 15 |    25 |
+| Chemistry            | 12 | 13 |    25 |
+| Computer Science     | 13 | 12 |    25 |
+| Math                 | 12 | 13 |    25 |
+| **Core total**       | **47** | **53** | **100** |
+| new_physics          | 16 | 24 |    40 |
+| new_chemistry        | 16 | 18 |    34 |
+| new_cs               | 16 | 17 |    33 |
+| new_math             | 25 | 18 |    43 |
+| **Candidate total**  | **73** | **77** | **150** |
+| **Total**            | **120** | **130** | **250** |
 
 ## App
 
@@ -55,32 +61,6 @@ Keeping the generated pages out of the grid is deliberate: they are real pages
 running Three.js or SVG.js, and rendering a hundred of them at thumbnail size was
 both slow and unreadable, since each reflows its controls over the artwork at
 that width. A still has neither problem.
-
-### Figure screenshots
-
-```bash
-npm run screenshots                              # everything not yet captured
-npm run screenshots -- --setup baseline-gpt_FINAL
-npm run screenshots -- --stem 14.2.10 --force
-```
-
-Renders every `experiments/<setup>/<stem>.html` headlessly and writes
-`screenshots/<setup>/<stem>.jpg`. Two things read that directory: the Outputs
-grid, and the evaluator's faithfulness and labels dimensions.
-
-Renders are serialized — one page at a time keeps memory bounded and stops
-concurrent 3D figures from contending over SwiftShader — so budget roughly five
-seconds per figure. The run is resumable: it skips whatever is already on disk
-unless `--force` is passed, captures are written via a temp file and a rename so
-an interrupt can't leave a half-written JPEG behind, and Ctrl-C closes the
-browser and stops after the figure in flight. `--list` prints the queue without
-rendering anything.
-
-The directory is committed — a deployed build has no API and so no way to render
-one — but it is entirely regenerable. Nothing depends on it
-existing: a missing capture makes the evaluator render that one figure on demand
-(writing it back to the same cache, so an eval run warms the grid), and makes the
-Outputs card fall back to the reference image.
 
 ### Benchmark tab
 
@@ -192,6 +172,11 @@ Figures are from:
 > © Rice University
 > Licensed under [CC BY-NC-SA 4.0](https://creativecommons.org/licenses/by-nc-sa/4.0/)
 > https://openstax.org/details/books/calculus-volume-3
+
+> OpenStax *Precalculus 2e*
+> © Rice University
+> Licensed under [CC BY-NC-SA 4.0](https://creativecommons.org/licenses/by-nc-sa/4.0/)
+> https://openstax.org/details/books/precalculus-2e
 
 > OpenStax *Algebra and Trigonometry 2e*
 > © Rice University
